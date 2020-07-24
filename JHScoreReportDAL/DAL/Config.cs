@@ -33,7 +33,8 @@ namespace JHScoreReportDAL
                 {
                     this._SubjectItemList.Clear();
                     this._DomainItemList.Clear();
-                    string rootXML = dt.Rows[0]["content"].ToString().Replace("&lt;", "<").Replace("&gt;", ">");
+                    char c = '"';
+                    string rootXML = dt.Rows[0]["content"].ToString().Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;",c.ToString()).Replace("&apos;","'").Replace("&amp;","&");
                     XElement elmRoot = XElement.Parse(rootXML);
                     foreach(XElement elm1 in elmRoot.Elements("Configuration"))
                     {
