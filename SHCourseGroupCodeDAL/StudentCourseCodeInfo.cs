@@ -11,41 +11,49 @@ namespace SHCourseGroupCodeDAL
         public string SchoolYear { get; set; }
         public string Semester { get; set; }
 
+        public string GradeYear { get; set; }
+
         public string StudentID { get; set; }
 
         public string CourseGroupCode { get; set; }
 
         List<SubjectInfo> SubjectInfoList = new List<SubjectInfo>();
 
+        Dictionary<string, SubjectInfo> SubjectInfoDict = new Dictionary<string, SubjectInfo>();
+
         public void AddSubjectInfo(SubjectInfo subj)
         {
             SubjectInfoList.Add(subj);
         }
 
-        public Dictionary<string, SubjectInfo> GetSubjectInfoDict()
+        public void AddSubjectInfoList(List<SubjectInfo> subjList)
         {
-            Dictionary<string, SubjectInfo> value = new Dictionary<string, SubjectInfo>();
-
-            foreach (SubjectInfo si in SubjectInfoList)
-            {
-                if (!value.ContainsKey(si.GetSubjectKey()))
-                    value.Add(si.GetSubjectKey(), si);
-            }
-
-            return value;
+            SubjectInfoList.AddRange(subjList);
         }
 
-        public void ParseCourseCode(Dictionary<string, string> SourceDict)
+        public Dictionary<string, SubjectInfo> GetSubjectInfoDict()
         {
+            SubjectInfoDict.Clear();
+
             foreach (SubjectInfo si in SubjectInfoList)
             {
-                if (SourceDict.ContainsKey(si.GetSubjectKey()))
-                {
-                    // 比對資料後填入
-                    si.SetCode(CourseGroupCode, SourceDict[si.GetSubjectKey()]);
-                }
-
+                if (!SubjectInfoDict.ContainsKey(si.GetSubjectKey()))
+                    SubjectInfoDict.Add(si.GetSubjectKey(), si);
             }
+
+            return SubjectInfoDict;
+        }
+
+        public string GetCourseCode(string SubjectName,string RequireBy,string Required)
+        {
+            //  // 科目名稱+校部定+必選修
+            string code = "";
+            string SubjectKey = SubjectName + "_" + RequireBy + "_" + Required;
+
+            if (SubjectInfoDict.ContainsKey(SubjectKey))
+                code = SubjectInfoDict[SubjectKey].GetCourseCode();
+
+            return code;
         }
     }
 }
