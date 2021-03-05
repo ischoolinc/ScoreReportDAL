@@ -15,6 +15,8 @@ namespace SHCourseGroupCodeDAL
 
         public string StudentID { get; set; }
 
+        public string GraduationPlanID { get; set; }
+
         public string CourseGroupCode { get; set; }
 
         List<SubjectInfo> SubjectInfoList = new List<SubjectInfo>();
@@ -46,7 +48,13 @@ namespace SHCourseGroupCodeDAL
 
         public string GetCourseCode(string SubjectName,string RequireBy,string Required)
         {
-            //  // 科目名稱+校部定+必選修
+            // 當沒有資料時
+            if (SubjectInfoDict.Count == 0)
+            {
+                GetSubjectInfoDict();
+            }
+            
+            // 科目名稱+校部定+必選修
             string code = "";
             string SubjectKey = SubjectName + "_" + RequireBy + "_" + Required;
 
