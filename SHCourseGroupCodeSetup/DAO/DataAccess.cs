@@ -33,7 +33,7 @@ namespace SHCourseGroupCodeSetup.DAO
         /// <returns></returns>
         public string GetStudentCodeByStudentID(string id)
         {
-            string query = "SELECT gdc_code FROM student WHERE id = " + id;
+            string query = "SELECT COALESCE(student.gdc_code,class.gdc_code) AS gdc_code FROM student LEFT JOIN class ON student.ref_class_id = class.id  WHERE student.id = " + id;
             string code = ExecuteSQLReturnString0(query);
             return code;
         }
@@ -47,7 +47,16 @@ namespace SHCourseGroupCodeSetup.DAO
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
-                string query = "UPDATE class SET gdc_code = '" + code + "' WHERE id = " + id + " RETURNING id;";
+                string query = "";
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    query = "UPDATE class SET gdc_code = null WHERE id = " + id + " RETURNING id;";
+                }
+                else
+                {
+                    query = "UPDATE class SET gdc_code = '" + code + "' WHERE id = " + id + " RETURNING id;";
+                }
+
                 string value = ExecuteSQLReturnString0(query);
             }
         }
@@ -56,7 +65,17 @@ namespace SHCourseGroupCodeSetup.DAO
         {
             if (ids.Count > 0)
             {
-                string query = "UPDATE class SET gdc_code = '" + code + "' WHERE id IN ( " + string.Join(",", ids.ToArray()) + ") RETURNING id;";
+                string query = "";
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    query = "UPDATE class SET gdc_code = NULL WHERE id IN ( " + string.Join(",", ids.ToArray()) + ") RETURNING id;";
+                }
+                else
+                {
+                    query = "UPDATE class SET gdc_code = '" + code + "' WHERE id IN ( " + string.Join(",", ids.ToArray()) + ") RETURNING id;";
+                }
+
+
                 string value = ExecuteSQLReturnString0(query);
             }
         }
@@ -71,7 +90,16 @@ namespace SHCourseGroupCodeSetup.DAO
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
-                string query = "UPDATE student SET gdc_code = '" + code + "' WHERE id = " + id + " RETURNING id;";
+                string query = "";
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    query = "UPDATE student SET gdc_code = NULL WHERE id = " + id + " RETURNING id;";
+                }
+                else
+                {
+                    query = "UPDATE student SET gdc_code = '" + code + "' WHERE id = " + id + " RETURNING id;";
+                }
+
                 string value = ExecuteSQLReturnString0(query);
             }
         }
@@ -80,7 +108,16 @@ namespace SHCourseGroupCodeSetup.DAO
         {
             if (ids.Count > 0)
             {
-                string query = "UPDATE student SET gdc_code = '" + code + "' WHERE id IN ( " + string.Join(",", ids.ToArray()) + ") RETURNING id;";
+                string query = "";
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    query = "UPDATE student SET gdc_code = NULL WHERE id IN ( " + string.Join(",", ids.ToArray()) + ") RETURNING id;";
+                }
+                else
+                {
+                    query = "UPDATE student SET gdc_code = '" + code + "' WHERE id IN ( " + string.Join(",", ids.ToArray()) + ") RETURNING id;";
+                }
+
                 string value = ExecuteSQLReturnString0(query);
             }
         }
