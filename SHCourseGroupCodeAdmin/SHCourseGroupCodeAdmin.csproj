@@ -40,6 +40,11 @@
       <HintPath>Library\Campus.Windows.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA, Version=2.5.1.3, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\FISCA.dll</HintPath>
@@ -82,8 +87,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAO\ClassInfo.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
+    <Compile Include="DataCheck\rptCheckClassGroupCode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -101,6 +108,7 @@
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\課程代碼表樣版.xlsx" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +117,8 @@
     <Content Include="Library\Campus.Windows.dll" />
     <Content Include="Library\Campus.Windows.pdb" />
     <Content Include="Library\Campus.Windows.xml" />
+    <Content Include="Library\DevComponents.DotNetBar2.dll" />
+    <Content Include="Library\DevComponents.DotNetBar2.xml" />
     <Content Include="Library\FISCA.Data.dll" />
     <Content Include="Library\FISCA.Data.pdb" />
     <Content Include="Library\FISCA.Data.xml" />
