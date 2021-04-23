@@ -62,8 +62,7 @@ namespace SHCourseGroupCodeAdmin.Report
 
             int rowIdx = 1;
             foreach(MOECourseCodeInfo data in CourseData)
-            {              
-                wst.Cells[rowIdx, GetColIndex("最後更新日期")].PutValue(data.last_update);
+            {
                 wst.Cells[rowIdx, GetColIndex("群組代碼")].PutValue(data.group_code);
                 wst.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.course_code);
                 wst.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.subject_name);

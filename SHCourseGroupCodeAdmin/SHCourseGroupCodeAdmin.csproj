@@ -88,8 +88,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\ClassInfo.cs" />
+    <Compile Include="DAO\CourseInfoChk.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
+    <Compile Include="DataCheck\chkCheckCourseCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataCheck\chkCheckCourseCode.Designer.cs">
+      <DependentUpon>chkCheckCourseCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataCheck\rptCheckClassGroupCode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,6 +117,7 @@
   <ItemGroup>
     <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\課程代碼表樣版.xlsx" />
+    <None Include="Template\課程開課檢查樣版.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells_201402.dll" />
@@ -137,6 +145,9 @@
     <Content Include="Library\K12.Presentation.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DataCheck\chkCheckCourseCode.resx">
+      <DependentUpon>chkCheckCourseCode.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

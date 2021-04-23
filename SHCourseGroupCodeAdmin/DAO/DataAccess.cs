@@ -44,7 +44,6 @@ namespace SHCourseGroupCodeAdmin.DAO
                 foreach (DataRow dr in dt.Rows)
                 {
                     MOECourseCodeInfo data = new MOECourseCodeInfo();
-                    data.last_update = dr["最後更新日期"] + "";
                     data.group_code = dr["群組代碼"] + "";
                     data.course_code = dr["課程代碼"] + "";
                     data.subject_name = dr["科目名稱"] + "";
@@ -84,7 +83,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                 string query = "" +
                     "SELECT " +
-                    "id"+
+                    "id" +
                     ",COALESCE(grade_year,0) AS grade_year" +
                     ",class_name" +
                     ",COALESCE(gdc_code,'') AS gdc_code " +
@@ -92,11 +91,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                     " ORDER BY class.grade_year,display_order,class_name";
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query);
-                foreach(DataRow dr in dt.Rows)
-                { 
+                foreach (DataRow dr in dt.Rows)
+                {
                     ClassInfo ci = new ClassInfo();
                     ci.ClassID = dr["id"] + "";
-                    ci.ClassName =dr ["class_name"] + "";
+                    ci.ClassName = dr["class_name"] + "";
                     ci.GradeYear = dr["grade_year"] + "";
                     ci.ClassGroupCode = dr["gdc_code"] + "";
                     ci.ClassGroupName = GetGroupNameByCode(ci.ClassGroupCode);
@@ -167,6 +166,98 @@ namespace SHCourseGroupCodeAdmin.DAO
                 code = MOEGroupNameDict[name];
 
             return code;
+        }
+
+        public List<CourseInfoChk> GetCourseCheckInfoListByGradeYear(int GradeYear)
+        {
+            List<CourseInfoChk> value = new List<CourseInfoChk>();
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = "" +
+                   " SELECT  " +
+" DISTINCT course.id AS course_id " +
+" , course_name " +
+" , subject " +
+" , subj_level " +
+" , COALESCE(course.credit, null) AS c_credit " +
+" , COALESCE(course.period, null) AS c_period " +
+" , class.grade_year " +
+" , COALESCE(course.credit,course.period) AS credit " +
+" , course.school_year " +
+" , course.semester " +
+" , (CASE c_required_by WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
+" , (CASE c_is_required WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
+" , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
+" FROM course " +
+" 	INNER JOIN sc_attend " +
+"  ON course.id = sc_attend.ref_course_id  " +
+" 	INNER JOIN student  " +
+"  ON sc_attend.ref_student_id = student.id " +
+" 	INNER JOIN class " +
+" 	ON student.ref_class_id = class.id " +
+" WHERE  " +
+"  student.status = 1 AND class.grade_year in(" + GradeYear + ") " +
+" ORDER BY school_year DESC,semester DESC ";
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    CourseInfoChk data = new CourseInfoChk();
+                    data.CourseID = dr["course_id"] + "";
+                    data.CourseName = dr["course_name"] + "";
+                    data.SchoolYear = dr["school_year"] + "";
+                    data.Semester = dr["semester"] + "";
+                    data.SubjectName = dr["subject"] + "";
+                    data.IsRequired = dr["required"] + "";
+                    data.RequireBy = dr["required_by"] + "";
+                    data.SubjectLevel = dr["subj_level"] + "";
+                    data.course_code = "";
+                    data.Credit = "";
+                    if (dr["c_credit"] != null)
+                    {
+                        data.Credit = dr["c_credit"] + "";
+                    }
+
+                    data.Period = "";
+                    if (dr["c_period"] != null)
+                    {
+                        data.Period = dr["c_period"] + "";
+                    }
+
+                    data.credit_period = "";
+                    data.GroupCode = dr["gdc_code"] + "";
+                    value.Add(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+
+        /// <summary>
+        /// 取得群科班代碼科目內容
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, List<MOECourseCodeInfo>> GetCourseGroupCodeDict()
+        {
+            Dictionary<string, List<MOECourseCodeInfo>> value = new Dictionary<string, List<MOECourseCodeInfo>>();
+
+            List<MOECourseCodeInfo> coCodeList = GetCourseGroupCodeList();
+            foreach (MOECourseCodeInfo co in coCodeList)
+            {
+                if (!value.ContainsKey(co.group_code))
+                    value.Add(co.group_code, new List<MOECourseCodeInfo>());
+
+                value[co.group_code].Add(co);
+            }
+            return value;
         }
     }
 }

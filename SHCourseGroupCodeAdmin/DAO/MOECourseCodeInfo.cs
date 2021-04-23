@@ -10,11 +10,7 @@ namespace SHCourseGroupCodeAdmin.DAO
     /// 課程代碼大表資料
     /// </summary>
     public class MOECourseCodeInfo
-    {
-        /// <summary>
-        /// 最後更新日期
-        /// </summary>
-        public string last_update { get; set; }
+    {       
         /// <summary>
         /// 群組代碼
         /// </summary>

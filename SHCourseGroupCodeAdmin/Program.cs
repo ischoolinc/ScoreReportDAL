@@ -58,9 +58,9 @@ namespace SHCourseGroupCodeAdmin
             Catalog ribbon4 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon4.Add(new RibbonFeature("90C0A273-6387-49B9-BCCE-EFDC7F5A3931", "檢查班級群科班設定"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["檢查"]["檢查班級群科班設定"].Enable = UserAcl.Current["90C0A273-6387-49B9-BCCE-EFDC7F5A3931"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["檢查班級群科班設定"].Enable = UserAcl.Current["90C0A273-6387-49B9-BCCE-EFDC7F5A3931"].Executable;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["檢查"]["檢查班級群科班設定"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["檢查班級群科班設定"].Click += delegate
             {
                 rptCheckClassGroupCode gCode = new rptCheckClassGroupCode();
                 gCode.Run();
@@ -68,13 +68,14 @@ namespace SHCourseGroupCodeAdmin
 
 
             Catalog ribbon5 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            ribbon5.Add(new RibbonFeature("A1CE769E-3AB2-404D-B743-1B3DD3E2598E", "檢查課程修課學生課程代碼"));
+            ribbon5.Add(new RibbonFeature("A1CE769E-3AB2-404D-B743-1B3DD3E2598E", "開課檢查"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["檢查"]["檢查課程修課學生課程代碼"].Enable = UserAcl.Current["A1CE769E-3AB2-404D-B743-1B3DD3E2598E"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢查"].Enable = UserAcl.Current["A1CE769E-3AB2-404D-B743-1B3DD3E2598E"].Executable;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["檢查"]["檢查課程修課學生課程代碼"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢查"].Click += delegate
             {
-                Console.WriteLine("檢查課程修課學生課程代碼");
+                chkCheckCourseCode fCode = new chkCheckCourseCode();
+                fCode.ShowDialog();
             };
         }
     }
