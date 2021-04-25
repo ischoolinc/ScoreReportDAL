@@ -187,8 +187,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , COALESCE(course.credit,course.period) AS credit " +
 " , course.school_year " +
 " , course.semester " +
-" , (CASE c_required_by WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
-" , (CASE c_is_required WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
+" , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
+" , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
 " , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
 " FROM course " +
 " 	INNER JOIN sc_attend " +
