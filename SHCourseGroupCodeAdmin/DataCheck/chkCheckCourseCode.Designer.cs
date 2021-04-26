@@ -107,7 +107,7 @@
             this.Controls.Add(this.labelX1);
             this.DoubleBuffered = true;
             this.Name = "chkCheckCourseCode";
-            this.Text = "課程開課檢查";
+            this.Text = "課程代碼開課檢查";
             this.Load += new System.EventHandler(this.chkCheckCourseCode_Load);
             ((System.ComponentModel.ISupportInitialize)(this.iptGradeYear)).EndInit();
             this.ResumeLayout(false);
