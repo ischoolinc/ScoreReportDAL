@@ -168,6 +168,11 @@ namespace SHCourseGroupCodeAdmin.DAO
             return code;
         }
 
+        /// <summary>
+        /// 取得已開課程，作資料檢查使用
+        /// </summary>
+        /// <param name="GradeYear"></param>
+        /// <returns></returns>
         public List<CourseInfoChk> GetCourseCheckInfoListByGradeYear(int GradeYear)
         {
             List<CourseInfoChk> value = new List<CourseInfoChk>();
@@ -259,5 +264,81 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return value;
         }
+
+        public Dictionary<string, List<string>> GetCPIdGdcCodeDict(int GradeYear)
+        {
+            // 有可能一個課程規劃表對應到2個群組代碼，合理應該只有一個
+            Dictionary<string, List<string>> value = new Dictionary<string, List<string>>();
+            try
+            {
+                string query = "" +
+                " SELECT DISTINCT  " +
+                " 	COALESCE(student.gdc_code,class.gdc_code) AS gdc_code " +
+                " 	,COALESCE(student.ref_graduation_plan_id,class.ref_graduation_plan_id) AS gp_id " +
+                "  FROM student LEFT JOIN class " +
+                " 	ON student.ref_class_id = class.id  " +
+                "  WHERE class.grade_year IN (" + GradeYear + "); ";
+
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string gp_id = "";
+                    string gdc_code = "";
+                    if (dr["gdc_code"] != null)
+                        gdc_code = dr["gdc_code"] + "";
+
+                    if (dr["gp_id"] != null)
+                        gp_id = dr["gp_id"] + "";
+
+                    if (gp_id != "")
+                    {
+                        if (!value.ContainsKey(gp_id))
+                            value.Add(gp_id, new List<string>());
+
+                        value[gp_id].Add(gdc_code);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+        public Dictionary<string, GPlanInfo> GetGPlanInfoDictByGPID(List<string> GPIDList)
+        {
+            Dictionary<string, GPlanInfo> value = new Dictionary<string, GPlanInfo>();
+            try
+            {
+                if (GPIDList.Count > 0)
+                {
+                    string query = "SELECT id,name,content FROM graduation_plan WHERE id IN (" + string.Join(",", GPIDList.ToArray()) + ") ORDER BY name;";
+
+                    QueryHelper qh = new QueryHelper();
+                    DataTable dt = qh.Select(query);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        GPlanInfo data = new GPlanInfo();
+                        data.ID = dr["id"] + "";
+                        data.Name = dr["name"] + "";
+                        data.Content = dr["content"] + "";
+                        data.ParseContentToCourseInfoList();
+
+                        if (!value.ContainsKey(data.ID))
+                            value.Add(data.ID, data);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+
     }
 }

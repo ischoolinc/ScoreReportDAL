@@ -64,6 +64,46 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             Dictionary<string, List<MOECourseCodeInfo>> MOECoursedDict = da.GetCourseGroupCodeDict();
             _bgWorker.ReportProgress(40);
 
+            // 取得課程規劃ID與gdc_code對應，由學生來過濾
+            Dictionary<string, List<string>> CPIdGdcCodeDict = da.GetCPIdGdcCodeDict(_GradeYear);
+
+            //取得有使用的課程規劃大表
+            Dictionary<string, GPlanInfo> GPlanInfoDict = da.GetGPlanInfoDictByGPID(CPIdGdcCodeDict.Keys.ToList());
+
+            Dictionary<string, MOECourseCodeInfo> tmpMoeDict = new Dictionary<string, MOECourseCodeInfo>();
+            
+            foreach (string id in GPlanInfoDict.Keys)
+            {
+                GPlanInfo data = GPlanInfoDict[id];
+
+                // 使用課程規劃表ID group_code
+                if (CPIdGdcCodeDict.ContainsKey(data.ID))
+                {
+                    foreach(string gdc_code in CPIdGdcCodeDict[data.ID])
+                    {
+                        // 取得課程代碼大表
+                        if(MOECoursedDict.ContainsKey(gdc_code))
+                        {
+                            tmpMoeDict.Clear();
+
+                            foreach(MOECourseCodeInfo mdata in MOECoursedDict[gdc_code])
+                            {
+                                string key = mdata.subject_name + "_" + mdata.require_by + "_" + mdata.is_required;
+
+                                if (!tmpMoeDict.ContainsKey(key))
+                                    tmpMoeDict.Add(key, mdata);
+                            }
+                         
+
+                            // 掃課程規劃表資料比對
+                            foreach(GPCourseInfo gpCo in data.CourseInfoList)
+                            {
+                               
+                            }
+                        }
+                    }
+                }               
+            }
 
             List<string> errMesList = new List<string>();
             List<string> errItem = new List<string>();
@@ -141,7 +181,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             _bgWorker.ReportProgress(70);
             // 填值到 Excel
             _wb = new Workbook(new MemoryStream(Properties.Resources.課程開課檢查樣版));
-            Worksheet wst = _wb.Worksheets[0];
+            Worksheet wst = _wb.Worksheets["已開課課程"];
             wst.Name = _GradeYear + "年級";
             _ColIdxDict.Clear();
 
@@ -171,6 +211,21 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             }
 
             wst.AutoFitColumns();
+
+
+            // 處理課程規劃表比對結果
+            Worksheet wst2 = _wb.Worksheets["課程規劃表"];
+
+            _ColIdxDict.Clear();
+
+            // 讀取欄位與索引            
+            for (int co = 0; co <= wst2.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wst2.Cells[0, co].StringValue, co);
+            }
+
+            wst2.AutoFitColumns();
+
             _bgWorker.ReportProgress(100);
         }
 
