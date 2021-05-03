@@ -315,7 +315,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             {
                 if (GPIDList.Count > 0)
                 {
-                    string query = "SELECT id,name,content FROM graduation_plan WHERE id IN (" + string.Join(",", GPIDList.ToArray()) + ") ORDER BY name;";
+                    string query = "SELECT DISTINCT id,name,content FROM graduation_plan WHERE id IN (" + string.Join(",", GPIDList.ToArray()) + ") ORDER BY name;";
 
                     QueryHelper qh = new QueryHelper();
                     DataTable dt = qh.Select(query);

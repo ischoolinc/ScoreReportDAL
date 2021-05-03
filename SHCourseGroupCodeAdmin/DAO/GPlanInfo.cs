@@ -48,6 +48,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.Level = GetAttribute(elm, "Level");
                     data.NotIncludedInCalc = GetAttributeBool(elm, "NotIncludedInCalc");
                     data.NotIncludedInCredit = GetAttributeBool(elm, "NotIncludedInCredit");
+                    data.tmpKey = data.SubjectName + "_" + data.RequiredBy + "_" + data.Required;
+                    data.CourseCode = "";
                     CourseInfoList.Add(data);
 
                 }

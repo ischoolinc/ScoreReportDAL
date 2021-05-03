@@ -54,6 +54,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
         private void _bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             _bgWorker.ReportProgress(1);
+            da.LoadMOEGroupCodeDict();
             _CourseInfoChkList.Clear();
             // 透過年級取得學生修課資料
             _CourseInfoChkList = da.GetCourseCheckInfoListByGradeYear(_GradeYear);
@@ -71,7 +72,11 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             Dictionary<string, GPlanInfo> GPlanInfoDict = da.GetGPlanInfoDictByGPID(CPIdGdcCodeDict.Keys.ToList());
 
             Dictionary<string, MOECourseCodeInfo> tmpMoeDict = new Dictionary<string, MOECourseCodeInfo>();
-            
+            List<string> errMesList = new List<string>();
+            List<string> errItem = new List<string>();
+
+
+
             foreach (string id in GPlanInfoDict.Keys)
             {
                 GPlanInfo data = GPlanInfoDict[id];
@@ -79,34 +84,106 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                 // 使用課程規劃表ID group_code
                 if (CPIdGdcCodeDict.ContainsKey(data.ID))
                 {
-                    foreach(string gdc_code in CPIdGdcCodeDict[data.ID])
+                    foreach (string gdc_code in CPIdGdcCodeDict[data.ID])
                     {
+                        errMesList.Clear();
+                        bool hasGdcCode = false;
+
                         // 取得課程代碼大表
-                        if(MOECoursedDict.ContainsKey(gdc_code))
+                        if (MOECoursedDict.ContainsKey(gdc_code))
                         {
                             tmpMoeDict.Clear();
 
-                            foreach(MOECourseCodeInfo mdata in MOECoursedDict[gdc_code])
+                            foreach (MOECourseCodeInfo mdata in MOECoursedDict[gdc_code])
                             {
                                 string key = mdata.subject_name + "_" + mdata.require_by + "_" + mdata.is_required;
 
                                 if (!tmpMoeDict.ContainsKey(key))
                                     tmpMoeDict.Add(key, mdata);
                             }
-                         
+                            hasGdcCode = true;
+                        }
+                        else
+                        {
+                            errMesList.Add("群科班代碼無法對照");
+                            hasGdcCode = false;
 
-                            // 掃課程規劃表資料比對
-                            foreach(GPCourseInfo gpCo in data.CourseInfoList)
+                            foreach (GPCourseInfo gpCo in data.CourseInfoList)
                             {
-                               
+                                gpCo.Memo = string.Join(",", errMesList.ToArray());
                             }
                         }
+
+                        if (hasGdcCode)
+                        {
+                            // 掃課程規劃表資料比對
+                            foreach (GPCourseInfo gpCo in data.CourseInfoList)
+                            {
+                                errMesList.Clear();
+                                errItem.Clear();
+                                errItem.Add("科目名稱");
+                                errItem.Add("部定校訂");
+                                errItem.Add("必修選修");
+                                gpCo.Memo = "";
+                                // 使用科目名稱+部校訂+必選修
+                                if (tmpMoeDict.ContainsKey(gpCo.tmpKey))
+                                {
+                                    MOECourseCodeInfo md = tmpMoeDict[gpCo.tmpKey];
+                                    gpCo.GroupCode = md.group_code;
+                                    gpCo.CourseCode = md.course_code;
+                                    gpCo.GroupName = da.GetGroupNameByCode(gpCo.GroupCode);
+                                  
+                                    errItem.Remove("科目名稱");
+                                    errItem.Remove("部定校訂");
+                                    errItem.Remove("必修選修");
+                                }
+                                else
+                                {
+                                    // 比對不到原因
+                                    foreach (MOECourseCodeInfo mm in tmpMoeDict.Values)
+                                    {
+                                        if (gpCo.SubjectName == mm.subject_name && gpCo.Required == mm.is_required)
+                                        {
+                                            errItem.Remove("科目名稱");
+                                            errItem.Remove("必修選修");
+                                            break;
+                                        }
+                                    }
+
+                                    foreach (MOECourseCodeInfo mm in tmpMoeDict.Values)
+                                    {
+                                        if (gpCo.SubjectName == mm.subject_name && gpCo.RequiredBy == mm.require_by)
+                                        {
+                                            errItem.Remove("科目名稱");
+                                            errItem.Remove("部定校訂");
+                                            break;
+                                        }
+                                    }
+
+                                    foreach (MOECourseCodeInfo mm in tmpMoeDict.Values)
+                                    {
+                                        if (gpCo.SubjectName == mm.subject_name)
+                                        {
+                                            errItem.Remove("科目名稱");
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (errItem.Count > 0)
+                                {
+                                    errMesList.Add(string.Join("、", errItem.ToArray()) + " 無法對照");
+                                }
+                                if (gpCo.CourseCode == "")
+                                    gpCo.Memo = string.Join(",", errMesList.ToArray());
+                            }
+                        }
+
                     }
-                }               
+                }
             }
 
-            List<string> errMesList = new List<string>();
-            List<string> errItem = new List<string>();
+
 
 
             // 資料比對
@@ -137,9 +214,9 @@ namespace SHCourseGroupCodeAdmin.DataCheck
 
                     foreach (MOECourseCodeInfo mi in MOECoursedDict[ci.GroupCode])
                     {
-                        if (ci.course_code == "" && ci.SubjectName == mi.subject_name && ci.IsRequired == mi.is_required )
-                        {                          
-                            errItem.Remove("科目名稱");           
+                        if (ci.course_code == "" && ci.SubjectName == mi.subject_name && ci.IsRequired == mi.is_required)
+                        {
+                            errItem.Remove("科目名稱");
                             errItem.Remove("必修選修");
                             break;
                         }
@@ -148,7 +225,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                     foreach (MOECourseCodeInfo mi in MOECoursedDict[ci.GroupCode])
                     {
                         if (ci.course_code == "" && ci.SubjectName == mi.subject_name && ci.RequireBy == mi.require_by)
-                        {                           
+                        {
                             errItem.Remove("科目名稱");
                             errItem.Remove("部定校訂");
                             break;
@@ -157,8 +234,8 @@ namespace SHCourseGroupCodeAdmin.DataCheck
 
                     foreach (MOECourseCodeInfo mi in MOECoursedDict[ci.GroupCode])
                     {
-                        if (ci.course_code == "" && ci.SubjectName == mi.subject_name )
-                        {                           
+                        if (ci.course_code == "" && ci.SubjectName == mi.subject_name)
+                        {
                             errItem.Remove("科目名稱");
                             break;
                         }
@@ -222,6 +299,38 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             for (int co = 0; co <= wst2.Cells.MaxDataColumn; co++)
             {
                 _ColIdxDict.Add(wst2.Cells[0, co].StringValue, co);
+            }
+
+            rowIdx = 1;
+            // 產生資料，先過濾重複資料
+            Dictionary<string, GPCourseInfo> tmpCourseInfoDcit = new Dictionary<string, GPCourseInfo>();
+
+            foreach (string id in GPlanInfoDict.Keys)
+            {
+                GPlanInfo data = GPlanInfoDict[id];
+
+                foreach (GPCourseInfo gpCo in data.CourseInfoList)
+                {
+                    string key = gpCo.GPName + "_" + gpCo.tmpKey + "_" + gpCo.CourseCode;
+                    if (!tmpCourseInfoDcit.ContainsKey(key))
+                        tmpCourseInfoDcit.Add(key, gpCo);
+                }
+            }
+
+            // 產生到 Excel
+            foreach (string key in tmpCourseInfoDcit.Keys)
+            {
+                GPCourseInfo gpCo = tmpCourseInfoDcit[key];
+                wst2.Cells[rowIdx, GetColIndex("課程規劃名稱")].PutValue(gpCo.GPName);
+                wst2.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(gpCo.SubjectName);
+                wst2.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(gpCo.RequiredBy);
+                wst2.Cells[rowIdx, GetColIndex("必修選修")].PutValue(gpCo.Required);
+                wst2.Cells[rowIdx, GetColIndex("學分")].PutValue(gpCo.Credit);
+                wst2.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(gpCo.GroupCode);
+                wst2.Cells[rowIdx, GetColIndex("群科班名稱")].PutValue(gpCo.GroupName);
+                wst2.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(gpCo.CourseCode);
+                wst2.Cells[rowIdx, GetColIndex("說明")].PutValue(gpCo.Memo);
+                rowIdx++;
             }
 
             wst2.AutoFitColumns();
