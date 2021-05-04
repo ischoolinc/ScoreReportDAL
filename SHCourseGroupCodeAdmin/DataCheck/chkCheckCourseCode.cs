@@ -132,6 +132,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                                     gpCo.GroupCode = md.group_code;
                                     gpCo.CourseCode = md.course_code;
                                     gpCo.GroupName = da.GetGroupNameByCode(gpCo.GroupCode);
+                                    gpCo.credit_period = md.credit_period;
                                   
                                     errItem.Remove("科目名稱");
                                     errItem.Remove("部定校訂");
@@ -329,6 +330,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                 wst2.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(gpCo.GroupCode);
                 wst2.Cells[rowIdx, GetColIndex("群科班名稱")].PutValue(gpCo.GroupName);
                 wst2.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(gpCo.CourseCode);
+                wst2.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(gpCo.credit_period);
                 wst2.Cells[rowIdx, GetColIndex("說明")].PutValue(gpCo.Memo);
                 rowIdx++;
             }

@@ -61,6 +61,11 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string CourseCode { get; set; }
 
         /// <summary>
+        /// 授課學期學分_節數
+        /// </summary>
+        public string credit_period { get; set; }
+
+        /// <summary>
         /// 說明
         /// </summary>
         public string Memo { get; set; }
