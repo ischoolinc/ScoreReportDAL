@@ -114,6 +114,12 @@
       <DependentUpon>frmUploadCourseCode.cs</DependentUpon>
     </Compile>
     <Compile Include="Report\rptMOECourseCode.cs" />
+    <Compile Include="UIForm\frmCreateClassGPlan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlan.Designer.cs">
+      <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Report\frmUploadCourseCode.resx">
       <DependentUpon>frmUploadCourseCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateClassGPlan.resx">
+      <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

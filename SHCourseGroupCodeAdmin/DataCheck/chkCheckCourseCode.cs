@@ -75,8 +75,10 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             List<string> errMesList = new List<string>();
             List<string> errItem = new List<string>();
 
+            // 取得學分對照表
+            Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
-
+            // 課程規劃表比對
             foreach (string id in GPlanInfoDict.Keys)
             {
                 GPlanInfo data = GPlanInfoDict[id];
@@ -183,11 +185,8 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                     }
                 }
             }
-
-
-
-
-            // 資料比對
+            
+            // 已開修課資料比對
             foreach (CourseInfoChk ci in _CourseInfoChkList)
             {
                 errMesList.Clear();
@@ -195,6 +194,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                 errItem.Add("科目名稱");
                 errItem.Add("部定校訂");
                 errItem.Add("必修選修");
+                errItem.Add("學分數");
 
                 // 比對群組代碼
                 if (MOECoursedDict.ContainsKey(ci.GroupCode))
@@ -206,6 +206,11 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                         {
                             ci.course_code = mi.course_code;
                             ci.credit_period = mi.credit_period;
+                            ci.entry_year = mi.entry_year;
+                            if (ci.CheckCreditPass(mappingTable))
+                            {
+                                errItem.Remove("學分數");
+                            }
                             errItem.Remove("科目名稱");
                             errItem.Remove("部定校訂");
                             errItem.Remove("必修選修");
@@ -245,7 +250,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
 
                     if (errItem.Count > 0)
                     {
-                        errMesList.Add(string.Join("、", errItem.ToArray()) + " 無法對照");
+                        errMesList.Add(string.Join("、", errItem.ToArray())+ " 不同。");
                     }
 
                 }

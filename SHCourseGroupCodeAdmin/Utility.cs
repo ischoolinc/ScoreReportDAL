@@ -68,5 +68,53 @@ namespace SHCourseGroupCodeAdmin
                 }
             }
         }
+
+
+        /// <summary>
+        /// 取得API學分對照
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetCreditMappingTable()
+        {
+            /*
+             學分數檢查規則：
+代碼	說明
+0	該學期無授課
+Z	該學期有授課，但為 0 學分
+n	該學期有授課之學分數(節數)
+A	1學分
+B	2學分
+C	3學分
+D	4學分
+E	5學分
+F	6學分
+G	7學分
+H	8學分
+I	9學分
+R	10學分
+S	11學分
+T	12學分
+             */
+
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            value.Add("0", "");
+            value.Add("Z", "0");
+            value.Add("n", "0");
+            value.Add("A", "1");
+            value.Add("B", "2");
+            value.Add("C", "3");
+            value.Add("D", "4");
+            value.Add("E", "5");
+            value.Add("F", "6");
+            value.Add("G", "7");
+            value.Add("H", "8");
+            value.Add("I", "9");
+            value.Add("R", "10");
+            value.Add("S", "11");
+            value.Add("T", "12");
+
+            return value;
+        }
+
     }
 }

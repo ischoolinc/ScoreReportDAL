@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using FISCA.Data;
+using System.Xml.Linq;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -13,6 +14,7 @@ namespace SHCourseGroupCodeAdmin.DAO
     {
         Dictionary<string, string> MOEGroupCodeDict = new Dictionary<string, string>();
         Dictionary<string, string> MOEGroupNameDict = new Dictionary<string, string>();
+        Dictionary<string, string> DefaultGroupCodeGPNameDict = new Dictionary<string, string>();
 
         /// <summary>
         /// 取得課程代碼大表資料
@@ -68,6 +70,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
+
 
         /// <summary>
         /// 檢查班級群科班設定
@@ -338,6 +341,107 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return value;
         }
+
+        /// <summary>
+        /// 透過群組代碼取得課程代碼大表資料
+        /// </summary>
+        /// <param name="GroupCode"></param>
+        /// <returns></returns>
+        public XElement CourseCodeConvertToGPlanByGroupCode(string GroupCode)
+        {
+            XElement GPlanXml = new XElement("GraduationPlan");
+
+            // 讀取群科班資料
+
+
+            return GPlanXml;
+        }
+
+        /// <summary>
+        /// 透過群組代碼產生課程規劃表XML 並寫入資料庫
+        /// </summary>
+        /// <param name="GroupCode"></param>
+        /// <returns></returns>
+        public string WriteToGPlanByGroupCode(string GroupCode)
+        {
+            string value = "";
+
+            return value;
+        }
+
+        /// <summary>
+        /// 檢查課程規劃表是否已存在
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool CheckHasGPlan(string name)
+        {
+            bool value = false;
+            try
+            {
+                string query = "SELECT name FROM graduation_plan WHERE name = '" + name + "';";
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                if (dt != null && dt.Rows.Count > 0)
+                    value = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// 載入預設課程規劃表名稱
+        /// </summary>
+        public void LoadDefaultGroupCodeGPNameDict()
+        {
+            DefaultGroupCodeGPNameDict.Clear();
+
+            try
+            {
+                string query = " " +
+                    "SELECT DISTINCT group_code,(entry_year||  " +
+" (CASE WHEN length(subject_type)>0 THEN ''||subject_type END) ||  " +
+" (CASE WHEN length(class_type)>0 THEN ''||class_type END)  " +
+" ) AS gp_name FROM $moe.subjectcode ORDER BY gp_name; ";
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string code = dr["group_code"] + "";
+                    string name = dr["gp_name"] + "";
+                    if (!DefaultGroupCodeGPNameDict.ContainsKey(code))
+                        DefaultGroupCodeGPNameDict.Add(code, name);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 透過群科班名稱取得課程規劃表預設名稱
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string GetGPlanNameByGroupName(string name)
+        {
+            string value = "";
+            if (DefaultGroupCodeGPNameDict.Count == 0)
+                LoadDefaultGroupCodeGPNameDict();
+
+            string code = GetGroupCodeByName(name);
+
+            if (DefaultGroupCodeGPNameDict.ContainsKey(code))
+                value = DefaultGroupCodeGPNameDict[code];
+
+            return value;
+        }
+
 
 
     }

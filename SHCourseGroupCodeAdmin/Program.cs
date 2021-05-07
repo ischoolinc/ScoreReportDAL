@@ -10,6 +10,7 @@ using FISCA;
 using FISCA.Presentation;
 using SHCourseGroupCodeAdmin.Report;
 using SHCourseGroupCodeAdmin.DataCheck;
+using SHCourseGroupCodeAdmin.UIForm;
 
 namespace SHCourseGroupCodeAdmin
 {
@@ -77,6 +78,19 @@ namespace SHCourseGroupCodeAdmin
                 chkCheckCourseCode fCode = new chkCheckCourseCode();
                 fCode.ShowDialog();
             };
+
+            Catalog ribbon6 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon6.Add(new RibbonFeature("C6063F22-FF7C-4AB5-82F8-4FC82B205B1A", " 建立班級課程規劃表"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"][" 建立班級課程規劃表"].Enable = UserAcl.Current["C6063F22-FF7C-4AB5-82F8-4FC82B205B1A"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"][" 建立班級課程規劃表"].Click += delegate
+            {
+                frmCreateClassGPlan ccg = new frmCreateClassGPlan();
+                ccg.ShowDialog();
+            };
+
+
         }
     }
 }
