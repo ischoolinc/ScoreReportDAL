@@ -93,11 +93,19 @@
     <Compile Include="DAO\GPCourseInfo.cs" />
     <Compile Include="DAO\GPlanInfo.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
+    <Compile Include="DAO\StudentSubjectInfoChk.cs" />
+    <Compile Include="DAO\SubjectInfoChk.cs" />
     <Compile Include="DataCheck\chkCheckCourseCode.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DataCheck\chkCheckCourseCode.Designer.cs">
       <DependentUpon>chkCheckCourseCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataCheck\chkStudSubjectScoreCourseCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataCheck\chkStudSubjectScoreCourseCode.Designer.cs">
+      <DependentUpon>chkStudSubjectScoreCourseCode.cs</DependentUpon>
     </Compile>
     <Compile Include="DataCheck\rptCheckClassGroupCode.cs" />
     <Compile Include="Program.cs" />
@@ -123,6 +131,7 @@
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Template\學期科目成績課程代碼檢查樣版.xlsx" />
     <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\課程代碼表樣版.xlsx" />
     <None Include="Template\課程開課檢查樣版.xlsx" />
@@ -155,6 +164,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DataCheck\chkCheckCourseCode.resx">
       <DependentUpon>chkCheckCourseCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataCheck\chkStudSubjectScoreCourseCode.resx">
+      <DependentUpon>chkStudSubjectScoreCourseCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -14,7 +14,8 @@ namespace SHCourseGroupCodeAdmin.DAO
     {
         Dictionary<string, string> MOEGroupCodeDict = new Dictionary<string, string>();
         Dictionary<string, string> MOEGroupNameDict = new Dictionary<string, string>();
-        Dictionary<string, string> DefaultGroupCodeGPNameDict = new Dictionary<string, string>();
+        Dictionary<string, string> MOEGPlanDict = new Dictionary<string, string>();
+        Dictionary<string, string> MOEGPlanGroupNameDict = new Dictionary<string, string>();
 
         /// <summary>
         /// 取得課程代碼大表資料
@@ -123,6 +124,8 @@ namespace SHCourseGroupCodeAdmin.DAO
         {
             MOEGroupCodeDict.Clear();
             MOEGroupNameDict.Clear();
+            MOEGPlanDict.Clear();
+            MOEGPlanGroupNameDict.Clear();
 
             QueryHelper qh = new QueryHelper();
             string query = "" +
@@ -131,7 +134,10 @@ namespace SHCourseGroupCodeAdmin.DAO
 " (CASE WHEN length(group_type)>0 THEN '_'||group_type END) || " +
 " (CASE WHEN length(subject_type)>0 THEN '_'||subject_type END) || " +
 " (CASE WHEN length(class_type)>0 THEN '_'||class_type END) " +
-" ) AS group_name FROM $moe.subjectcode ORDER BY group_name; ";
+" ) AS group_name" +
+" ,(entry_year||(CASE WHEN length(subject_type)>0 THEN ''||subject_type END) || " +
+" (CASE WHEN length(class_type) > 0 THEN '' || class_type END)) AS gplan_name " +
+" FROM $moe.subjectcode ORDER BY group_name; ";
 
             DataTable dt = qh.Select(query);
 
@@ -139,12 +145,19 @@ namespace SHCourseGroupCodeAdmin.DAO
             {
                 string code = dr["group_code"] + "";
                 string name = dr["group_name"] + "";
+                string gpName = dr["gplan_name"] + "";
 
                 if (!MOEGroupCodeDict.ContainsKey(code))
                     MOEGroupCodeDict.Add(code, name);
 
                 if (!MOEGroupNameDict.ContainsKey(name))
                     MOEGroupNameDict.Add(name, code);
+
+                if (!MOEGPlanDict.ContainsKey(code))
+                    MOEGPlanDict.Add(code, gpName);
+
+                if (!MOEGPlanGroupNameDict.ContainsKey(name))
+                    MOEGPlanGroupNameDict.Add(name, gpName);
             }
         }
 
@@ -169,6 +182,32 @@ namespace SHCourseGroupCodeAdmin.DAO
                 code = MOEGroupNameDict[name];
 
             return code;
+        }
+
+        /// <summary>
+        ///  透過群組代碼取得課程規劃表預設名稱
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public string GetGPlanNameByCode(string code)
+        {
+            string name = "";
+            if (MOEGPlanDict.ContainsKey(code))
+                name = MOEGPlanDict[code];
+            return name;
+        }
+
+        /// <summary>
+        /// 透過群組名稱取得課程規劃表預設名稱
+        /// </summary>
+        /// <param name="Gname"></param>
+        /// <returns></returns>
+        public string GetGPlanNameByGroupName(string Gname)
+        {
+            string name = "";
+            if (MOEGPlanGroupNameDict.ContainsKey(Gname))
+                name = MOEGPlanGroupNameDict[Gname];
+            return name;
         }
 
         /// <summary>
@@ -349,13 +388,164 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// <returns></returns>
         public XElement CourseCodeConvertToGPlanByGroupCode(string GroupCode)
         {
+
+            // 透過群組代碼取得課程代碼資料，轉換 XML 表內容。
+
+            List<MOECourseCodeInfo> MOECourseCodeInfoList = GetCourseGroupCodeListByGroupCode(GroupCode);
+
             XElement GPlanXml = new XElement("GraduationPlan");
 
-            // 讀取群科班資料
+            /*
+             	<Subject Category="" Credit="4" Domain="語文" Entry="學業" GradeYear="1" Level="1" FullName="國語文 I" NotIncludedInCalc="False" NotIncludedInCredit="False" Required="必修" RequiredBy="部訂" Semester="1" SubjectName="國語文" 課程代碼="109041305H11101B1010101" 課程類別="部定必修" 開課方式="原班級" 科目屬性="一般科目" 領域名稱="語文" 課程名稱="國語文" 學分="4" 授課學期學分="444440">
+		<Grouping RowIndex="1" startLevel="1"/>
+	</Subject>
+             
+             */
 
+            int RowIndex = 1, startLevel = 1;
+
+            // 課程規劃表預設取資料裡的入學年，如果沒有在透過課程群組代碼取前3
+            if (MOECourseCodeInfoList.Count > 0)
+            {
+                GPlanXml.SetAttributeValue("SchoolYear", MOECourseCodeInfoList[0].entry_year);
+            }
+            else
+            {
+                if (GroupCode.Length > 3)
+                    GPlanXml.SetAttributeValue("SchoolYear", GroupCode.Substring(0, 3));
+            }
+
+            Dictionary<string, string> CreditMappingTableDict = Utility.GetCreditMappingTable();
+
+            // 讀取群科班資料
+            foreach (MOECourseCodeInfo data in MOECourseCodeInfoList)
+            {
+                // 因為將來要將級別概念移除，開始級別都是1
+
+                // 判斷開始級別，解析 credit_period
+                char[] cp = data.credit_period.ToArray();
+
+                int idx = 1;
+                string strGearYear = "", strSemester = "";
+                foreach (char c in cp)
+                {
+                    string credit = c + "";
+
+                    if (idx == 1)
+                    {
+                        strGearYear = "1";
+                        strSemester = "1";
+                    }
+                    else if (idx == 2)
+                    {
+                        strGearYear = "1";
+                        strSemester = "2";
+                    }
+                    else if (idx == 3)
+                    {
+                        strGearYear = "2";
+                        strSemester = "1";
+                    }
+                    else if (idx == 4)
+                    {
+                        strGearYear = "2";
+                        strSemester = "2";
+                    }
+                    else if (idx == 5)
+                    {
+                        strGearYear = "3";
+                        strSemester = "1";
+                    }
+                    else if (idx == 6)
+                    {
+                        strGearYear = "3";
+                        strSemester = "2";
+                    }
+                    else
+                    {
+
+                    }
+
+                    // 學分格式0 不放入
+                    if (credit == "0")
+                        continue;
+
+                    XElement subjElm = new XElement("Subject");
+                    subjElm.SetAttributeValue("Category", "");
+                    if (CreditMappingTableDict.ContainsKey(credit))
+                    {
+                        subjElm.SetAttributeValue("Credit", CreditMappingTableDict[credit]);
+                    }
+                    else
+                    {
+                        subjElm.SetAttributeValue("Credit", credit);
+                    }
+
+                    subjElm.SetAttributeValue("Domain", "");
+                    subjElm.SetAttributeValue("Entry", "學業");
+                    subjElm.SetAttributeValue("GradeYear", strGearYear);
+                    subjElm.SetAttributeValue("Level", idx);
+                    subjElm.SetAttributeValue("FullName", SubjFullName(data.subject_name,idx));
+                    subjElm.SetAttributeValue("NotIncludedInCalc", "False");
+                    subjElm.SetAttributeValue("NotIncludedInCredit", "False");
+                    subjElm.SetAttributeValue("Required", data.is_required);
+                    if (data.require_by == "部定")
+                        subjElm.SetAttributeValue("RequiredBy", "部訂");
+                    else
+                        subjElm.SetAttributeValue("RequiredBy", data.require_by);
+
+                    subjElm.SetAttributeValue("Semester", strSemester);
+                    subjElm.SetAttributeValue("SubjectName", data.subject_name);
+                    subjElm.SetAttributeValue("課程代碼", data.course_code);
+                    subjElm.SetAttributeValue("課程類別", data.course_type);
+                    subjElm.SetAttributeValue("開課方式", "");
+                    subjElm.SetAttributeValue("科目屬性", "");
+                    subjElm.SetAttributeValue("領域名稱", "");
+                    subjElm.SetAttributeValue("課程名稱", data.subject_name);
+                    subjElm.SetAttributeValue("學分", credit);
+                    subjElm.SetAttributeValue("授課學期學分", data.credit_period);
+
+                    // row
+                    XElement subjGroupElm = new XElement("Grouping");
+                    subjGroupElm.SetAttributeValue("RowIndex", RowIndex);
+                    subjGroupElm.SetAttributeValue("startLevel", startLevel);
+                    subjElm.Add(subjGroupElm);
+
+                    GPlanXml.Add(subjElm);
+                    idx++;
+                }
+                RowIndex++;
+            }
 
             return GPlanXml;
         }
+
+        private string SubjFullName(string SubjectName, int level)
+        {
+            string lev = "";
+            if (level == 1)
+                lev = " I";
+
+            if (level == 2)
+                lev = " II";
+
+            if (level == 3)
+                lev = " III";
+
+            if (level == 4)
+                lev = " IV";
+
+            if (level == 5)
+                lev = " V";
+
+            if (level == 6)
+                lev = " VI";
+
+            string value = SubjectName + lev;
+
+            return value;
+        }
+
 
         /// <summary>
         /// 透過群組代碼產生課程規劃表XML 並寫入資料庫
@@ -365,12 +555,34 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string WriteToGPlanByGroupCode(string GroupCode)
         {
             string value = "";
+            // 課程規劃表XML
+            try
+            {
+                string gpContent = CourseCodeConvertToGPlanByGroupCode(GroupCode).ToString();
+                //  Console.WriteLine(gpContent);
 
+                // 取得課程規劃表名稱
+                string GPlanName = GetGPlanNameByCode(GroupCode);
+
+                string insertQry = "INSERT INTO graduation_plan(name,content) VALUES('" + GPlanName + "','" + gpContent + "') RETURNING id;";
+
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(insertQry);
+
+            }
+            catch (Exception ex)
+            {
+                value = ex.Message;
+                return value;
+            }
             return value;
         }
 
         /// <summary>
         /// 檢查課程規劃表是否已存在
+        /// 
+        /// 
+        /// 
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -393,56 +605,181 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
-        /// <summary>
-        /// 載入預設課程規劃表名稱
-        /// </summary>
-        public void LoadDefaultGroupCodeGPNameDict()
-        {
-            DefaultGroupCodeGPNameDict.Clear();
 
+
+        public List<MOECourseCodeInfo> GetCourseGroupCodeListByGroupCode(string GroupCode)
+        {
+            List<MOECourseCodeInfo> value = new List<MOECourseCodeInfo>();
             try
             {
-                string query = " " +
-                    "SELECT DISTINCT group_code,(entry_year||  " +
-" (CASE WHEN length(subject_type)>0 THEN ''||subject_type END) ||  " +
-" (CASE WHEN length(class_type)>0 THEN ''||class_type END)  " +
-" ) AS gp_name FROM $moe.subjectcode ORDER BY gp_name; ";
+                string query = "" +
+                   " SELECT  " +
+" last_update AS 最後更新日期 " +
+" , group_code AS 群組代碼 " +
+" , course_code AS 課程代碼 " +
+" , subject_name AS 科目名稱 " +
+" , entry_year AS 入學年 " +
+" , (CASE require_by WHEN '部訂' THEN '部定' ELSE require_by END) AS 部定校訂 " +
+" , is_required AS 必修選修 " +
+" , course_type AS 課程類型 " +
+" , group_type AS 群別 " +
+" , subject_type AS 科別 " +
+" , class_type AS 班群 " +
+" , credit_period AS 授課學期學分_節數 " +
+"  FROM " +
+"   $moe.subjectcode " +
+"   WHERE group_code = '" + GroupCode + "'  " +
+"   ORDER BY course_code; ";
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    string code = dr["group_code"] + "";
-                    string name = dr["gp_name"] + "";
-                    if (!DefaultGroupCodeGPNameDict.ContainsKey(code))
-                        DefaultGroupCodeGPNameDict.Add(code, name);
+                    MOECourseCodeInfo data = new MOECourseCodeInfo();
+                    data.group_code = dr["群組代碼"] + "";
+                    data.course_code = dr["課程代碼"] + "";
+                    data.subject_name = dr["科目名稱"] + "";
+                    data.entry_year = dr["入學年"] + "";
+                    data.require_by = dr["部定校訂"] + "";
+                    data.is_required = dr["必修選修"] + "";
+                    data.course_type = dr["課程類型"] + "";
+                    data.group_type = dr["群別"] + "";
+                    data.subject_type = dr["科別"] + "";
+                    data.class_type = dr["班群"] + "";
+                    data.credit_period = dr["授課學期學分_節數"] + "";
+
+                    value.Add(data);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-        }
-
-        /// <summary>
-        /// 透過群科班名稱取得課程規劃表預設名稱
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public string GetGPlanNameByGroupName(string name)
-        {
-            string value = "";
-            if (DefaultGroupCodeGPNameDict.Count == 0)
-                LoadDefaultGroupCodeGPNameDict();
-
-            string code = GetGroupCodeByName(name);
-
-            if (DefaultGroupCodeGPNameDict.ContainsKey(code))
-                value = DefaultGroupCodeGPNameDict[code];
 
             return value;
         }
 
+        /// <summary>
+        /// 透過年級取得學生學期科目成績比對資訊
+        /// </summary>
+        /// <param name="GradeYear"></param>
+        /// <returns></returns>
+        public List<StudentSubjectInfoChk> GetStudentSubjectInfoListByGradeYear(int GradeYear)
+        {
+            List<StudentSubjectInfoChk> value = new List<StudentSubjectInfoChk>();
+            Dictionary<string, StudentSubjectInfoChk> studDict = new Dictionary<string, StudentSubjectInfoChk>();
+            try
+            {
+                string query = "" +
+               " WITH student_data AS ( " +
+" 	SELECT " +
+" 	student.id AS student_id " +
+" 	,student_number " +
+" 	,class_name " +
+" 	,student.seat_no " +
+" 	,student.name AS student_name " +
+" 	, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
+" FROM student  " +
+" INNER JOIN class ON student.ref_class_id = class.id  " +
+" 	WHERE student.status IN(1,2) AND class.grade_year  IN(" + GradeYear + ")" +
+" ),sems_score_data AS( " +
+" SELECT " +
+" 	sems_subj_score_ext.ref_student_id " +
+" 	, sems_subj_score_ext.grade_year " +
+" 	, sems_subj_score_ext.semester " +
+" 	, sems_subj_score_ext.school_year	 " +
+" 	, array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目 " +
+" 	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別 " +
+" 	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	 " +
+" 	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修 " +
+" 	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂	 " +
+" FROM ( " +
+" 		SELECT  " +
+" 			sems_subj_score.* " +
+" 			, 	unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele " +
+" 		FROM  " +
+" 			sems_subj_score  " +
+" 			INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id " +
+" 	) as sems_subj_score_ext  " +
+" ) " +
+" SELECT  " +
+" student_id " +
+" ,student_number " +
+" ,class_name " +
+" ,seat_no " +
+" ,student_name " +
+" ,gdc_code " +
+" ,school_year " +
+" ,semester " +
+" ,grade_year " +
+" ,科目 " +
+" ,科目級別 " +
+" ,學分數 " +
+" ,必選修 " +
+" ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS 部定校訂 " +
+"  FROM student_data INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id; ";
 
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    // 學生系統編號
+                    string sid = dr["student_id"] + "";
+                    if (!studDict.ContainsKey(sid))
+                    {
+                        StudentSubjectInfoChk ssi = new StudentSubjectInfoChk();
+                        ssi.StudentID = sid;
+                        // 學號
+                        ssi.StudentNumber = dr["student_number"] + "";
+
+                        // 班級
+                        ssi.ClassName = dr["class_name"] + "";
+
+                        // 座號
+                        ssi.SeatNo = dr["seat_no"] + "";
+
+                        // 姓名
+                        ssi.StudentName = dr["student_name"] + "";
+
+                        // gdc_code
+                        ssi.gdc_code = dr["gdc_code"] + "";
+
+                        studDict.Add(sid, ssi);
+                    }
+
+                    SubjectInfoChk SubjInfo = new SubjectInfoChk();
+                    // 學年度
+                    SubjInfo.SchoolYear = dr["school_year"] + "";
+                    // 學期
+                    SubjInfo.Semester = dr["semester"] + "";
+                    // 科目名稱
+                    SubjInfo.SubjectName = dr["科目"] + "";
+                    // 科目級別
+                    SubjInfo.SubjectLevel = dr["科目級別"] + "";
+
+                    // 部定校訂
+                    SubjInfo.RequireBy = dr["部定校訂"] + "";
+
+                    // 必修選修
+                    SubjInfo.IsRequired = dr["必選修"] + "";
+
+                    // 學分數
+                    SubjInfo.Credit = dr["學分數"] + "";
+
+                    SubjInfo.credit_period = "";
+
+                    studDict[sid].SubjectInfoChkList.Add(SubjInfo);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            value = studDict.Values.ToList();
+
+            return value;
+        }
 
     }
 }
