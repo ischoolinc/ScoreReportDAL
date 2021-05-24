@@ -417,6 +417,9 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             Dictionary<string, string> CreditMappingTableDict = Utility.GetCreditMappingTable();
 
+            Dictionary<string, int> chkCourseCodeCount = new Dictionary<string, int>();
+
+
             // 讀取群科班資料
             foreach (MOECourseCodeInfo data in MOECourseCodeInfoList)
             {
@@ -468,7 +471,11 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     // 學分格式0 不放入
                     if (credit == "0")
+                    {
+                        idx++;
                         continue;
+                    }
+
 
                     XElement subjElm = new XElement("Subject");
                     subjElm.SetAttributeValue("Category", "");
@@ -485,7 +492,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     subjElm.SetAttributeValue("Entry", "學業");
                     subjElm.SetAttributeValue("GradeYear", strGearYear);
                     subjElm.SetAttributeValue("Level", idx);
-                    subjElm.SetAttributeValue("FullName", SubjFullName(data.subject_name,idx));
+                    subjElm.SetAttributeValue("FullName", SubjFullName(data.subject_name, idx));
                     subjElm.SetAttributeValue("NotIncludedInCalc", "False");
                     subjElm.SetAttributeValue("NotIncludedInCredit", "False");
                     subjElm.SetAttributeValue("Required", data.is_required);
@@ -497,6 +504,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                     subjElm.SetAttributeValue("Semester", strSemester);
                     subjElm.SetAttributeValue("SubjectName", data.subject_name);
                     subjElm.SetAttributeValue("課程代碼", data.course_code);
+
+                    if (!chkCourseCodeCount.ContainsKey(data.course_code))
+                        chkCourseCodeCount.Add(data.course_code, 0);
+
+                    chkCourseCodeCount[data.course_code]++;
+
                     subjElm.SetAttributeValue("課程類別", data.course_type);
                     subjElm.SetAttributeValue("開課方式", "");
                     subjElm.SetAttributeValue("科目屬性", "");
@@ -516,6 +529,18 @@ namespace SHCourseGroupCodeAdmin.DAO
                 }
                 RowIndex++;
             }
+
+            //foreach (XElement elm in GPlanXml.Elements("Subject"))
+            //{
+            //    string code = elm.Attribute("課程代碼").Value;
+
+            //    if (chkCourseCodeCount.ContainsKey(code) && chkCourseCodeCount[code] == 1)
+            //    {
+            //        elm.SetAttributeValue("Level", "1");
+            //    }
+
+            //}
+
 
             return GPlanXml;
         }

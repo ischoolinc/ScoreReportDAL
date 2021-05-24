@@ -94,6 +94,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                         subj.course_code = MOECoursedMapDict[key].course_code;
                         subj.GroupCode = stud.gdc_code;
                         subj.credit_period = MOECoursedMapDict[key].credit_period;
+                        subj.entry_year = MOECoursedMapDict[key].entry_year;
                     }
                 }
 
@@ -104,72 +105,99 @@ namespace SHCourseGroupCodeAdmin.DataCheck
 
             List<string> errMesList = new List<string>();
             List<string> errItem = new List<string>();
+            List<string> errDesc = new List<string>();
+
 
             // 處理沒有比對到原因
             foreach (StudentSubjectInfoChk stud in _StudentSubjectInfoChkList)
             {
+
                 foreach (SubjectInfoChk subj in stud.SubjectInfoChkList)
                 {
-                    if (string.IsNullOrEmpty(subj.course_code))
+                    //if (string.IsNullOrEmpty(subj.course_code))
+                    //{
+                    errMesList.Clear();
+                    errItem.Clear();
+                    errDesc.Clear();
+                    errItem.Add("科目名稱");
+                    errItem.Add("部定校訂");
+                    errItem.Add("必修選修");
+                    errItem.Add("學分數");
+                    subj.Memo = "";
+
+                    if (CourseGroupCodeDict.ContainsKey(stud.gdc_code))
                     {
-                        errMesList.Clear();
-                        errItem.Clear();
-                        errItem.Add("科目名稱");
-                        errItem.Add("部定校訂");
-                        errItem.Add("必修選修");
-                        errItem.Add("學分數");
-                        subj.Memo = "";
 
-                        if (CourseGroupCodeDict.ContainsKey(stud.gdc_code))
+                        if (subj.CheckCreditPass(mappingTable))
                         {
+                            errItem.Remove("學分數");
+                        }
 
-                            if (subj.CheckCreditPass(mappingTable))
+                        foreach (MOECourseCodeInfo mm in CourseGroupCodeDict[stud.gdc_code])
+                        {
+                            if (subj.SubjectName == mm.subject_name && subj.IsRequired == mm.is_required)
                             {
-                                errItem.Remove("學分數");
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("必修選修");
+                                break;
                             }
+                        }
 
-                            foreach (MOECourseCodeInfo mm in CourseGroupCodeDict[stud.gdc_code])
+                        foreach (MOECourseCodeInfo mm in CourseGroupCodeDict[stud.gdc_code])
+                        {
+                            if (subj.SubjectName == mm.subject_name && subj.RequireBy == mm.require_by)
                             {
-                                if (subj.SubjectName == mm.subject_name && subj.IsRequired == mm.is_required)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    errItem.Remove("必修選修");
-                                    break;
-                                }
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("部定校訂");
+                                break;
                             }
+                        }
 
-                            foreach (MOECourseCodeInfo mm in CourseGroupCodeDict[stud.gdc_code])
+                        foreach (MOECourseCodeInfo mm in CourseGroupCodeDict[stud.gdc_code])
+                        {
+                            if (subj.SubjectName == mm.subject_name)
                             {
-                                if (subj.SubjectName == mm.subject_name && subj.RequireBy == mm.require_by)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    errItem.Remove("部定校訂");
-                                    break;
-                                }
+                                errItem.Remove("科目名稱");
+                                break;
                             }
+                        }
+                    }
+                    else
+                    {
+                        errMesList.Add("群科班代碼無法對照");
+                    }
 
-                            foreach (MOECourseCodeInfo mm in CourseGroupCodeDict[stud.gdc_code])
-                            {
-                                if (subj.SubjectName == mm.subject_name)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    break;
-                                }
-                            }
+
+                    if (errItem.Count > 0)
+                    {
+                        if (errItem.Contains("科目名稱"))
+                        {
+                            errDesc.Add("科目名稱");
                         }
                         else
                         {
-                            errMesList.Add("群科班代碼無法對照");
+                            if (errItem.Contains("部定校訂"))
+                            {
+                                errDesc.Add("部定校訂");
+                            }
+
+                            if (errItem.Contains("必修選修"))
+                            {
+                                errDesc.Add("必修選修");
+                            }
+
+                            if (errItem.Contains("學分數"))
+                            {
+                                if (!string.IsNullOrWhiteSpace(subj.credit_period))
+                                    errDesc.Add("學分數");
+                            }
                         }
 
-
-                        if (errItem.Count > 0)
-                        {
-                            errMesList.Add(string.Join("、", errItem.ToArray()) + " 無法對照");
-                        }
-
-                        subj.Memo = string.Join(",", errMesList.ToArray());
+                        errMesList.Add(string.Join("、", errDesc.ToArray()) + " 不同");
                     }
+
+                    subj.Memo = string.Join(",", errMesList.ToArray());
+                    //}
                 }
             }
 

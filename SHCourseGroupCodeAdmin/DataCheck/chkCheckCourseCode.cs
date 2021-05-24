@@ -74,6 +74,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
             Dictionary<string, MOECourseCodeInfo> tmpMoeDict = new Dictionary<string, MOECourseCodeInfo>();
             List<string> errMesList = new List<string>();
             List<string> errItem = new List<string>();
+            List<string> errDesc = new List<string>();
 
             // 取得學分對照表
             Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
@@ -89,6 +90,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                     foreach (string gdc_code in CPIdGdcCodeDict[data.ID])
                     {
                         errMesList.Clear();
+                        errDesc.Clear();
                         bool hasGdcCode = false;
 
                         // 取得課程代碼大表
@@ -135,7 +137,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                                     gpCo.CourseCode = md.course_code;
                                     gpCo.GroupName = da.GetGroupNameByCode(gpCo.GroupCode);
                                     gpCo.credit_period = md.credit_period;
-                                  
+
                                     errItem.Remove("科目名稱");
                                     errItem.Remove("部定校訂");
                                     errItem.Remove("必修選修");
@@ -175,7 +177,25 @@ namespace SHCourseGroupCodeAdmin.DataCheck
 
                                 if (errItem.Count > 0)
                                 {
-                                    errMesList.Add(string.Join("、", errItem.ToArray()) + " 無法對照");
+
+                                    if (errItem.Contains("科目名稱"))
+                                    {
+                                        errDesc.Add("科目名稱");
+                                    }
+                                    else
+                                    {
+                                        if (errItem.Contains("部定校訂"))
+                                        {
+                                            errDesc.Add("部定校訂");
+                                        }
+
+                                        if (errItem.Contains("必修選修"))
+                                        {
+                                            errDesc.Add("必修選修");
+                                        }
+                                    }
+
+                                    errMesList.Add(string.Join("、", errDesc.ToArray()) + " 不同");
                                 }
                                 if (gpCo.CourseCode == "")
                                     gpCo.Memo = string.Join(",", errMesList.ToArray());
@@ -185,12 +205,13 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                     }
                 }
             }
-            
+
             // 已開修課資料比對
             foreach (CourseInfoChk ci in _CourseInfoChkList)
             {
                 errMesList.Clear();
                 errItem.Clear();
+                errDesc.Clear();
                 errItem.Add("科目名稱");
                 errItem.Add("部定校訂");
                 errItem.Add("必修選修");
@@ -250,7 +271,30 @@ namespace SHCourseGroupCodeAdmin.DataCheck
 
                     if (errItem.Count > 0)
                     {
-                        errMesList.Add(string.Join("、", errItem.ToArray())+ " 不同。");
+                        if (errItem.Contains("科目名稱"))
+                        {
+                            errDesc.Add("科目名稱");
+                        }
+                        else
+                        {
+                            if (errItem.Contains("部定校訂"))
+                            {
+                                errDesc.Add("部定校訂");
+                            }
+
+                            if (errItem.Contains("必修選修"))
+                            {
+                                errDesc.Add("必修選修");
+                            }
+
+                            if (errItem.Contains("學分數"))
+                            {
+                                if (!string.IsNullOrWhiteSpace(ci.credit_period))
+                                    errDesc.Add("學分數");
+                            }
+                        }
+
+                        errMesList.Add(string.Join("、", errDesc.ToArray()) + " 不同");
                     }
 
                 }
