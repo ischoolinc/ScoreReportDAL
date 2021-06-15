@@ -106,7 +106,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 }
 
                 // 學分數相等
-                if (idx < ret.Count())
+                if (idx > -1 && idx < ret.Count())
                 {
                     string x = ret[idx] + "";
 

@@ -419,7 +419,10 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             Dictionary<string, int> chkCourseCodeCount = new Dictionary<string, int>();
 
+            // 取得領域對照
+            Dictionary<string, string> domainMappingDict = Utility.GetDomainNameMapping();
 
+            
             // 讀取群科班資料
             foreach (MOECourseCodeInfo data in MOECourseCodeInfoList)
             {
@@ -489,6 +492,17 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
 
                     subjElm.SetAttributeValue("Domain", "");
+                    // 處理領域對照
+                    if (data.course_code.Length >22)
+                    {
+                        string domainCode = data.course_code.Substring(19, 2);
+                        if (domainMappingDict.ContainsKey(domainCode))
+                        {
+                            subjElm.SetAttributeValue("Domain", domainMappingDict[domainCode]);
+                        }
+                    }
+
+                    
                     subjElm.SetAttributeValue("Entry", "學業");
                     subjElm.SetAttributeValue("GradeYear", strGearYear);
                     subjElm.SetAttributeValue("Level", idx);
