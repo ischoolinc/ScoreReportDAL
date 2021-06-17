@@ -40,6 +40,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , subject_type AS 科別 " +
 " , class_type AS 班群 " +
 " , credit_period AS 授課學期學分_節數 " +
+" , open_type AS 授課開課方式 " +
+" , course_attr AS 課程屬性 " +
 "  FROM " +
 "   $moe.subjectcode ORDER BY group_code,subject_name; ";
                 QueryHelper qh = new QueryHelper();
@@ -58,7 +60,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.subject_type = dr["科別"] + "";
                     data.class_type = dr["班群"] + "";
                     data.credit_period = dr["授課學期學分_節數"] + "";
-
+                    data.open_type = dr["授課開課方式"] + "";
+                    data.course_attr = dr["課程屬性"] + "";
                     value.Add(data);
                 }
 
@@ -422,7 +425,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 取得領域對照
             Dictionary<string, string> domainMappingDict = Utility.GetDomainNameMapping();
 
-            
+
             // 讀取群科班資料
             foreach (MOECourseCodeInfo data in MOECourseCodeInfoList)
             {
@@ -493,7 +496,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     subjElm.SetAttributeValue("Domain", "");
                     // 處理領域對照
-                    if (data.course_code.Length >22)
+                    if (data.course_code.Length > 22)
                     {
                         string domainCode = data.course_code.Substring(19, 2);
                         if (domainMappingDict.ContainsKey(domainCode))
@@ -502,7 +505,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         }
                     }
 
-                    
+
                     subjElm.SetAttributeValue("Entry", "學業");
                     subjElm.SetAttributeValue("GradeYear", strGearYear);
                     subjElm.SetAttributeValue("Level", idx);
@@ -525,8 +528,42 @@ namespace SHCourseGroupCodeAdmin.DAO
                     chkCourseCodeCount[data.course_code]++;
 
                     subjElm.SetAttributeValue("課程類別", data.course_type);
-                    subjElm.SetAttributeValue("開課方式", "");
-                    subjElm.SetAttributeValue("科目屬性", "");
+
+                    string otStr = "跨班";
+                    // 判斷是否原班上課
+                    bool chkOt = false;
+                    if (data.open_type != null && data.open_type.Length == 6)
+                    {
+                        char[] ot = data.open_type.ToArray();
+                        int opIdx = 0;
+                        if (strGearYear == "1" && strSemester == "1")
+                            opIdx = 0;
+
+                        if (strGearYear == "1" && strSemester == "2")
+                            opIdx = 1;
+
+                        if (strGearYear == "2" && strSemester == "1")
+                            opIdx = 2;
+                        if (strGearYear == "2" && strSemester == "2")
+                            opIdx = 3;
+
+                        if (strGearYear == "3" && strSemester == "1")
+                            opIdx = 4;
+                        if (strGearYear == "3" && strSemester == "2")
+                            opIdx = 5;
+
+                        if (ot[opIdx] == '0' || ot[opIdx] == 'A')
+                        {
+                            chkOt = true;
+                        }
+
+                    }
+
+                    if (chkOt)
+                        otStr = "原班";
+
+                    subjElm.SetAttributeValue("開課方式", otStr);
+
                     subjElm.SetAttributeValue("領域名稱", "");
                     subjElm.SetAttributeValue("課程名稱", data.subject_name);
                     subjElm.SetAttributeValue("學分", credit);
@@ -603,7 +640,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 // 取得課程規劃表名稱
                 string GPlanName = GetGPlanNameByCode(GroupCode);
 
-                string insertQry = "INSERT INTO graduation_plan(name,content) VALUES('" + GPlanName + "','" + gpContent + "') RETURNING id;";
+                string insertQry = "INSERT INTO graduation_plan(name,content,moe_group_code) VALUES('" + GPlanName + "','" + gpContent + "','" + GroupCode + "') RETURNING id;";
 
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(insertQry);
@@ -665,6 +702,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , subject_type AS 科別 " +
 " , class_type AS 班群 " +
 " , credit_period AS 授課學期學分_節數 " +
+" , open_type AS 授課開課方式 " +
+" , course_attr AS 課程屬性 " +
 "  FROM " +
 "   $moe.subjectcode " +
 "   WHERE group_code = '" + GroupCode + "'  " +
@@ -685,7 +724,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.subject_type = dr["科別"] + "";
                     data.class_type = dr["班群"] + "";
                     data.credit_period = dr["授課學期學分_節數"] + "";
-
+                    data.open_type = dr["授課開課方式"] + "";
+                    data.course_attr = dr["課程屬性"] + "";
                     value.Add(data);
                 }
             }

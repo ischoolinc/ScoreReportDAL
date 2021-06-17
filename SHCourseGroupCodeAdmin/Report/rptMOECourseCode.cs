@@ -74,6 +74,8 @@ namespace SHCourseGroupCodeAdmin.Report
                 wst.Cells[rowIdx, GetColIndex("科別")].PutValue(data.subject_type);
                 wst.Cells[rowIdx, GetColIndex("班群")].PutValue(data.class_type);
                 wst.Cells[rowIdx, GetColIndex("授課學期學分/節數")].PutValue(data.credit_period);
+                wst.Cells[rowIdx, GetColIndex("授課開課方式")].PutValue(data.open_type);
+                wst.Cells[rowIdx, GetColIndex("課程屬性")].PutValue(data.course_attr);
                 rowIdx++;
             }
 

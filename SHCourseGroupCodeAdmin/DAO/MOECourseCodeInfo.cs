@@ -59,6 +59,15 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// 授課學期學分_節數
         /// </summary>
         public string credit_period { get; set; }
+
+        /// <summary>
+        /// 授課開課方式
+        /// </summary>
+        public string open_type { get; set; }
        
+        /// <summary>
+        /// 課程屬性
+        /// </summary>
+        public string course_attr { get; set; }
     }
 }
