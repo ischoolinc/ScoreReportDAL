@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using FISCA.Data;
 using System.Xml.Linq;
+using System.IO;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -634,7 +635,8 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 課程規劃表XML
             try
             {
-                string gpContent = CourseCodeConvertToGPlanByGroupCode(GroupCode).ToString();
+                string gpContent = CourseCodeConvertToGPlanByGroupCode(GroupCode).ToString(SaveOptions.DisableFormatting);
+
                 //  Console.WriteLine(gpContent);
 
                 // 取得課程規劃表名稱
@@ -860,5 +862,53 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
+        /// <summary>
+        /// 取得所有班級課程規劃表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetAllGPlanData()
+        {
+            DataTable dt = null;
+            try
+            {
+                string query = "" +
+                    " SELECT " +
+"     id " +
+"     , name " +
+"     , array_to_string(xpath('//Subject/@GradeYear', subject_ele), '')::text AS 年級 " +
+"     , array_to_string(xpath('//Subject/@Semester', subject_ele), '')::text AS 學期 " +
+"     , array_to_string(xpath('//Subject/@Entry', subject_ele), '')::text AS 分項類別 " +
+"     , array_to_string(xpath('//Subject/@Domain', subject_ele), '')::text AS 領域 " +
+"     , array_to_string(xpath('//Subject/@SubjectName', subject_ele), '')::text AS 科目名稱 " +
+"     , array_to_string(xpath('//Subject/@Level', subject_ele), '')::text AS 科目級別 " +
+"     , array_to_string(xpath('//Subject/@Credit', subject_ele), '')::text AS 學分數 " +
+"     , array_to_string(xpath('//Subject/@Required', subject_ele), '')::text AS 必修選修 " +
+"     , array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '')::text AS 校訂部定 " +
+" 	, array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::text AS 課程代碼 " +
+" FROM " +
+"     ( " +
+"         SELECT  " +
+"             id " +
+"             , name " +
+"             , unnest(xpath('//GraduationPlan/Subject', xmlparse(content content))) as subject_ele " +
+"         FROM  " +
+"             graduation_plan " +
+"     ) AS graduation_plan " +
+" ORDER BY  " +
+"     id " +
+"     , array_to_string(xpath('//Subject/@GradeYear', subject_ele), '')::text " +
+"     , array_to_string(xpath('//Subject/@Semester', subject_ele), '')::text " +
+"     , array_to_string(xpath('//Subject/@Credit', subject_ele), '')::text ";
+
+                QueryHelper qh = new QueryHelper();
+                dt = qh.Select(query);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return dt;
+        }
     }
 }

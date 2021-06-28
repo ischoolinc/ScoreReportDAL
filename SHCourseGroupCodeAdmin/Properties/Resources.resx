@@ -124,6 +124,9 @@
   <data name="檢查班級群科班設定樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\檢查班級群科班設定樣版.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="班級課程規劃表資料樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\班級課程規劃表資料樣版.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="課程代碼表樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\課程代碼表樣版.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

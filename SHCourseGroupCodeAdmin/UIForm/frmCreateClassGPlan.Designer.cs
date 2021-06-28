@@ -32,6 +32,7 @@
             this.cbxGroupName = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.btnCreate = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
+            this.btnExport = new DevComponents.DotNetBar.ButtonX();
             this.SuspendLayout();
             // 
             // labelX1
@@ -90,11 +91,26 @@
             this.btnExit.Text = "離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // btnExport
+            // 
+            this.btnExport.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnExport.AutoSize = true;
+            this.btnExport.BackColor = System.Drawing.Color.Transparent;
+            this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnExport.Location = new System.Drawing.Point(12, 88);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(158, 28);
+            this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnExport.TabIndex = 4;
+            this.btnExport.Text = "匯出所有班級課程規劃表";
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
             // frmCreateClassGPlan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 132);
+            this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.cbxGroupName);
@@ -114,5 +130,6 @@
         private DevComponents.DotNetBar.Controls.ComboBoxEx cbxGroupName;
         private DevComponents.DotNetBar.ButtonX btnCreate;
         private DevComponents.DotNetBar.ButtonX btnExit;
+        private DevComponents.DotNetBar.ButtonX btnExport;
     }
 }
