@@ -8,14 +8,11 @@ namespace SHCourseGroupCodeDAL
 {
     public class StudentCourseCodeInfo
     {
-        public string SchoolYear { get; set; }
-        public string Semester { get; set; }
+        //public string SchoolYear { get; set; }
+        //public string Semester { get; set; }
 
-        public string GradeYear { get; set; }
 
         public string StudentID { get; set; }
-
-        public string GraduationPlanID { get; set; }
 
         public string CourseGroupCode { get; set; }
 
@@ -31,6 +28,7 @@ namespace SHCourseGroupCodeDAL
         public void AddSubjectInfoList(List<SubjectInfo> subjList)
         {
             SubjectInfoList.AddRange(subjList);
+            GetSubjectInfoDict();
         }
 
         public Dictionary<string, SubjectInfo> GetSubjectInfoDict()
