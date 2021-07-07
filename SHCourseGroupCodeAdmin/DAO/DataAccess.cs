@@ -570,6 +570,38 @@ namespace SHCourseGroupCodeAdmin.DAO
                     subjElm.SetAttributeValue("學分", credit);
                     subjElm.SetAttributeValue("授課學期學分", data.credit_period);
 
+                    // 解析課程屬性，修正會放在這
+                    if (data.course_attr != null && data.course_attr.Length == 4)
+                    {
+                        string code1 = data.course_attr.Substring(0, 1);
+                        if (code1 == "1")
+                        {
+                            // 部定必修
+                            subjElm.SetAttributeValue("RequiredBy", "部訂");
+                            subjElm.SetAttributeValue("Required", "必修");
+                        }
+                        else if (code1 == "2")
+                        {
+                            subjElm.SetAttributeValue("RequiredBy", "校訂");
+                            subjElm.SetAttributeValue("Required", "必修");
+                        }
+                        else
+                        {
+                            subjElm.SetAttributeValue("RequiredBy", "校訂");
+                            subjElm.SetAttributeValue("Required", "選修");
+                        }
+
+                        string code3 = data.course_attr.Substring(2, 2);
+                        // 領域
+                        if (domainMappingDict.ContainsKey(code3))
+                        {
+                            subjElm.SetAttributeValue("Domain", domainMappingDict[code3]);
+                        }
+
+                    }
+
+
+
                     // row
                     XElement subjGroupElm = new XElement("Grouping");
                     subjGroupElm.SetAttributeValue("RowIndex", RowIndex);
@@ -910,5 +942,145 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return dt;
         }
+
+        /// <summary>
+        /// 取得所有有群科班代碼班級課程規劃表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetAllHasMOECodeGPlanData()
+        {
+            DataTable dt = null;
+
+            // 建立群科班連結
+            try
+            {
+                string linkQuery = "" +
+                    " WITH moe_group_code_data AS(" +
+" SELECT " +
+"     DISTINCT id " +
+"     , name  " +
+" 	, substring(array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::text,0,17) AS 群組代碼 " +
+" 	,moe_group_code " +
+" 	,moe_group_code_1 " +
+" FROM " +
+"     ( " +
+"         SELECT  " +
+"             id " +
+"             , name " +
+" 			,moe_group_code  " +
+" 			,moe_group_code_1 " +
+"             , unnest(xpath('//GraduationPlan/Subject', xmlparse(content content))) as subject_ele " +
+"         FROM  " +
+"             graduation_plan " +
+"     ) AS graduation_plan WHERE  substring(array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::text,0,17) <>'' " +
+" ), " +
+" update_data AS( " +
+" UPDATE graduation_plan  " +
+" SET moe_group_code = moe_group_code_data.群組代碼  " +
+" FROM moe_group_code_data  " +
+" WHERE graduation_plan.id = moe_group_code_data.id  " +
+" RETURNING  moe_group_code_data.*  " +
+" ) " +
+" SELECT * FROM update_data ";
+
+                QueryHelper qh = new QueryHelper();
+                DataTable lkDt = qh.Select(linkQuery);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            try
+            {
+                string query = "" +
+                    " SELECT " +
+"     id " +
+"     , name " +
+"	  , moe_group_code " +
+"     , array_to_string(xpath('//Subject/@GradeYear', subject_ele), '')::text AS 年級 " +
+"     , array_to_string(xpath('//Subject/@Semester', subject_ele), '')::text AS 學期 " +
+"     , array_to_string(xpath('//Subject/@Entry', subject_ele), '')::text AS 分項類別 " +
+"     , array_to_string(xpath('//Subject/@Domain', subject_ele), '')::text AS 領域 " +
+"     , array_to_string(xpath('//Subject/@SubjectName', subject_ele), '')::text AS 科目名稱 " +
+"     , array_to_string(xpath('//Subject/@Level', subject_ele), '')::text AS 科目級別 " +
+"     , array_to_string(xpath('//Subject/@Credit', subject_ele), '')::text AS 學分數 " +
+"     , array_to_string(xpath('//Subject/@Required', subject_ele), '')::text AS 必修選修 " +
+"     , array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '')::text AS 校訂部定 " +
+" 	, array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::text AS 課程代碼 " +
+" FROM " +
+"     ( " +
+"         SELECT  " +
+"             id " +
+"             , name " +
+"             , moe_group_code " +
+"             , unnest(xpath('//GraduationPlan/Subject', xmlparse(content content))) as subject_ele " +
+"         FROM  " +
+"             graduation_plan WHERE moe_group_code <> '' " +
+"     ) AS graduation_plan " +
+" ORDER BY  " +
+"     id " +
+"     , array_to_string(xpath('//Subject/@GradeYear', subject_ele), '')::text " +
+"     , array_to_string(xpath('//Subject/@Semester', subject_ele), '')::text " +
+"     , array_to_string(xpath('//Subject/@Credit', subject_ele), '')::text ";
+
+                QueryHelper qh = new QueryHelper();
+                dt = qh.Select(query);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 透過群科班代碼取得課程規劃表
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public List<GPlanData> GetGPlanDataListByMOECode(string code)
+        {
+            List<GPlanData> value = new List<GPlanData>();
+
+            try
+            {
+                string query = "SELECT id,name,moe_group_code,content FROM graduation_plan WHERE moe_group_code ='" + code + "' ORDER BY name";
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                if (dt != null)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        GPlanData gd = new GPlanData();
+                        gd.ID = dr["id"] + "";
+                        gd.Name = dr["name"] + "";
+                        gd.MOEGroupCode = code;
+
+                        string content = dr["content"] + "";
+
+                        try
+                        {
+                            gd.ContentXML = XElement.Parse(content);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        value.Add(gd);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
     }
 }

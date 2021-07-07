@@ -91,8 +91,10 @@
     <Compile Include="DAO\CourseInfoChk.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\GPCourseInfo.cs" />
+    <Compile Include="DAO\GPlanData.cs" />
     <Compile Include="DAO\GPlanInfo.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
+    <Compile Include="DAO\rptSubjectInfo.cs" />
     <Compile Include="DAO\StudentSubjectInfoChk.cs" />
     <Compile Include="DAO\SubjectInfoChk.cs" />
     <Compile Include="DataCheck\chkCheckCourseCode.cs">
@@ -127,6 +129,30 @@
     </Compile>
     <Compile Include="UIForm\frmCreateClassGPlan.Designer.cs">
       <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanAdd.Designer.cs">
+      <DependentUpon>frmCreateClassGPlanAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanHasData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanHasData.Designer.cs">
+      <DependentUpon>frmCreateClassGPlanHasData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanMain.Designer.cs">
+      <DependentUpon>frmCreateClassGPlanMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanSetDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateClassGPlanSetDetail.Designer.cs">
+      <DependentUpon>frmCreateClassGPlanSetDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
@@ -178,6 +204,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateClassGPlan.resx">
       <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateClassGPlanAdd.resx">
+      <DependentUpon>frmCreateClassGPlanAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateClassGPlanHasData.resx">
+      <DependentUpon>frmCreateClassGPlanHasData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateClassGPlanMain.resx">
+      <DependentUpon>frmCreateClassGPlanMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateClassGPlanSetDetail.resx">
+      <DependentUpon>frmCreateClassGPlanSetDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

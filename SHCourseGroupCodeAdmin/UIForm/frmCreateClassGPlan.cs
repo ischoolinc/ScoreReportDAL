@@ -68,7 +68,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             _bgWorkerExport.ReportProgress(1);
 
-            DataTable dtAllGPlan = _da.GetAllGPlanData();
+            // DataTable dtAllGPlan = _da.GetAllGPlanData();
+            DataTable dtAllHasMOECodeGPlan = _da.GetAllHasMOECodeGPlanData();
             _bgWorkerExport.ReportProgress(40);
             // 填值到 Excel
             _wb = new Workbook(new MemoryStream(Properties.Resources.班級課程規劃表資料樣版));
@@ -84,6 +85,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
 
             int rowIdx = 1;
+
+            // 整理大表資料
+            Dictionary<string, rptSubjectInfo> subjectInfDict1 = new Dictionary<string, rptSubjectInfo>();
             foreach (string name in _da.GetGroupNameList())
             {
                 //< Subject Category = "" Credit = "2" Domain = "不分" Entry = "學業" GradeYear = "2" Level = "4" FullName = "應用力學 IV" NotIncludedInCalc = "False" NotIncludedInCredit = "False" Required = "選修" RequiredBy = "校訂" Semester = "2" SubjectName = "應用力學" 課程代碼 = "108120401E22L0107020005" 課程類別 = "實用技能學程(日)" 開課方式 = "原班" 領域名稱 = "" 課程名稱 = "應用力學" 學分 = "2" 授課學期學分 = "002200" >
@@ -91,48 +95,156 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 XElement elmRoot = _da.CourseCodeConvertToGPlanByGroupCode(code);
                 foreach (XElement elm in elmRoot.Elements("Subject"))
                 {
-                    wst.Cells[rowIdx, GetColIndex("群科班名稱")].PutValue(name);
-                    wst.Cells[rowIdx, GetColIndex("年級")].PutValue(elm.Attribute("GradeYear").Value);
-                    wst.Cells[rowIdx, GetColIndex("學期")].PutValue(elm.Attribute("Semester").Value);
-                    wst.Cells[rowIdx, GetColIndex("領域")].PutValue(elm.Attribute("Domain").Value);
-                    wst.Cells[rowIdx, GetColIndex("分項類別")].PutValue(elm.Attribute("Entry").Value);
-                    wst.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(elm.Attribute("SubjectName").Value);
-                    if (elm.Attribute("RequiredBy").Value == "部訂")
-                        wst.Cells[rowIdx, GetColIndex("校訂部定")].PutValue("部定");
-                    else
-                        wst.Cells[rowIdx, GetColIndex("校訂部定")].PutValue(elm.Attribute("RequiredBy").Value);
+                    string key = elm.Attribute("課程代碼").Value + "_" + elm.Attribute("SubjectName").Value;
 
-                    wst.Cells[rowIdx, GetColIndex("必修選修")].PutValue(elm.Attribute("Required").Value);
-                    wst.Cells[rowIdx, GetColIndex("科目級別")].PutValue(elm.Attribute("Level").Value);
-                    wst.Cells[rowIdx, GetColIndex("學分數")].PutValue(elm.Attribute("Credit").Value);
-                    wst.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(elm.Attribute("課程代碼").Value);
-                    rowIdx++;
+                    if (!subjectInfDict1.ContainsKey(key))
+                    {
+                        rptSubjectInfo subj = new rptSubjectInfo();
+                        subj.MOECode = code;
+                        subj.GroupName = name;
+                        subj.isRequired = elm.Attribute("Required").Value;
+                        subj.Domain = elm.Attribute("Domain").Value;
+                        subj.CourseCode = elm.Attribute("課程代碼").Value;
+                        subj.ScoreType = elm.Attribute("Entry").Value;
+                        subj.SubjectName = elm.Attribute("SubjectName").Value;
+                        subj.credit_period = elm.Attribute("授課學期學分").Value;
+                        if (elm.Attribute("RequiredBy").Value == "部訂")
+                            subj.RequiredBy = "部定";
+                        else
+                            subj.RequiredBy = elm.Attribute("RequiredBy").Value;
+
+                        subjectInfDict1.Add(key, subj);
+                    }
                 }
+            }
+
+            // 產生大表資料
+            foreach (string key in subjectInfDict1.Keys)
+            {
+                rptSubjectInfo subj = subjectInfDict1[key];
+                wst.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(subj.MOECode);
+                wst.Cells[rowIdx, GetColIndex("群科班名稱")].PutValue(subj.GroupName);
+                wst.Cells[rowIdx, GetColIndex("領域")].PutValue(subj.Domain);
+                wst.Cells[rowIdx, GetColIndex("分項類別")].PutValue(subj.ScoreType);
+                wst.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(subj.SubjectName);
+                wst.Cells[rowIdx, GetColIndex("校訂部定")].PutValue(subj.RequiredBy);
+                wst.Cells[rowIdx, GetColIndex("必修選修")].PutValue(subj.isRequired);
+                wst.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(subj.CourseCode);
+                wst.Cells[rowIdx, GetColIndex("授課學期學分")].PutValue(subj.credit_period);
+                rowIdx++;
 
             }
 
-            rowIdx = 1;
-            if (dtAllGPlan != null)
-            {
-                foreach (DataRow dr in dtAllGPlan.Rows)
-                {
-                    wst1.Cells[rowIdx, GetColIndex("課程規劃表名稱")].PutValue(dr["name"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("年級")].PutValue(dr["年級"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("學期")].PutValue(dr["學期"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("領域")].PutValue(dr["領域"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("分項類別")].PutValue(dr["分項類別"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(dr["科目名稱"] + "");
-                    if (dr["校訂部定"] + "" == "部訂")
-                        wst1.Cells[rowIdx, GetColIndex("校訂部定")].PutValue("部定");
-                    else
-                        wst1.Cells[rowIdx, GetColIndex("校訂部定")].PutValue(dr["校訂部定"] + "");
 
-                    wst1.Cells[rowIdx, GetColIndex("必修選修")].PutValue(dr["必修選修"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("科目級別")].PutValue(dr["科目級別"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("學分數")].PutValue(dr["學分數"] + "");
-                    wst1.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(dr["課程代碼"] + "");
+
+
+            //foreach (string name in _da.GetGroupNameList())
+            //{
+            //    //< Subject Category = "" Credit = "2" Domain = "不分" Entry = "學業" GradeYear = "2" Level = "4" FullName = "應用力學 IV" NotIncludedInCalc = "False" NotIncludedInCredit = "False" Required = "選修" RequiredBy = "校訂" Semester = "2" SubjectName = "應用力學" 課程代碼 = "108120401E22L0107020005" 課程類別 = "實用技能學程(日)" 開課方式 = "原班" 領域名稱 = "" 課程名稱 = "應用力學" 學分 = "2" 授課學期學分 = "002200" >
+            //    string code = _da.GetGroupCodeByName(name);
+            //    XElement elmRoot = _da.CourseCodeConvertToGPlanByGroupCode(code);
+            //    foreach (XElement elm in elmRoot.Elements("Subject"))
+            //    {
+            //        wst.Cells[rowIdx, GetColIndex("群科班名稱")].PutValue(name);
+            //        wst.Cells[rowIdx, GetColIndex("年級")].PutValue(elm.Attribute("GradeYear").Value);
+            //        wst.Cells[rowIdx, GetColIndex("學期")].PutValue(elm.Attribute("Semester").Value);
+            //        wst.Cells[rowIdx, GetColIndex("領域")].PutValue(elm.Attribute("Domain").Value);
+            //        wst.Cells[rowIdx, GetColIndex("分項類別")].PutValue(elm.Attribute("Entry").Value);
+            //        wst.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(elm.Attribute("SubjectName").Value);
+            //        if (elm.Attribute("RequiredBy").Value == "部訂")
+            //            wst.Cells[rowIdx, GetColIndex("校訂部定")].PutValue("部定");
+            //        else
+            //            wst.Cells[rowIdx, GetColIndex("校訂部定")].PutValue(elm.Attribute("RequiredBy").Value);
+
+            //        wst.Cells[rowIdx, GetColIndex("必修選修")].PutValue(elm.Attribute("Required").Value);
+            //        wst.Cells[rowIdx, GetColIndex("科目級別")].PutValue(elm.Attribute("Level").Value);
+            //        wst.Cells[rowIdx, GetColIndex("學分數")].PutValue(elm.Attribute("Credit").Value);
+            //        wst.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(elm.Attribute("課程代碼").Value);
+            //        rowIdx++;
+            //    }
+
+            //}
+
+            rowIdx = 1;
+
+            _ColIdxDict.Clear();
+            // 讀取欄位與索引            
+            for (int co = 0; co <= wst1.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wst1.Cells[0, co].StringValue, co);
+            }
+
+
+            if (dtAllHasMOECodeGPlan != null)
+            {
+                // 資料整合整理
+                Dictionary<string, rptSubjectInfo> subjectInfoDict2 = new Dictionary<string, rptSubjectInfo>();
+
+                foreach (DataRow dr in dtAllHasMOECodeGPlan.Rows)
+                {
+                    string key = dr["課程代碼"] + "_" + dr["科目名稱"] + "";
+
+                    if (!subjectInfoDict2.ContainsKey(key))
+                    {
+                        subjectInfoDict2.Add(key, new rptSubjectInfo());
+
+                        for (int i = 0; i <= 5; i++)
+                            subjectInfoDict2[key].credit[i] = "0";
+
+                    }
+
+                    if (dr["年級"] + "" == "1" && dr["學期"] + "" == "1")
+                        subjectInfoDict2[key].credit[0] = dr["學分數"] + "";
+
+                    if (dr["年級"] + "" == "1" && dr["學期"] + "" == "2")
+                        subjectInfoDict2[key].credit[1] = dr["學分數"] + "";
+                    if (dr["年級"] + "" == "2" && dr["學期"] + "" == "1")
+                        subjectInfoDict2[key].credit[2] = dr["學分數"] + "";
+                    if (dr["年級"] + "" == "2" && dr["學期"] + "" == "2")
+                        subjectInfoDict2[key].credit[3] = dr["學分數"] + "";
+                    if (dr["年級"] + "" == "3" && dr["學期"] + "" == "1")
+                        subjectInfoDict2[key].credit[4] = dr["學分數"] + "";
+
+                    if (dr["年級"] + "" == "3" && dr["學期"] + "" == "2")
+                        subjectInfoDict2[key].credit[5] = dr["學分數"] + "";
+
+                    subjectInfoDict2[key].MOECode = dr["moe_group_code"] + "";
+                    subjectInfoDict2[key].GroupName = dr["name"] + "";
+                    subjectInfoDict2[key].isRequired = dr["必修選修"] + "";
+                    subjectInfoDict2[key].Domain = dr["領域"] + "";
+                    subjectInfoDict2[key].CourseCode = dr["課程代碼"] + "";
+                    subjectInfoDict2[key].ScoreType = dr["分項類別"] + "";
+                    subjectInfoDict2[key].SubjectName = dr["科目名稱"] + "";
+                    if (dr["校訂部定"] + "" == "部訂")
+                    {
+                        subjectInfoDict2[key].RequiredBy = "部定";
+                    }
+                    else
+                    {
+                        subjectInfoDict2[key].RequiredBy = dr["校訂部定"] + "";
+                    }
+
+
+
+
+                }
+
+                // 產生資料至報表
+                foreach (string key in subjectInfoDict2.Keys)
+                {
+                    rptSubjectInfo subj = subjectInfoDict2[key];
+                    wst1.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(subj.MOECode);
+                    wst1.Cells[rowIdx, GetColIndex("課程規劃表名稱")].PutValue(subj.GroupName);
+                    wst1.Cells[rowIdx, GetColIndex("領域")].PutValue(subj.Domain);
+                    wst1.Cells[rowIdx, GetColIndex("分項類別")].PutValue(subj.ScoreType);
+                    wst1.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(subj.SubjectName);
+                    wst1.Cells[rowIdx, GetColIndex("校訂部定")].PutValue(subj.RequiredBy);
+                    wst1.Cells[rowIdx, GetColIndex("必修選修")].PutValue(subj.isRequired);
+                    wst1.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(subj.CourseCode);
+                    wst1.Cells[rowIdx, GetColIndex("授課學期學分")].PutValue(string.Join("",subj.credit.ToArray()));
                     rowIdx++;
                 }
+
             }
 
             wst.AutoFitColumns();

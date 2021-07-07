@@ -86,8 +86,11 @@ namespace SHCourseGroupCodeAdmin
 
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["建立班級課程規劃表"].Click += delegate
             {
-                frmCreateClassGPlan ccg = new frmCreateClassGPlan();
+                //frmCreateClassGPlan ccg = new frmCreateClassGPlan();
+                frmCreateClassGPlanMain ccg = new frmCreateClassGPlanMain();
                 ccg.ShowDialog();
+
+
             };
 
             Catalog ribbon7 = RoleAclSource.Instance["教務作業"]["課程代碼"];
