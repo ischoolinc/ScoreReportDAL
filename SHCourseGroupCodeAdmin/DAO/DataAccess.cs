@@ -573,6 +573,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 解析課程屬性，修正會放在這
                     if (data.course_attr != null && data.course_attr.Length == 4)
                     {
+                        // 校部定必選修
                         string code1 = data.course_attr.Substring(0, 1);
                         if (code1 == "1")
                         {
@@ -589,6 +590,21 @@ namespace SHCourseGroupCodeAdmin.DAO
                         {
                             subjElm.SetAttributeValue("RequiredBy", "校訂");
                             subjElm.SetAttributeValue("Required", "選修");
+                        }
+
+                        // 分項
+                        string code2 = data.course_attr.Substring(1, 1);
+                        if (code2 == "2")
+                        {
+                            subjElm.SetAttributeValue("Entry", "專業科目");
+                        }
+                        else if (code2 == "3")
+                        {
+                            subjElm.SetAttributeValue("Entry", "實習科目");
+                        }
+                        else
+                        {
+                            subjElm.SetAttributeValue("Entry", "學業");
                         }
 
                         string code3 = data.course_attr.Substring(2, 2);
@@ -667,6 +683,11 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 課程規劃表XML
             try
             {
+                if (MOEGPlanDict.Count == 0)
+                {
+                    LoadMOEGroupCodeDict();
+                }
+
                 string gpContent = CourseCodeConvertToGPlanByGroupCode(GroupCode).ToString(SaveOptions.DisableFormatting);
 
                 //  Console.WriteLine(gpContent);
@@ -1082,5 +1103,65 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
+        /// <summary>
+        /// 設定課程規劃所採用班級
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public List<GPlanData> ParseGPlanDataRefClass(List<GPlanData> data)
+        {
+            try
+            {
+                if (data.Count > 0)
+                {
+                    // 取得課程規劃表 ID
+                    List<string> GPIDList = (from data1 in data select data1.ID).ToList();
+
+                    // 取得使用班級ID,Name
+                    string query = "SELECT " +
+                        "ref_graduation_plan_id AS gp_id" +
+                        ",class.id AS class_id" +
+                        ",class_name " +
+                        "FROM " +
+                        "class " +
+                        "WHERE ref_graduation_plan_id IN(" + string.Join(",", GPIDList.ToArray()) + ") " +
+                        "ORDER BY display_order,class_name";
+
+                    QueryHelper qh = new QueryHelper();
+                    DataTable dt = qh.Select(query);
+                    Dictionary<string, List<DataRow>> gpcDict = new Dictionary<string, List<DataRow>>();
+                    foreach(DataRow dr in dt.Rows)
+                    {
+                        string gpid = dr["gp_id"] + "";
+                        if (!gpcDict.ContainsKey(gpid))
+                            gpcDict.Add(gpid, new List<DataRow>());
+
+                        gpcDict[gpid].Add(dr);
+                    }
+
+                    // 填入課程規劃物件
+                    foreach(GPlanData gpd in data)
+                    {
+                        if (gpcDict.ContainsKey(gpd.ID))
+                        {
+                            foreach(DataRow dr in gpcDict[gpd.ID])
+                            {
+                                string class_id = dr["class_id"] + "";
+                                if (!gpd.UsedClassIDNameDict.ContainsKey(class_id))
+                                    gpd.UsedClassIDNameDict.Add(class_id, dr["class_name"] + "");
+                            }
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return data;
+        }
     }
 }

@@ -45,6 +45,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (_ErrorList.Count == 0)
             {
                 MsgBox.Show("產生完成");
+                this.Close();
             }
 
             btnCreate.Enabled = true;

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
+using System.Xml.Linq;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -19,6 +20,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
         string SelectGroupCode = "";
 
         string SelectGroupName = "";
+
+        XElement SelectMOEXml = null;
 
         // 課程規劃表名稱
         string GPlanName = "";
@@ -48,6 +51,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 已有課程規劃表需要調整
                 frmCreateClassGPlanHasData fHasData = new frmCreateClassGPlanHasData();
                 fHasData.SetGroupName(SelectGroupName);
+                fHasData.SetSelectMOEXML(SelectMOEXml);
+                fHasData.SetGPlanData(_GPlanDataList);
                 fHasData.ShowDialog();
             }
             else
@@ -71,7 +76,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _GPlanDataList.Clear();
             _da.LoadMOEGroupCodeDict();
             GPlanName = _da.GetGPlanNameByCode(SelectGroupCode);
+            _bwWorker.ReportProgress(30);
             _GPlanDataList = _da.GetGPlanDataListByMOECode(SelectGroupCode);
+            SelectMOEXml = _da.CourseCodeConvertToGPlanByGroupCode(SelectGroupCode);
+            // 解析使用班級
+            _GPlanDataList = _da.ParseGPlanDataRefClass(_GPlanDataList);
             _bwWorker.ReportProgress(100);
         }
 
