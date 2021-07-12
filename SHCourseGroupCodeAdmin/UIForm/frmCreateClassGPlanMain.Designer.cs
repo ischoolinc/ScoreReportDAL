@@ -52,6 +52,7 @@
             // 
             this.cbxGroupName.DisplayMember = "Text";
             this.cbxGroupName.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxGroupName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxGroupName.FormattingEnabled = true;
             this.cbxGroupName.ItemHeight = 19;
             this.cbxGroupName.Location = new System.Drawing.Point(78, 18);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -23,5 +24,11 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string course_attr { get; set; }
         public string ProcessStatus { get; set; }
         public List<string> DiffStatusList = new List<string>();
+        public List<string> DiffMessageList = new List<string>();
+
+        public List<XElement> MOEXml = new List<XElement>();
+        public List<XElement> GPlanXml = new List<XElement>();
+
+       
     }
 }

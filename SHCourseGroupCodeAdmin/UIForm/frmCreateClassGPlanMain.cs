@@ -78,6 +78,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
             GPlanName = _da.GetGPlanNameByCode(SelectGroupCode);
             _bwWorker.ReportProgress(30);
             _GPlanDataList = _da.GetGPlanDataListByMOECode(SelectGroupCode);
+            // 更新群科班
+            _da.UpdateGPlanMOECode();
             SelectMOEXml = _da.CourseCodeConvertToGPlanByGroupCode(SelectGroupCode);
             // 解析使用班級
             _GPlanDataList = _da.ParseGPlanDataRefClass(_GPlanDataList);

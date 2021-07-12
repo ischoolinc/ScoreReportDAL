@@ -20,7 +20,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         // 選擇的課程代碼大表解析後 XML
         XElement SelectMOEXml = null;
-
+        DataAccess da = new DataAccess();
         List<GPlanData> _GPlanData = new List<GPlanData>();
 
         public frmCreateClassGPlanHasData()
@@ -39,12 +39,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             foreach (GPlanData gData in _GPlanData)
             {
                 gData.MOEXml = SelectMOEXml;
-                gData.CheckData();               
+                gData.CheckData();
 
             }
 
-
-                dgData.Rows.Clear();
+            dgData.Rows.Clear();
             foreach (GPlanData gData in _GPlanData)
             {
                 int rowIdx = dgData.Rows.Add();
@@ -82,8 +81,71 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
+            btnCreate.Enabled = false;
+
+            foreach(GPlanData data in _GPlanData)
+            {                                
+                XElement GPlanXml = new XElement("GraduationPlan");
+            
+                foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
+                {
+                    if (subj.ProcessStatus == "更新" && subj.DiffStatusList.Contains("缺"))
+                    {
+                        foreach (XElement elm in subj.MOEXml)
+                        {
+                            GPlanXml.Add(elm);
+                        }
+                    }
+
+
+                    if (subj.ProcessStatus == "略過")
+                    {
+                        foreach(XElement elm in subj.GPlanXml)
+                        {
+                            GPlanXml.Add(elm);
+                        }
+                    }
+                }
+
+                List<XElement> orderList = GPlanXml.Elements("Subject").OrderBy(x => x.Attribute("課程代碼").Value).ToList();
+
+                // 
+                int rowIdx = 0;
+                string tmpCode = "";
+                foreach(XElement elm in orderList)
+                {
+                    if (elm.Attribute("課程代碼").Value != tmpCode)
+                    {
+                        rowIdx++;
+                        tmpCode = elm.Attribute("課程代碼").Value;
+                    }
+
+                    if (elm.Element("Grouping") != null)
+                    {
+                        elm.Element("Grouping").SetAttributeValue("RowIndex", rowIdx);
+                    }
+
+                }                
+
+                GPlanXml.ReplaceAll(orderList);
+                if (data.MOEGroupCode.Length > 3)
+                    GPlanXml.SetAttributeValue("SchoolYear", data.MOEGroupCode.Substring(0, 3));
+
+                //  Console.WriteLine(GPlanXml.ToString());
+              //  data.ContentXML.ReplaceAll(GPlanXml);
+
+                da.UpdateGPlanXML(data.ID, GPlanXml.ToString());
+
+            }
+            MsgBox.Show("完成");    
+            btnCreate.Enabled = true;
+        }
+
+        private void CreateData()
+        {
 
         }
+
 
         private void dgData_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -94,7 +156,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     GPlanData data = dgData.Rows[e.RowIndex].Tag as GPlanData;
                     if (data != null)
                     {
-                        frmCreateClassGPlanSetDetail fGPD = new frmCreateClassGPlanSetDetail();                        
+                        frmCreateClassGPlanSetDetail fGPD = new frmCreateClassGPlanSetDetail();
                         fGPD.SetGPlanData(data);
                         fGPD.SetMOENameAndXml(SelectGroupName, SelectMOEXml);
                         if (fGPD.ShowDialog() == DialogResult.OK)

@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
 using System.Xml.Linq;
+using Aspose.Cells;
+using System.IO;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -18,11 +20,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
         GPlanData _GPlanData = null;
         string MOEGroupNmae = "";
         XElement MOEXml = null;
+        DataAccess da = new DataAccess();
+
+        Workbook _wb;
+        Dictionary<string, int> _ColIdxDict;
 
         public frmCreateClassGPlanSetDetail()
         {
             InitializeComponent();
-
+            _ColIdxDict = new Dictionary<string, int>();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -232,15 +238,48 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     dgData.Rows[rowIdx].Cells["校訂部定"].Value = subj.RequiredBy;
                     dgData.Rows[rowIdx].Cells["必選修"].Value = subj.isRequired;
 
-                    if (subj.credit_period != null && subj.credit_period.Length == 6)
+
+                    // 缺少解析方式 學分
+                    if (subj.DiffStatusList.Contains("缺"))
                     {
-                        dgData.Rows[rowIdx].Cells["1上"].Value = subj.credit_period.Substring(0, 1);
-                        dgData.Rows[rowIdx].Cells["1下"].Value = subj.credit_period.Substring(1, 1);
-                        dgData.Rows[rowIdx].Cells["2上"].Value = subj.credit_period.Substring(2, 1);
-                        dgData.Rows[rowIdx].Cells["2下"].Value = subj.credit_period.Substring(3, 1);
-                        dgData.Rows[rowIdx].Cells["3上"].Value = subj.credit_period.Substring(4, 1);
-                        dgData.Rows[rowIdx].Cells["3下"].Value = subj.credit_period.Substring(5, 1);
+                        if (subj.credit_period != null && subj.credit_period.Length == 6)
+                        {
+                            dgData.Rows[rowIdx].Cells["1上"].Value = subj.credit_period.Substring(0, 1);
+                            dgData.Rows[rowIdx].Cells["1下"].Value = subj.credit_period.Substring(1, 1);
+                            dgData.Rows[rowIdx].Cells["2上"].Value = subj.credit_period.Substring(2, 1);
+                            dgData.Rows[rowIdx].Cells["2下"].Value = subj.credit_period.Substring(3, 1);
+                            dgData.Rows[rowIdx].Cells["3上"].Value = subj.credit_period.Substring(4, 1);
+                            dgData.Rows[rowIdx].Cells["3下"].Value = subj.credit_period.Substring(5, 1);
+                        }
                     }
+                    else
+                    {
+                        foreach (XElement elm in subj.GPlanXml)
+                        {
+                            if (elm.Attribute("GradeYear").Value == "1" && elm.Attribute("Semester").Value == "1")
+                                dgData.Rows[rowIdx].Cells["1上"].Value = elm.Attribute("Credit").Value;
+
+                            if (elm.Attribute("GradeYear").Value == "1" && elm.Attribute("Semester").Value == "2")
+                                dgData.Rows[rowIdx].Cells["1下"].Value = elm.Attribute("Credit").Value;
+
+                            if (elm.Attribute("GradeYear").Value == "2" && elm.Attribute("Semester").Value == "1")
+                                dgData.Rows[rowIdx].Cells["2上"].Value = elm.Attribute("Credit").Value;
+
+
+                            if (elm.Attribute("GradeYear").Value == "2" && elm.Attribute("Semester").Value == "2")
+                                dgData.Rows[rowIdx].Cells["2下"].Value = elm.Attribute("Credit").Value;
+
+
+                            if (elm.Attribute("GradeYear").Value == "3" && elm.Attribute("Semester").Value == "1")
+                                dgData.Rows[rowIdx].Cells["3上"].Value = elm.Attribute("Credit").Value;
+
+                            if (elm.Attribute("GradeYear").Value == "3" && elm.Attribute("Semester").Value == "2")
+                                dgData.Rows[rowIdx].Cells["3下"].Value = elm.Attribute("Credit").Value;
+
+                        }
+
+                    }
+
 
                     dgData.Rows[rowIdx].Cells["開課方式"].Value = subj.OpenStatus;
                     dgData.Rows[rowIdx].Cells["課程代碼"].Value = subj.CourseCode;
@@ -255,18 +294,74 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void lnkViewGroupDetail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             lnkViewGroupDetail.Enabled = false;
+            if (_GPlanData != null)
+            {
+                List<MOECourseCodeInfo> CourseData = da.GetCourseGroupCodeListByGroupCode(_GPlanData.MOEGroupCode);
+
+                // 填值到 Excel
+                _wb = new Workbook(new MemoryStream(Properties.Resources.課程代碼表樣版));
+                Worksheet wst = _wb.Worksheets[0];
+
+                _ColIdxDict.Clear();
+
+                // 讀取欄位與索引            
+                for (int co = 0; co <= wst.Cells.MaxDataColumn; co++)
+                {
+                    _ColIdxDict.Add(wst.Cells[0, co].StringValue, co);
+                }
+
+                int rowIdx = 1;
+                foreach (MOECourseCodeInfo data in CourseData)
+                {
+                    wst.Cells[rowIdx, GetColIndex("群組代碼")].PutValue(data.group_code);
+                    wst.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.course_code);
+                    wst.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.subject_name);
+                    wst.Cells[rowIdx, GetColIndex("入學年")].PutValue(data.entry_year);
+                    wst.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.require_by);
+                    wst.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.is_required);
+                    wst.Cells[rowIdx, GetColIndex("課程類型")].PutValue(data.course_type);
+                    wst.Cells[rowIdx, GetColIndex("群別")].PutValue(data.group_type);
+                    wst.Cells[rowIdx, GetColIndex("科別")].PutValue(data.subject_type);
+                    wst.Cells[rowIdx, GetColIndex("班群")].PutValue(data.class_type);
+                    wst.Cells[rowIdx, GetColIndex("授課學期學分/節數")].PutValue(data.credit_period);
+                    wst.Cells[rowIdx, GetColIndex("授課開課方式")].PutValue(data.open_type);
+                    wst.Cells[rowIdx, GetColIndex("課程屬性")].PutValue(data.course_attr);
+                    rowIdx++;
+                }
+
+                wst.AutoFitColumns();
+
+
+                if (_wb != null)
+                {
+                    Utility.ExprotXls("課程代碼表", _wb);
+                }
+
+            }          
+
 
             lnkViewGroupDetail.Enabled = true;
         }
+
+        private int GetColIndex(string name)
+        {
+            int value = 0;
+            if (_ColIdxDict.ContainsKey(name))
+                value = _ColIdxDict[name];
+
+            return value;
+        }
+
 
         private void dgData_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1)
             {
-                if (e.ColumnIndex == 1)
-                {
-                    dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "處理方式";
-                }
+                chkSubjectInfo subj = dgData.Rows[e.RowIndex].Tag as chkSubjectInfo;
+
+                if (subj != null && subj.DiffMessageList.Count > 0)
+                    dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = string.Join(",", subj.DiffMessageList.ToArray());
+
             }
         }
 
@@ -294,7 +389,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             lblDiffCount.Text = diffCount + "";
             lblUpdateCount.Text = updateCount + "";
-            lblDelCount.Text = delCount  + "";
+            lblDelCount.Text = delCount + "";
             lblNoChangeCount.Text = noChangeCount + "";
         }
 

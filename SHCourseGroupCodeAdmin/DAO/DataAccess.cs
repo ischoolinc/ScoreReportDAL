@@ -63,6 +63,28 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.credit_period = dr["授課學期學分_節數"] + "";
                     data.open_type = dr["授課開課方式"] + "";
                     data.course_attr = dr["課程屬性"] + "";
+
+                    // 透過課程屬性更新校部定
+                    if (data.course_attr.Length > 0)
+                    {
+                        string code = data.course_attr.Substring(0, 1);
+                        if (code == "1")
+                        {
+                            data.is_required = "必修";
+                            data.require_by = "部定";
+                        }
+                        else if (code == "2")
+                        {
+                            data.is_required = "必修";
+                            data.require_by = "校訂";
+                        }
+                        else
+                        {
+                            data.is_required = "選修";
+                            data.require_by = "校訂";
+                        }
+                    }
+
                     value.Add(data);
                 }
 
@@ -630,17 +652,22 @@ namespace SHCourseGroupCodeAdmin.DAO
                 RowIndex++;
             }
 
-            //foreach (XElement elm in GPlanXml.Elements("Subject"))
-            //{
-            //    string code = elm.Attribute("課程代碼").Value;
+            // 重新排列科目級別
+            string tmpCourseCode = "";
+            int intLevel = 1;
+            foreach (XElement elm in GPlanXml.Elements("Subject"))
+            {
+                string code = elm.Attribute("課程代碼").Value;
 
-            //    if (chkCourseCodeCount.ContainsKey(code) && chkCourseCodeCount[code] == 1)
-            //    {
-            //        elm.SetAttributeValue("Level", "1");
-            //    }
-
-            //}
-
+                if (tmpCourseCode != code)
+                {
+                    intLevel = 1;
+                    tmpCourseCode = code;
+                }
+                elm.SetAttributeValue("FullName", SubjFullName(elm.Attribute("SubjectName").Value, intLevel));
+                elm.SetAttributeValue("Level", intLevel);
+                intLevel++;
+            }
 
             return GPlanXml;
         }
@@ -668,6 +695,27 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             string value = SubjectName + lev;
 
+            return value;
+        }
+
+
+        public bool UpdateGPlanXML(string GPID, string XmlStr)
+        {
+            bool value = false;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(GPID))
+                {
+                    string query = "UPDATE graduation_plan SET content ='" + XmlStr + "' WHERE id = " + GPID;
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                    uh.Execute(query);
+                    value = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return value;
         }
 
@@ -781,6 +829,28 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.credit_period = dr["授課學期學分_節數"] + "";
                     data.open_type = dr["授課開課方式"] + "";
                     data.course_attr = dr["課程屬性"] + "";
+
+                    // 透過課程屬性更新校部定
+                    if (data.course_attr.Length > 0)
+                    {
+                        string code = data.course_attr.Substring(0, 1);
+                        if (code == "1")
+                        {
+                            data.is_required = "必修";
+                            data.require_by = "部定";
+                        }
+                        else if (code == "2")
+                        {
+                            data.is_required = "必修";
+                            data.require_by = "校訂";
+                        }
+                        else
+                        {
+                            data.is_required = "選修";
+                            data.require_by = "校訂";
+                        }
+                    }
+
                     value.Add(data);
                 }
             }
@@ -964,6 +1034,55 @@ namespace SHCourseGroupCodeAdmin.DAO
             return dt;
         }
 
+        public bool UpdateGPlanMOECode()
+        {
+            bool value = false;
+            // 建立群科班連結
+            try
+            {
+                string linkQuery = "" +
+                    " WITH moe_group_code_data AS(" +
+" SELECT " +
+"     DISTINCT id " +
+"     , name  " +
+" 	, substring(array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::text,0,17) AS 群組代碼 " +
+" 	,moe_group_code " +
+" 	,moe_group_code_1 " +
+" FROM " +
+"     ( " +
+"         SELECT  " +
+"             id " +
+"             , name " +
+" 			,moe_group_code  " +
+" 			,moe_group_code_1 " +
+"             , unnest(xpath('//GraduationPlan/Subject', xmlparse(content content))) as subject_ele " +
+"         FROM  " +
+"             graduation_plan " +
+"     ) AS graduation_plan WHERE  substring(array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::text,0,17) <>'' " +
+" ), " +
+" update_data AS( " +
+" UPDATE graduation_plan  " +
+" SET moe_group_code = moe_group_code_data.群組代碼  " +
+" FROM moe_group_code_data  " +
+" WHERE graduation_plan.id = moe_group_code_data.id  " +
+" RETURNING  moe_group_code_data.*  " +
+" ) " +
+" SELECT * FROM update_data ";
+
+                QueryHelper qh = new QueryHelper();
+                DataTable lkDt = qh.Select(linkQuery);
+                value = true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+
         /// <summary>
         /// 取得所有有群科班代碼班級課程規劃表
         /// </summary>
@@ -1130,7 +1249,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     QueryHelper qh = new QueryHelper();
                     DataTable dt = qh.Select(query);
                     Dictionary<string, List<DataRow>> gpcDict = new Dictionary<string, List<DataRow>>();
-                    foreach(DataRow dr in dt.Rows)
+                    foreach (DataRow dr in dt.Rows)
                     {
                         string gpid = dr["gp_id"] + "";
                         if (!gpcDict.ContainsKey(gpid))
@@ -1140,11 +1259,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
 
                     // 填入課程規劃物件
-                    foreach(GPlanData gpd in data)
+                    foreach (GPlanData gpd in data)
                     {
                         if (gpcDict.ContainsKey(gpd.ID))
                         {
-                            foreach(DataRow dr in gpcDict[gpd.ID])
+                            foreach (DataRow dr in gpcDict[gpd.ID])
                             {
                                 string class_id = dr["class_id"] + "";
                                 if (!gpd.UsedClassIDNameDict.ContainsKey(class_id))
