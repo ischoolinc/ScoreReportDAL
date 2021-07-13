@@ -653,20 +653,41 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
 
             // 重新排列科目級別
-            string tmpCourseCode = "";
-            int intLevel = 1;
+            Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
+
             foreach (XElement elm in GPlanXml.Elements("Subject"))
             {
-                string code = elm.Attribute("課程代碼").Value;
+                string subj = elm.Attribute("SubjectName").Value;
 
-                if (tmpCourseCode != code)
+                if (!tmpSubjLevelDict.ContainsKey(subj))
+                    tmpSubjLevelDict.Add(subj, 0);
+
+                tmpSubjLevelDict[subj] += 1;
+
+                elm.SetAttributeValue("FullName", SubjFullName(subj, tmpSubjLevelDict[subj]));
+                elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
+
+            }
+
+            // 重新整理開始級別
+            Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
+            foreach (XElement elm in GPlanXml.Elements("Subject"))
+            {
+                string subjName = elm.Attribute("SubjectName").Value;
+
+                string rowIdx = elm.Element("Grouping").Attribute("RowIndex").Value;
+
+                if (!tmpStartLevel.ContainsKey(subjName))
+                    tmpStartLevel.Add(subjName, rowIdx);
+                else
                 {
-                    intLevel = 1;
-                    tmpCourseCode = code;
+                    if (tmpStartLevel[subjName] != rowIdx)
+                    {
+                        // 設定開始級別是目前級別
+                        elm.Element("Grouping").SetAttributeValue("startLevel", elm.Attribute("Level").Value);
+                        tmpStartLevel[subjName] = rowIdx;
+                    }
                 }
-                elm.SetAttributeValue("FullName", SubjFullName(elm.Attribute("SubjectName").Value, intLevel));
-                elm.SetAttributeValue("Level", intLevel);
-                intLevel++;
             }
 
             return GPlanXml;

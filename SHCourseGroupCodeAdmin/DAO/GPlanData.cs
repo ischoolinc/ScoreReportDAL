@@ -328,6 +328,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
 
                         subj.GPlanXml = GPlanDict[mCo];
+                        subj.MOEXml = MOEDict[mCo];
                         chkSubjectInfoList.Add(subj);
 
                     }

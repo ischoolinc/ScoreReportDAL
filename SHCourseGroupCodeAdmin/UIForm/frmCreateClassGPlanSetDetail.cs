@@ -186,7 +186,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 DataGridViewTextBoxColumn tbCourseCode = new DataGridViewTextBoxColumn();
                 tbCourseCode.Name = "課程代碼";
-                tbCourseCode.Width = 150;
+                tbCourseCode.Width = 300;
                 tbCourseCode.HeaderText = "課程代碼";
                 tbCourseCode.ReadOnly = true;
 
@@ -355,7 +355,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void dgData_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > -1)
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
                 chkSubjectInfo subj = dgData.Rows[e.RowIndex].Tag as chkSubjectInfo;
 
