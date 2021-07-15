@@ -1303,5 +1303,84 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return data;
         }
+
+        /// <summary>
+        /// 取得課程規劃表與採用班級群科班比對
+        /// </summary>
+        /// <returns></returns>
+        public List<rptGPlanClassChkInfo> GetRptGPlanClassChkInfo(int SchoolYear, int Semester)
+        {
+            List<rptGPlanClassChkInfo> value = new List<rptGPlanClassChkInfo>();
+
+            try
+            {
+                LoadMOEGroupCodeDict();
+
+                QueryHelper qh = new QueryHelper();
+                string query = "" +
+                    " SELECT  " +
+" graduation_plan.id AS gp_id " +
+" ,graduation_plan.name AS gp_name " +
+" ,graduation_plan.moe_group_code " +
+" ,class.id AS class_id " +
+" ,class.class_name " +
+" ,class.gdc_code  " +
+"   FROM  " +
+"   class  " +
+"   INNER JOIN  " +
+"   graduation_plan  " +
+"   ON class.ref_graduation_plan_id = graduation_plan.id WHERE class.id  " +
+"   IN(SELECT  " +
+"   	DISTINCT ref_class_id  " +
+"   	FROM  " +
+"   	course  " +
+"   	WHERE  " +
+"   	school_year = " + SchoolYear + "" +
+"   	AND  " +
+"   	semester = " + Semester + " " +
+"   	AND ref_class_id IS NOT NULL " +
+" ) ORDER BY graduation_plan.name,class_name ";
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    rptGPlanClassChkInfo data = new rptGPlanClassChkInfo();
+                    data.GPID = dr["gp_id"] + "";
+                    data.GPName = dr["gp_name"] + "";
+                    data.GPMOECode = dr["moe_group_code"] + "";
+
+                    if (MOEGroupCodeDict.ContainsKey(data.GPMOECode))
+                    {
+                        data.GPMOEName = MOEGroupCodeDict[data.GPMOECode];
+                    }                    
+
+                    data.ClassID = dr["class_id"] + "";
+                    data.ClassName = dr["class_name"] + "";
+                    data.ClassGDCCode = dr["gdc_code"] + "";
+                    if (MOEGroupCodeDict.ContainsKey(data.ClassGDCCode))
+                    {
+                        data.ClassGDCName = MOEGroupCodeDict[data.ClassGDCCode];
+                    }
+                    data.CheckData();
+
+                    value.Add(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+
+        public List<rptGPlanCourseChkInfo> GetRptGPlanCourseChkInfo(int SchoolYear, int Semester)
+        {
+            List<rptGPlanCourseChkInfo> value = new List<rptGPlanCourseChkInfo>();
+
+            return value;
+        }
     }
 }

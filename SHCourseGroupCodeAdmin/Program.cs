@@ -69,14 +69,14 @@ namespace SHCourseGroupCodeAdmin
 
 
             Catalog ribbon5 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            ribbon5.Add(new RibbonFeature("A1CE769E-3AB2-404D-B743-1B3DD3E2598E", "課程代碼開課檢查"));
+            ribbon5.Add(new RibbonFeature("A1CE769E-3AB2-404D-B743-1B3DD3E2598E", "開課檢核課程代碼"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["課程代碼開課檢查"].Enable = UserAcl.Current["A1CE769E-3AB2-404D-B743-1B3DD3E2598E"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢核課程代碼"].Enable = UserAcl.Current["A1CE769E-3AB2-404D-B743-1B3DD3E2598E"].Executable;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["課程代碼開課檢查"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢核課程代碼"].Click += delegate
             {
-                chkCheckCourseCode fCode = new chkCheckCourseCode();
-                fCode.ShowDialog();
+                frmCheckGPlanCourseCode fpc = new frmCheckGPlanCourseCode();
+                fpc.ShowDialog();
             };
 
             Catalog ribbon6 = RoleAclSource.Instance["教務作業"]["課程代碼"];
@@ -94,14 +94,14 @@ namespace SHCourseGroupCodeAdmin
             };
 
             Catalog ribbon7 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            ribbon7.Add(new RibbonFeature("1E66275D-2040-4D1D-8C7D-F5163D230A22", "學生學期科目成績課程代碼檢查"));
+            ribbon7.Add(new RibbonFeature("1E66275D-2040-4D1D-8C7D-F5163D230A22", "修課檢核課程代碼"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["學生學期科目成績課程代碼檢查"].Enable = UserAcl.Current["1E66275D-2040-4D1D-8C7D-F5163D230A22"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["修課檢核課程代碼"].Enable = UserAcl.Current["1E66275D-2040-4D1D-8C7D-F5163D230A22"].Executable;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["學生學期科目成績課程代碼檢查"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["修課檢核課程代碼"].Click += delegate
             {
-                chkStudSubjectScoreCourseCode cc = new chkStudSubjectScoreCourseCode();
-                cc.ShowDialog();
+                frmCheckSCAttendCourseCode fcs = new frmCheckSCAttendCourseCode();
+                fcs.ShowDialog();
             };
 
         }

@@ -91,23 +91,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 XElement GPlanXml = new XElement("GraduationPlan");
             
                 foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
-                {
-                    if (subj.ProcessStatus != "更新")
-                        Console.WriteLine(subj.ProcessStatus);
-
+                {                 
 
                     if (subj.ProcessStatus == "更新")
                     {
                         foreach (XElement elm in subj.MOEXml)
                         {
                             GPlanXml.Add(elm);
-                        }
-
-                        if (subj.MOEXml.Count == 0)
-                        {
-                            Console.WriteLine("test");
-                        }
-
+                        } 
                     }
 
 
