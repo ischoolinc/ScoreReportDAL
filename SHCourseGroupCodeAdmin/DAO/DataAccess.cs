@@ -1344,15 +1344,29 @@ namespace SHCourseGroupCodeAdmin.DAO
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
                 {
+
+                    // 檢查課程規劃表如果是108前不處理
+                    int gpsc;
+                    string gpName = dr["gp_name"] + "";
+
+                    if (gpName.Length > 3)
+                    {
+                        if (int.TryParse(gpName.Substring(0, 3), out gpsc))
+                        {
+                            if (gpsc < 108)
+                                continue;
+                        }
+                    }
+
                     rptGPlanClassChkInfo data = new rptGPlanClassChkInfo();
                     data.GPID = dr["gp_id"] + "";
-                    data.GPName = dr["gp_name"] + "";
+                    data.GPName = gpName;
                     data.GPMOECode = dr["moe_group_code"] + "";
 
                     if (MOEGroupCodeDict.ContainsKey(data.GPMOECode))
                     {
                         data.GPMOEName = MOEGroupCodeDict[data.GPMOECode];
-                    }                    
+                    }
 
                     data.ClassID = dr["class_id"] + "";
                     data.ClassName = dr["class_name"] + "";
@@ -1379,6 +1393,153 @@ namespace SHCourseGroupCodeAdmin.DAO
         public List<rptGPlanCourseChkInfo> GetRptGPlanCourseChkInfo(int SchoolYear, int Semester)
         {
             List<rptGPlanCourseChkInfo> value = new List<rptGPlanCourseChkInfo>();
+            try
+            {
+                LoadMOEGroupCodeDict();
+
+                // 取得課程大表資料
+                Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+
+                string query = "" +
+                    " SELECT  " +
+" course.id AS course_id " +
+" ,course.school_year " +
+" ,course.semester " +
+" ,course.course_name " +
+" ,class.grade_year " +
+" ,class.class_name " +
+" ,class.id AS class_id " +
+" ,subject " +
+" ,subj_level " +
+" ,c_required_by " +
+" ,c_is_required " +
+" ,credit" +
+" ,period " +
+" ,class.gdc_code " +
+"  FROM course  " +
+"  INNER JOIN class  " +
+"  ON course.ref_class_id = class.id  " +
+"  WHERE course.school_year = " + SchoolYear + " AND course.semester = " + Semester + "  " +
+"  ORDER BY grade_year DESC,course_name ";
+
+
+                List<string> errItem = new List<string>();
+
+                // 取得學分對照表
+                Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
+
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    errItem.Clear();
+                    errItem.Add("科目名稱");
+                    errItem.Add("部定校訂");
+                    errItem.Add("必修選修");
+                    errItem.Add("學分數");
+
+                    rptGPlanCourseChkInfo data = new rptGPlanCourseChkInfo();
+                    data.ClassName = dr["class_name"] + "";
+                    data.CourseID = dr["course_id"] + "";
+                    data.CourseName = dr["course_name"] + "";
+                    data.Credit = dr["credit"] + "";
+                    data.RefClassID = dr["class_id"] + "";
+                    data.SchoolYear = dr["school_year"] + "";
+                    data.Semester = dr["semester"] + "";
+                    data.SubjectName = dr["subject"] + "";
+                    data.SubjectLevel = dr["subj_level"] + "";
+                    data.GradeYear = dr["grade_year"] + "";
+                    if (dr["c_required_by"] + "" == "1")
+                    {
+                        data.RequiredBy = "部定";
+                    }
+
+                    if (dr["c_required_by"] + "" == "2")
+                    {
+                        data.RequiredBy = "校訂";
+                    }
+
+                    if (dr["c_is_required"] + "" == "1")
+                    {
+                        data.isRequired = "必修";
+                    }
+
+                    if (dr["c_is_required"] + "" == "0")
+                    {
+                        data.isRequired = "選修";
+                    }
+
+                    data.gdc_code = dr["gdc_code"] + "";
+
+                    // 比對大表資料
+                    if (MOECourseDict.ContainsKey(data.gdc_code))
+                    {
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.isRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
+                            {
+                                data.entry_year = Mco.entry_year;
+                                data.credit_period = Mco.credit_period;
+                                data.CourseCode = Mco.course_code;
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.isRequired == Mco.is_required)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("必修選修");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("部定校訂");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name)
+                            {
+                                errItem.Remove("科目名稱");
+                                break;
+                            }
+                        }
+
+                        // 檢查學分數
+                        if (data.CheckCreditPass(mappingTable))
+                        {
+                            errItem.Remove("學分數");
+                        }
+
+
+                        if (errItem.Count > 0)
+                        {
+                            foreach (string err in errItem)
+                                data.ErrorMsgList.Add(err);
+                        }
+                    }
+                    else
+                    {
+                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                    }
+
+                    value.Add(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return value;
         }

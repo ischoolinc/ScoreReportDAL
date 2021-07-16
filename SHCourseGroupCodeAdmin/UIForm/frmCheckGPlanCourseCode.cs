@@ -72,6 +72,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             _bwWorker.ReportProgress(20);
 
+            // 取得課程檢查資料
             List<rptGPlanCourseChkInfo> RptGPlanCourseChkInfoList = da.GetRptGPlanCourseChkInfo(_SchoolYear, _Semester);
             List<rptGPlanCourseChkInfo> RptGPlanCourseChkInfoPass = new List<rptGPlanCourseChkInfo>();
             List<rptGPlanCourseChkInfo> RptGPlanCourseChkInfoError = new List<rptGPlanCourseChkInfo>();
@@ -87,10 +88,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     RptGPlanCourseChkInfoPass.Add(data);
                 }
             }
+            _bwWorker.ReportProgress(50);
 
-
-
-            _bwWorker.ReportProgress(70);
             // 輸出報表 
             _wb = new Workbook(new MemoryStream(Properties.Resources.課程規劃表開課檢核樣版));
 
@@ -136,9 +135,63 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstGPChkErr.Cells[rowIdx, GetColIndex("採用班級")].PutValue(data.ClassName);
                 wstGPChkErr.Cells[rowIdx, GetColIndex("班級設定群科班名稱")].PutValue(data.ClassGDCName);
                 wstGPChkErr.Cells[rowIdx, GetColIndex("班級設定群科班代碼")].PutValue(data.ClassGDCCode);
-                wstGPChkErr.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()));
+                wstGPChkErr.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + "  ");
                 rowIdx++;
             }
+
+            _bwWorker.ReportProgress(70);
+
+            _ColIdxDict.Clear();
+            for (int co = 0; co <= wstGPChkCoursePass.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wstGPChkCoursePass.Cells[0, co].StringValue, co);
+            }
+
+            rowIdx = 1;
+            foreach (rptGPlanCourseChkInfo data in RptGPlanCourseChkInfoPass)
+            {
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("課程名稱")].PutValue(data.CourseName);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("所屬班級")].PutValue(data.ClassName);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.isRequired);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
+                wstGPChkCoursePass.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
+
+                rowIdx++;
+            }
+
+
+            _ColIdxDict.Clear();
+            for (int co = 0; co <= wstGPChkCourseErr.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wstGPChkCourseErr.Cells[0, co].StringValue, co);
+            }
+
+            rowIdx = 1;
+            foreach (rptGPlanCourseChkInfo data in RptGPlanCourseChkInfoError)
+            {
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("課程名稱")].PutValue(data.CourseName);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("所屬班級")].PutValue(data.ClassName);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.isRequired);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
+                wstGPChkCourseErr.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + "  不同");
+                rowIdx++;
+            }
+
 
             wstGPChkPass.AutoFitColumns();
             wstGPChkErr.AutoFitColumns();

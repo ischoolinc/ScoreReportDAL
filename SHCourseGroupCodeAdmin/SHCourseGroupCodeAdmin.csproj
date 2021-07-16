@@ -96,6 +96,7 @@
     <Compile Include="DAO\GPlanInfo.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
     <Compile Include="DAO\rptGPlanClassChkInfo.cs" />
+    <Compile Include="DAO\rptGPlanCourseChkInfo.cs" />
     <Compile Include="DAO\rptSubjectInfo.cs" />
     <Compile Include="DAO\StudentSubjectInfoChk.cs" />
     <Compile Include="DAO\SubjectInfoChk.cs" />
