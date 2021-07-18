@@ -6,26 +6,32 @@ using System.Threading.Tasks;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
-    public class rptGPlanCourseChkInfo
+    public class rptSCAttendCodeChkInfo
     {
-        public string SchoolYear { get; set; }
-        public string entry_year { get; set; }
-        public string Semester { get; set; }
-        public string CourseID { get; set; }
-        public string CourseName { get; set; }
-        public string RefClassID { get; set; }
+        public string StudentID { get; set; }
+        public string StudentNumber { get; set; }
         public string ClassName { get; set; }
+        public string SeatNo { get; set; }
+        public string GradeYear { get; set; }
+        public string StudentName { get; set; }
+        public string SchoolYear { get; set; }
+        public string Semester { get; set; }
+        public string CourseName { get; set; }
+        public string CourseRefClass { get; set; }
         public string SubjectName { get; set; }
         public string SubjectLevel { get; set; }
         public string RequiredBy { get; set; }
-        public string isRequired { get; set; }
+        public string IsRequired { get; set; }
         public string Credit { get; set; }
+        public string Period { get; set; }
         public string CourseCode { get; set; }
         public string credit_period { get; set; }
+
+        public string entry_year { get; set; }
+
+        public string CourseID { get; set; }
+
         public string gdc_code { get; set; }
-
-        public string GradeYear { get; set; }
-
         public List<string> ErrorMsgList = new List<string>();
 
         /// <summary>
@@ -40,7 +46,6 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             if (credit_period == null)
                 return false;
-
             char[] ret = credit_period.ToCharArray();
 
             if (int.TryParse(entry_year, out ey))
@@ -101,6 +106,5 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
-
     }
 }

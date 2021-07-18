@@ -1543,5 +1543,193 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
+
+        public List<rptSCAttendCodeChkInfo> GetStudentCourseInfoByGradeYear(int GradeYear)
+        {
+            List<rptSCAttendCodeChkInfo> value = new List<rptSCAttendCodeChkInfo>();
+            try
+            {
+                // 取得課程大表資料
+                Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+                List<string> errItem = new List<string>();
+
+                // 取得學分對照表
+                Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
+
+                QueryHelper qh = new QueryHelper();
+                string query = "" +
+                    " SELECT  " +
+" student.id AS student_id " +
+" , student.name AS student_name " +
+" , student_number " +
+" , student.seat_no " +
+" , class_name " +
+" , class.grade_year AS grade_year " +
+" , course.id AS course_id " +
+" , course_name " +
+" , subject " +
+" , subj_level " +
+" , course.ref_class_id AS c_ref_class_id " +
+" , course.credit " +
+" , course.period " +
+" , course.school_year " +
+" , course.semester " +
+" , (CASE c_required_by WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
+" , (CASE c_is_required WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
+" , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
+" FROM course " +
+" 	INNER JOIN sc_attend " +
+"  ON course.id = sc_attend.ref_course_id  " +
+" 	INNER JOIN student  " +
+"  ON sc_attend.ref_student_id = student.id " +
+" 	INNER JOIN class " +
+" 	ON student.ref_class_id = class.id " +
+" WHERE  " +
+"  student.status = 1 AND class.grade_year = " + GradeYear + "  " +
+" ORDER BY class.display_order,class_name,seat_no,school_year,semester,course_name ";
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    errItem.Clear();
+                    errItem.Add("科目名稱");
+                    errItem.Add("部定校訂");
+                    errItem.Add("必修選修");
+                    errItem.Add("學分數");
+
+                    rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
+                    data.StudentID = dr["student_id"] + "";
+                    data.StudentName = dr["student_name"] + "";
+                    data.StudentNumber = dr["student_number"] + "";
+                    data.ClassName = dr["class_name"] + "";
+                    data.SeatNo = dr["seat_no"] + "";
+                    data.CourseID = dr["course_id"] + "";
+                    data.CourseName = dr["course_name"] + "";
+                    data.SubjectName = dr["subject"] + "";
+                    data.SubjectLevel = dr["subj_level"] + "";
+                    data.SchoolYear = dr["school_year"] + "";
+                    data.Semester = dr["semester"] + "";
+                    data.RequiredBy = dr["required_by"] + "";
+                    data.IsRequired = dr["required"] + "";
+                    data.GradeYear = dr["grade_year"] + "";
+                    data.Credit = dr["credit"] + "";
+                    data.Period = dr["period"] + "";
+                    if (dr["gdc_code"] != null)
+                    {
+                        data.gdc_code = dr["gdc_code"] + "";
+                    }
+                    else
+                    {
+                        data.gdc_code = "";
+                    }
+
+
+                    // 比對大表資料
+                    if (MOECourseDict.ContainsKey(data.gdc_code))
+                    {
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
+                            {
+                                data.entry_year = Mco.entry_year;
+                                data.credit_period = Mco.credit_period;
+                                data.CourseCode = Mco.course_code;
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("必修選修");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("部定校訂");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name)
+                            {
+                                errItem.Remove("科目名稱");
+                                break;
+                            }
+                        }
+
+                        // 檢查學分數
+                        if (data.CheckCreditPass(mappingTable))
+                        {
+                            errItem.Remove("學分數");
+                        }
+
+
+                        if (errItem.Count > 0)
+                        {
+                            foreach (string err in errItem)
+                                data.ErrorMsgList.Add(err);
+                        }
+                    }
+                    else
+                    {
+                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                    }
+
+                    value.Add(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+        public List<DataRow> GetHasGDCCodeStudentByGradeYear(int GradeYear)
+        {
+            List<DataRow> value = new List<DataRow>();
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = "" +
+                    " SELECT  " +
+" student.id AS student_id " +
+" , student.name AS student_name " +
+" , student_number " +
+" , student.seat_no " +
+" , class_name " +
+" , class.grade_year AS grade_year " +
+" , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
+" FROM student  " +
+" 	INNER JOIN class " +
+" 	ON student.ref_class_id = class.id " +
+" WHERE  " +
+"  student.status = 1 AND class.grade_year = " + GradeYear + "  " +
+"  AND COALESCE(student.gdc_code,class.gdc_code)  IS NOT NULL " +
+" ORDER BY class.display_order,class_name,seat_no ";
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                    value.Add(dr);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+
     }
 }

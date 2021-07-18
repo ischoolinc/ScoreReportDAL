@@ -71,7 +71,7 @@ namespace SHCourseGroupCodeAdmin
             Catalog ribbon5 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon5.Add(new RibbonFeature("A1CE769E-3AB2-404D-B743-1B3DD3E2598E", "開課檢核課程代碼"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢核課程代碼"].Enable = false;// UserAcl.Current["A1CE769E-3AB2-404D-B743-1B3DD3E2598E"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢核課程代碼"].Enable = UserAcl.Current["A1CE769E-3AB2-404D-B743-1B3DD3E2598E"].Executable;
 
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["開課檢核課程代碼"].Click += delegate
             {

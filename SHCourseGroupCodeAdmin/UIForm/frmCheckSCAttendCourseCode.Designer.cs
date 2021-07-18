@@ -30,10 +30,9 @@
         {
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.btnRun = new DevComponents.DotNetBar.ButtonX();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.iptGradeYear = new DevComponents.Editors.IntegerInput();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.cbxSemester = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.cbxSchoolYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            ((System.ComponentModel.ISupportInitialize)(this.iptGradeYear)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -42,7 +41,7 @@
             this.btnCancel.AutoSize = true;
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(234, 79);
+            this.btnCancel.Location = new System.Drawing.Point(124, 76);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -56,27 +55,31 @@
             this.btnRun.AutoSize = true;
             this.btnRun.BackColor = System.Drawing.Color.Transparent;
             this.btnRun.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRun.Location = new System.Drawing.Point(140, 79);
+            this.btnRun.Location = new System.Drawing.Point(30, 76);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(75, 25);
             this.btnRun.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnRun.TabIndex = 10;
             this.btnRun.Text = "執行";
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
-            // labelX2
+            // iptGradeYear
             // 
-            this.labelX2.AutoSize = true;
-            this.labelX2.BackColor = System.Drawing.Color.Transparent;
-            // 
+            this.iptGradeYear.BackColor = System.Drawing.Color.Transparent;
             // 
             // 
-            this.labelX2.BackgroundStyle.Class = "";
-            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(195, 25);
-            this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(34, 21);
-            this.labelX2.TabIndex = 9;
-            this.labelX2.Text = "學期";
+            // 
+            this.iptGradeYear.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.iptGradeYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.iptGradeYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptGradeYear.Location = new System.Drawing.Point(105, 19);
+            this.iptGradeYear.MaxValue = 6;
+            this.iptGradeYear.MinValue = 1;
+            this.iptGradeYear.Name = "iptGradeYear";
+            this.iptGradeYear.ShowUpDown = true;
+            this.iptGradeYear.Size = new System.Drawing.Size(51, 25);
+            this.iptGradeYear.TabIndex = 12;
+            this.iptGradeYear.Value = 3;
             // 
             // labelX1
             // 
@@ -87,52 +90,26 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(14, 25);
+            this.labelX1.Location = new System.Drawing.Point(63, 21);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(47, 21);
-            this.labelX1.TabIndex = 8;
-            this.labelX1.Text = "學年度";
-            // 
-            // cbxSemester
-            // 
-            this.cbxSemester.DisplayMember = "Text";
-            this.cbxSemester.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbxSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxSemester.FormattingEnabled = true;
-            this.cbxSemester.ItemHeight = 19;
-            this.cbxSemester.Location = new System.Drawing.Point(235, 23);
-            this.cbxSemester.Name = "cbxSemester";
-            this.cbxSemester.Size = new System.Drawing.Size(78, 25);
-            this.cbxSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cbxSemester.TabIndex = 7;
-            // 
-            // cbxSchoolYear
-            // 
-            this.cbxSchoolYear.DisplayMember = "Text";
-            this.cbxSchoolYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbxSchoolYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxSchoolYear.FormattingEnabled = true;
-            this.cbxSchoolYear.ItemHeight = 19;
-            this.cbxSchoolYear.Location = new System.Drawing.Point(72, 23);
-            this.cbxSchoolYear.Name = "cbxSchoolYear";
-            this.cbxSchoolYear.Size = new System.Drawing.Size(90, 25);
-            this.cbxSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cbxSchoolYear.TabIndex = 6;
+            this.labelX1.Size = new System.Drawing.Size(34, 21);
+            this.labelX1.TabIndex = 13;
+            this.labelX1.Text = "年級";
             // 
             // frmCheckSCAttendCourseCode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 124);
+            this.ClientSize = new System.Drawing.Size(235, 117);
+            this.Controls.Add(this.iptGradeYear);
+            this.Controls.Add(this.labelX1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnRun);
-            this.Controls.Add(this.labelX2);
-            this.Controls.Add(this.labelX1);
-            this.Controls.Add(this.cbxSemester);
-            this.Controls.Add(this.cbxSchoolYear);
             this.DoubleBuffered = true;
             this.Name = "frmCheckSCAttendCourseCode";
             this.Text = "修課檢核課程代碼";
+            this.Load += new System.EventHandler(this.frmCheckSCAttendCourseCode_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.iptGradeYear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,9 +119,7 @@
 
         private DevComponents.DotNetBar.ButtonX btnCancel;
         private DevComponents.DotNetBar.ButtonX btnRun;
-        private DevComponents.DotNetBar.LabelX labelX2;
+        private DevComponents.Editors.IntegerInput iptGradeYear;
         private DevComponents.DotNetBar.LabelX labelX1;
-        private DevComponents.DotNetBar.Controls.ComboBoxEx cbxSemester;
-        private DevComponents.DotNetBar.Controls.ComboBoxEx cbxSchoolYear;
     }
 }
