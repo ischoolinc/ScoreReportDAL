@@ -104,6 +104,18 @@ namespace SHCourseGroupCodeAdmin
                 fcs.ShowDialog();
             };
 
+
+            Catalog ribbon8 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon8.Add(new RibbonFeature("83FB7115-548B-4C63-840C-5967A0725189", "手動同步課程代碼API"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Enable = UserAcl.Current["83FB7115-548B-4C63-840C-5967A0725189"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Click += delegate
+            {
+                frmSyncCourseCodeAPI scAPI = new frmSyncCourseCodeAPI();
+                scAPI.ShowDialog();
+            };
+
         }
     }
 }
