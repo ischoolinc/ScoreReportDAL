@@ -202,8 +202,8 @@
             // 
             // 
             // 
-            this.lblNoChangeCount.BackgroundStyle.Class = "";
-            this.lblNoChangeCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblDelCount.BackgroundStyle.Class = "";
+            this.lblDelCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lblDelCount.Location = new System.Drawing.Point(311, 465);
             this.lblDelCount.Name = "lblDelCount";
             this.lblDelCount.Size = new System.Drawing.Size(63, 23);
@@ -216,8 +216,8 @@
             // 
             // 
             // 
-            this.lblDelCount.BackgroundStyle.Class = "";
-            this.lblDelCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblNoChangeCount.BackgroundStyle.Class = "";
+            this.lblNoChangeCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lblNoChangeCount.Location = new System.Drawing.Point(496, 465);
             this.lblNoChangeCount.Name = "lblNoChangeCount";
             this.lblNoChangeCount.Size = new System.Drawing.Size(63, 23);
@@ -262,6 +262,7 @@
             this.dgData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellContentClick);
             this.dgData.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellMouseEnter);
             this.dgData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellValueChanged);
+            this.dgData.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgData_ColumnHeaderMouseClick);
             // 
             // btnSave
             // 

@@ -33,16 +33,30 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            int rowIdx = 0;
-            foreach (chkSubjectInfo subj in _GPlanData.chkSubjectInfoList)
+            //int rowIdx = 0;
+            //foreach (chkSubjectInfo subj in _GPlanData.chkSubjectInfoList)
+            //{
+            //    if (dgData.Rows[rowIdx].Cells["處理方式"].Value != null)
+            //    {
+            //        subj.ProcessStatus = dgData.Rows[rowIdx].Cells["處理方式"].Value.ToString();
+            //    }
+
+            //    rowIdx++;
+            //}
+
+            _GPlanData.chkSubjectInfoList.Clear();
+            foreach(DataGridViewRow drv in dgData.Rows)
             {
-                if (dgData.Rows[rowIdx].Cells["處理方式"].Value != null)
+                chkSubjectInfo subj = drv.Tag as chkSubjectInfo;
+                if (subj != null)
                 {
-                    subj.ProcessStatus = dgData.Rows[rowIdx].Cells["處理方式"].Value.ToString();
+                    if (drv.Cells["處理方式"].Value != null)
+                        subj.ProcessStatus = drv.Cells["處理方式"].Value.ToString();                    
                 }
 
-                rowIdx++;
+                _GPlanData.chkSubjectInfoList.Add(subj);
             }
+
             this.DialogResult = DialogResult.OK;
         }
 
@@ -205,6 +219,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgData.Columns.Add(tbGS32);
                 dgData.Columns.Add(tbOpenStatus);
                 dgData.Columns.Add(tbCourseCode);
+
+                //// 因為自動排序有些問題，先將關閉
+                //foreach(DataGridViewColumn col in dgData.Columns )
+                //{
+                //    col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                //}
+
             }
             catch (Exception ex)
             {
@@ -407,6 +428,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 DataCount();
             }
+        }
+
+        private void dgData_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+           
         }
     }
 }
