@@ -114,6 +114,7 @@
     <Compile Include="DAO\rptGPlanClassChkInfo.cs" />
     <Compile Include="DAO\rptGPlanCourseChkInfo.cs" />
     <Compile Include="DAO\rptSCAttendCodeChkInfo.cs" />
+    <Compile Include="DAO\rptStudSemsScoreCodeChkInfo.cs" />
     <Compile Include="DAO\rptSubjectInfo.cs" />
     <Compile Include="DAO\StudentSubjectInfoChk.cs" />
     <Compile Include="DAO\SubjectInfoChk.cs" />
@@ -156,6 +157,12 @@
     <Compile Include="UIForm\frmCheckSCAttendCourseCode.Designer.cs">
       <DependentUpon>frmCheckSCAttendCourseCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmCheckSemsScoreCourseCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCheckSemsScoreCourseCode.Designer.cs">
+      <DependentUpon>frmCheckSemsScoreCourseCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmCreateClassGPlan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Template\修課檢核課程代碼樣板.xlsx" />
+    <None Include="Template\學期成績檢核課程代碼樣板.xlsx" />
     <None Include="Template\學期科目成績課程代碼檢查樣版.xlsx" />
     <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\班級課程規劃表資料樣版.xlsx" />
@@ -255,6 +263,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCheckSCAttendCourseCode.resx">
       <DependentUpon>frmCheckSCAttendCourseCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCheckSemsScoreCourseCode.resx">
+      <DependentUpon>frmCheckSemsScoreCourseCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateClassGPlan.resx">
       <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>

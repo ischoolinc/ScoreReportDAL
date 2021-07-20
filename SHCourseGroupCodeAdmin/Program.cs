@@ -116,6 +116,17 @@ namespace SHCourseGroupCodeAdmin
                 scAPI.ShowDialog();
             };
 
+            Catalog ribbon9 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon9.Add(new RibbonFeature("604F7D79-4B25-41DC-9E45-FCC328AF61C7", "學期成績檢核課程代碼"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["學期成績檢核課程代碼"].Enable = UserAcl.Current["604F7D79-4B25-41DC-9E45-FCC328AF61C7"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["學期成績檢核課程代碼"].Click += delegate
+            {
+                frmCheckSemsScoreCourseCode fcs = new frmCheckSemsScoreCourseCode();
+                fcs.ShowDialog();
+            };
+
         }
     }
 }

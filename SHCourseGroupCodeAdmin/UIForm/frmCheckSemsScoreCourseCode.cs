@@ -13,10 +13,9 @@ using System.Xml.Linq;
 using Aspose.Cells;
 using System.IO;
 
-
 namespace SHCourseGroupCodeAdmin.UIForm
 {
-    public partial class frmCheckSCAttendCourseCode : BaseForm
+    public partial class frmCheckSemsScoreCourseCode : BaseForm
     {
         BackgroundWorker _bgWorker;
         Workbook _wb;
@@ -25,25 +24,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         Dictionary<string, int> _ColIdxDict;
 
-        List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoHasDataList = new List<rptSCAttendCodeChkInfo>();
-        List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoErrorList = new List<rptSCAttendCodeChkInfo>();
-        List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoNoList = new List<rptSCAttendCodeChkInfo>();
+        List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoHasDataList = new List<rptStudSemsScoreCodeChkInfo>();
+        List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoErrorList = new List<rptStudSemsScoreCodeChkInfo>();
+        List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoNoList = new List<rptStudSemsScoreCodeChkInfo>();
 
-        public frmCheckSCAttendCourseCode()
+        public frmCheckSemsScoreCourseCode()
         {
             InitializeComponent();
             _bgWorker = new BackgroundWorker();
             _wb = new Workbook();
             _ColIdxDict = new Dictionary<string, int>();
             _bgWorker.DoWork += _bgWorker_DoWork;
-            _bgWorker.RunWorkerCompleted += _bgWorker_RunWorkerCompleted;
             _bgWorker.ProgressChanged += _bgWorker_ProgressChanged;
+            _bgWorker.RunWorkerCompleted += _bgWorker_RunWorkerCompleted;
             _bgWorker.WorkerReportsProgress = true;
-        }
-
-        private void _bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("修課檢核課程代碼中...", e.ProgressPercentage);
         }
 
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -53,8 +47,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             if (_wb != null)
             {
-                Utility.ExprotXls("修課檢核課程代碼", _wb);
+                Utility.ExprotXls("學期成績檢核課程代碼", _wb);
             }
+        }
+
+        private void _bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("學期成績檢核課程代碼中...", e.ProgressPercentage);
         }
 
         private void _bgWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -62,15 +61,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _bgWorker.ReportProgress(1);
             da.LoadMOEGroupCodeDict();
 
-            SCAttendCodeChkInfoHasDataList.Clear();
-            SCAttendCodeChkInfoErrorList.Clear();
-            SCAttendCodeChkInfoNoList.Clear();
+            StudSemsScoreCodeChkInfoHasDataList.Clear();
+            StudSemsScoreCodeChkInfoErrorList.Clear();
+            StudSemsScoreCodeChkInfoNoList.Clear();
 
-            List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoList = da.GetStudentCourseInfoByGradeYear(_GradeYear);
+            List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfoByGradeYear(_GradeYear);
 
             Dictionary<string, List<string>> chkHasCourseCodeDict = new Dictionary<string, List<string>>();
 
-            foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
+            foreach (rptStudSemsScoreCodeChkInfo data in StudSemsScoreCodeChkInfoList)
             {
                 if (!string.IsNullOrEmpty(data.CourseCode))
                 {
@@ -82,21 +81,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 if (data.ErrorMsgList.Count > 0)
                 {
-                    SCAttendCodeChkInfoErrorList.Add(data);
+                    StudSemsScoreCodeChkInfoErrorList.Add(data);
                 }
                 else
                 {
-                    SCAttendCodeChkInfoHasDataList.Add(data);
+                    StudSemsScoreCodeChkInfoHasDataList.Add(data);
                 }
             }
             _bgWorker.ReportProgress(40);
             // 取得課程大表資料
             Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();
-
-
-
-
-
 
             List<DataRow> haGDCCodeStudents = da.GetHasGDCCodeStudentByGradeYear(_GradeYear);
 
@@ -115,7 +109,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 continue;
                         }
 
-                        rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
+                        rptStudSemsScoreCodeChkInfo data = new rptStudSemsScoreCodeChkInfo();
                         data.StudentID = sid;
                         data.ClassName = dr["class_name"] + "";
                         data.SeatNo = dr["seat_no"] + "";
@@ -127,24 +121,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         data.IsRequired = Mo.is_required;
                         data.RequiredBy = Mo.require_by;
                         data.SubjectName = Mo.subject_name;
-                        SCAttendCodeChkInfoNoList.Add(data);
+                        StudSemsScoreCodeChkInfoNoList.Add(data);
                     }
                 }
             }
 
-
-
-
-
-
             _bgWorker.ReportProgress(70);
             // 填值到 Excel
-            _wb = new Workbook(new MemoryStream(Properties.Resources.修課檢核課程代碼樣板));
-            Worksheet wstSC = _wb.Worksheets["檢查修課學生課程代碼"];
-            wstSC.Name = _GradeYear + "年級_檢查修課學生課程代碼";
+            _wb = new Workbook(new MemoryStream(Properties.Resources.學期成績檢核課程代碼樣板));
+            Worksheet wstSC = _wb.Worksheets["檢查學期成績課程代碼"];
+            wstSC.Name = _GradeYear + "年級_檢查學期成績課程代碼";
 
-            Worksheet wstSCError = _wb.Worksheets["檢查修課學生課程代碼(有差異)"];
-            wstSCError.Name = _GradeYear + "年級_檢查修課學生課程代碼(有差異)";
+            Worksheet wstSCError = _wb.Worksheets["檢查學期成績課程代碼(有差異)"];
+            wstSCError.Name = _GradeYear + "年級_檢查學期成績課程代碼(有差異)";
 
             Worksheet wstSCNo = _wb.Worksheets["檢查學生應修課程代碼未修"];
             wstSCNo.Name = _GradeYear + "年級_檢查學生應修課程代碼未修";
@@ -157,7 +146,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 _ColIdxDict.Add(wstSC.Cells[0, co].StringValue, co);
             }
 
-            foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoHasDataList)
+            foreach (rptStudSemsScoreCodeChkInfo data in StudSemsScoreCodeChkInfoHasDataList)
             {
                 wstSC.Cells[rowIdx, GetColIndex("學號")].PutValue(data.StudentNumber);
                 wstSC.Cells[rowIdx, GetColIndex("班級")].PutValue(data.ClassName);
@@ -165,13 +154,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("姓名")].PutValue(data.StudentName);
                 wstSC.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
                 wstSC.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
-                wstSC.Cells[rowIdx, GetColIndex("課程名稱")].PutValue(data.CourseName);
                 wstSC.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
                 wstSC.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSC.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSC.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
                 wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
-                wstSC.Cells[rowIdx, GetColIndex("節數")].PutValue(data.Period);
                 wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSC.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSC.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
@@ -187,7 +174,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 _ColIdxDict.Add(wstSCError.Cells[0, co].StringValue, co);
             }
-            foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoErrorList)
+            foreach (rptStudSemsScoreCodeChkInfo data in StudSemsScoreCodeChkInfoErrorList)
             {
                 wstSCError.Cells[rowIdx, GetColIndex("學號")].PutValue(data.StudentNumber);
                 wstSCError.Cells[rowIdx, GetColIndex("班級")].PutValue(data.ClassName);
@@ -195,13 +182,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("姓名")].PutValue(data.StudentName);
                 wstSCError.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
                 wstSCError.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
-                wstSCError.Cells[rowIdx, GetColIndex("課程名稱")].PutValue(data.CourseName);
                 wstSCError.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
                 wstSCError.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSCError.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSCError.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
                 wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
-                wstSCError.Cells[rowIdx, GetColIndex("節數")].PutValue(data.Period);
                 wstSCError.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCError.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
@@ -222,7 +207,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + " 不同");
                     }
                 }
-
                 rowIdx++;
             }
             wstSCError.AutoFitColumns();
@@ -234,7 +218,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 _ColIdxDict.Add(wstSCNo.Cells[0, co].StringValue, co);
             }
-            foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoNoList)
+            foreach (rptStudSemsScoreCodeChkInfo data in StudSemsScoreCodeChkInfoNoList)
             {
                 wstSCNo.Cells[rowIdx, GetColIndex("學號")].PutValue(data.StudentNumber);
                 wstSCNo.Cells[rowIdx, GetColIndex("班級")].PutValue(data.ClassName);
@@ -251,23 +235,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
             wstSCNo.AutoFitColumns();
 
 
-            if (SCAttendCodeChkInfoErrorList.Count == 0)
+            if (StudSemsScoreCodeChkInfoErrorList.Count == 0)
             {
                 _wb.Worksheets.RemoveAt(wstSCError.Name);
             }
 
-            if (SCAttendCodeChkInfoNoList.Count == 0)
+            if (StudSemsScoreCodeChkInfoNoList.Count == 0)
                 _wb.Worksheets.RemoveAt(wstSCNo.Name);
 
             _bgWorker.ReportProgress(100);
+
+
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void frmCheckSCAttendCourseCode_Load(object sender, EventArgs e)
+        private void frmCheckSemsScoreCourseCode_Load(object sender, EventArgs e)
         {
             this.MaximumSize = this.MinimumSize = this.Size;
             try
@@ -278,6 +259,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 Console.WriteLine(ex.Message);
             }
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -285,6 +272,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             btnRun.Enabled = iptGradeYear.Enabled = false;
             _GradeYear = iptGradeYear.Value;
             _bgWorker.RunWorkerAsync();
+
         }
 
         private int GetColIndex(string name)
