@@ -16,7 +16,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 {
     public partial class frmSyncCourseCodeAPI : BaseForm
     {
-        
+
 
         public frmSyncCourseCodeAPI()
         {
@@ -30,17 +30,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmSyncCourseCodeAPI_Load(object sender, EventArgs e)
         {
+            int sy;
+            if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sy))
+            {
+                for (int s = sy - 3; s <= sy + 3; s++)
+                    cboSchoolYear.Items.Add(s);
+            }
+            lblSchoolCode.Text = "學校代碼：" + K12.Data.School.Code;
+            cboSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
             this.MaximumSize = this.MinimumSize = this.Size;
+            cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void btnRun_Click(object sender, EventArgs e)
         {
+            // 檢查是否有學校代碼
+            if (string.IsNullOrWhiteSpace(K12.Data.School.Code))
+            {
+                MsgBox.Show("請輸入學校代碼。");
+                return;
+            }
+
             btnRun.Enabled = false;
+            cboSchoolYear.Enabled = false;
 
             try
             {
                 int sy;
-                if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sy))
+                if (int.TryParse(cboSchoolYear.Text, out sy))
                 {
                     for (int s = (sy - 2); s <= sy; s++)
                     {
@@ -57,11 +74,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
 
             btnRun.Enabled = true;
+            cboSchoolYear.Enabled = true;
         }
 
-        private bool CallServiceBySchoolYear(int SchoolYear)
+        private string CallServiceBySchoolYear(int SchoolYear)
         {
-            bool value = false;
+            string value = "";
             string content = "";
             try
             {
@@ -81,16 +99,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     Stream oStreamOut = req.GetRequestStream();
                     oStreamOut.Write(bytes, 0, bytes.Length);
                 }
-                
-                var response = req.GetResponse();                
+
+                var response = req.GetResponse();
                 Stream receiveStream = response.GetResponseStream();
                 StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
                 string data = readStream.ReadToEnd();
-                value = true;
+
             }
             catch (Exception ex)
             {
-                MsgBox.Show(ex.Message);
+                return ex.Message;
             }
 
 
