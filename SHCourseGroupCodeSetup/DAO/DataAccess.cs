@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FISCA.Data;
 using System.Data;
+using FISCA.Authentication;
 
 namespace SHCourseGroupCodeSetup.DAO
 {
@@ -151,6 +152,9 @@ namespace SHCourseGroupCodeSetup.DAO
             MOEGroupCodeDict.Clear();
             MOEGroupNameDict.Clear();
 
+            // 分別日進校
+            string courseType = GetCourseCodeWhereCond();
+
             QueryHelper qh = new QueryHelper();
             string query = "" +
 " SELECT DISTINCT group_code,(entry_year|| " +
@@ -158,7 +162,7 @@ namespace SHCourseGroupCodeSetup.DAO
 " (CASE WHEN length(group_type)>0 THEN '_'||group_type END) || " +
 " (CASE WHEN length(subject_type)>0 THEN '_'||subject_type END) || " +
 " (CASE WHEN length(class_type)>0 THEN '_'||class_type END) " +
-" ) AS group_name FROM $moe.subjectcode ORDER BY group_name; ";
+" ) AS group_name FROM $moe.subjectcode " + courseType + "  ORDER BY group_name DESC; ";
 
             DataTable dt = qh.Select(query);
 
@@ -197,5 +201,36 @@ namespace SHCourseGroupCodeSetup.DAO
 
             return code;
         }
+
+
+        public static Dictionary<string, string> GetSchoolNMapping()
+        {
+            // 進校轉日校學校代碼
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            value.Add("n.shinmin.tc.edu.tw", "191305");
+            value.Add("n.mdhs.tc.edu.tw", "191309");
+            value.Add("n.hzsh.tc.edu.tw", "064308");
+            value.Add("n.sivs.chc.edu.tw", "070401");
+            value.Add("n.ylhcvs.chc.edu.tw", "070410");
+            value.Add("n.kyvs.ks.edu.tw", "121417");
+            value.Add("n.klhcvs.kl.edu.tw", "171405");
+            value.Add("n.sphs.hc.edu.tw", "181307");
+            value.Add("n.youth.tc.edu.tw", "061316");
+
+            return value;
+        }
+
+        public static string GetCourseCodeWhereCond()
+        {
+            string value = " WHERE course_type <> '進修部' ";
+            // 進校
+            if (GetSchoolNMapping().Keys.Contains(DSAServices.AccessPoint))
+            {
+                value = " WHERE course_type = '進修部' ";
+            }
+            return value;
+        }
+
+
     }
 }
