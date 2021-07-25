@@ -7,6 +7,7 @@ using Aspose.Cells;
 using System.IO;
 using System.Windows.Forms;
 using FISCA.Presentation.Controls;
+using FISCA.Authentication;
 
 namespace SHCourseGroupCodeAdmin
 {
@@ -236,6 +237,34 @@ T	12學分
             value.Add("G1", "英語文技能");
             value.Add("G2", "日語文技能");
 
+            return value;
+        }
+
+        public static Dictionary<string,string> GetSchoolNMapping()
+        {
+            // 進校轉日校學校代碼
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            value.Add("n.shinmin.tc.edu.tw", "191305");
+            value.Add("n.mdhs.tc.edu.tw", "191309");
+            value.Add("n.hzsh.tc.edu.tw", "064308");
+            value.Add("n.sivs.chc.edu.tw", "070401");
+            value.Add("n.ylhcvs.chc.edu.tw", "070410");
+            value.Add("n.kyvs.ks.edu.tw", "121417");
+            value.Add("n.klhcvs.kl.edu.tw", "171405");
+            value.Add("n.sphs.hc.edu.tw", "181307");
+            value.Add("n.youth.tc.edu.tw", "061316");
+
+            return value;
+        }
+
+        public static string GetCourseCodeWhereCond ()
+        {
+            string value = " WHERE course_type <> '進修部' ";
+            // 進校
+            if (GetSchoolNMapping().Keys.Contains(DSAServices.AccessPoint))
+            {
+                value = " WHERE course_type = '進修部' ";
+            }
             return value;
         }
     }

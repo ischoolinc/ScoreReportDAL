@@ -17,10 +17,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
     public partial class frmSyncCourseCodeAPI : BaseForm
     {
 
+        Dictionary<string, string> _SchoolNDict;
+        string _SchoolCode = "";
+        string DSNS = "";
 
         public frmSyncCourseCodeAPI()
         {
             InitializeComponent();
+            _SchoolNDict = new Dictionary<string, string>();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -36,7 +40,22 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 for (int s = sy - 3; s <= sy + 3; s++)
                     cboSchoolYear.Items.Add(s);
             }
-            lblSchoolCode.Text = "學校代碼：" + K12.Data.School.Code;
+            _SchoolCode = K12.Data.School.Code;
+            DSNS = DSAServices.AccessPoint;
+
+            //// test 
+            //DSNS = "n.hzsh.tc.edu.tw";
+
+            _SchoolNDict = Utility.GetSchoolNMapping();
+
+            // 進校轉換日校
+            if(_SchoolNDict.ContainsKey(DSNS))
+            {
+                _SchoolCode = _SchoolNDict[DSNS];
+            }
+            
+
+            lblSchoolCode.Text = "學校代碼：" + _SchoolCode;
             cboSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
             this.MaximumSize = this.MinimumSize = this.Size;
             cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -45,7 +64,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void btnRun_Click(object sender, EventArgs e)
         {
             // 檢查是否有學校代碼
-            if (string.IsNullOrWhiteSpace(K12.Data.School.Code))
+            if (string.IsNullOrWhiteSpace(_SchoolCode))
             {
                 MsgBox.Show("請輸入學校代碼。");
                 return;
@@ -83,8 +102,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
             string content = "";
             try
             {
-                string DSNS = DSAServices.AccessPoint;
-                string school_code = K12.Data.School.Code;
+                //    string DSNS = DSAServices.AccessPoint;
+                string school_code = _SchoolCode;
+
+
                 String targetUrl = @"https://console.1campus.net/api/moeproxy/sync/" + DSNS + "?school_code=" + school_code + "&year=" + SchoolYear + "&rspcmds=true&school_name=手動呼叫";
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(targetUrl);
                 req.Method = "POST";

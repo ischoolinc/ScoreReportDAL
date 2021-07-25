@@ -24,6 +24,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// <returns></returns>
         public List<MOECourseCodeInfo> GetCourseGroupCodeList()
         {
+            // 判斷日進校
+            string courseType = Utility.GetCourseCodeWhereCond();
+
             List<MOECourseCodeInfo> value = new List<MOECourseCodeInfo>();
             try
             {
@@ -44,7 +47,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , open_type AS 授課開課方式 " +
 " , course_attr AS 課程屬性 " +
 "  FROM " +
-"   $moe.subjectcode ORDER BY group_code,subject_name; ";
+"   $moe.subjectcode " + courseType + " ORDER BY group_code DESC,subject_name; ";
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
@@ -153,6 +156,8 @@ namespace SHCourseGroupCodeAdmin.DAO
             MOEGPlanDict.Clear();
             MOEGPlanGroupNameDict.Clear();
 
+            string courseType = Utility.GetCourseCodeWhereCond();
+
             QueryHelper qh = new QueryHelper();
             string query = "" +
 " SELECT DISTINCT group_code,(entry_year|| " +
@@ -163,7 +168,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " ) AS group_name" +
 " ,(entry_year||(CASE WHEN length(subject_type)>0 THEN ''||subject_type END) || " +
 " (CASE WHEN length(class_type) > 0 THEN '' || class_type END)) AS gplan_name " +
-" FROM $moe.subjectcode ORDER BY group_name; ";
+" FROM $moe.subjectcode " + courseType + " ORDER BY group_name DESC; ";
 
             DataTable dt = qh.Select(query);
 
@@ -1816,7 +1821,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.RequiredBy = dr["required_by"] + "";
                     data.IsRequired = dr["required"] + "";
                     data.GradeYear = dr["grade_year"] + "";
-                    data.Credit = dr["credit"] + "";                    
+                    data.Credit = dr["credit"] + "";
                     if (dr["gdc_code"] != null)
                     {
                         data.gdc_code = dr["gdc_code"] + "";
