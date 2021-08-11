@@ -259,11 +259,11 @@ T	12學分
 
         public static string GetCourseCodeWhereCond ()
         {
-            string value = " WHERE course_type <> '進修部' ";
+            string value = " WHERE course_type NOT IN('進修部','實用技能學程(夜)') ";
             // 進校
             if (GetSchoolNMapping().Keys.Contains(DSAServices.AccessPoint))
             {
-                value = " WHERE course_type = '進修部' ";
+                value = " WHERE course_type IN('進修部','實用技能學程(夜)') ";
             }
             return value;
         }

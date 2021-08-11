@@ -193,6 +193,24 @@
     <Compile Include="UIForm\frmCreateClassGPlanSetDetail.Designer.cs">
       <DependentUpon>frmCreateClassGPlanSetDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmCreateGPlanItemSetup108.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateGPlanItemSetup108.Designer.cs">
+      <DependentUpon>frmCreateGPlanItemSetup108.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateGPlanMain108.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateGPlanMain108.Designer.cs">
+      <DependentUpon>frmCreateGPlanMain108.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateGPlanQueryAndSetup108.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateGPlanQueryAndSetup108.Designer.cs">
+      <DependentUpon>frmCreateGPlanQueryAndSetup108.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmSyncCourseCodeAPI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +299,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateClassGPlanSetDetail.resx">
       <DependentUpon>frmCreateClassGPlanSetDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateGPlanItemSetup108.resx">
+      <DependentUpon>frmCreateGPlanItemSetup108.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateGPlanMain108.resx">
+      <DependentUpon>frmCreateGPlanMain108.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateGPlanQueryAndSetup108.resx">
+      <DependentUpon>frmCreateGPlanQueryAndSetup108.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmSyncCourseCodeAPI.resx">
       <DependentUpon>frmSyncCourseCodeAPI.cs</DependentUpon>

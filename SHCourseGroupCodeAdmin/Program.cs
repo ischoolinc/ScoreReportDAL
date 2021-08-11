@@ -127,6 +127,19 @@ namespace SHCourseGroupCodeAdmin
                 fcs.ShowDialog();
             };
 
+
+            Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon10.Add(new RibbonFeature("84066116-8124-41F4-8149-0877dA75a417", "依課程規劃總表產生課程規劃"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["依課程規劃總表產生課程規劃"].Enable = UserAcl.Current["84066116-8124-41F4-8149-0877dA75a417"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["依課程規劃總表產生課程規劃"].Click += delegate
+            {
+                frmCreateGPlanMain108 fMain = new frmCreateGPlanMain108();
+                fMain.ShowDialog();
+
+            };
+
         }
     }
 }
