@@ -1904,5 +1904,79 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
+
+        /// <summary>
+        /// 取得所有群科班對照108新版
+        /// </summary>
+        /// <returns></returns>
+        public List<GPlanInfo108> GPlanInfo108List()
+        {
+            List<GPlanInfo108> value = new List<GPlanInfo108>();
+
+            try
+            {
+                // 取得群科班對照
+                LoadMOEGroupCodeDict();
+
+                // 取得課程代碼大表對照
+                Dictionary<string, List<MOECourseCodeInfo>> MOECourseCodeDict = GetCourseGroupCodeDict();
+
+                // 取得課程規劃表
+                string query = "SELECT id,name,moe_group_code,content FROM graduation_plan WHERE moe_group_code IN('" + string.Join("','", MOECourseCodeDict.Keys.ToArray()) + "') ORDER BY name";
+
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                Dictionary<string, List<DataRow>> dtDict = new Dictionary<string, List<DataRow>>();
+                 foreach(DataRow dr in dt.Rows)
+                {
+                    string moe_group_code = dr["moe_group_code"] + "";
+                    if (!dtDict.ContainsKey(moe_group_code))
+                        dtDict.Add(moe_group_code, new List<DataRow>());
+
+                    dtDict[moe_group_code].Add(dr);
+                }
+
+                // 建立資料
+                foreach (string code in MOEGroupCodeDict.Keys)
+                {
+                    GPlanInfo108 data = new GPlanInfo108();
+                    data.GDCCode = code;
+                    if (code.Length > 3)
+                    {
+                        data.EntrySchoolYear = code.Substring(0, 3);
+                    }
+                    data.GDCName = MOEGroupCodeDict[code];
+                    if (MOEGPlanDict.ContainsKey(code))
+                    {
+                        // 解析出來課程規劃表名稱
+                        data.RefGPName = MOEGPlanDict[code];
+                    }
+
+
+                    // 填入課程規劃表大表
+                    if (MOECourseCodeDict.ContainsKey(code))
+                    {
+                        data.MOECourseCodeInfoList = MOECourseCodeDict[code];
+                    }
+
+                    // 放入課程規劃表原始
+                    if (dtDict.ContainsKey(code))
+                        data.GPlanList = dtDict[code];
+
+                    data.Status = "無變動";
+                    data.ParseOrderByInt();
+
+
+                    value.Add(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            return value;
+        }
     }
 }

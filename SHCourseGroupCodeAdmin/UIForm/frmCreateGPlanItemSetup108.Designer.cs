@@ -151,6 +151,9 @@
             // 
             // dgData
             // 
+            this.dgData.AllowUserToAddRows = false;
+            this.dgData.AllowUserToDeleteRows = false;
+            this.dgData.AllowUserToResizeRows = false;
             this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -188,7 +191,8 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "frmCreateGPlanItemSetup108";
-            this.Text = "儲存";
+            this.Text = "設定";
+            this.Load += new System.EventHandler(this.frmCreateGPlanItemSetup108_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

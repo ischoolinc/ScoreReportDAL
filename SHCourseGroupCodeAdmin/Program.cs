@@ -86,8 +86,8 @@ namespace SHCourseGroupCodeAdmin
 
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Click += delegate
             {
-                //frmCreateClassGPlan ccg = new frmCreateClassGPlan();
-                frmCreateClassGPlanMain ccg = new frmCreateClassGPlanMain();
+              //  frmCreateClassGPlan ccg = new frmCreateClassGPlan();
+               frmCreateClassGPlanMain ccg = new frmCreateClassGPlanMain();
                 ccg.ShowDialog();
 
 

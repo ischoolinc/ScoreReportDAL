@@ -35,13 +35,13 @@
             this.lblUpdateCount = new DevComponents.DotNetBar.LabelX();
             this.lblNoChangeCount = new DevComponents.DotNetBar.LabelX();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
-            this.btnCreate = new DevComponents.DotNetBar.ButtonX();
-            this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.colEntrySchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colChangeDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUpdateSetup = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
+            this.btnCreate = new DevComponents.DotNetBar.ButtonX();
+            this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,6 +121,9 @@
             // 
             // dgData
             // 
+            this.dgData.AllowUserToAddRows = false;
+            this.dgData.AllowUserToDeleteRows = false;
+            this.dgData.AllowUserToResizeRows = false;
             this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -145,6 +148,35 @@
             this.dgData.RowTemplate.Height = 24;
             this.dgData.Size = new System.Drawing.Size(832, 450);
             this.dgData.TabIndex = 5;
+            this.dgData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellContentClick);
+            // 
+            // colEntrySchoolYear
+            // 
+            this.colEntrySchoolYear.FillWeight = 80F;
+            this.colEntrySchoolYear.HeaderText = "入學年";
+            this.colEntrySchoolYear.Name = "colEntrySchoolYear";
+            this.colEntrySchoolYear.ReadOnly = true;
+            this.colEntrySchoolYear.Width = 80;
+            // 
+            // colGroupName
+            // 
+            this.colGroupName.HeaderText = "群科班名稱";
+            this.colGroupName.Name = "colGroupName";
+            this.colGroupName.ReadOnly = true;
+            this.colGroupName.Width = 300;
+            // 
+            // colChangeDesc
+            // 
+            this.colChangeDesc.HeaderText = "變更說明";
+            this.colChangeDesc.Name = "colChangeDesc";
+            this.colChangeDesc.ReadOnly = true;
+            this.colChangeDesc.Width = 150;
+            // 
+            // colUpdateSetup
+            // 
+            this.colUpdateSetup.HeaderText = "更新設定";
+            this.colUpdateSetup.Name = "colUpdateSetup";
+            this.colUpdateSetup.ReadOnly = true;
             // 
             // btnQueryAndSet
             // 
@@ -190,34 +222,6 @@
             this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "取消";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // colEntrySchoolYear
-            // 
-            this.colEntrySchoolYear.FillWeight = 80F;
-            this.colEntrySchoolYear.HeaderText = "入學年";
-            this.colEntrySchoolYear.Name = "colEntrySchoolYear";
-            this.colEntrySchoolYear.ReadOnly = true;
-            this.colEntrySchoolYear.Width = 80;
-            // 
-            // colGroupName
-            // 
-            this.colGroupName.HeaderText = "群科班名稱";
-            this.colGroupName.Name = "colGroupName";
-            this.colGroupName.ReadOnly = true;
-            this.colGroupName.Width = 300;
-            // 
-            // colChangeDesc
-            // 
-            this.colChangeDesc.HeaderText = "變更說明";
-            this.colChangeDesc.Name = "colChangeDesc";
-            this.colChangeDesc.ReadOnly = true;
-            this.colChangeDesc.Width = 150;
-            // 
-            // colUpdateSetup
-            // 
-            this.colUpdateSetup.HeaderText = "更新設定";
-            this.colUpdateSetup.Name = "colUpdateSetup";
-            this.colUpdateSetup.ReadOnly = true;
             // 
             // frmCreateGPlanMain108
             // 

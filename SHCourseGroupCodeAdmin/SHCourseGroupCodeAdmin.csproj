@@ -108,8 +108,10 @@
     <Compile Include="DAO\CourseInfoChk.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\GPCourseInfo.cs" />
+    <Compile Include="DAO\GPlanCourseInfo108.cs" />
     <Compile Include="DAO\GPlanData.cs" />
     <Compile Include="DAO\GPlanInfo.cs" />
+    <Compile Include="DAO\GPlanInfo108.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
     <Compile Include="DAO\rptGPlanClassChkInfo.cs" />
     <Compile Include="DAO\rptGPlanCourseChkInfo.cs" />
