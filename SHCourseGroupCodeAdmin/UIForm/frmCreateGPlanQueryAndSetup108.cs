@@ -18,6 +18,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
     {
 
         List<GPlanInfo108> _GPlanInfoList;
+        bool isLoading = false;
         public frmCreateGPlanQueryAndSetup108()
         {
             InitializeComponent();
@@ -55,12 +56,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void frmCreateGPlanQueryAndSetup108_Load(object sender, EventArgs e)
         {
             dgData.Enabled = btnSave.Enabled = false;
+            dgData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgData.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            isLoading = true;
             // 載入資料欄位
             LoadDataGridViewColumns();
 
             // 載入資料
             LoadData();
-
+            isLoading = false;
             dgDataCount();
 
             dgData.Enabled = btnSave.Enabled = true;
@@ -107,14 +111,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             dgData.Rows.Clear();
 
-            foreach(GPlanInfo108 data in _GPlanInfoList)
+            foreach (GPlanInfo108 data in _GPlanInfoList)
             {
                 foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
                 {
                     int rowIdx = dgData.Rows.Add();
                     try
                     {
-                        dgData.Rows[rowIdx].Tag = subj;
+                        //dgData.Rows[rowIdx].Tag = subj;
+                        dgData.Rows[rowIdx].Cells["群科班"].Value = data.GDCName;
+
                         dgData.Rows[rowIdx].Cells["差異狀態"].Value = string.Join(",", subj.DiffStatusList.ToArray());
                         dgData.Rows[rowIdx].Cells["處理方式"].Value = subj.ProcessStatus;
                         dgData.Rows[rowIdx].Cells["領域"].Value = subj.Domain;
@@ -184,6 +190,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             try
             {
+                DataGridViewTextBoxColumn tbGDCName = new DataGridViewTextBoxColumn();
+                tbGDCName.Name = "群科班";
+                tbGDCName.Width = 150;
+                tbGDCName.HeaderText = "群科班";
+                tbGDCName.ReadOnly = true;
+
                 DataGridViewTextBoxColumn tbDiffStatus = new DataGridViewTextBoxColumn();
                 tbDiffStatus.Name = "差異狀態";
                 tbDiffStatus.Width = 100;
@@ -297,6 +309,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbCourseCode.HeaderText = "課程代碼";
                 tbCourseCode.ReadOnly = true;
 
+                dgData.Columns.Add(tbGDCName);
                 dgData.Columns.Add(tbDiffStatus);
                 dgData.Columns.Add(cbProcStatus);
                 dgData.Columns.Add(tbDomain);
@@ -321,10 +334,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void dgData_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > -1 && e.ColumnIndex > -1)
-            {
-                dgDataCount();
-            }
+            if (isLoading == false)
+                if (e.RowIndex > -1 && e.ColumnIndex > -1)
+                {
+                    dgDataCount();
+                }
         }
 
         private void dgData_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
@@ -341,10 +355,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void dgData_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > -1 && e.ColumnIndex > -1)
-            {
-                dgDataCount();
-            }
+            if (isLoading == false)
+                if (e.RowIndex > -1 && e.ColumnIndex > -1)
+                {
+                    dgDataCount();
+                }
         }
     }
 }

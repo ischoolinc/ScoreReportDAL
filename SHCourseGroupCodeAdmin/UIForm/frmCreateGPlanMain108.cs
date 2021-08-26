@@ -131,8 +131,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnQueryAndSet_Click(object sender, EventArgs e)
         {
+            btnQueryAndSet.Enabled = false;
             frmCreateGPlanQueryAndSetup108 fgq = new frmCreateGPlanQueryAndSetup108();
-            fgq.ShowDialog();
+            fgq.SetGPlanInfos(_GPlanInfo108List);
+            
+            if (fgq.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+
+            btnQueryAndSet.Enabled = true;
         }
 
         private void dgData_CellContentClick(object sender, DataGridViewCellEventArgs e)
