@@ -74,6 +74,15 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// </summary>
         public void ParseStatus()
         {
+            Status = "無變動";
+            if (string.IsNullOrEmpty(RefGPID))
+            {
+                Status = "新增";
+            }else
+            {
+                if (calSubjDiffCount() > 0)
+                    Status = "更新";
+            }
 
         }
 
@@ -120,6 +129,16 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
+        public int calSubjAddCount()
+        {
+            int value = 0;
+            foreach (chkSubjectInfo subj in chkSubjectInfoList)
+            {
+                if (subj.ProcessStatus == "新增")
+                    value++;
+            }
+            return value;
+        }
 
         /// <summary>
         /// 解析課程代碼大表ToXML
@@ -558,7 +577,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.CourseCode = GetAttribute(elm, "課程代碼");
                         subj.credit_period = GetAttribute(elm, "授課學期學分");
                         subj.OpenStatus = GetAttribute(elm, "開課方式");
-                        subj.ProcessStatus = "更新";
+                        subj.ProcessStatus = "新增";
                         subj.DiffStatusList.Add("缺");
                         subj.MOEXml = MOEDict[mCo];
 

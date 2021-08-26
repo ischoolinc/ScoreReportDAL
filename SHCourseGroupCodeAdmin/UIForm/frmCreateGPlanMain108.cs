@@ -58,8 +58,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void GPlanDataCount()
         {
             int AddCount = 0, UpdateCount = 0, NoChangeCount = 0;
-            
-            foreach(DataGridViewRow drv in dgData.Rows)                
+
+            foreach (DataGridViewRow drv in dgData.Rows)
             {
                 if (drv.IsNewRow)
                     continue;
@@ -73,7 +73,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     UpdateCount++;
 
                 if (Status == "無變動")
-                    NoChangeCount = 0;
+                    NoChangeCount++;
             }
 
             lblGroupCount.Text = "群科班數" + _GPlanInfo108List.Count + "筆";
@@ -87,9 +87,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _bgWorker.ReportProgress(1);
             _GPlanInfo108List = _da.GPlanInfo108List();
             _bgWorker.ReportProgress(30);
-            
+
             // 解析課程代碼大表 XML
-            foreach(GPlanInfo108 data in _GPlanInfo108List)
+            foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
                 data.ParseMOEXml();
 
@@ -99,8 +99,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 if (string.IsNullOrEmpty(data.RefGPID))
                     data.Status = "新增";
+
+                if (data.calSubjDiffCount() > 0)
+                    data.Status = "更新";
             }
-            
+
             _bgWorker.ReportProgress(50);
             _bgWorker.ReportProgress(100);
         }
@@ -147,6 +150,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         if (fgpd.ShowDialog() == DialogResult.OK)
                         {
                             GPlanInfo108 newData = fgpd.GetGPlanInfo();
+                            newData.ParseStatus();
                             dgData.Rows[e.RowIndex].Tag = newData;
                             dgData.Rows[e.RowIndex].Cells[colChangeDesc.Index].Value = newData.Status;
                         }

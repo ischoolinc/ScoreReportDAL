@@ -148,6 +148,7 @@
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "儲存";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // dgData
             // 
@@ -173,6 +174,9 @@
             this.dgData.RowTemplate.Height = 24;
             this.dgData.Size = new System.Drawing.Size(739, 279);
             this.dgData.TabIndex = 7;
+            this.dgData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellContentClick);
+            this.dgData.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellMouseEnter);
+            this.dgData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellValueChanged);
             // 
             // frmCreateGPlanItemSetup108
             // 
