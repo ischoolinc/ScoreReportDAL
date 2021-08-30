@@ -97,6 +97,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 data.CheckData();
 
+                foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
+                {
+                    subj.GDCCode = data.GDCCode;
+                }
+
                 if (string.IsNullOrEmpty(data.RefGPID))
                     data.Status = "新增";
 
@@ -121,7 +126,94 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
+            ControlEnable(false);
 
+            try
+            {
+                List<GPlanInfo108> insertDataList = new List<GPlanInfo108>();
+                List<GPlanInfo108> updateDataList = new List<GPlanInfo108>();
+
+                foreach (GPlanInfo108 data in _GPlanInfo108List)
+                {
+                    if (data.Status == "新增")
+                        insertDataList.Add(data);
+
+                    if (data.Status == "更新")
+                        updateDataList.Add(data);
+                }
+
+                // 新增資料
+                List<string> insertSQLList = new List<string>();
+                if (insertDataList.Count > 0)
+                {                  
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+
+                    try
+                    {
+                        foreach (GPlanInfo108 data in insertDataList)
+                        {
+                            string sql = "" +
+                                " INSERT INTO graduation_plan(" +
+" name " +
+" ,content " +
+" ,moe_group_code )  " +
+" VALUES( " +
+" '" + data.GDCName + "' " +
+" ,'" + data.MOEXml.ToString() + "' " +
+" ,'" + data.GDCCode + "' " +
+" ); ";
+                            insertSQLList.Add(sql);
+                        }
+                        uh.Execute(insertSQLList);
+                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
+                    }
+                    catch (Exception ex)
+                    {
+                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
+                    }
+                }
+
+                // 更新資料
+                List<string> updateSQLList = new List<string>();
+                if (updateDataList.Count > 0)
+                {                    
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+
+                    try
+                    {
+                        foreach (GPlanInfo108 data in updateDataList)
+                        {
+                            if (!string.IsNullOrEmpty(data.RefGPID))
+                            {
+                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID+";";
+                                
+                                updateSQLList.Add(sql);
+                            }                            
+                        }
+
+                        // 更新資料
+                        uh.Execute(updateSQLList);
+                        MsgBox.Show("更新" + updateSQLList.Count + "筆課程規劃表");
+                    }
+                    catch (Exception ex)
+                    {
+                        MsgBox.Show("更新資料發生錯誤" + ex.Message);
+                    }
+                }
+
+               if(insertSQLList.Count > 0 || updateSQLList.Count > 0)
+                {
+                    ControlEnable(false);
+                    _bgWorker.RunWorkerAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Show("儲存發生錯誤：" + ex.Message);
+            }
+
+            ControlEnable(true);
         }
 
         private void ControlEnable(bool value)
@@ -134,10 +226,28 @@ namespace SHCourseGroupCodeAdmin.UIForm
             btnQueryAndSet.Enabled = false;
             frmCreateGPlanQueryAndSetup108 fgq = new frmCreateGPlanQueryAndSetup108();
             fgq.SetGPlanInfos(_GPlanInfo108List);
-            
+
             if (fgq.ShowDialog() == DialogResult.OK)
             {
+                Dictionary<string, GPlanInfo108> dataDict = fgq.GetGPlanInfoDicts();
+                foreach (DataGridViewRow drv in dgData.Rows)
+                {
+                    if (drv.IsNewRow)
+                        continue;
 
+                    GPlanInfo108 data = drv.Tag as GPlanInfo108;
+                    if (data != null)
+                    {
+                        if (dataDict.ContainsKey(data.GDCCode))
+                        {
+                            dataDict[data.GDCCode].ParseStatus();
+                            drv.Tag = dataDict[data.GDCCode];
+                            drv.Cells[colChangeDesc.Index].Value = dataDict[data.GDCCode].Status;
+                        }
+                    }
+                }
+
+                GPlanDataCount();
             }
 
             btnQueryAndSet.Enabled = true;

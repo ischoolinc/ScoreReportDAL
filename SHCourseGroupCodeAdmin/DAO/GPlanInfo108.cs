@@ -78,7 +78,8 @@ namespace SHCourseGroupCodeAdmin.DAO
             if (string.IsNullOrEmpty(RefGPID))
             {
                 Status = "新增";
-            }else
+            }
+            else
             {
                 if (calSubjDiffCount() > 0)
                     Status = "更新";
@@ -156,9 +157,9 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             int RowIndex = 1, startLevel = 1;
 
-            // 在課程群組代碼取前3
+            // 在課程群組代碼取前3，填入入學年
             if (GDCCode.Length > 3)
-                MOEXml.SetAttributeValue("SchoolYear", GDCCode.Substring(0, 3));
+                MOEXml.SetAttributeValue("EntryYear", GDCCode.Substring(0, 3));
 
             Dictionary<string, string> CreditMappingTableDict = Utility.GetCreditMappingTable();
 
@@ -361,7 +362,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // row
                     XElement subjGroupElm = new XElement("Grouping");
                     subjGroupElm.SetAttributeValue("RowIndex", RowIndex);
-                    subjGroupElm.SetAttributeValue("startLevel", startLevel);
+                    //subjGroupElm.SetAttributeValue("startLevel", startLevel);
                     subjElm.Add(subjGroupElm);
 
                     MOEXml.Add(subjElm);
@@ -449,7 +450,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     RefGPName = GPlanList[0]["name"] + "";
                     RefGPContent = GPlanList[0]["content"] + "";
                     RefGPContentXml = XElement.Parse(RefGPContent);
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -580,7 +581,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.ProcessStatus = "新增";
                         subj.DiffStatusList.Add("缺");
                         subj.MOEXml = MOEDict[mCo];
-
+                        subj.GDCCode = mCo;
                         chkSubjectInfoList.Add(subj);
                     }
                 }
@@ -608,6 +609,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.ProcessStatus = "刪除";
                         subj.DiffStatusList.Add("多");
                         subj.GPlanXml = GPlanDict[mCo];
+                        subj.GDCCode = mCo;
                         chkSubjectInfoList.Add(subj);
                     }
                 }
@@ -619,6 +621,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     {
                         XElement elm = GPlanDict[mCo][0];
                         chkSubjectInfo subj = new chkSubjectInfo();
+                        subj.GDCCode = mCo;
                         subj.Domain = GetAttribute(elm, "Domain");
                         subj.Entry = GetAttribute(elm, "Entry");
                         subj.SubjectName = GetAttribute(elm, "SubjectName");

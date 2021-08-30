@@ -1921,8 +1921,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                 // 取得課程代碼大表對照
                 Dictionary<string, List<MOECourseCodeInfo>> MOECourseCodeDict = GetCourseGroupCodeDict();
 
-                // 取得課程規劃表
-                string query = "SELECT id,name,moe_group_code,content FROM graduation_plan WHERE moe_group_code IN('" + string.Join("','", MOECourseCodeDict.Keys.ToArray()) + "') ORDER BY name";
+                // 取得課程規劃表，新格式
+                string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text <>'' AND moe_group_code<>''";
 
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query);
@@ -1961,7 +1961,12 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     // 放入課程規劃表原始
                     if (dtDict.ContainsKey(code))
+                    {
                         data.GPlanList = dtDict[code];
+                        // id 
+                        data.RefGPID = dtDict[code][0] + "";
+                    }
+                    
 
                     data.Status = "無變動";
                     data.ParseOrderByInt();

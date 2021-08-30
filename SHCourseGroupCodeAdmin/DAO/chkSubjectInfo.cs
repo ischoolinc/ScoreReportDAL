@@ -29,6 +29,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         public List<XElement> MOEXml = new List<XElement>();
         public List<XElement> GPlanXml = new List<XElement>();
 
-       
+        /// <summary>
+        /// 群科班代碼
+        /// </summary>
+        public string GDCCode { get; set; }
     }
 }

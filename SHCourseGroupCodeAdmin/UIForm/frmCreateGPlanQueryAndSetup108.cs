@@ -18,10 +18,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
     {
 
         List<GPlanInfo108> _GPlanInfoList;
+        Dictionary<string, GPlanInfo108> _GPlanInfoDict;
         bool isLoading = false;
         public frmCreateGPlanQueryAndSetup108()
         {
             InitializeComponent();
+            _GPlanInfoDict = new Dictionary<string, GPlanInfo108>();
         }
 
         public void SetGPlanInfos(List<GPlanInfo108> data)
@@ -29,26 +31,55 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _GPlanInfoList = data;
         }
 
-        public List<GPlanInfo108> GetGPlanInfos()
+        public Dictionary<string, GPlanInfo108> GetGPlanInfoDicts()
         {
-            return _GPlanInfoList;
+            return _GPlanInfoDict;
         }
 
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //_GPlanInfo.chkSubjectInfoList.Clear();
-            //foreach (DataGridViewRow drv in dgData.Rows)
-            //{
-            //    chkSubjectInfo subj = drv.Tag as chkSubjectInfo;
-            //    if (subj != null)
-            //    {
-            //        if (drv.Cells["處理方式"].Value != null)
-            //            subj.ProcessStatus = drv.Cells["處理方式"].Value.ToString();
-            //    }
+            // 回寫資料
+            try
+            {
+                Dictionary<string, List<chkSubjectInfo>> dataDict = new Dictionary<string, List<chkSubjectInfo>>();
+                foreach (DataGridViewRow drv in dgData.Rows)
+                {
+                    if (drv.IsNewRow)
+                        continue;
 
-            //    _GPlanInfo.chkSubjectInfoList.Add(subj);
-            //}
+                    chkSubjectInfo subj = drv.Tag as chkSubjectInfo;
+                    if (subj != null)
+                    {
+                        if (drv.Cells["處理方式"].Value != null)
+                            subj.ProcessStatus = drv.Cells["處理方式"].Value.ToString();
+                    }
+
+                    if (!dataDict.ContainsKey(subj.GDCCode))
+                    {
+                        dataDict.Add(subj.GDCCode, new List<chkSubjectInfo>());
+                    }
+                    dataDict[subj.GDCCode].Add(subj);
+                }
+
+                _GPlanInfoDict.Clear();
+                // 回存資料
+                foreach (GPlanInfo108 data in _GPlanInfoList)
+                {
+                    if (dataDict.ContainsKey(data.GDCCode))
+                    {
+                        data.chkSubjectInfoList.Clear();
+                        data.chkSubjectInfoList = dataDict[data.GDCCode];
+                        if (!_GPlanInfoDict.ContainsKey(data.GDCCode))
+                            _GPlanInfoDict.Add(data.GDCCode, data);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             this.DialogResult = DialogResult.OK;
         }
@@ -118,7 +149,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     int rowIdx = dgData.Rows.Add();
                     try
                     {
-                        //dgData.Rows[rowIdx].Tag = subj;
+                        dgData.Rows[rowIdx].Tag = subj;
                         dgData.Rows[rowIdx].Cells["群科班"].Value = data.GDCName;
 
                         dgData.Rows[rowIdx].Cells["差異狀態"].Value = string.Join(",", subj.DiffStatusList.ToArray());
