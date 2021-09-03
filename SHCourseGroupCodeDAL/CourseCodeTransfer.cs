@@ -13,62 +13,82 @@ namespace SHCourseGroupCodeDAL
     {
         public CourseCodeTransfer() { }
 
-        public Dictionary<string, StudentCourseCodeInfo> GetStundetCourseCodeDict(List<string> StudentIDList)
+        public Dictionary<string, StudentCourseCodeInfo> GetStundetCourseCodeDict(Dictionary<string, string> StudGDCCodeDict)
         {
             // StudentID,
             Dictionary<string, StudentCourseCodeInfo> value = new Dictionary<string, StudentCourseCodeInfo>();
 
-            if (StudentIDList.Count > 0)
+
+
+            // 收集學生有課程群組代碼，找到相關科目對照
+            List<string> CourseGroupCodeList = new List<string>();
+
+            // 讀取傳入學期對照取得資料，這段先註解
+            //// 讀取目前學生群組代碼設定
+            //try
+            //{
+            //    QueryHelper qh = new QueryHelper();
+
+            //    string query = "SELECT " +
+            //        "student.id AS student_id" +
+            //        ",COALESCE(student.gdc_code,class.gdc_code) AS gdc_code " +
+            //        " FROM student" +
+            //        " LEFT OUTER JOIN class " +
+            //        " ON student.ref_class_id = class.id " +
+            //        " WHERE student.id IN(" + string.Join(",", StudentIDList.ToArray()) + ");";
+
+            //    DataTable dt = qh.Select(query);
+            //    foreach (DataRow dr in dt.Rows)
+            //    {
+            //        string sid = dr["student_id"] + "";
+            //        string code = dr["gdc_code"] + "";
+
+            //        StudentCourseCodeInfo scc = new StudentCourseCodeInfo();
+            //        scc.StudentID = sid;
+            //        scc.CourseGroupCode = code;
+
+            //        if (!CourseGroupCodeList.Contains(code))
+            //            CourseGroupCodeList.Add(code);
+
+            //        if (!value.ContainsKey(sid))
+            //            value.Add(sid, scc);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
+
+            foreach (string key in StudGDCCodeDict.Keys)
             {
+                StudentCourseCodeInfo scc = new StudentCourseCodeInfo();
+                scc.StudentID = key;
+                scc.CourseGroupCode = StudGDCCodeDict[key];
 
-                // 收集學生有課程群組代碼，找到相關科目對照
-                List<string> CourseGroupCodeList = new List<string>();
+                if (!value.ContainsKey(key))
+                    value.Add(key, scc);
+            }
 
-                // 讀取目前學生群組代碼設定
-                try
+            // 取得學生共通的群科班
+            List<string> GroupCodeList = new List<string>();
+            foreach (string val in StudGDCCodeDict.Values)
+            {
+                if (!string.IsNullOrWhiteSpace(val))
                 {
-                    QueryHelper qh = new QueryHelper();
-
-                    string query = "SELECT " +
-                        "student.id AS student_id" +
-                        ",COALESCE(student.gdc_code,class.gdc_code) AS gdc_code " +
-                        " FROM student" +
-                        " LEFT OUTER JOIN class " +
-                        " ON student.ref_class_id = class.id " +
-                        " WHERE student.id IN(" + string.Join(",", StudentIDList.ToArray()) + ");";
-
-                    DataTable dt = qh.Select(query);
-                    foreach(DataRow dr in dt.Rows)
-                    {
-                        string sid = dr["student_id"] + "";
-                        string code = dr["gdc_code"] + "";                       
-
-                        StudentCourseCodeInfo scc = new StudentCourseCodeInfo();
-                        scc.StudentID = sid;
-                        scc.CourseGroupCode = code;
-
-                        if (!CourseGroupCodeList.Contains(code))
-                            CourseGroupCodeList.Add(code);
-
-                        if (!value.ContainsKey(sid))
-                            value.Add(sid, scc);
-                    }
+                    if (!GroupCodeList.Contains(val))
+                        GroupCodeList.Add(val);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }                
+            }
 
-                // 群組所屬科目代碼
-                Dictionary<string, List<SubjectInfo>> SubjectCodeDict = GetSubjectCodeDictByGroupCode(CourseGroupCodeList);
+            // 群組所屬科目代碼
+            Dictionary<string, List<SubjectInfo>> SubjectCodeDict = GetSubjectCodeDictByGroupCode(GroupCodeList);
 
-                // 解析並填入學生科目
-                foreach (string sid in value.Keys)
+            // 解析並填入學生科目
+            foreach (string sid in value.Keys)
+            {
+                if (SubjectCodeDict.ContainsKey(value[sid].CourseGroupCode))
                 {
-                    if (SubjectCodeDict.ContainsKey(value[sid].CourseGroupCode))
-                    {
-                        value[sid].AddSubjectInfoList(SubjectCodeDict[value[sid].CourseGroupCode]);
-                    }                 
+                    value[sid].AddSubjectInfoList(SubjectCodeDict[value[sid].CourseGroupCode]);
                 }
             }
 
@@ -87,7 +107,17 @@ namespace SHCourseGroupCodeDAL
 
 
             QueryHelper qh = new QueryHelper();
-            string query = "SELECT group_code,course_code,subject_name,credit_period,entry_year,require_by,is_required FROM $moe.subjectcode WHERE group_code IN('" + string.Join("''", code.ToArray()) + "')";
+            string query = "" +
+                "SELECT " +
+                "group_code" +
+                ",course_code" +
+                ",subject_name" +
+                ",credit_period" +
+                ",entry_year" +
+                ",require_by" +
+                ",is_required" +
+                ",course_attr" +                
+                " FROM $moe.subjectcode WHERE group_code IN('" + string.Join("''", code.ToArray()) + "')";
             try
             {
                 DataTable dt = qh.Select(query);
@@ -98,17 +128,42 @@ namespace SHCourseGroupCodeDAL
                         value.Add(groupCode, new List<SubjectInfo>());
 
                     // 因為 ischool 資料內校部定儲存字的問題需要轉換
-
                     if (dr["require_by"] != null)
                     {
                         if (dr["require_by"] + "" == "部定")
                             dr["require_by"] = "部訂";
                     }
 
+                    string is_required = dr["is_required"] + "";
+                    string require_by = dr["require_by"] + "";
+                    string course_attr = dr["course_attr"] + "";
 
-                    SubjectInfo si = new SubjectInfo(dr["subject_name"] + "", dr["entry_year"] + "", dr["require_by"] + "", dr["is_required"] + "");
+                    // 透過課程屬性更新校部定
+                    if (course_attr.Length > 0)
+                    {
+                        string codeC = course_attr.Substring(0, 1);
+                        if (codeC == "1")
+                        {
+                            is_required = "必修";
+                            require_by = "部訂";
+                        }
+                        else if (codeC == "2")
+                        {
+                            is_required = "必修";
+                            require_by = "校訂";
+                        }
+                        else
+                        {
+                            is_required = "選修";
+                            require_by = "校訂";
+                        }
+                    }
+
+                    SubjectInfo si = new SubjectInfo();
+                    si.SetSubjectInfo(dr["subject_name"] + "", dr["entry_year"] + "", require_by, is_required, dr["course_attr"] + "");
+
                     si.SetCode(dr["group_code"] + "", dr["course_code"] + "");
-
+                    si.credit_period = dr["credit_period"] + "";
                     value[groupCode].Add(si);
 
                 }
@@ -157,6 +212,8 @@ namespace SHCourseGroupCodeDAL
 
             return value;
         }
+
+       
 
     }
 }
