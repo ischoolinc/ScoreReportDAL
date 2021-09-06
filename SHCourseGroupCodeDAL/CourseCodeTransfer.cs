@@ -13,7 +13,18 @@ namespace SHCourseGroupCodeDAL
     {
         public CourseCodeTransfer() { }
 
-        public Dictionary<string, StudentCourseCodeInfo> GetStundetCourseCodeDict(Dictionary<string, string> StudGDCCodeDict)
+        /// <summary>
+        /// 捨棄不用
+        /// </summary>
+        /// <param name="StudGDCCodeDict"></param>
+        /// <returns></returns>
+        public Dictionary<string, List<StudentCourseCodeInfo>> GetStundetCourseCodeDict(List<string> StudentIDList)
+        {
+            Dictionary<string, List<StudentCourseCodeInfo>> value = new Dictionary<string, List<StudentCourseCodeInfo>>();
+            return value;
+        }
+
+        public Dictionary<string, StudentCourseCodeInfo> GetStundetCourseCodeDictByStudCodeDict(Dictionary<string, string> StudGDCCodeDict)
         {
             // StudentID,
             Dictionary<string, StudentCourseCodeInfo> value = new Dictionary<string, StudentCourseCodeInfo>();
@@ -116,7 +127,7 @@ namespace SHCourseGroupCodeDAL
                 ",entry_year" +
                 ",require_by" +
                 ",is_required" +
-                ",course_attr" +                
+                ",course_attr" +
                 " FROM $moe.subjectcode WHERE group_code IN('" + string.Join("''", code.ToArray()) + "')";
             try
             {
@@ -213,7 +224,73 @@ namespace SHCourseGroupCodeDAL
             return value;
         }
 
-       
+        public Dictionary<string, Dictionary<string, string>> GetGPlanSubjectYearSemsByGDCCode(List<string> gdcList)
+        {
+            Dictionary<string, Dictionary<string, string>> value = new Dictionary<string, Dictionary<string, string>>();
+            try
+            {
+                if (gdcList.Count > 0)
+                {
+                    QueryHelper qh = new QueryHelper();
+                    string query = "" +
+                        " SELECT DISTINCT " +
+    "     array_to_string(xpath('//Subject/@GradeYear', subject_ele), '')::text AS 年級 " +
+    "     , array_to_string(xpath('//Subject/@Semester', subject_ele), '')::text AS 學期     " +
+    "     , array_to_string(xpath('//Subject/@SubjectName', subject_ele), '')::text AS 科目 " +
+    "     , array_to_string(xpath('//Subject/@Level', subject_ele), '')::text AS 科目級別 " +
+    " 	,moe_group_code " +
+    " FROM " +
+    "     ( " +
+    "         SELECT  " +
+    "           " +
+    "             unnest(xpath('//GraduationPlan/Subject', xmlparse(content content))) as subject_ele " +
+    " 			,moe_group_code " +
+    "         FROM  " +
+    "             graduation_plan WHERE moe_group_code IN('" + string.Join("','", gdcList.ToArray()) + "') " +
+    "     ) AS graduation_plan ";
+
+                    DataTable dt = qh.Select(query);
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string code = dr["moe_group_code"] + "";
+                        if (!value.ContainsKey(code))
+                            value.Add(code, new Dictionary<string, string>());
+
+                        string vv = "-1";
+
+                        if (dr["年級"] + "" == "1" && dr["學期"] + "" == "1")
+                            vv = "1";
+
+                        if (dr["年級"] + "" == "1" && dr["學期"] + "" == "2")
+                            vv = "2";
+
+                        if (dr["年級"] + "" == "2" && dr["學期"] + "" == "1")
+                            vv = "3";
+
+                        if (dr["年級"] + "" == "2" && dr["學期"] + "" == "2")
+                            vv = "4";
+
+                        if (dr["年級"] + "" == "3" && dr["學期"] + "" == "1")
+                            vv = "5";
+
+                        if (dr["年級"] + "" == "3" && dr["學期"] + "" == "2")
+                            vv = "6";
+
+
+                        string key = dr["科目"] + "_" + dr["科目級別"];
+                        if (!value[code].ContainsKey(key))
+                            value[code].Add(key, vv);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
 
     }
 }

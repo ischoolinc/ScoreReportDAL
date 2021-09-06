@@ -9,8 +9,8 @@ namespace SHCourseGroupCodeDAL
 {
     public class StudentCourseCodeInfo
     {
-        //public string SchoolYear { get; set; }
-        //public string Semester { get; set; }
+        public string SchoolYear { get; set; }
+        public string Semester { get; set; }
 
 
         public string StudentID { get; set; }
@@ -26,6 +26,9 @@ namespace SHCourseGroupCodeDAL
         Dictionary<string, int> SemesterHistorySchoolYearDict = new Dictionary<string, int>();
 
         Dictionary<string, SubjectInfo> SubjectInfoDict = new Dictionary<string, SubjectInfo>();
+
+        public Dictionary<string, string> ScSubjectSemesterDict = new Dictionary<string, string>();
+
 
         public void AddSubjectInfo(SubjectInfo subj)
         {
@@ -105,54 +108,25 @@ namespace SHCourseGroupCodeDAL
         }
 
 
-        public string GetScScoreSchoolYear(string SubjectName, string RequireBy, string Required, string SubjLevel)
+        
+        /// <summary>
+        /// 取得補修學年度
+        /// </summary>
+        /// <param name="SubjectName"></param>
+        /// <param name="SubjLevel"></param>
+        /// <returns></returns>
+        public string GetScScoreSchoolYear(string SubjectName,  string SubjLevel)
         {
             string value = "";
 
             try
             {
-
-                // 當沒有資料時
-                if (SubjectInfoDict.Count == 0)
+                string key = SubjectName + "_" + SubjLevel;
+                if (ScSubjectSemesterDict.ContainsKey(key))
                 {
-                    GetSubjectInfoDict();
+                    if (SemesterHistorySchoolYearDict.ContainsKey(ScSubjectSemesterDict[key]))
+                        value = SemesterHistorySchoolYearDict[ScSubjectSemesterDict[key]].ToString();
                 }
-
-                // 部定轉換
-                if (RequireBy == "部訂")
-                    RequireBy = "部定";
-
-                // 科目名稱+校部定+必選修
-                string cpString = "";
-                string SubjectKey = SubjectName + "_" + RequireBy + "_" + Required;
-
-                if (SubjectInfoDict.ContainsKey(SubjectKey))
-                    cpString = SubjectInfoDict[SubjectKey].credit_period;
-
-                bool levPass = false;
-                int lev = -1;
-                if (int.TryParse(SubjLevel, out lev))
-                {
-                    lev = lev - 1;
-                    if (cpString.Length > 5)
-                    {
-                        char[] cp = cpString.ToArray();
-                        if (lev > -1 && lev <=6)
-                        {
-                            if (cp[lev].ToString() != "0")
-                            {
-                                levPass = true;
-                            }
-                        }
-                    }
-                }
-
-                if (levPass)
-                {
-                    if (SemesterHistorySchoolYearDict.ContainsKey(SubjLevel))
-                        value = SemesterHistorySchoolYearDict[SubjLevel].ToString();
-                }
-
             }
             catch (Exception ex)
             {
