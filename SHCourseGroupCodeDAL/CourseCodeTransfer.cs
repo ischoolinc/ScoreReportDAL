@@ -128,7 +128,7 @@ namespace SHCourseGroupCodeDAL
                 ",require_by" +
                 ",is_required" +
                 ",course_attr" +
-                " FROM $moe.subjectcode WHERE group_code IN('" + string.Join("''", code.ToArray()) + "')";
+                " FROM $moe.subjectcode WHERE group_code IN('" + string.Join("','", code.ToArray()) + "')";
             try
             {
                 DataTable dt = qh.Select(query);
