@@ -93,7 +93,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
                 {                 
 
-                    if (subj.ProcessStatus == "更新")
+                    if (subj.ProcessStatus == "更新" || subj.ProcessStatus == "新增")
                     {
                         foreach (XElement elm in subj.MOEXml)
                         {

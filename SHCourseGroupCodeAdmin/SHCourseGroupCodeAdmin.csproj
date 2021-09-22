@@ -213,6 +213,12 @@
     <Compile Include="UIForm\frmCreateGPlanQueryAndSetup108.Designer.cs">
       <DependentUpon>frmCreateGPlanQueryAndSetup108.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmGPlanConfig108.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmGPlanConfig108.Designer.cs">
+      <DependentUpon>frmGPlanConfig108.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmSyncCourseCodeAPI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateGPlanQueryAndSetup108.resx">
       <DependentUpon>frmCreateGPlanQueryAndSetup108.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmGPlanConfig108.resx">
+      <DependentUpon>frmGPlanConfig108.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmSyncCourseCodeAPI.resx">
       <DependentUpon>frmSyncCourseCodeAPI.cs</DependentUpon>

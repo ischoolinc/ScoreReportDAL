@@ -371,43 +371,43 @@ namespace SHCourseGroupCodeAdmin.DAO
                 RowIndex++;
             }
 
-            // 重新排列科目級別
-            Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
+            //// 重新排列科目級別
+            //Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
 
-            foreach (XElement elm in MOEXml.Elements("Subject"))
-            {
-                string subj = elm.Attribute("SubjectName").Value;
+            //foreach (XElement elm in MOEXml.Elements("Subject"))
+            //{
+            //    string subj = elm.Attribute("SubjectName").Value;
 
-                if (!tmpSubjLevelDict.ContainsKey(subj))
-                    tmpSubjLevelDict.Add(subj, 0);
+            //    if (!tmpSubjLevelDict.ContainsKey(subj))
+            //        tmpSubjLevelDict.Add(subj, 0);
 
-                tmpSubjLevelDict[subj] += 1;
+            //    tmpSubjLevelDict[subj] += 1;
 
-                elm.SetAttributeValue("FullName", SubjFullName(subj, tmpSubjLevelDict[subj]));
-                elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
+            //    elm.SetAttributeValue("FullName", SubjFullName(subj, tmpSubjLevelDict[subj]));
+            //    elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
 
-            }
+            //}
 
-            // 重新整理開始級別
-            Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
-            foreach (XElement elm in MOEXml.Elements("Subject"))
-            {
-                string subjName = elm.Attribute("SubjectName").Value;
+            //// 重新整理開始級別
+            //Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
+            //foreach (XElement elm in MOEXml.Elements("Subject"))
+            //{
+            //    string subjName = elm.Attribute("SubjectName").Value;
 
-                string rowIdx = elm.Element("Grouping").Attribute("RowIndex").Value;
+            //    string rowIdx = elm.Element("Grouping").Attribute("RowIndex").Value;
 
-                if (!tmpStartLevel.ContainsKey(subjName))
-                    tmpStartLevel.Add(subjName, rowIdx);
-                else
-                {
-                    if (tmpStartLevel[subjName] != rowIdx)
-                    {
-                        // 設定開始級別是目前級別
-                        elm.Element("Grouping").SetAttributeValue("startLevel", elm.Attribute("Level").Value);
-                        tmpStartLevel[subjName] = rowIdx;
-                    }
-                }
-            }
+            //    if (!tmpStartLevel.ContainsKey(subjName))
+            //        tmpStartLevel.Add(subjName, rowIdx);
+            //    else 
+            //    {
+            //        if (tmpStartLevel[subjName] != rowIdx)
+            //        {
+            //            // 設定開始級別是目前級別
+            //            elm.Element("Grouping").SetAttributeValue("startLevel", elm.Attribute("Level").Value);
+            //            tmpStartLevel[subjName] = rowIdx;
+            //        }
+            //    }
+            //}
         }
 
         private string SubjFullName(string SubjectName, int level)

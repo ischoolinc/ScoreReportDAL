@@ -112,6 +112,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 items.Add("更新");
                 items.Add("略過");
                 items.Add("刪除");
+                items.Add("新增");
+
 
                 foreach (string str in items)
                 {
@@ -250,6 +252,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 int rowIdx = dgData.Rows.Add();
                 try
                 {
+                    Console.WriteLine("subj.ProcessStatus:" + subj.ProcessStatus);
                     dgData.Rows[rowIdx].Tag = subj;
                     dgData.Rows[rowIdx].Cells["差異狀態"].Value = string.Join(",", subj.DiffStatusList.ToArray());
                     dgData.Rows[rowIdx].Cells["處理方式"].Value = subj.ProcessStatus;
