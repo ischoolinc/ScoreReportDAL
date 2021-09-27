@@ -92,7 +92,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 取得課程大表資料
             Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();
 
-            List<DataRow> haGDCCodeStudents = da.GetHasGDCCodeStudentByGradeYear(_GradeYear);
+            List<DataRow> haGDCCodeStudents = da.GetHasGDCCodeStudent("1,2,3");
 
             foreach (DataRow dr in haGDCCodeStudents)
             {

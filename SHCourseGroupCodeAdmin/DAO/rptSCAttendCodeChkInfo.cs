@@ -34,6 +34,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string gdc_code { get; set; }
         public List<string> ErrorMsgList = new List<string>();
 
+        // 開課方式
+        public string open_type { get; set; }
+
         /// <summary>
         /// 檢查學分數
         /// </summary>
