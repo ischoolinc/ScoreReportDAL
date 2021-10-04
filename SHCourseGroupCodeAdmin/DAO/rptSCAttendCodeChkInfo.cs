@@ -37,6 +37,16 @@ namespace SHCourseGroupCodeAdmin.DAO
         // 開課方式
         public string open_type { get; set; }
 
+        // 因成績冊新增
+        public string IDNumber { get; set; }
+
+        // 因成績冊新增
+        public string BirthDayString { get; set; }
+        // 因成績冊新增
+        public bool hasCourseCode = false;
+        // 因成績冊新增
+        public bool CodePass = false;
+
         /// <summary>
         /// 檢查學分數
         /// </summary>

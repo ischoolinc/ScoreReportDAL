@@ -231,6 +231,7 @@
     <None Include="Template\修課檢核課程代碼樣板.xlsx" />
     <None Include="Template\學期成績檢核課程代碼樣板.xlsx" />
     <None Include="Template\學期科目成績課程代碼檢查樣版.xlsx" />
+    <None Include="Template\成績名冊樣板%28108課綱%29.xlsx" />
     <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\班級課程規劃表資料樣版.xlsx" />
     <None Include="Template\課程代碼表樣版.xlsx" />

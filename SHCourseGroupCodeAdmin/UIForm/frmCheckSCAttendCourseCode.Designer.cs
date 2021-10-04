@@ -37,6 +37,7 @@
             this.cboGradeYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.txtDesc = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.chkPreScoreXls = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             this.SuspendLayout();
@@ -175,11 +176,28 @@
             this.txtDesc.Size = new System.Drawing.Size(344, 210);
             this.txtDesc.TabIndex = 20;
             // 
+            // chkPreScoreXls
+            // 
+            this.chkPreScoreXls.AutoSize = true;
+            this.chkPreScoreXls.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkPreScoreXls.BackgroundStyle.Class = "";
+            this.chkPreScoreXls.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkPreScoreXls.Location = new System.Drawing.Point(13, 284);
+            this.chkPreScoreXls.Name = "chkPreScoreXls";
+            this.chkPreScoreXls.Size = new System.Drawing.Size(134, 21);
+            this.chkPreScoreXls.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkPreScoreXls.TabIndex = 21;
+            this.chkPreScoreXls.Text = "產生預檢成績名冊";
+            // 
             // frmCheckSCAttendCourseCode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(377, 321);
+            this.Controls.Add(this.chkPreScoreXls);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.cboGradeYear);
@@ -211,5 +229,6 @@
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboGradeYear;
         private DevComponents.DotNetBar.LabelX labelX1;
         private DevComponents.DotNetBar.Controls.TextBoxX txtDesc;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkPreScoreXls;
     }
 }

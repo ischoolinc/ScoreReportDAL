@@ -1616,6 +1616,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , student.name AS student_name " +
 " , student_number " +
 " , student.seat_no " +
+" , student.id_number " +
+" , student.birthdate " +
 " , class_name " +
 " , class.grade_year AS grade_year " +
 " , course.id AS course_id " +
@@ -1657,6 +1659,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.StudentNumber = dr["student_number"] + "";
                     data.ClassName = dr["class_name"] + "";
                     data.SeatNo = dr["seat_no"] + "";
+                    data.IDNumber = dr["id_number"] + "";
+                    data.BirthDayString = ConvertChDateString(dr["birthdate"] + "");
                     data.CourseID = dr["course_id"] + "";
                     data.CourseName = dr["course_name"] + "";
                     data.SubjectName = dr["subject"] + "";
@@ -2221,5 +2225,23 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return value;
         }
+
+        /// 將西元日期轉成民國數字
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public string ConvertChDateString(string dtStr)
+        {
+            DateTime dt;
+
+            string value = "";
+            if (DateTime.TryParse(dtStr, out dt))
+            {
+                value = string.Format("{0:000}", (dt.Year - 1911)) + string.Format("{0:00}", dt.Month) + string.Format("{0:00}", dt.Day);
+            }
+
+            return value;
+        }
+
     }
 }
