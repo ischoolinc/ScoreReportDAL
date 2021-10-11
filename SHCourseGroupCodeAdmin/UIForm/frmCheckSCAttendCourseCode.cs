@@ -478,7 +478,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.MaximumSize = this.MinimumSize = this.Size;
             try
             {
-
+                
                 chkPreScoreXls.Checked = false;
                 iptSchoolYear.IsInputReadOnly = true;
                 iptSemester.IsInputReadOnly = true;

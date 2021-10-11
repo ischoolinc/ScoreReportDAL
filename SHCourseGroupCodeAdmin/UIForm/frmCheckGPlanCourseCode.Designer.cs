@@ -34,6 +34,7 @@
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.btnRun = new DevComponents.DotNetBar.ButtonX();
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
+            this.txtDesc = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.SuspendLayout();
             // 
             // cbxSchoolYear
@@ -45,7 +46,7 @@
             this.cbxSchoolYear.ItemHeight = 19;
             this.cbxSchoolYear.Location = new System.Drawing.Point(71, 20);
             this.cbxSchoolYear.Name = "cbxSchoolYear";
-            this.cbxSchoolYear.Size = new System.Drawing.Size(90, 25);
+            this.cbxSchoolYear.Size = new System.Drawing.Size(58, 25);
             this.cbxSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cbxSchoolYear.TabIndex = 0;
             // 
@@ -56,9 +57,9 @@
             this.cbxSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxSemester.FormattingEnabled = true;
             this.cbxSemester.ItemHeight = 19;
-            this.cbxSemester.Location = new System.Drawing.Point(234, 20);
+            this.cbxSemester.Location = new System.Drawing.Point(197, 20);
             this.cbxSemester.Name = "cbxSemester";
-            this.cbxSemester.Size = new System.Drawing.Size(78, 25);
+            this.cbxSemester.Size = new System.Drawing.Size(42, 25);
             this.cbxSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cbxSemester.TabIndex = 1;
             // 
@@ -86,7 +87,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(194, 22);
+            this.labelX2.Location = new System.Drawing.Point(157, 22);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(34, 21);
             this.labelX2.TabIndex = 3;
@@ -98,7 +99,7 @@
             this.btnRun.AutoSize = true;
             this.btnRun.BackColor = System.Drawing.Color.Transparent;
             this.btnRun.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRun.Location = new System.Drawing.Point(139, 76);
+            this.btnRun.Location = new System.Drawing.Point(116, 251);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(75, 25);
             this.btnRun.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -112,7 +113,7 @@
             this.btnCancel.AutoSize = true;
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(233, 76);
+            this.btnCancel.Location = new System.Drawing.Point(210, 251);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -120,11 +121,26 @@
             this.btnCancel.Text = "離開";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // txtDesc
+            // 
+            // 
+            // 
+            // 
+            this.txtDesc.Border.Class = "TextBoxBorder";
+            this.txtDesc.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtDesc.Location = new System.Drawing.Point(13, 57);
+            this.txtDesc.Multiline = true;
+            this.txtDesc.Name = "txtDesc";
+            this.txtDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtDesc.Size = new System.Drawing.Size(272, 179);
+            this.txtDesc.TabIndex = 6;
+            // 
             // frmCheckGPlanCourseCode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(353, 116);
+            this.ClientSize = new System.Drawing.Size(301, 284);
+            this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.labelX2);
@@ -148,5 +164,6 @@
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.ButtonX btnRun;
         private DevComponents.DotNetBar.ButtonX btnCancel;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtDesc;
     }
 }

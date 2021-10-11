@@ -24,6 +24,8 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string credit_period { get; set; }
         public string gdc_code { get; set; }
 
+        public string open_type { get; set; }
+
         public string GradeYear { get; set; }
 
         public List<string> ErrorMsgList = new List<string>();

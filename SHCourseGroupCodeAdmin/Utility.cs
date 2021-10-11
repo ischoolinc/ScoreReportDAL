@@ -75,7 +75,7 @@ namespace SHCourseGroupCodeAdmin
         /// 取得API學分對照
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string,string> GetCreditMappingTable()
+        public static Dictionary<string, string> GetCreditMappingTable()
         {
             /*
              學分數檢查規則：
@@ -99,6 +99,19 @@ T	12學分
 
             Dictionary<string, string> value = new Dictionary<string, string>();
             value.Add("0", "");
+            value.Add("1", "1");
+            value.Add("2", "2");
+            value.Add("3", "3");
+            value.Add("4", "4");
+            value.Add("5", "5");
+            value.Add("6", "6");
+            value.Add("7", "7");
+            value.Add("8", "8");
+            value.Add("9", "9");
+            value.Add("10", "10");
+            value.Add("11", "11");
+            value.Add("12", "12");
+
             value.Add("Z", "0");
             value.Add("n", "0");
             value.Add("A", "1");
@@ -121,7 +134,7 @@ T	12學分
         /// 取得領域對照，課程代碼第19碼取2位
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string,string> GetDomainNameMapping()
+        public static Dictionary<string, string> GetDomainNameMapping()
         {
             Dictionary<string, string> value = new Dictionary<string, string>();
             value.Add("00", "不分");
@@ -240,7 +253,7 @@ T	12學分
             return value;
         }
 
-        public static Dictionary<string,string> GetSchoolNMapping()
+        public static Dictionary<string, string> GetSchoolNMapping()
         {
             // 進校轉日校學校代碼
             Dictionary<string, string> value = new Dictionary<string, string>();
@@ -258,7 +271,7 @@ T	12學分
             return value;
         }
 
-        public static string GetCourseCodeWhereCond ()
+        public static string GetCourseCodeWhereCond()
         {
             string value = " WHERE course_type NOT IN('進修部','實用技能學程(夜)') ";
             // 進校

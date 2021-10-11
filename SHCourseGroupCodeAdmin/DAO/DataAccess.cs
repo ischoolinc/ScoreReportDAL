@@ -1486,7 +1486,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 data.entry_year = Mco.entry_year;
                                 data.credit_period = Mco.credit_period;
                                 data.CourseCode = Mco.course_code;
-                                break;
+                                data.open_type = Mco.open_type;
                             }
                         }
 
@@ -2242,6 +2242,65 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
+
+        public Dictionary<string, List<chkCourseInfo>> GetCourseHasAttendBySchoolYearSemester(int SchoolYear, int Semester)
+        {
+            Dictionary<string, List<chkCourseInfo>> value = new Dictionary<string, List<chkCourseInfo>>();
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string qry = "" +
+                    " SELECT  " +
+    " DISTINCT course.id AS course_id " +
+    " , course_name " +
+    " , subject " +
+    " , COALESCE(course.credit,0) AS credit " +
+    " , class.grade_year " +
+    " , course.school_year " +
+    " , course.semester " +
+    " , (CASE c_required_by WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
+    " , (CASE c_is_required WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
+    " , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
+    " FROM course " +
+    " 	INNER JOIN sc_attend " +
+    "  ON course.id = sc_attend.ref_course_id  " +
+    " 	INNER JOIN student  " +
+    "  ON sc_attend.ref_student_id = student.id " +
+    " 	INNER JOIN class " +
+    " 	ON student.ref_class_id = class.id " +
+    " WHERE  " +
+    "  student.status = 1 AND  course.school_year = " + SchoolYear + " AND course.semester = " + Semester + "  " +
+    " ORDER BY course_name ";
+
+                DataTable dt = qh.Select(qry);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string key = dr["gdc_code"] + "";
+
+                    chkCourseInfo data = new chkCourseInfo();
+                    data.CourseID = dr["course_id"] + "";
+                    data.CourseName = dr["course_name"] + "";
+                    data.credit = dr["credit"] + "";
+                    data.required = dr["required"] + "";
+                    data.required_by = dr["required_by"] + "";
+                    data.SubjectName = dr["subject"] + "";
+
+                    if (!value.ContainsKey(key))
+                        value.Add(key, new List<chkCourseInfo>());
+
+                    value[key].Add(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+            return value;
+        }
+
 
     }
 }
