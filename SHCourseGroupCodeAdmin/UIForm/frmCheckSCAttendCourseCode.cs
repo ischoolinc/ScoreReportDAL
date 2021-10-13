@@ -22,13 +22,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
         Workbook _wb;
 
         Workbook _wbScoreXls;
+
         DataAccess da = new DataAccess();
         string _StrGradeYear = "1";
         int _SchoolYear = 1;
         int _Semester = 1;
 
-        // 是否產生預檢成績名冊
+        // 是否產生預檢成績名冊 (日)
         bool _chkPrvScoreXls = false;
+        // 是否產生預檢成績名冊 (進)
+        bool _chkPrvScoreXlsN = false;
 
         List<string> _grList = new List<string>();
 
@@ -69,6 +72,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (_chkPrvScoreXls)
             {
                 if(_wbScoreXls != null)
+                {
+                    Utility.ExprotXls("預檢成績名冊", _wbScoreXls);
+                }
+            }
+            if (_chkPrvScoreXlsN)
+            {
+                if (_wbScoreXls != null)
                 {
                     Utility.ExprotXls("預檢成績名冊", _wbScoreXls);
                 }
@@ -465,6 +475,98 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             }
 
+            // 填值到成績名冊 (進)
+            if (_chkPrvScoreXlsN)
+            {
+                foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
+                {
+                    if (string.IsNullOrWhiteSpace(data.CourseCode))
+                        data.hasCourseCode = false;
+                    else
+                        data.hasCourseCode = true;
+
+
+                    //當課程類別為8(團體活動時間)及9(彈性活動時間)，且科目屬性不為D(充實(增廣)、補強性教學 [全學期、授予學分])時，不允許提交成績。
+                    //課程代碼為23碼
+                    data.CodePass = true;
+                    int startIndex1 = 16;
+                    int endIndex = 1;
+                    int startIndex2 = 18;
+
+                    if (data.hasCourseCode)
+                    {
+                        if (data.CourseCode.Length > 22)
+                        {
+                            string sub1 = data.CourseCode.Substring(startIndex1, endIndex);
+                            string sub2 = data.CourseCode.Substring(startIndex2, endIndex);
+                            if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
+                            {
+                                data.CodePass = false;   //不可提交
+                            }
+                        }
+                    }
+                }
+
+                // 填值到 Excel
+                _wbScoreXls = new Workbook(new MemoryStream(Properties.Resources.進修部_學校_成績名冊樣板_108課綱_));
+                Worksheet wstSCx1 = _wbScoreXls.Worksheets["封面"];
+                Worksheet wstSCx2 = _wbScoreXls.Worksheets["學期成績"];
+                Worksheet wstSCx2_err = _wbScoreXls.Worksheets["學期成績(缺)"];
+                Worksheet wstSCx3_err = _wbScoreXls.Worksheets["補考成績(缺)"]; 
+                Worksheet wstSCx4_err = _wbScoreXls.Worksheets["轉學轉科成績(缺)"];
+
+
+                // wstSCx1 學校代碼 0,學年度 1,學期 2,名冊別 3
+                wstSCx1.Cells[1, 0].PutValue(K12.Data.School.Code);
+                wstSCx1.Cells[1, 1].PutValue(_SchoolYear);
+                wstSCx1.Cells[1, 2].PutValue(_Semester);
+                wstSCx1.Cells[1, 3].PutValue("42"); // 預檢代號 42
+
+                // 身分證號 0,出生日期 1,課程代碼 2,科目名稱 3,開課年級 4,修課節數 5,學期學業成績 6,成績及格 7,學年學業成績 8,學年及格 9,是否採計學時 10,質性文字描述 11
+
+                int rIdx = 1;
+                foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
+                {
+                    // 有課程代碼且可以提交
+                    if (data.hasCourseCode && data.CodePass)
+                    {
+                        wstSCx2.Cells[rIdx, 0].PutValue(data.IDNumber);
+                        wstSCx2.Cells[rIdx, 1].PutValue(data.BirthDayString);
+                        wstSCx2.Cells[rIdx, 2].PutValue(data.CourseCode);
+                        wstSCx2.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        wstSCx2.Cells[rIdx, 4].PutValue(data.GradeYear);
+                        wstSCx2.Cells[rIdx, 5].PutValue(data.Credit);
+                        rIdx++;
+                    }
+                }
+
+                rIdx = 1;
+                foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
+                {
+                    // 沒有課程代碼
+                    if (data.hasCourseCode == false)
+                    {
+                        wstSCx2_err.Cells[rIdx, 0].PutValue(data.IDNumber);
+                        wstSCx2_err.Cells[rIdx, 1].PutValue(data.BirthDayString);
+                        wstSCx2_err.Cells[rIdx, 2].PutValue(data.CourseCode);
+                        wstSCx2_err.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
+                        wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
+                        rIdx++;
+                    }
+                }
+
+                // 刪除沒有使用到的缺資料工作表
+                if (wstSCx2_err.Cells.MaxDataRow == 0)
+                    _wbScoreXls.Worksheets.RemoveAt(wstSCx2_err.Index);
+
+                if (wstSCx3_err.Cells.MaxDataRow == 0)
+                    _wbScoreXls.Worksheets.RemoveAt(wstSCx3_err.Index);
+
+                if (wstSCx4_err.Cells.MaxDataRow == 0)
+                    _wbScoreXls.Worksheets.RemoveAt(wstSCx4_err.Index);
+
+            }
             _bgWorker.ReportProgress(100);
         }
 
@@ -543,6 +645,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _SchoolYear = iptSchoolYear.Value;
             _Semester = iptSemester.Value;
             _chkPrvScoreXls = chkPreScoreXls.Checked;
+            _chkPrvScoreXlsN = chkPreScoreXlsN.Checked;
 
             if (cboGradeYear.Text == "全部")
                 _StrGradeYear = string.Join(",", _grList.ToArray());
@@ -559,6 +662,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 value = _ColIdxDict[name];
 
             return value;
+        }
+
+
+        private void chkPreScoreXls_Click(object sender, EventArgs e)
+        {
+            if (chkPreScoreXlsN.Checked)
+                chkPreScoreXlsN.Checked = false;
+        }
+
+        private void chkPreScoreXlsN_Click(object sender, EventArgs e)
+        {
+            if (chkPreScoreXls.Checked)
+                chkPreScoreXls.Checked = false;
         }
     }
 }
