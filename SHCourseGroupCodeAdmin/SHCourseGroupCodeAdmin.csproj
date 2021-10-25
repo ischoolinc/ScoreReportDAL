@@ -257,6 +257,7 @@
     <None Include="Template\課程代碼表樣版.xlsx" />
     <None Include="Template\課程規劃表開課檢核樣版.xlsx" />
     <None Include="Template\課程開課檢查樣版.xlsx" />
+    <None Include="Template\進修部%28學校%29成績名冊樣板%28108課綱%29.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells_201402.dll" />

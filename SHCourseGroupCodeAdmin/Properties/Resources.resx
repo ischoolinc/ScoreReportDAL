@@ -145,4 +145,7 @@
   <data name="課程開課檢查樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\課程開課檢查樣版.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="進修部_學校_成績名冊樣板_108課綱_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Template\進修部(學校)成績名冊樣板(108課綱).xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
