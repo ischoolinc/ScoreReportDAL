@@ -7,6 +7,7 @@ using System.Data;
 using FISCA.Data;
 using System.Xml.Linq;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -2170,7 +2171,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 填入課程規劃表大表
                     if (MOECourseCodeDict.ContainsKey(code))
                     {
-                        data.MOECourseCodeInfoList = MOECourseCodeDict[code];
+                        data.MOECourseCodeInfoList = MOECourseCodeDict[code].OrderBy(x => x.course_code).ToList();
                     }
 
                     // 放入課程規劃表原始
@@ -2297,10 +2298,453 @@ namespace SHCourseGroupCodeAdmin.DAO
             {
                 Console.WriteLine(ex.Message);
             }
-            
+
             return value;
         }
 
+
+        public List<GPlanInfo108> GetGPlanInfo108All()
+        {
+            List<GPlanInfo108> value = new List<GPlanInfo108>();
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string qry = "" +
+                    " WITH entry_year_data AS(" +
+" SELECT  " +
+" 			id             " +
+" 			, unnest(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)))::TEXT AS entry_year " +
+" 		FROM  " +
+" 			graduation_plan) " +
+" ,g_plan_data AS( " +
+" SELECT entry_year_data.entry_year,graduation_plan.id,graduation_plan.name,graduation_plan.content,graduation_plan.moe_group_code FROM graduation_plan INNER JOIN entry_year_data ON graduation_plan.id = entry_year_data.id  " +
+" ) " +
+" SELECT * FROM g_plan_data ORDER BY entry_year,name;";
+
+                DataTable dt = qh.Select(qry);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    GPlanInfo108 data = new GPlanInfo108();
+                    data.EntrySchoolYear = dr["entry_year"] + "";
+                    data.GDCCode = dr["moe_group_code"] + "";
+                    data.RefGPContent = dr["content"] + "";
+                    data.ParseRefGPContentXml();
+                    data.RefGPID = dr["id"] + "";
+                    data.RefGPName = dr["name"] + "";
+                    value.Add(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+        public Dictionary<string, List<DataRow>> GetGPlanRefClaasByID(string gp_id)
+        {
+            Dictionary<string, List<DataRow>> value = new Dictionary<string, List<DataRow>>();
+
+            QueryHelper qh = new QueryHelper();
+            string qry = " SELECT " +
+" class.grade_year" +
+" ,class_name" +
+" ,COUNT(student.id) AS stud_cot " +
+" 	FROM " +
+" class " +
+" LEFT JOIN " +
+" student " +
+" ON class.id = student.ref_class_id " +
+" WHERE class.ref_graduation_plan_id = " + gp_id + " " +
+"  AND student.status = 1 " +
+"  GROUP BY class.grade_year,class_name " +
+"  ORDER BY class.grade_year,class_name";
+
+            DataTable dt = qh.Select(qry);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                string gr = dr["grade_year"] + "";
+                if (gr == "")
+                    gr = "未分";
+                if (!value.ContainsKey(gr))
+                    value.Add(gr, new List<DataRow>());
+                value[gr].Add(dr);
+            }
+
+            return value;
+        }
+
+
+        public List<CClassCourseInfo> GetCClassCourseInfoList(List<string> classIDs)
+        {
+            List<CClassCourseInfo> value = new List<CClassCourseInfo>();
+
+            List<string> gpidList = new List<string>();
+
+            // 取得班級資訊
+            QueryHelper qh = new QueryHelper();
+            string qry = "" +
+                " SELECT  " +
+" 	id " +
+" 	,class_name " +
+" 	,grade_year " +
+" 	,ref_graduation_plan_id " +
+"  FROM  " +
+" 	class  " +
+"  WHERE id IN(" + string.Join(",", classIDs.ToArray()) + ")  " +
+" 	ORDER BY  " +
+"  grade_year DESC " +
+"  ,display_order " +
+"  ,class_name ";
+
+            DataTable dt = qh.Select(qry);
+            foreach (DataRow dr in dt.Rows)
+            {
+                CClassCourseInfo data = new CClassCourseInfo();
+                data.ClassID = dr["id"] + "";
+                data.ClassName = dr["class_name"] + "";
+                data.GradeYear = dr["grade_year"] + "";
+                data.RefGPID = dr["ref_graduation_plan_id"] + "";
+                if (!gpidList.Contains(data.RefGPID))
+                    gpidList.Add(data.RefGPID);
+
+                value.Add(data);
+            }
+
+            // 取得課程規劃
+            string qryGp = "" +
+                " WITH entry_year_data AS(" +
+" SELECT  " +
+" 			id             " +
+" 			, unnest(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)))::TEXT AS entry_year " +
+" 		FROM  " +
+" 			graduation_plan WHERE id IN(" + string.Join(",", gpidList.ToArray()) + ")) " +
+" ,g_plan_data AS( " +
+" SELECT entry_year_data.entry_year,graduation_plan.id,graduation_plan.name,graduation_plan.content,graduation_plan.moe_group_code FROM graduation_plan INNER JOIN entry_year_data ON graduation_plan.id = entry_year_data.id  " +
+" ) " +
+" SELECT * FROM g_plan_data ORDER BY entry_year,name";
+
+            Dictionary<string, DataRow> gpDr = new Dictionary<string, DataRow>();
+
+            DataTable dtgp = qh.Select(qryGp);
+            foreach (DataRow dr in dtgp.Rows)
+            {
+                string id = dr["id"] + "";
+                if (!gpDr.ContainsKey(id))
+                    gpDr.Add(id, dr);
+            }
+
+            foreach (CClassCourseInfo cc in value)
+            {
+                if (gpDr.ContainsKey(cc.RefGPID))
+                {
+                    cc.RefGPName = gpDr[cc.RefGPID]["name"] + "";
+                    try
+                    {
+                        cc.RefGPlanXML = XElement.Parse(gpDr[cc.RefGPID]["content"] + "");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+
+
+            return value;
+        }
+
+
+        public Dictionary<string, List<string>> GetClassStudentDict(List<string> classIDs)
+        {
+            Dictionary<string, List<string>> value = new Dictionary<string, List<string>>();
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string qry = "SELECT class.id AS c_id,student.id AS s_id FROM class INNER JOIN student ON class.id = student.ref_class_id WHERE student.status IN(1,2) AND class.id IN(" + string.Join(",", classIDs.ToArray()) + ");";
+                DataTable dt = qh.Select(qry);
+                foreach(DataRow dr in dt.Rows)
+                {
+                    string cid = dr["c_id"] + "";
+                    string sid = dr["s_id"] + "";
+                    if (!value.ContainsKey(cid))
+                        value.Add(cid, new List<string>());
+
+                    value[cid].Add(sid);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+
+
+        /// <summary>
+        /// 取得目前系統內課程ID
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <returns></returns>
+        public Dictionary<string, string> GetHasCourseIDDict(string SchoolYear, string Semester)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            QueryHelper qh = new QueryHelper();
+            try
+            {
+                string qryCourse = "" +
+                 " SELECT  " +
+" 	course_name, " +
+" 	id " +
+"  FROM course  " +
+"  WHERE  " +
+"  school_year = " + SchoolYear + "  " +
+"  AND semester = " + Semester + " " +
+"  ORDER BY course_name; ";
+                DataTable dtCourse = qh.Select(qryCourse);
+                foreach (DataRow dr in dtCourse.Rows)
+                {
+                    string coname = (dr["course_name"] + "").Trim();
+                    if (!value.ContainsKey(coname))
+                        value.Add(coname, dr["id"] + "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+        public List<CClassCourseInfo> AddGPlanCourseBySchoolYearSemester(string SchoolYear, string Semester, List<CClassCourseInfo> dataList)
+        {
+            // 取得系統內課程
+            Dictionary<string, string> hasCourseIDDict = new Dictionary<string, string>();
+            List<string> insertSQLList = new List<string>();
+
+            hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+
+                // 處理一般開課
+                foreach (CClassCourseInfo data in dataList)
+                {
+                    foreach (XElement subjElm in data.OpenSubjectSourceList)
+                    {
+                        // 檢查課程名稱是否存在
+                        string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value;
+                        string chkName = courseName.Trim();
+                        // 已存在跳過
+                        if (hasCourseIDDict.ContainsKey(chkName))
+                        {
+                            continue;
+                        }
+                        string isReq = "", ReqBy = "";
+
+                        if (subjElm.Attribute("RequiredBy").Value == "部訂" || subjElm.Attribute("RequiredBy").Value == "部定")
+                        {
+                            ReqBy = "1";
+                        }
+                        else
+                        {
+                            ReqBy = "2";
+                        }
+
+                        if (subjElm.Attribute("Required").Value == "必修")
+                            isReq = "1";
+                        else
+                            isReq = "0";
+
+
+                        insertSQLList.Add(insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value));
+                        data.AddCourseNameList.Add(courseName);
+                    }
+
+
+                    // 處理對開課程
+                    foreach (XElement subjElm in data.OpenSubjectSourceBList)
+                    {
+                        string subjName = subjElm.Attribute("SubjectName").Value;
+                        foreach (string subj in data.SubjectBDict.Keys)
+                        {
+                            if (data.SubjectBDict[subj] == true)
+                            {
+                                // 檢查課程名稱是否存在
+                                string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value;
+                                string chkName = courseName.Trim();
+                                // 已存在跳過
+                                if (hasCourseIDDict.ContainsKey(chkName))
+                                {
+                                    continue;
+                                }
+                                string isReq = "", ReqBy = "";
+
+                                if (subjElm.Attribute("RequiredBy").Value == "部訂" || subjElm.Attribute("RequiredBy").Value == "部定")
+                                {
+                                    ReqBy = "1";
+                                }
+                                else
+                                {
+                                    ReqBy = "2";
+                                }
+
+                                if (subjElm.Attribute("Required").Value == "必修")
+                                    isReq = "1";
+                                else
+                                    isReq = "0";
+
+
+                                insertSQLList.Add(insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value));
+                                data.AddCourseNameList.Add(courseName);
+                            }
+                        }
+                    }
+                }
+
+
+                // debug write text file
+                using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug.txt", false))
+                {
+                    foreach (string sid in insertSQLList)
+                    {
+                        sw.WriteLine(sid);                        
+                    }
+                }
+
+
+
+                // 執行寫入
+                K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                uh.Execute(insertSQLList);
+                
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return dataList;
+        }
+
+        public string AddCourseStudent(string SchoolYear, string Semester, List<CClassCourseInfo> dataList)
+        {
+            Dictionary<string, string> hasCourseIDDict = new Dictionary<string, string>();
+            QueryHelper qh = new QueryHelper();
+            // 取得已有課程
+            hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
+            List<string> insertCourseStudentSQL = new List<string>();
+            Dictionary<string, List<string>> hasCourseStudent = new Dictionary<string, List<string>>();
+            // 取得已有修課
+            try
+            {
+                string qry = "" +
+                    "SELECT " +
+                    "course_name" +
+                    ",sc_attend.ref_student_id " +
+                    " FROM course " +
+                    "INNER JOIN " +
+                    "sc_attend ON course.id = sc_attend.ref_course_id " +
+                    " WHERE course.school_year = " + SchoolYear + " AND course.semester = " + Semester +
+                    " ORDER BY course_name;";
+
+                DataTable dt = qh.Select(qry);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string cname = dr["course_name"] + "";
+                    string sid = dr["ref_student_id"] + "";
+                    if (!hasCourseStudent.ContainsKey(cname))
+                        hasCourseStudent.Add(cname, new List<string>());
+
+                    hasCourseStudent[cname].Add(sid);
+                }
+
+                foreach (CClassCourseInfo data in dataList)
+                {
+                    // 檢查課程是否已有修課學生
+                    foreach (string cname in data.AddCourseNameList)
+                    {
+                        string courseid = "";
+                        if (hasCourseIDDict.ContainsKey(cname))
+                            courseid = hasCourseIDDict[cname];
+
+                        foreach (string sid in data.RefStudentIDList)
+                        {
+                            if (hasCourseStudent.ContainsKey(cname))
+                            {
+                                if (hasCourseStudent[cname].Contains(sid))
+                                    continue;
+                            }
+
+                            string insSCattned = "INSERT INTO sc_attend(" +
+                                "ref_course_id" +
+                                ",ref_student_id) " +
+                                "VALUES(" + courseid + "," + sid + ");";
+
+                            insertCourseStudentSQL.Add(insSCattned);
+                        }
+
+                    }
+                }
+
+                // 新增資料
+                K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                uh.Execute(insertCourseStudentSQL);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return ex.Message;
+            }
+
+            return "";
+        }
+
+
+        private string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain)
+        {
+            string value = "" +
+                " INSERT INTO course(" +
+" 	course_name " +
+" 	,subj_level " +
+" 	,subject " +
+" 	,ref_class_id " +
+" 	,school_year " +
+" 	,semester " +
+" 	,credit " +
+" 	,score_type " +
+" 	,c_required_by " +
+" 	,c_is_required " +
+" 	,period " +
+" 	,domain " +
+" ) " +
+" VALUES ( " +
+" 	'" + course_name + "' " +
+" 	,'" + subj_level + "' " +
+" 	,'" + subject + "' " +
+" 	,'" + ref_class_id + "' " +
+" 	," + school_year + "" +
+" 	," + semester + " " +
+" 	," + credit + " " +
+" 	,'" + score_type + "' " +
+" 	,'" + c_required_by + "' " +
+" 	,'" + c_is_required + "' " +
+" 	,'" + period + "' " +
+" 	,'" + domain + "' " +
+" ); ";
+
+            return value;
+        }
 
     }
 }

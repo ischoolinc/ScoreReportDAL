@@ -444,13 +444,14 @@ namespace SHCourseGroupCodeAdmin.DAO
             try
             {
                 // 解析第一筆
-                if (GPlanList.Count > 0)
+                if (GPlanList.Count > 0 )
                 {
                     RefGPID = GPlanList[0]["id"] + "";
                     RefGPName = GPlanList[0]["name"] + "";
                     RefGPContent = GPlanList[0]["content"] + "";
                     RefGPContentXml = XElement.Parse(RefGPContent);
-                }
+                }               
+
             }
             catch (Exception ex)
             {

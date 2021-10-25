@@ -99,7 +99,7 @@
             this.btnRun.AutoSize = true;
             this.btnRun.BackColor = System.Drawing.Color.Transparent;
             this.btnRun.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRun.Location = new System.Drawing.Point(116, 251);
+            this.btnRun.Location = new System.Drawing.Point(285, 307);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(75, 25);
             this.btnRun.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -113,7 +113,7 @@
             this.btnCancel.AutoSize = true;
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(210, 251);
+            this.btnCancel.Location = new System.Drawing.Point(379, 307);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -132,14 +132,14 @@
             this.txtDesc.Multiline = true;
             this.txtDesc.Name = "txtDesc";
             this.txtDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtDesc.Size = new System.Drawing.Size(272, 179);
+            this.txtDesc.Size = new System.Drawing.Size(441, 233);
             this.txtDesc.TabIndex = 6;
             // 
             // frmCheckGPlanCourseCode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(301, 284);
+            this.ClientSize = new System.Drawing.Size(466, 344);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnRun);

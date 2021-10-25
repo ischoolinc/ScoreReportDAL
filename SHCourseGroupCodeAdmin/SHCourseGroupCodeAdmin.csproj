@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAO\CClassCourseInfo.cs" />
     <Compile Include="DAO\chkCourseInfo.cs" />
     <Compile Include="DAO\chkSubjectInfo.cs" />
     <Compile Include="DAO\ClassInfo.cs" />
@@ -195,6 +196,24 @@
     </Compile>
     <Compile Include="UIForm\frmCreateClassGPlanSetDetail.Designer.cs">
       <DependentUpon>frmCreateClassGPlanSetDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateCourseByGPlan108-Create.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateCourseByGPlan108-Create.Designer.cs">
+      <DependentUpon>frmCreateCourseByGPlan108-Create.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateCourseByGPlan108-Detail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateCourseByGPlan108-Detail.Designer.cs">
+      <DependentUpon>frmCreateCourseByGPlan108-Detail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCreateCourseByGPlan108.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCreateCourseByGPlan108.Designer.cs">
+      <DependentUpon>frmCreateCourseByGPlan108.cs</DependentUpon>
     </Compile>
     <Compile Include="UIForm\frmCreateGPlanItemSetup108.cs">
       <SubType>Form</SubType>
@@ -309,6 +328,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateClassGPlanSetDetail.resx">
       <DependentUpon>frmCreateClassGPlanSetDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateCourseByGPlan108-Create.resx">
+      <DependentUpon>frmCreateCourseByGPlan108-Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateCourseByGPlan108-Detail.resx">
+      <DependentUpon>frmCreateCourseByGPlan108-Detail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCreateCourseByGPlan108.resx">
+      <DependentUpon>frmCreateCourseByGPlan108.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateGPlanItemSetup108.resx">
       <DependentUpon>frmCreateGPlanItemSetup108.cs</DependentUpon>

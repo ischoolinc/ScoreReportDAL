@@ -32,11 +32,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void _bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取課程代碼大表與課程規劃表...", e.ProgressPercentage);
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取課程代碼總表與課程規劃表...", e.ProgressPercentage);
         }
 
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            dgData.Rows.Clear();
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {

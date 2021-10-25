@@ -239,7 +239,7 @@
             this.Controls.Add(this.lblTitle);
             this.DoubleBuffered = true;
             this.Name = "frmCreateGPlanMain108";
-            this.Text = "產生課程規劃";
+            this.Text = "依課程代碼總表產生課程規劃";
             this.Load += new System.EventHandler(this.frmCreateGPlanMain108_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);

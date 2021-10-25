@@ -86,8 +86,8 @@ namespace SHCourseGroupCodeAdmin
 
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Click += delegate
             {
-              //  frmCreateClassGPlan ccg = new frmCreateClassGPlan();
-               frmCreateClassGPlanMain ccg = new frmCreateClassGPlanMain();
+                //  frmCreateClassGPlan ccg = new frmCreateClassGPlan();
+                frmCreateClassGPlanMain ccg = new frmCreateClassGPlanMain();
                 ccg.ShowDialog();
 
 
@@ -128,31 +128,48 @@ namespace SHCourseGroupCodeAdmin
             };
 
 
-            //Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            //ribbon10.Add(new RibbonFeature("84066116-8124-41F4-8149-0877dA75a417", "依課程規劃總表產生課程規劃"));
 
-            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["依課程規劃總表產生課程規劃"].Enable = UserAcl.Current["84066116-8124-41F4-8149-0877dA75a417"].Executable;
+           // --- 開發中
+            // 108 版本 -----
+            Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon10.Add(new RibbonFeature("84066116-8124-41F4-8149-0877dA75a417", "依課程代碼總表產生課程規劃"));
 
-            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["依課程規劃總表產生課程規劃"].Click += delegate
-            //{
-            //    frmCreateGPlanMain108 fMain = new frmCreateGPlanMain108();
-            //    fMain.ShowDialog();
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["依課程代碼總表產生課程規劃"].Enable = UserAcl.Current["84066116-8124-41F4-8149-0877dA75a417"].Executable;
 
-            //};
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["依課程代碼總表產生課程規劃"].Click += delegate
+            {
+                frmCreateGPlanMain108 fMain = new frmCreateGPlanMain108();
+                fMain.ShowDialog();
+
+            };
 
 
-            //Catalog ribbon11 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            //ribbon11.Add(new RibbonFeature("B1E6A402-F173-42B5-8785-7250CF6D46BD", "班級課程規劃(108適用)"));
+            Catalog ribbon11 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon11.Add(new RibbonFeature("B1E6A402-F173-42B5-8785-7250CF6D46BD", "班級課程規劃(108適用)"));
 
-            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["班級課程規劃(108適用)"].Enable = UserAcl.Current["B1E6A402-F173-42B5-8785-7250CF6D46BD"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["班級課程規劃(108適用)"].Enable = UserAcl.Current["B1E6A402-F173-42B5-8785-7250CF6D46BD"].Executable;
 
-            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["班級課程規劃(108適用)"].Click += delegate
-            //{
-            //    frmGPlanConfig108 fgc = new frmGPlanConfig108();
-            //    fgc.ShowDialog();
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["班級課程規劃(108適用)"].Click += delegate
+            {
+                frmGPlanConfig108 fgc = new frmGPlanConfig108();
+                fgc.ShowDialog();
 
-            //};
+            };
 
+
+            Catalog ribbon12 = RoleAclSource.Instance["班級"]["教務"]["班級開課"];
+            ribbon12.Add(new RibbonFeature("375D9EC7-E4C2-46FB-AA5D-7ADE4A5F7F03", "依課程規劃表開課(108適用)"));
+
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108適用)"].Enable = UserAcl.Current["375D9EC7-E4C2-46FB-AA5D-7ADE4A5F7F03"].Executable;
+
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108適用)"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Class.SelectedSource.Count>0)
+                {
+                    frmCreateCourseByGPlan108 fcc = new frmCreateCourseByGPlan108(K12.Presentation.NLDPanels.Class.SelectedSource);
+                    fcc.ShowDialog();
+                }
+            };
         }
     }
 }
