@@ -89,15 +89,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
             foreach (CClassCourseInfo data in _CClassCourseInfoList)
             {
                 int rowIdx = dgData.Rows.Add();
-                dgData.Rows[rowIdx].Tag = data;
+                dgData.Rows[rowIdx].Tag = data;                
                 dgData.Rows[rowIdx].Cells["班級"].Value = data.ClassName;
                 foreach (DataGridViewCell cell in dgData.Rows[rowIdx].Cells)
                 {
-                    cell.ReadOnly = true;
+                   if (cell.ColumnIndex > 0)
+                    {
+                        cell.ReadOnly = true;
+                        cell.Style.BackColor = Color.LightGray;
+                    }
                 }
                 foreach (string name in data.SubjectBDict.Keys)
                 {
                     dgData.Rows[rowIdx].Cells[name].ReadOnly = false;
+                    dgData.Rows[rowIdx].Cells[name].Style.BackColor = Color.White;
                 }
             }
         }
@@ -134,11 +139,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 設定
             foreach (CClassCourseInfo data in _CClassCourseInfoList)
             {
-                
+
                 if (classSubjectDict.ContainsKey(data.ClassName))
                 {
                     foreach (string sname in classSubjectDict[data.ClassName])
-                    {                      
+                    {
                         if (data.SubjectBDict.ContainsKey(sname))
                             data.SubjectBDict[sname] = true;
                     }
@@ -153,7 +158,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 this.DialogResult = DialogResult.OK;
             }
             fccc.StartPosition = FormStartPosition.CenterScreen;
-        
+
 
         }
     }

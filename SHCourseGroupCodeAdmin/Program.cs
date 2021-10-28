@@ -170,6 +170,21 @@ namespace SHCourseGroupCodeAdmin
                     fcc.ShowDialog();
                 }
             };
+
+            Catalog ribbon13 = RoleAclSource.Instance["班級"]["教務"]["班級開課"];
+            ribbon13.Add(new RibbonFeature("E5FD6FD7-7641-4E04-81B7-C2A5A1A346F8", "依課程規劃表開課-跨班(108適用)"));
+
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課-跨班(108適用)"].Enable = UserAcl.Current["E5FD6FD7-7641-4E04-81B7-C2A5A1A346F8"].Executable;
+
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課-跨班(108適用)"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Class.SelectedSource.Count > 0)
+                {
+                    frmCreateCourseByGPlan108_C fcc = new frmCreateCourseByGPlan108_C(K12.Presentation.NLDPanels.Class.SelectedSource);
+                    fcc.ShowDialog();
+                }
+            };
+
         }
     }
 }

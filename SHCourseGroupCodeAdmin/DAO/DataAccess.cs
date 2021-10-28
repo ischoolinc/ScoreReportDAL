@@ -2379,6 +2379,12 @@ namespace SHCourseGroupCodeAdmin.DAO
         }
 
 
+        /// <summary>
+        /// 透過班級系統編號取得相關課程規劃
+        /// </summary>
+        /// <param name="classIDs"></param>
+        /// <returns></returns>
+
         public List<CClassCourseInfo> GetCClassCourseInfoList(List<string> classIDs)
         {
             List<CClassCourseInfo> value = new List<CClassCourseInfo>();
@@ -2469,7 +2475,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 QueryHelper qh = new QueryHelper();
                 string qry = "SELECT class.id AS c_id,student.id AS s_id FROM class INNER JOIN student ON class.id = student.ref_class_id WHERE student.status IN(1,2) AND class.id IN(" + string.Join(",", classIDs.ToArray()) + ");";
                 DataTable dt = qh.Select(qry);
-                foreach(DataRow dr in dt.Rows)
+                foreach (DataRow dr in dt.Rows)
                 {
                     string cid = dr["c_id"] + "";
                     string sid = dr["s_id"] + "";
@@ -2565,8 +2571,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                         else
                             isReq = "0";
 
+                        string insStr = insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
 
-                        insertSQLList.Add(insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value));
+                        if (!insertSQLList.Contains(insStr))
+                            insertSQLList.Add(insStr);
+
                         data.AddCourseNameList.Add(courseName);
                     }
 
@@ -2604,7 +2613,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                                     isReq = "0";
 
 
-                                insertSQLList.Add(insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value));
+                                string inStr = insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
+
+                                if (!insertSQLList.Contains(inStr))
+                                    insertSQLList.Add(inStr);
+
                                 data.AddCourseNameList.Add(courseName);
                             }
                         }
@@ -2617,7 +2630,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 {
                     foreach (string sid in insertSQLList)
                     {
-                        sw.WriteLine(sid);                        
+                        sw.WriteLine(sid);
                     }
                 }
 
@@ -2626,7 +2639,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 // 執行寫入
                 K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
                 uh.Execute(insertSQLList);
-                
+
 
             }
             catch (Exception ex)
@@ -2711,6 +2724,22 @@ namespace SHCourseGroupCodeAdmin.DAO
         }
 
 
+        /// <summary>
+        /// 新增課程資料
+        /// </summary>
+        /// <param name="course_name"></param>
+        /// <param name="subj_level"></param>
+        /// <param name="subject"></param>
+        /// <param name="ref_class_id"></param>
+        /// <param name="school_year"></param>
+        /// <param name="semester"></param>
+        /// <param name="credit"></param>
+        /// <param name="score_type"></param>
+        /// <param name="c_required_by"></param>
+        /// <param name="c_is_required"></param>
+        /// <param name="period"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         private string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain)
         {
             string value = "" +
@@ -2745,6 +2774,6 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
-
+              
     }
 }

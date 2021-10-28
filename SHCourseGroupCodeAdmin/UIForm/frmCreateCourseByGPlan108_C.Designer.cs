@@ -34,6 +34,7 @@
             this.btnCreate = new DevComponents.DotNetBar.ButtonX();
             this.cboSchoolYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.SuspendLayout();
             // 
             // cboSemester
@@ -69,12 +70,13 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(187, 65);
+            this.btnCancel.Location = new System.Drawing.Point(262, 152);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "取消";
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnCreate
             // 
@@ -82,12 +84,13 @@
             this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCreate.BackColor = System.Drawing.Color.Transparent;
             this.btnCreate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCreate.Location = new System.Drawing.Point(90, 65);
+            this.btnCreate.Location = new System.Drawing.Point(165, 152);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnCreate.TabIndex = 12;
             this.btnCreate.Text = "下一步";
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
             // 
             // cboSchoolYear
             // 
@@ -116,11 +119,26 @@
             this.labelX1.TabIndex = 9;
             this.labelX1.Text = "學年度";
             // 
+            // labelX2
+            // 
+            this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(23, 50);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(316, 87);
+            this.labelX2.TabIndex = 16;
+            this.labelX2.Text = "步驟1.建立「上課方式」為「跨班上課」之課程。\r\n步驟2.點「下一步」設定跨班課程。\r\n步驟3.點「下一步」檢視跨班課程。\r\n步驟4.點「產生」跨班課程。";
+            // 
             // frmCreateCourseByGPlan108_C
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(288, 100);
+            this.ClientSize = new System.Drawing.Size(363, 187);
+            this.Controls.Add(this.labelX2);
             this.Controls.Add(this.cboSemester);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.btnCancel);
@@ -130,6 +148,7 @@
             this.DoubleBuffered = true;
             this.Name = "frmCreateCourseByGPlan108_C";
             this.Text = "產生跨班課程";
+            this.Load += new System.EventHandler(this.frmCreateCourseByGPlan108_C_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,5 +162,6 @@
         private DevComponents.DotNetBar.ButtonX btnCreate;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboSchoolYear;
         private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.LabelX labelX2;
     }
 }
