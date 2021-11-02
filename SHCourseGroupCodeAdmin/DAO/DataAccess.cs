@@ -2530,6 +2530,13 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
+        /// <summary>
+        /// 原班開課
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <param name="dataList"></param>
+        /// <returns></returns>
         public List<CClassCourseInfo> AddGPlanCourseBySchoolYearSemester(string SchoolYear, string Semester, List<CClassCourseInfo> dataList)
         {
             // 取得系統內課程
@@ -2545,11 +2552,16 @@ namespace SHCourseGroupCodeAdmin.DAO
                 // 處理一般開課
                 foreach (CClassCourseInfo data in dataList)
                 {
+                    data.AddCourseNameList.Clear();
+
                     foreach (XElement subjElm in data.OpenSubjectSourceList)
                     {
                         // 檢查課程名稱是否存在
                         string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value;
                         string chkName = courseName.Trim();
+                        if (!data.AddCourseNameList.Contains(courseName))
+                            data.AddCourseNameList.Add(courseName);
+
                         // 已存在跳過
                         if (hasCourseIDDict.ContainsKey(chkName))
                         {
@@ -2576,7 +2588,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         if (!insertSQLList.Contains(insStr))
                             insertSQLList.Add(insStr);
 
-                        data.AddCourseNameList.Add(courseName);
+
                     }
 
 
@@ -2584,13 +2596,16 @@ namespace SHCourseGroupCodeAdmin.DAO
                     foreach (XElement subjElm in data.OpenSubjectSourceBList)
                     {
                         string subjName = subjElm.Attribute("SubjectName").Value;
-                        foreach (string subj in data.SubjectBDict.Keys)
+
+                        if (data.SubjectBDict.ContainsKey(subjName))
                         {
-                            if (data.SubjectBDict[subj] == true)
+                            if (data.SubjectBDict[subjName] == true)
                             {
                                 // 檢查課程名稱是否存在
                                 string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value;
                                 string chkName = courseName.Trim();
+                                if (!data.AddCourseNameList.Contains(courseName))
+                                    data.AddCourseNameList.Add(courseName);
                                 // 已存在跳過
                                 if (hasCourseIDDict.ContainsKey(chkName))
                                 {
@@ -2617,10 +2632,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                 if (!insertSQLList.Contains(inStr))
                                     insertSQLList.Add(inStr);
-
-                                data.AddCourseNameList.Add(courseName);
                             }
-                        }
+                        }                      
                     }
                 }
 
@@ -2635,11 +2648,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                 }
 
 
-
-                // 執行寫入
-                K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
-                uh.Execute(insertSQLList);
-
+                if (insertSQLList.Count > 0)
+                {
+                    // 執行寫入
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                    uh.Execute(insertSQLList);
+                }
 
             }
             catch (Exception ex)
@@ -2649,6 +2663,13 @@ namespace SHCourseGroupCodeAdmin.DAO
             return dataList;
         }
 
+        /// <summary>
+        /// 原班開課加入學生
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <param name="dataList"></param>
+        /// <returns></returns>
         public string AddCourseStudent(string SchoolYear, string Semester, List<CClassCourseInfo> dataList)
         {
             Dictionary<string, string> hasCourseIDDict = new Dictionary<string, string>();
@@ -2710,8 +2731,18 @@ namespace SHCourseGroupCodeAdmin.DAO
                 }
 
                 // 新增資料
-                K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
-                uh.Execute(insertCourseStudentSQL);
+                if (insertCourseStudentSQL.Count > 0)
+                {
+                    using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug1.txt", false))
+                    {
+                        foreach (string sid in insertCourseStudentSQL)
+                        {
+                            sw.WriteLine(sid);
+                        }
+                    }
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                    uh.Execute(insertCourseStudentSQL);
+                }
 
             }
             catch (Exception ex)
@@ -2740,8 +2771,15 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// <param name="period"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        private string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain)
+        public string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain)
         {
+            string refClassStr = "null";
+
+            if (ref_class_id != "")
+                refClassStr = "'" + ref_class_id + "'";
+
+
+
             string value = "" +
                 " INSERT INTO course(" +
 " 	course_name " +
@@ -2761,7 +2799,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " 	'" + course_name + "' " +
 " 	,'" + subj_level + "' " +
 " 	,'" + subject + "' " +
-" 	,'" + ref_class_id + "' " +
+" 	," + refClassStr + " " +
 " 	," + school_year + "" +
 " 	," + semester + " " +
 " 	," + credit + " " +
@@ -2774,6 +2812,117 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
-              
+
+        /// <summary>
+        /// 跨班開課
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <param name="dataList"></param>
+        public string AddGPlanCourse_C_BySchoolYearSemester(string SchoolYear, string Semester, List<SubjectCourseInfo> dataList)
+        {
+            // 取得系統內課程
+            Dictionary<string, string> hasCourseIDDict = new Dictionary<string, string>();
+            List<string> insertSQLList = new List<string>();
+
+            hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                // 處理跨班課程
+                foreach (SubjectCourseInfo subj in dataList)
+                {
+                    // 開課數大於0才需要開課
+                    if (subj.CourseCount > 0)
+                    {
+                        if (subj.CourseCount == 1)
+                        {
+                            string courseName = subj.SubjectXML.Attribute
+                                ("SubjectName").Value;
+
+                            string chkName = courseName.Trim();
+
+                            if (hasCourseIDDict.ContainsKey(chkName))
+                            {
+                                continue;
+                            }
+
+                            string isReq = "", ReqBy = "";
+
+                            if (subj.SubjectXML.Attribute("RequiredBy").Value == "部訂" || subj.SubjectXML.Attribute("RequiredBy").Value == "部定")
+                            {
+                                ReqBy = "1";
+                            }
+                            else
+                            {
+                                ReqBy = "2";
+                            }
+
+                            if (subj.SubjectXML.Attribute("Required").Value == "必修")
+                                isReq = "1";
+                            else
+                                isReq = "0";
+
+                            string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
+
+                            if (!insertSQLList.Contains(insStr))
+                                insertSQLList.Add(insStr);
+                        }
+                        else
+                        {
+                            for (int i = 1; i <= subj.CourseCount; i++)
+                            {
+                                string courseName = subj.SubjectXML.Attribute
+                                ("SubjectName").Value + " " + Convert.ToChar(64 + i);
+                                string chkName = courseName.Trim();
+
+                                if (hasCourseIDDict.ContainsKey(chkName))
+                                {
+                                    continue;
+                                }
+
+                                string isReq = "", ReqBy = "";
+
+                                if (subj.SubjectXML.Attribute("RequiredBy").Value == "部訂" || subj.SubjectXML.Attribute("RequiredBy").Value == "部定")
+                                {
+                                    ReqBy = "1";
+                                }
+                                else
+                                {
+                                    ReqBy = "2";
+                                }
+
+                                if (subj.SubjectXML.Attribute("Required").Value == "必修")
+                                    isReq = "1";
+                                else
+                                    isReq = "0";
+
+                                string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
+
+                                if (!insertSQLList.Contains(insStr))
+                                    insertSQLList.Add(insStr);
+                            }
+                        }
+                    }
+                }
+
+                if (insertSQLList.Count > 0)
+                {
+                    // 執行寫入
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                    uh.Execute(insertSQLList);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return ex.Message;
+            }
+            return "";
+        }
+
+
     }
 }

@@ -34,10 +34,28 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnNext_Click(object sender, EventArgs e)
         {
+            // 畫面資料檢查
+
+            // 取得畫面資料
+            foreach (DataGridViewRow drv in dgData.Rows)
+            {
+                SubjectCourseInfo data = drv.Tag as SubjectCourseInfo;
+                int co;
+                if (int.TryParse(drv.Cells["開課數"].Value.ToString(), out co))
+                {
+                    data.CourseCount = co;
+                    string skey = drv.Cells["開課學期"].Value + "_" + drv.Cells["科目名稱"].Value;
+                    if (_SubjectCourseInfoDict.ContainsKey(skey))
+                        _SubjectCourseInfoDict[skey].CourseCount = co;
+                }
+            }
+
             frmCreateCourseByGPlan108_C_Create fcc = new frmCreateCourseByGPlan108_C_Create();
+            fcc.SetSchoolYearSemester(_SchoolYear, _Semester);
+            fcc.SetSubjectCourseInfoDict(_SubjectCourseInfoDict);
             if (fcc.ShowDialog() == DialogResult.OK)
             {
-                this.Close();
+                this.DialogResult = DialogResult.OK;
             }
         }
 
@@ -89,6 +107,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
             dgData.Columns.Add(tbSemester);
             dgData.Columns.Add(tbClass);
             dgData.Columns.Add(tbCount);
+
+            // 只允取數字
+            dgData.EditMode = DataGridViewEditMode.EditOnEnter;
+            dgData.ImeMode = ImeMode.Off;
         }
 
         private void LoadData()

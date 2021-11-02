@@ -45,6 +45,7 @@
             this.btnCreate.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnCreate.TabIndex = 3;
             this.btnCreate.Text = "確認產生";
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
             // 
             // btnBack
             // 
@@ -86,8 +87,10 @@
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.txtMsg);
             this.DoubleBuffered = true;
+            this.MaximizeBox = true;
             this.Name = "frmCreateCourseByGPlan108_C_Create";
             this.Text = "跨班課程";
+            this.Load += new System.EventHandler(this.frmCreateCourseByGPlan108_C_Create_Load);
             this.ResumeLayout(false);
 
         }

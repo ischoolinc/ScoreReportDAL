@@ -89,11 +89,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             foreach (CClassCourseInfo data in _CClassCourseInfoList)
             {
                 int rowIdx = dgData.Rows.Add();
-                dgData.Rows[rowIdx].Tag = data;                
+                dgData.Rows[rowIdx].Tag = data;
                 dgData.Rows[rowIdx].Cells["班級"].Value = data.ClassName;
                 foreach (DataGridViewCell cell in dgData.Rows[rowIdx].Cells)
                 {
-                   if (cell.ColumnIndex > 0)
+                    if (cell.ColumnIndex > 0)
                     {
                         cell.ReadOnly = true;
                         cell.Style.BackColor = Color.LightGray;
@@ -116,6 +116,25 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
 
             Dictionary<string, List<string>> classSubjectDict = new Dictionary<string, List<string>>();
+
+
+            // 將勾選預設清空
+            foreach (DataGridViewRow drv in dgData.Rows)
+            {
+                CClassCourseInfo data = drv.Tag as CClassCourseInfo;
+                if (data != null)
+                {
+                    List<string> x = data.SubjectBDict.Keys.ToList();
+
+                                        
+                    foreach (string d_name in x)
+                    {
+                        data.SubjectBDict[d_name] = false;
+                    }
+                    drv.Tag = data;
+                }
+            }
+
 
             // 整理畫面上有勾選的
             foreach (DataGridViewRow drv in dgData.Rows)

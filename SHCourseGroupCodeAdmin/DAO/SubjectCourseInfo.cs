@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -15,6 +16,8 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string SubjectName { get; set; }
 
         public string OpenSemester { get; set; }
+
+        public XElement SubjectXML { get; set; }
 
         /// <summary>
         /// 班級名稱,ID 對照

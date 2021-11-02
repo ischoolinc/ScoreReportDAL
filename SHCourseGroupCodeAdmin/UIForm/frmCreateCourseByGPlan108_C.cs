@@ -21,6 +21,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         string _Semester = "";
         List<CClassCourseInfo> CClassCourseInfoList;
         BackgroundWorker _bwWorker;
+        List<string> _errClassList = new List<string>();
 
         Dictionary<string, SubjectCourseInfo> _SubjectCourseInfoDict;
 
@@ -45,14 +46,33 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void _bwWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            ControlEnable(true);
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成");
+            if (e.Cancelled)
+            {
+                MsgBox.Show("班級：" + string.Join(",", _errClassList.ToArray()) + "，使用課程規劃非108適用，無法產生。");
+            }
+            else
+            {
+                ControlEnable(true);              
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成");
+            }
         }
 
         private void _bwWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            _errClassList.Clear();
             _bwWorker.ReportProgress(1);
             CClassCourseInfoList = da.GetCClassCourseInfoList(_ClassIDList);
+
+            // 檢查課程規劃表
+            foreach (CClassCourseInfo data in CClassCourseInfoList)
+            {
+                if (data.RefGPlanXML == null)
+                    _errClassList.Add(data.ClassName);
+            }
+
+            if (_errClassList.Count > 0)
+                e.Cancel = true;
+
             Dictionary<string, List<string>> classStudentIDList = da.GetClassStudentDict(_ClassIDList);
 
             _SubjectCourseInfoDict.Clear();
@@ -115,6 +135,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 {
                                     SubjectCourseInfo sci = new SubjectCourseInfo();
                                     sci.SubjectName = subjName;
+                                    sci.SubjectXML = subjElm;
                                     sci.SchoolYear = _SchoolYear;
                                     sci.Semester = _Semester;
                                     sci.CourseCount = 0;

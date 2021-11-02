@@ -23,7 +23,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         string _Semester = "";
 
         List<CClassCourseInfo> CClassCourseInfoList;
-
+        List<string> _errClassList = new List<string>();
         BackgroundWorker _bwWorker;
 
         public frmCreateCourseByGPlan108(List<string> ClassIDs)
@@ -46,15 +46,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void _bwWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            ControlEnable(true);
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            if (e.Cancelled)
+            {
+                MsgBox.Show("班級：" + string.Join(",", _errClassList.ToArray()) + "，使用課程規劃非108適用，無法產生。");
+            }
+            else
+            {
+                ControlEnable(true);
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成");
+            }
         }
 
         private void _bwWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            _errClassList.Clear();
             _bwWorker.ReportProgress(1);
             CClassCourseInfoList = da.GetCClassCourseInfoList(_ClassIDList);
 
+            // 檢查課程規劃表
+            foreach (CClassCourseInfo data in CClassCourseInfoList)
+            {
+                if (data.RefGPlanXML == null)
+                    _errClassList.Add(data.ClassName);
+            }
+
+            if (_errClassList.Count > 0)
+                e.Cancel = true;
+
+            //取得班級學生
             Dictionary<string, List<string>> classStudentIDList = da.GetClassStudentDict(_ClassIDList);
 
             // 整理目前學年度學期年級，原班開課
@@ -65,7 +84,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     data.RefStudentIDList = classStudentIDList[data.ClassID];
                 }
-
+                data.OpenSubjectSourceList.Clear();
+                data.OpenSubjectSourceBList.Clear();
+                List<string> tmpSubj = new List<string>();
 
                 if (data.RefGPlanXML != null)
                 {
@@ -79,6 +100,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 {
                                     // 一般
                                     data.OpenSubjectSourceList.Add(subjElm);
+                                    string subjName = subjElm.Attribute("SubjectName").Value;
+                                    if (!tmpSubj.Contains(subjName))
+                                    {
+                                        tmpSubj.Add(subjName);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(subjName);
+                                    }
                                 }
                                 else
                                 {

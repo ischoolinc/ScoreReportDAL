@@ -148,7 +148,6 @@
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
             this.DoubleBuffered = true;
-            this.MaximizeBox = true;
             this.Name = "frmCreateCourseByGPlan108";
             this.Text = "依課程規劃表開課(108適用)";
             this.Load += new System.EventHandler(this.frmCreateCourseByGPlan108_Load);

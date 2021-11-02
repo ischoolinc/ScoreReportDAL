@@ -87,6 +87,7 @@
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.txtMsg);
             this.DoubleBuffered = true;
+            this.MaximizeBox = true;
             this.Name = "frmCreateCourseByGPlan108_Create";
             this.Text = "對開課程";
             this.Load += new System.EventHandler(this.frmCreateCourseByGPlan108_Create_Load);
