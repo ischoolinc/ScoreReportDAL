@@ -264,6 +264,12 @@
     <Compile Include="UIForm\frmSyncCourseCodeAPI.Designer.cs">
       <DependentUpon>frmSyncCourseCodeAPI.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\NotHasSemsHistoryStudents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\NotHasSemsHistoryStudents.Designer.cs">
+      <DependentUpon>NotHasSemsHistoryStudents.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmSyncCourseCodeAPI.resx">
       <DependentUpon>frmSyncCourseCodeAPI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\NotHasSemsHistoryStudents.resx">
+      <DependentUpon>NotHasSemsHistoryStudents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
