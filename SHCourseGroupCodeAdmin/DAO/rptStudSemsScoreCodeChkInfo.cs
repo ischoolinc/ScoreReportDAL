@@ -13,6 +13,12 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string ClassName { get; set; }
         public string SeatNo { get; set; }
         public string GradeYear { get; set; }
+
+        /// <summary>
+        /// 成績年級
+        /// </summary>
+        public string SemsGradeYear { get; set; }
+
         public string StudentName { get; set; }
         public string SchoolYear { get; set; }
         public string Semester { get; set; }

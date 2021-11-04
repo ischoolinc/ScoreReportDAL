@@ -20,7 +20,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
         BackgroundWorker _bgWorker;
         Workbook _wb;
         DataAccess da = new DataAccess();
-        int _GradeYear = 1;
+        string _GradeYear = "1";
+        int _SchoolYear = int.Parse(K12.Data.School.DefaultSchoolYear);
+        int _Semester = int.Parse(K12.Data.School.DefaultSemester);
+
+        List<string> _grList = new List<string>();
 
         Dictionary<string, int> _ColIdxDict;
 
@@ -43,13 +47,35 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
-            iptGradeYear.Enabled = btnRun.Enabled = true;
+            cboGradeYear.Enabled = btnRun.Enabled = iptSchoolYear.Enabled = iptSemester.Enabled = true;
+
+            // 檢查 所選學年期和系統學年期不同，查詢目標學生 所選學年期的學期對照表。
+            if (!(_SchoolYear == int.Parse(K12.Data.School.DefaultSchoolYear) && _Semester == int.Parse(K12.Data.School.DefaultSemester)))
+            {
+                DataTable notHasSemsHistoryStudents = da.GetStudentListNotHasSemsHistory(_GradeYear, _SchoolYear, _Semester);
+
+                //若查詢到 學期對照表 不完整的學生，則跳出提示。
+                if (notHasSemsHistoryStudents.Rows.Count > 0)
+                {
+                    NotHasSemsHistoryStudents nhshs = new NotHasSemsHistoryStudents(notHasSemsHistoryStudents, _GradeYear, _SchoolYear, _Semester );
+
+                    if (nhshs.ShowDialog() == DialogResult.Cancel)
+                    {
+                        _wb = null;  //取消就不印報表
+                        return;
+                    }
+                }
+            }
+
+
 
             if (_wb != null)
             {
                 Utility.ExprotXls("學期成績檢核課程代碼", _wb);
             }
         }
+
+
 
         private void _bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -65,7 +91,28 @@ namespace SHCourseGroupCodeAdmin.UIForm
             StudSemsScoreCodeChkInfoErrorList.Clear();
             StudSemsScoreCodeChkInfoNoList.Clear();
 
-            List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfoByGradeYear(_GradeYear);
+
+            /// todo
+            /// https://3.basecamp.com/4399967/buckets/15765350/todos/4245362818#__recording_4286998512
+            /// 判斷學年度/學期 是否和當前學年度學期一樣，若是，成績年級=現在年級 處理，若否，成績年級=學期對照表上的年級
+
+            // 取得學期成績
+            List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = new List<rptStudSemsScoreCodeChkInfo>();
+
+            // 判斷學年度/學期 是否和當前學年度學期一樣
+            if (_SchoolYear == int.Parse(K12.Data.School.DefaultSchoolYear) && _Semester == int.Parse(K12.Data.School.DefaultSemester))
+            {
+                // 相同
+                StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfo(_GradeYear, _SchoolYear, _Semester);
+            }
+            else
+            {
+                //  不同
+
+                // 取得有學期對照表(年級)的學生 當時的學期成績
+                StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfoByExistingSemsHistory(_GradeYear, _SchoolYear, _Semester);
+            }
+
 
             Dictionary<string, List<string>> chkHasCourseCodeDict = new Dictionary<string, List<string>>();
 
@@ -92,20 +139,81 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 取得課程大表資料
             Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();
 
-            List<DataRow> haGDCCodeStudents = da.GetHasGDCCodeStudent("1,2,3");
+            List<DataRow> haGDCCodeStudents = new List<DataRow>();
+
+            if (_SchoolYear == int.Parse(K12.Data.School.DefaultSchoolYear) && _Semester == int.Parse(K12.Data.School.DefaultSemester))
+            {
+                haGDCCodeStudents = da.GetHasGDCCodeStudent(_GradeYear);
+            }
+            else
+            {
+                haGDCCodeStudents = da.GetHasGDCCodeAndSemHistoryStudent(_GradeYear, _SchoolYear, _Semester);
+            }
+
+            // 這學期需要開課(應要結算到學期成績)
+            List<MOECourseCodeInfo> thisCousreCodeList = new List<MOECourseCodeInfo>();
 
             foreach (DataRow dr in haGDCCodeStudents)
             {
                 string sid = dr["student_id"] + "";
                 string gdc_code = dr["gdc_code"] + "";
+
+                thisCousreCodeList.Clear();
+                // 取得大表
                 if (MOECourseDict.ContainsKey(gdc_code))
                 {
-                    foreach (MOECourseCodeInfo Mo in MOECourseDict[gdc_code])
+                    // 年級
+                    string gr = dr["grade_year"] + ""; ;
+                    // 成績年級
+                    string sgr = "";
+
+                    if (_SchoolYear == int.Parse(K12.Data.School.DefaultSchoolYear) && _Semester == int.Parse(K12.Data.School.DefaultSemester))
                     {
-                        // 已修
+                        // 所選學年期=當前學年期，現在年級=成績年級
+                        sgr = gr;
+                    }
+                    else
+                    {
+                        //若所選學年期 !=當前學年期，則視學期對照表的年級為成績年級
+                        sgr = dr["his_grade_year"] + "";
+                    }
+
+                    int idx = -1;
+
+                    if (sgr == "1" && _Semester == 1)
+                        idx = 0;
+
+                    if (sgr == "1" && _Semester == 2)
+                        idx = 1;
+
+                    if (sgr == "2" && _Semester == 1)
+                        idx = 2;
+
+                    if (sgr == "2" && _Semester == 2)
+                        idx = 3;
+
+                    if (sgr == "3" && _Semester == 1)
+                        idx = 4;
+
+                    if (sgr == "3" && _Semester == 2)
+                        idx = 5;
+
+                    foreach (MOECourseCodeInfo couInfo in MOECourseDict[gdc_code])
+                    {
+                        char[] cp = couInfo.open_type.ToArray();
+                        if (idx != -1 && idx < cp.Length)
+                        {
+                            // 需要開課
+                            if (cp[idx] != '-')
+                                thisCousreCodeList.Add(couInfo);
+                        }
+                    }
+
+                    foreach (MOECourseCodeInfo coInfo in thisCousreCodeList)
+                    {
                         if (chkHasCourseCodeDict.ContainsKey(sid))
                         {
-                            if (chkHasCourseCodeDict[sid].Contains(Mo.course_code))
+                            if (chkHasCourseCodeDict[sid].Contains(coInfo.course_code))
                                 continue;
                         }
 
@@ -113,18 +221,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         data.StudentID = sid;
                         data.ClassName = dr["class_name"] + "";
                         data.SeatNo = dr["seat_no"] + "";
+                        data.GradeYear = gr;
+                        data.SemsGradeYear = sgr;
                         data.StudentNumber = dr["student_number"] + "";
                         data.StudentName = dr["student_name"] + "";
-                        data.CourseCode = Mo.course_code;
-                        data.credit_period = Mo.credit_period;
+                        data.CourseCode = coInfo.course_code;
+                        data.credit_period = coInfo.credit_period;
                         data.gdc_code = gdc_code;
-                        data.IsRequired = Mo.is_required;
-                        data.RequiredBy = Mo.require_by;
-                        data.SubjectName = Mo.subject_name;
+                        data.IsRequired = coInfo.is_required;
+                        data.RequiredBy = coInfo.require_by;
+                        data.SubjectName = coInfo.subject_name;
                         StudSemsScoreCodeChkInfoNoList.Add(data);
                     }
                 }
             }
+
 
             _bgWorker.ReportProgress(70);
             // 填值到 Excel
@@ -154,6 +265,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("姓名")].PutValue(data.StudentName);
                 wstSC.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
                 wstSC.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
+                wstSC.Cells[rowIdx, GetColIndex("成績年級")].PutValue(data.SemsGradeYear);
                 wstSC.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
                 wstSC.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSC.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
@@ -182,6 +294,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("姓名")].PutValue(data.StudentName);
                 wstSCError.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
                 wstSCError.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
+                wstSCError.Cells[rowIdx, GetColIndex("成績年級")].PutValue(data.SemsGradeYear);
                 wstSCError.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
                 wstSCError.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSCError.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
@@ -253,7 +366,29 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.MaximumSize = this.MinimumSize = this.Size;
             try
             {
-                iptGradeYear.Value = 1;
+                // 載入年級
+                _grList = da.GetClassGradeYear();
+                cboGradeYear.Items.Add("全部");
+                foreach (string gr in _grList)
+                    cboGradeYear.Items.Add(gr);
+
+                cboGradeYear.Text = "全部";
+
+
+                iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
+                iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
+
+                // 說明文字
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("說明：");
+                sb.AppendLine("1.學生狀態：一般、延修。");
+                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生學期成績及學期對照表，透過學生群科班代碼與課程代碼大表群科班代碼比對，");
+                sb.AppendLine("若所選擇的學年度、學期與系統當前的學年度、學期不同，以學期對照表上的年級，找出當時的年級。");
+                sb.AppendLine("並以科目名稱 +校訂部定+必選修，比對出課程代碼。");
+                sb.AppendLine("");
+                sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程代碼大表為主，與工作表:檢查學期成績課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
+
+                txtDesc.Text = sb.ToString();
             }
             catch (Exception ex)
             {
@@ -269,8 +404,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnRun_Click(object sender, EventArgs e)
         {
-            btnRun.Enabled = iptGradeYear.Enabled = false;
-            _GradeYear = iptGradeYear.Value;
+            btnRun.Enabled = cboGradeYear.Enabled = iptSchoolYear.Enabled = iptSemester.Enabled = false;
+            //_GradeYear = iptGradeYear.Value;
+            _SchoolYear = int.Parse(iptSchoolYear.Text);
+            _Semester = int.Parse(iptSemester.Text);
+
+            if (cboGradeYear.Text == "全部")
+                _GradeYear = string.Join(",", _grList.ToArray());
+            else
+                _GradeYear = cboGradeYear.Text;
+
             _bgWorker.RunWorkerAsync();
 
         }
