@@ -10,21 +10,37 @@ namespace SHCourseGroupCodeDAL
     {
         public SubjectInfo()
         {
-            
+
         }
 
-        public void SetSubjectInfo(string subjectName, string entryYear, string requireBy, string required,string courseAttr)
+        public void SetSubjectInfo(string subjectName, string entryYear, string requireBy, string required, string courseAttr)
         {
             SubjectName = subjectName;
             EntryYear = entryYear;
             RequireBy = requireBy;
             Required = required;
             course_attr = courseAttr;
+
+            if (courseAttr.Length > 2)
+            {
+                string code2 = course_attr.Substring(1, 1);
+                if (code2 == "2")
+                {
+                    Entry = "專業科目";
+                }
+                else if (code2 == "3")
+                {
+                    Entry = "實習科目";
+                }
+                else
+                    Entry = "學業";
+            }
             ParseCourseAttr();
             // 科目名稱+校部定+必選修
-            SubjectKey = SubjectName + "_" + RequireBy + "_" + Required;
+            //  SubjectKey = SubjectName.Trim() + "_" + RequireBy + "_" + Required;
+            SubjectKey = Entry + "_" + SubjectName.Trim() + "_" + RequireBy + "_" + Required;
         }
-        
+
         /// <summary>
         /// 比對用
         /// </summary>
@@ -32,7 +48,7 @@ namespace SHCourseGroupCodeDAL
         /// <summary>
         /// 科目名稱
         /// </summary>
-        private string SubjectName = "";
+        public string SubjectName = "";
 
         /// <summary>
         /// 入學年
@@ -42,17 +58,21 @@ namespace SHCourseGroupCodeDAL
         /// <summary>
         /// 校部定
         /// </summary>
-        private string RequireBy = "";
+        public string RequireBy = "";
 
         /// <summary>
         /// 必選修
         /// </summary>
-        private string Required = "";
+        public string Required = "";
 
         /// <summary>
         /// 群組代碼
         /// </summary>
         private string GroupCode = "";
+
+        public string Entry = "";
+
+        //    private string credit_period = "";
 
         /// <summary>
         /// 課程屬性，新規格是將有異動資料寫在這，分別：課程類別(1)+科目屬性(1)+領域名稱(2)

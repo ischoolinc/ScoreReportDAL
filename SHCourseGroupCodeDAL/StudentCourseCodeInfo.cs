@@ -47,14 +47,61 @@ namespace SHCourseGroupCodeDAL
 
             foreach (SubjectInfo si in SubjectInfoList)
             {
-                if (!SubjectInfoDict.ContainsKey(si.GetSubjectKey()))
-                    SubjectInfoDict.Add(si.GetSubjectKey(), si);
+                int idx = 1;
+                string strGearYear = "";
+                char[] cp = si.credit_period.ToArray();
+                foreach (char c in cp)
+                {
+                    string credit = c + "";
+
+                    if (idx == 1)
+                    {
+                        strGearYear = "1";
+                    }
+                    else if (idx == 2)
+                    {
+                        strGearYear = "1";
+                    }
+                    else if (idx == 3)
+                    {
+                        strGearYear = "2";
+                    }
+                    else if (idx == 4)
+                    {
+                        strGearYear = "2";
+                    }
+                    else if (idx == 5)
+                    {
+                        strGearYear = "3";
+                    }
+                    else if (idx == 6)
+                    {
+                        strGearYear = "3";
+                    }
+                    else
+                    {
+
+                    }
+
+                    // 學分格式0 不放入
+                    if (credit == "0")
+                    {
+                        idx++;
+                        continue;
+                    }
+
+                    string key = si.Entry + "_" + si.SubjectName.Trim() + "_" + si.RequireBy + "_" + si.Required + "_" + strGearYear;
+                    //if (!SubjectInfoDict.ContainsKey(si.GetSubjectKey()))
+                    //    SubjectInfoDict.Add(si.GetSubjectKey(), si);
+                    if (!SubjectInfoDict.ContainsKey(key))
+                        SubjectInfoDict.Add(key, si);
+                }
             }
 
             return SubjectInfoDict;
         }
 
-        public string GetCourseCode(string SubjectName, string RequireBy, string Required)
+        public string GetCourseCode(string Entry, string SubjectName, string RequireBy, string Required, string GradeYear)
         {
             // 當沒有資料時
             if (SubjectInfoDict.Count == 0)
@@ -68,7 +115,7 @@ namespace SHCourseGroupCodeDAL
 
             // 科目名稱+校部定+必選修
             string code = "";
-            string SubjectKey = SubjectName + "_" + RequireBy + "_" + Required;
+            string SubjectKey = Entry + "_" + SubjectName.Trim() + "_" + RequireBy + "_" + Required + "_" + GradeYear;
 
             if (SubjectInfoDict.ContainsKey(SubjectKey))
                 code = SubjectInfoDict[SubjectKey].GetCourseCode();
@@ -80,10 +127,10 @@ namespace SHCourseGroupCodeDAL
         {
             SemesterHistorySchoolYearDict.Clear();
 
-            foreach(SemesterHistoryItem item in SemesterHistoryItems)
+            foreach (SemesterHistoryItem item in SemesterHistoryItems)
             {
                 string str = "";
-                if (item.GradeYear == 1 && item.Semester == 1)                
+                if (item.GradeYear == 1 && item.Semester == 1)
                     str = "1";
 
                 if (item.GradeYear == 1 && item.Semester == 2)
@@ -108,20 +155,20 @@ namespace SHCourseGroupCodeDAL
         }
 
 
-        
+
         /// <summary>
         /// 取得補修學年度
         /// </summary>
         /// <param name="SubjectName"></param>
         /// <param name="SubjLevel"></param>
         /// <returns></returns>
-        public string GetScScoreSchoolYear(string SubjectName,  string SubjLevel)
+        public string GetScScoreSchoolYear(string SubjectName, string SubjLevel)
         {
             string value = "";
 
             try
             {
-                string key = SubjectName + "_" + SubjLevel;
+                string key = SubjectName.Trim() + "_" + SubjLevel;
                 if (ScSubjectSemesterDict.ContainsKey(key))
                 {
                     if (SemesterHistorySchoolYearDict.ContainsKey(ScSubjectSemesterDict[key]))
