@@ -53,7 +53,7 @@ namespace SHCourseGroupCodeDAL
                 foreach (char c in cp)
                 {
                     string credit = c + "";
-
+                    
                     if (idx == 1)
                     {
                         strGearYear = "1";
@@ -95,6 +95,8 @@ namespace SHCourseGroupCodeDAL
                     //    SubjectInfoDict.Add(si.GetSubjectKey(), si);
                     if (!SubjectInfoDict.ContainsKey(key))
                         SubjectInfoDict.Add(key, si);
+
+                    idx++;
                 }
             }
 
