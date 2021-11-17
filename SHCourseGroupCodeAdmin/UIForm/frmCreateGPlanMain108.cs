@@ -38,7 +38,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             dgData.Rows.Clear();
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成。");
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
                 int rowIdx = dgData.Rows.Add();

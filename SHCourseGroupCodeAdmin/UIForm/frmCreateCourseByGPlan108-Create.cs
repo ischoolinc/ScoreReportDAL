@@ -106,7 +106,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             foreach (string key in nameDict.Keys)
             {
-                sb.AppendLine(key + "：" + string.Join(",", nameDict[key].ToArray()));
+                if (nameDict[key].Count > 0)
+                    sb.AppendLine(key + "：" + string.Join(",", nameDict[key].ToArray()));
             }
 
             txtMsg.Text = sb.ToString();

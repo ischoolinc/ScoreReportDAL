@@ -96,7 +96,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (cell.ColumnIndex > 0)
                     {
                         cell.ReadOnly = true;
-                        cell.Style.BackColor = Color.LightGray;
+                        cell.Style.BackColor = Color.Gainsboro;
                     }
                 }
                 foreach (string name in data.SubjectBDict.Keys)

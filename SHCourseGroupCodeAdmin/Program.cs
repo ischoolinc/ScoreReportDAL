@@ -129,7 +129,7 @@ namespace SHCourseGroupCodeAdmin
 
 
 
-           // --- 開發中
+            // --- 開發中
             // 108 版本 -----
             Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon10.Add(new RibbonFeature("84066116-8124-41F4-8149-0877dA75a417", "依課程代碼總表產生課程規劃"));
@@ -164,7 +164,7 @@ namespace SHCourseGroupCodeAdmin
 
             MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108適用)"].Click += delegate
             {
-                if (K12.Presentation.NLDPanels.Class.SelectedSource.Count>0)
+                if (K12.Presentation.NLDPanels.Class.SelectedSource.Count > 0)
                 {
                     frmCreateCourseByGPlan108 fcc = new frmCreateCourseByGPlan108(K12.Presentation.NLDPanels.Class.SelectedSource);
                     fcc.ShowDialog();

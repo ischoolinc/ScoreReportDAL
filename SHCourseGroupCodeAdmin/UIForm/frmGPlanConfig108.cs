@@ -37,7 +37,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成。");
             itemPanel1.Items.Clear();
             _SelectButton = null;
             foreach (GPlanInfo108 data in GP108List)
@@ -51,7 +51,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 item.ButtonStyle = eButtonStyle.TextOnlyAlways;
                 item.Click += new EventHandler(item_Click);
                 itemPanel1.Items.Add(item);
-                
+
             }
 
             LoadDataGridViewColumns();
@@ -66,7 +66,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             ButtonItem item = (ButtonItem)sender;
             GPlanInfo108 info = (GPlanInfo108)item.Tag;
-            info.RefGPContentXml = XElement.Parse(info.RefGPContent);
+
+            try
+            {
+                // 解析 XML
+                info.RefGPContentXml = XElement.Parse(info.RefGPContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             _SelectButton = item;
             lblGroupName.Text = info.RefGPName;
             item.Checked = true;
@@ -98,6 +108,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     firstElm = dataDict[idx][0];
                 }
+
+                // 將資料存入 Tag
+                dgData.Rows[rowIdx].Tag = firstElm;
 
                 dgData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
                 dgData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
@@ -170,7 +183,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 groupKey = key + "　年級";
 
-                foreach(DataRow dr in classRows[key])
+                foreach (DataRow dr in classRows[key])
                 {
                     ListViewGroup group = listViewEx1.Groups[groupKey];
                     if (group == null)
@@ -179,7 +192,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     string c_name = dr["class_name"] + "(" + dr["stud_cot"] + ")";
                     ListViewItem lvi = new ListViewItem(c_name, 0, group);
                     listViewEx1.Items.Add(lvi);
-                }              
+                }
             }
             listViewEx1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listViewEx1.ResumeLayout();
@@ -199,19 +212,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            
             MsgBox.Show("儲存完成");
         }
 
         private void frmGPlanConfig108_Load(object sender, EventArgs e)
         {
             _bgWorker.RunWorkerAsync();
+            btnSave.Enabled = false;
         }
-
-        private void LoadData()
-        {
-            dgData.Rows.Clear();
-        }
-
+              
         private void LoadDataGridViewColumns()
         {
             try
@@ -222,79 +232,91 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbDomain.Width = 70;
                 tbDomain.HeaderText = "領域";
                 tbDomain.ReadOnly = true;
+                tbDomain.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbScoreType = new DataGridViewTextBoxColumn();
                 tbScoreType.Name = "分項類別";
-                tbScoreType.Width = 90;
+                tbScoreType.Width = 80;
                 tbScoreType.HeaderText = "分項類別";
                 tbScoreType.ReadOnly = true;
+                tbScoreType.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbSubjectName = new DataGridViewTextBoxColumn();
                 tbSubjectName.Name = "科目名稱";
                 tbSubjectName.Width = 150;
                 tbSubjectName.HeaderText = "科目名稱";
                 tbSubjectName.ReadOnly = true;
+                tbSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbRequiredBy = new DataGridViewTextBoxColumn();
                 tbRequiredBy.Name = "校訂部定";
-                tbRequiredBy.Width = 90;
+                tbRequiredBy.Width = 60;
                 tbRequiredBy.HeaderText = "校訂部定";
                 tbRequiredBy.ReadOnly = true;
+                tbRequiredBy.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbIsRequired = new DataGridViewTextBoxColumn();
                 tbIsRequired.Name = "必選修";
-                tbIsRequired.Width = 90;
+                tbIsRequired.Width = 60;
                 tbIsRequired.HeaderText = "必選修";
                 tbIsRequired.ReadOnly = true;
+                tbIsRequired.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbGS11 = new DataGridViewTextBoxColumn();
                 tbGS11.Name = "1上";
-                tbGS11.Width = 60;
+                tbGS11.Width = 40;
                 tbGS11.HeaderText = "1上";
                 tbGS11.ReadOnly = true;
+                tbGS11.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbGS12 = new DataGridViewTextBoxColumn();
                 tbGS12.Name = "1下";
-                tbGS12.Width = 60;
+                tbGS12.Width = 40;
                 tbGS12.HeaderText = "1下";
                 tbGS12.ReadOnly = true;
+                tbGS12.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbGS21 = new DataGridViewTextBoxColumn();
                 tbGS21.Name = "2上";
-                tbGS21.Width = 60;
+                tbGS21.Width = 40;
                 tbGS21.HeaderText = "2上";
                 tbGS21.ReadOnly = true;
+                tbGS21.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbGS22 = new DataGridViewTextBoxColumn();
                 tbGS22.Name = "2下";
-                tbGS22.Width = 60;
+                tbGS22.Width = 40;
                 tbGS22.HeaderText = "2下";
                 tbGS22.ReadOnly = true;
+                tbGS22.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbGS31 = new DataGridViewTextBoxColumn();
                 tbGS31.Name = "3上";
                 tbGS31.Width = 60;
                 tbGS31.HeaderText = "3上";
                 tbGS31.ReadOnly = true;
+                tbGS31.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbGS32 = new DataGridViewTextBoxColumn();
                 tbGS32.Name = "3下";
-                tbGS32.Width = 60;
+                tbGS32.Width = 40;
                 tbGS32.HeaderText = "3下";
                 tbGS32.ReadOnly = true;
+                tbGS32.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbOpenStatus = new DataGridViewTextBoxColumn();
                 tbOpenStatus.Name = "開課方式";
-                tbOpenStatus.Width = 90;
+                tbOpenStatus.Width = 60;
                 tbOpenStatus.HeaderText = "開課方式";
                 tbOpenStatus.ReadOnly = true;
+                tbOpenStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbCourseCode = new DataGridViewTextBoxColumn();
                 tbCourseCode.Name = "課程代碼";
                 tbCourseCode.Width = 300;
                 tbCourseCode.HeaderText = "課程代碼";
                 tbCourseCode.ReadOnly = true;
-
+                tbCourseCode.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgData.Columns.Add(tbDomain);
                 dgData.Columns.Add(tbScoreType);

@@ -84,7 +84,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
             sb.AppendLine("班級開課清單：");
             foreach (SubjectCourseInfo data in _SubjectCourseInfoDict.Values)
             {
-                sb.AppendLine(data.SubjectName + "(開課學期：" + data.OpenSemester + "):" + data.CourseCount + "門");
+                if (data.CourseCount > 0)
+                    sb.AppendLine(data.SubjectName + "(開課學期：" + data.OpenSemester + "):" + data.CourseCount + "門");
             }
 
             txtMsg.Text = sb.ToString();
