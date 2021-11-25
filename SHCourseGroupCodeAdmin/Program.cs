@@ -89,9 +89,18 @@ namespace SHCourseGroupCodeAdmin
                 //  frmCreateClassGPlan ccg = new frmCreateClassGPlan();
                 frmCreateClassGPlanMain ccg = new frmCreateClassGPlanMain();
                 ccg.ShowDialog();
-
-
             };
+            
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃(批次更新)"].Enable = UserAcl.Current["C6063F22-FF7C-4AB5-82F8-4FC82B205B1A"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃(批次更新)"].Click += delegate
+            {
+                //  frmCreateClassGPlan ccg = new frmCreateClassGPlan();
+                frmCreateGPlanMainBatch ccg = new frmCreateGPlanMainBatch();
+                ccg.ShowDialog();
+            };
+
+
 
             Catalog ribbon7 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon7.Add(new RibbonFeature("1E66275D-2040-4D1D-8C7D-F5163D230A22", "修課檢核課程代碼"));

@@ -28,20 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblTitle = new DevComponents.DotNetBar.LabelX();
             this.lblGroupCount = new DevComponents.DotNetBar.LabelX();
             this.lblAddCount = new DevComponents.DotNetBar.LabelX();
             this.lblUpdateCount = new DevComponents.DotNetBar.LabelX();
             this.lblNoChangeCount = new DevComponents.DotNetBar.LabelX();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.colEntrySchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colChangeDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colUpdateSetup = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
             this.btnCreate = new DevComponents.DotNetBar.ButtonX();
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
+            this.colEntrySchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGpName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colChangeDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colUpdateSetup = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,16 +133,17 @@
             this.dgData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colEntrySchoolYear,
             this.colGroupName,
+            this.colGpName,
             this.colChangeDesc,
             this.colUpdateSetup});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgData.Location = new System.Drawing.Point(28, 73);
             this.dgData.Name = "dgData";
@@ -149,34 +151,6 @@
             this.dgData.Size = new System.Drawing.Size(832, 450);
             this.dgData.TabIndex = 5;
             this.dgData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellContentClick);
-            // 
-            // colEntrySchoolYear
-            // 
-            this.colEntrySchoolYear.FillWeight = 80F;
-            this.colEntrySchoolYear.HeaderText = "入學年";
-            this.colEntrySchoolYear.Name = "colEntrySchoolYear";
-            this.colEntrySchoolYear.ReadOnly = true;
-            this.colEntrySchoolYear.Width = 80;
-            // 
-            // colGroupName
-            // 
-            this.colGroupName.HeaderText = "群科班名稱";
-            this.colGroupName.Name = "colGroupName";
-            this.colGroupName.ReadOnly = true;
-            this.colGroupName.Width = 300;
-            // 
-            // colChangeDesc
-            // 
-            this.colChangeDesc.HeaderText = "變更說明";
-            this.colChangeDesc.Name = "colChangeDesc";
-            this.colChangeDesc.ReadOnly = true;
-            this.colChangeDesc.Width = 150;
-            // 
-            // colUpdateSetup
-            // 
-            this.colUpdateSetup.HeaderText = "更新設定";
-            this.colUpdateSetup.Name = "colUpdateSetup";
-            this.colUpdateSetup.ReadOnly = true;
             // 
             // btnQueryAndSet
             // 
@@ -223,6 +197,40 @@
             this.btnCancel.Text = "取消";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // colEntrySchoolYear
+            // 
+            this.colEntrySchoolYear.FillWeight = 80F;
+            this.colEntrySchoolYear.HeaderText = "入學年";
+            this.colEntrySchoolYear.Name = "colEntrySchoolYear";
+            this.colEntrySchoolYear.ReadOnly = true;
+            this.colEntrySchoolYear.Width = 80;
+            // 
+            // colGroupName
+            // 
+            this.colGroupName.HeaderText = "群科班名稱";
+            this.colGroupName.Name = "colGroupName";
+            this.colGroupName.ReadOnly = true;
+            this.colGroupName.Width = 300;
+            // 
+            // colGpName
+            // 
+            this.colGpName.HeaderText = "課程規劃表名稱";
+            this.colGpName.Name = "colGpName";
+            this.colGpName.Width = 150;
+            // 
+            // colChangeDesc
+            // 
+            this.colChangeDesc.HeaderText = "變更說明";
+            this.colChangeDesc.Name = "colChangeDesc";
+            this.colChangeDesc.ReadOnly = true;
+            this.colChangeDesc.Width = 150;
+            // 
+            // colUpdateSetup
+            // 
+            this.colUpdateSetup.HeaderText = "更新設定";
+            this.colUpdateSetup.Name = "colUpdateSetup";
+            this.colUpdateSetup.ReadOnly = true;
+            // 
             // frmCreateGPlanMain108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -261,6 +269,7 @@
         private DevComponents.DotNetBar.ButtonX btnCancel;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEntrySchoolYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn colGroupName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colGpName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colChangeDesc;
         private System.Windows.Forms.DataGridViewButtonColumn colUpdateSetup;
     }

@@ -59,7 +59,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// 對照到課程規劃表
         /// </summary>
         public List<DataRow> GPlanList = new List<DataRow>();
-
+      
         /// <summary>
         /// 課程代碼代表原始資料
         /// </summary>

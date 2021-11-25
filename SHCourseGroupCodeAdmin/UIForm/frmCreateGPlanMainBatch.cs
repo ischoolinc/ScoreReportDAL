@@ -10,15 +10,16 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
 
+
 namespace SHCourseGroupCodeAdmin.UIForm
 {
-    public partial class frmCreateGPlanMain108 : BaseForm
+    public partial class frmCreateGPlanMainBatch : BaseForm
     {
         BackgroundWorker _bgWorker;
         DataAccess _da;
         List<GPlanInfo108> _GPlanInfo108List;
 
-        public frmCreateGPlanMain108()
+        public frmCreateGPlanMainBatch()
         {
             InitializeComponent();
             _da = new DataAccess();
@@ -43,6 +44,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
+           
                 int rowIdx = dgData.Rows.Add();
                 dgData.Rows[rowIdx].Tag = data;
                 dgData.Rows[rowIdx].Cells[colEntrySchoolYear.Index].Value = data.EntrySchoolYear;
@@ -86,10 +88,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lblNoChangeCount.Text = "無變動" + NoChangeCount + "筆";
         }
 
+
         private void _bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             _bgWorker.ReportProgress(1);
-            _GPlanInfo108List = _da.GPlanInfo108List();
+            _GPlanInfo108List = _da.GPlanInfoOld108List();
             _bgWorker.ReportProgress(30);
 
             // 解析課程代碼大表 XML
@@ -119,17 +122,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _bgWorker.ReportProgress(100);
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void frmCreateGPlanMain108_Load(object sender, EventArgs e)
-        {
-            ControlEnable(false);
-            _bgWorker.RunWorkerAsync();
-        }
-
         private void btnCreate_Click(object sender, EventArgs e)
         {
             ControlEnable(false);
@@ -151,7 +143,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 新增資料
                 List<string> insertSQLList = new List<string>();
                 if (insertDataList.Count > 0)
-                {                  
+                {
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
 
                     try
@@ -182,19 +174,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 更新資料
                 List<string> updateSQLList = new List<string>();
                 if (updateDataList.Count > 0)
-                {                    
+                {
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
-
+                    
                     try
                     {
                         foreach (GPlanInfo108 data in updateDataList)
                         {
+                            
                             if (!string.IsNullOrEmpty(data.RefGPID))
                             {
-                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID+";";
-                                
+                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID + ";";
+
                                 updateSQLList.Add(sql);
-                            }                            
+                            }
                         }
 
                         // 更新資料
@@ -207,7 +200,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
                 }
 
-               if(insertSQLList.Count > 0 || updateSQLList.Count > 0)
+                if (insertSQLList.Count > 0 || updateSQLList.Count > 0)
                 {
                     ControlEnable(false);
                     _bgWorker.RunWorkerAsync();
@@ -222,10 +215,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
             ControlEnable(true);
         }
 
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+
         private void ControlEnable(bool value)
         {
             dgData.Enabled = btnCreate.Enabled = btnQueryAndSet.Enabled = value;
         }
+
 
         private void btnQueryAndSet_Click(object sender, EventArgs e)
         {
@@ -283,6 +283,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     GPlanDataCount();
                 }
             }
+        }
+
+        private void frmCreateGPlanMainBatch_Load(object sender, EventArgs e)
+        {
+            ControlEnable(false);
+            _bgWorker.RunWorkerAsync();
         }
     }
 }
