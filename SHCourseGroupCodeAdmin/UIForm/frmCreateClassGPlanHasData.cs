@@ -144,7 +144,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     tmpSubjLevelDict[subj] += 1;
 
-                    elm.SetAttributeValue("FullName", SubjFullName(subj, tmpSubjLevelDict[subj]));
+                    elm.SetAttributeValue("FullName", Utility.SubjFullName(subj, tmpSubjLevelDict[subj]));
                     elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
                     
                 }
@@ -186,31 +186,31 @@ namespace SHCourseGroupCodeAdmin.UIForm
             
         }
 
-        private string SubjFullName(string SubjectName, int level)
-        {
-            string lev = "";
-            if (level == 1)
-                lev = " I";
+        //private string SubjFullName(string SubjectName, int level)
+        //{
+        //    string lev = "";
+        //    if (level == 1)
+        //        lev = " I";
 
-            if (level == 2)
-                lev = " II";
+        //    if (level == 2)
+        //        lev = " II";
 
-            if (level == 3)
-                lev = " III";
+        //    if (level == 3)
+        //        lev = " III";
 
-            if (level == 4)
-                lev = " IV";
+        //    if (level == 4)
+        //        lev = " IV";
 
-            if (level == 5)
-                lev = " V";
+        //    if (level == 5)
+        //        lev = " V";
 
-            if (level == 6)
-                lev = " VI";
+        //    if (level == 6)
+        //        lev = " VI";
 
-            string value = SubjectName + lev;
+        //    string value = SubjectName + lev;
 
-            return value;
-        }
+        //    return value;
+        //}
         
 
         private void dgData_CellContentClick(object sender, DataGridViewCellEventArgs e)

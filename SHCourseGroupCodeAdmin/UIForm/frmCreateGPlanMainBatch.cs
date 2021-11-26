@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
-
+using System.Xml.Linq;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -181,7 +181,95 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     {
                         foreach (GPlanInfo108 data in updateDataList)
                         {
-                            
+                            XElement GPlanXml = new XElement("GraduationPlan");
+                            foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
+                            {
+
+                                if (subj.ProcessStatus == "更新" || subj.ProcessStatus == "新增")
+                                {
+                                    foreach (XElement elm in subj.MOEXml)
+                                    {
+                                        GPlanXml.Add(elm);
+                                    }
+                                }
+
+
+                                if (subj.ProcessStatus == "略過")
+                                {
+                                    foreach (XElement elm in subj.GPlanXml)
+                                    {
+                                        GPlanXml.Add(elm);
+                                    }
+                                }
+                            }
+
+                            // 依課程代碼,科目名稱排序
+                            List<XElement> orderList = (from elmData in GPlanXml.Elements("Subject") orderby elmData.Attribute("課程代碼").Value ascending, elmData.Attribute("SubjectName").Value select elmData).ToList();
+                            //  List<XElement> orderList = GPlanXml.Elements("Subject").OrderBy(x => x.Attribute("課程代碼").Value).ToList();
+
+                            // 重整 idx                                
+                            int rowIdx = 0;
+                            string tmpCode = "";
+                            foreach (XElement elm in orderList)
+                            {
+                                string codeA = elm.Attribute("課程代碼").Value + elm.Attribute("SubjectName").Value;
+                                if (codeA != tmpCode)
+                                {
+                                    rowIdx++;
+                                    tmpCode = codeA;
+                                }
+
+                                if (elm.Element("Grouping") != null)
+                                {
+                                    elm.Element("Grouping").SetAttributeValue("RowIndex", rowIdx);
+                                }
+                            }
+
+                            // 重新排列科目級別
+                            Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
+
+                            foreach (XElement elm in GPlanXml.Elements("Subject"))
+                            {
+                                string subj = elm.Attribute("SubjectName").Value;
+
+                                if (!tmpSubjLevelDict.ContainsKey(subj))
+                                    tmpSubjLevelDict.Add(subj, 0);
+
+                                tmpSubjLevelDict[subj] += 1;
+
+                                elm.SetAttributeValue("FullName", Utility.SubjFullName(subj, tmpSubjLevelDict[subj]));
+                                elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
+
+                            }
+
+                            // 重新整理開始級別
+                            Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
+                            foreach (XElement elm in GPlanXml.Elements("Subject"))
+                            {
+                                string subjName = elm.Attribute("SubjectName").Value;
+
+                                string RowIndex = elm.Element("Grouping").Attribute("RowIndex").Value;
+
+                                if (!tmpStartLevel.ContainsKey(subjName))
+                                    tmpStartLevel.Add(subjName, RowIndex);
+                                else
+                                {
+                                    if (tmpStartLevel[subjName] != RowIndex)
+                                    {
+                                        // 設定開始級別是目前級別
+                                        elm.Element("Grouping").SetAttributeValue("startLevel", elm.Attribute("Level").Value);
+                                        tmpStartLevel[subjName] = RowIndex;
+                                    }
+                                }
+                            }
+
+
+                            GPlanXml.ReplaceAll(orderList);
+                            if (data.GDCCode.Length > 3)
+                                GPlanXml.SetAttributeValue("SchoolYear", data.GDCCode.Substring(0, 3));
+
+                            data.RefGPContent = GPlanXml.ToString();
+
                             if (!string.IsNullOrEmpty(data.RefGPID))
                             {
                                 string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID + ";";

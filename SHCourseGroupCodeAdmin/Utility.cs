@@ -271,6 +271,32 @@ T	12學分
             return value;
         }
 
+        public static string SubjFullName(string SubjectName, int level)
+        {
+            string lev = "";
+            if (level == 1)
+                lev = " I";
+
+            if (level == 2)
+                lev = " II";
+
+            if (level == 3)
+                lev = " III";
+
+            if (level == 4)
+                lev = " IV";
+
+            if (level == 5)
+                lev = " V";
+
+            if (level == 6)
+                lev = " VI";
+
+            string value = SubjectName + lev;
+
+            return value;
+        }
+
         public static string GetCourseCodeWhereCond()
         {
             string value = " WHERE course_type NOT IN('進修部','實用技能學程(夜)') ";
