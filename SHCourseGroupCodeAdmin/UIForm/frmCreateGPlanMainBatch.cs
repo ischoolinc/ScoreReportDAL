@@ -133,43 +133,44 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 foreach (GPlanInfo108 data in _GPlanInfo108List)
                 {
-                    if (data.Status == "新增")
-                        insertDataList.Add(data);
+                    //if (data.Status == "新增")
+                    //    insertDataList.Add(data);
 
                     if (data.Status == "更新")
                         updateDataList.Add(data);
                 }
 
-                // 新增資料
-                List<string> insertSQLList = new List<string>();
-                if (insertDataList.Count > 0)
-                {
-                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                // 新增資料，因為這是過渡期版本，不會有新增
+                //List<string> insertSQLList = new List<string>();
+                //if (insertDataList.Count > 0)
+                //{
+                //    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
 
-                    try
-                    {
-                        foreach (GPlanInfo108 data in insertDataList)
-                        {
-                            string sql = "" +
-                                " INSERT INTO graduation_plan(" +
-" name " +
-" ,content " +
-" ,moe_group_code )  " +
-" VALUES( " +
-" '" + data.GDCName + "' " +
-" ,'" + data.MOEXml.ToString() + "' " +
-" ,'" + data.GDCCode + "' " +
-" ); ";
-                            insertSQLList.Add(sql);
-                        }
-                        uh.Execute(insertSQLList);
-                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
-                    }
-                    catch (Exception ex)
-                    {
-                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
-                    }
-                }
+                    // 因為這是過渡期版本，不會有新增
+//                    try
+//                    {
+//                        foreach (GPlanInfo108 data in insertDataList)
+//                        {
+//                            string sql = "" +
+//                                " INSERT INTO graduation_plan(" +
+//" name " +
+//" ,content " +
+//" ,moe_group_code )  " +
+//" VALUES( " +
+//" '" + data.GDCName + "' " +
+//" ,'" + data.MOEXml.ToString() + "' " +
+//" ,'" + data.GDCCode + "' " +
+//" ); ";
+//                            insertSQLList.Add(sql);
+//                        }
+//                        uh.Execute(insertSQLList);
+//                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
+//                    }
+//                    catch (Exception ex)
+//                    {
+//                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
+//                    }
+//                }
 
                 // 更新資料
                 List<string> updateSQLList = new List<string>();
@@ -288,7 +289,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
                 }
 
-                if (insertSQLList.Count > 0 || updateSQLList.Count > 0)
+                if (updateSQLList.Count > 0)
                 {
                     ControlEnable(false);
                     _bgWorker.RunWorkerAsync();

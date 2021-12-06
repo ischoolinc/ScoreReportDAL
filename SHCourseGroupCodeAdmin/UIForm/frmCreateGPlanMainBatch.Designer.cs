@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.btnCreate = new DevComponents.DotNetBar.ButtonX();
             this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
@@ -108,14 +108,14 @@
             this.colGpName,
             this.colChangeDesc,
             this.colUpdateSetup});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgData.Location = new System.Drawing.Point(25, 73);
             this.dgData.Name = "dgData";
@@ -228,9 +228,9 @@
             this.lblTitle.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lblTitle.Location = new System.Drawing.Point(24, 12);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(748, 23);
+            this.lblTitle.Size = new System.Drawing.Size(829, 23);
             this.lblTitle.TabIndex = 9;
-            this.lblTitle.Text = "與「課程代碼總表」比對，變動課程規劃表如下。請選取「查詢及設定」確認更新項目。";
+            this.lblTitle.Text = "與「程代碼總表」比對，變動課程規劃表如下。請選取「設定」確認更新項目，只會針對現有課程規畫表處理，不會新增課程規劃表。";
             // 
             // frmCreateGPlanMainBatch
             // 
@@ -248,7 +248,7 @@
             this.Controls.Add(this.lblTitle);
             this.DoubleBuffered = true;
             this.Name = "frmCreateGPlanMainBatch";
-            this.Text = "產生課程規劃(批次更新)";
+            this.Text = "更新班級課程規劃表";
             this.Load += new System.EventHandler(this.frmCreateGPlanMainBatch_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
