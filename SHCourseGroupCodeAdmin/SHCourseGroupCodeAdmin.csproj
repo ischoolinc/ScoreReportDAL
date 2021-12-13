@@ -291,6 +291,12 @@
     <None Include="Template\進修部%28學校%29成績名冊樣板%28108課綱%29.xlsx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\approve.png" />
+    <Content Include="Icons\online-library.png" />
+    <Content Include="Icons\ranking.png" />
+    <Content Include="Icons\schedule.png" />
+    <Content Include="Icons\update.png" />
+    <Content Include="Icons\update_1.png" />
     <Content Include="Library\Aspose.Cells_201402.dll" />
     <Content Include="Library\Aspose.Cells_201402.xml" />
     <Content Include="Library\Campus.Windows.dll" />

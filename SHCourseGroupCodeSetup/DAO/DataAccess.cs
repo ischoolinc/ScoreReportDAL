@@ -216,6 +216,8 @@ namespace SHCourseGroupCodeSetup.DAO
             value.Add("n.klhcvs.kl.edu.tw", "171405");
             value.Add("n.sphs.hc.edu.tw", "181307");
             value.Add("n.youth.tc.edu.tw", "061316");
+            value.Add("n.csvs.chc.edu.tw", "070409");
+            value.Add("n.tcivs.tc.edu.tw", "193407");
 
             return value;
         }

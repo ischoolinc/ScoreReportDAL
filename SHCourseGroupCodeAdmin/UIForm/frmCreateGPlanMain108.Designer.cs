@@ -35,14 +35,14 @@
             this.lblUpdateCount = new DevComponents.DotNetBar.LabelX();
             this.lblNoChangeCount = new DevComponents.DotNetBar.LabelX();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
-            this.btnCreate = new DevComponents.DotNetBar.ButtonX();
-            this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.colEntrySchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGpName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colChangeDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUpdateSetup = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
+            this.btnCreate = new DevComponents.DotNetBar.ButtonX();
+            this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -152,6 +152,40 @@
             this.dgData.TabIndex = 5;
             this.dgData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellContentClick);
             // 
+            // colEntrySchoolYear
+            // 
+            this.colEntrySchoolYear.FillWeight = 80F;
+            this.colEntrySchoolYear.HeaderText = "入學年";
+            this.colEntrySchoolYear.Name = "colEntrySchoolYear";
+            this.colEntrySchoolYear.ReadOnly = true;
+            this.colEntrySchoolYear.Width = 80;
+            // 
+            // colGroupName
+            // 
+            this.colGroupName.HeaderText = "群科班名稱";
+            this.colGroupName.Name = "colGroupName";
+            this.colGroupName.ReadOnly = true;
+            this.colGroupName.Width = 300;
+            // 
+            // colGpName
+            // 
+            this.colGpName.HeaderText = "課程規劃表名稱";
+            this.colGpName.Name = "colGpName";
+            this.colGpName.Width = 150;
+            // 
+            // colChangeDesc
+            // 
+            this.colChangeDesc.HeaderText = "變更說明";
+            this.colChangeDesc.Name = "colChangeDesc";
+            this.colChangeDesc.ReadOnly = true;
+            this.colChangeDesc.Width = 150;
+            // 
+            // colUpdateSetup
+            // 
+            this.colUpdateSetup.HeaderText = "更新設定";
+            this.colUpdateSetup.Name = "colUpdateSetup";
+            this.colUpdateSetup.ReadOnly = true;
+            // 
             // btnQueryAndSet
             // 
             this.btnQueryAndSet.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -197,40 +231,6 @@
             this.btnCancel.Text = "取消";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // colEntrySchoolYear
-            // 
-            this.colEntrySchoolYear.FillWeight = 80F;
-            this.colEntrySchoolYear.HeaderText = "入學年";
-            this.colEntrySchoolYear.Name = "colEntrySchoolYear";
-            this.colEntrySchoolYear.ReadOnly = true;
-            this.colEntrySchoolYear.Width = 80;
-            // 
-            // colGroupName
-            // 
-            this.colGroupName.HeaderText = "群科班名稱";
-            this.colGroupName.Name = "colGroupName";
-            this.colGroupName.ReadOnly = true;
-            this.colGroupName.Width = 300;
-            // 
-            // colGpName
-            // 
-            this.colGpName.HeaderText = "課程規劃表名稱";
-            this.colGpName.Name = "colGpName";
-            this.colGpName.Width = 150;
-            // 
-            // colChangeDesc
-            // 
-            this.colChangeDesc.HeaderText = "變更說明";
-            this.colChangeDesc.Name = "colChangeDesc";
-            this.colChangeDesc.ReadOnly = true;
-            this.colChangeDesc.Width = 150;
-            // 
-            // colUpdateSetup
-            // 
-            this.colUpdateSetup.HeaderText = "更新設定";
-            this.colUpdateSetup.Name = "colUpdateSetup";
-            this.colUpdateSetup.ReadOnly = true;
-            // 
             // frmCreateGPlanMain108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -248,7 +248,7 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "frmCreateGPlanMain108";
-            this.Text = "依課程代碼總表產生課程規劃";
+            this.Text = "產生課程規劃";
             this.Load += new System.EventHandler(this.frmCreateGPlanMain108_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
