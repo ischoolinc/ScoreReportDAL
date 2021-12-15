@@ -33,5 +33,10 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// 群科班代碼
         /// </summary>
         public string GDCCode { get; set; }
+
+        /// <summary>
+        /// 排序使用
+        /// </summary>
+        public int OrderBy { get; set; }
     }
 }

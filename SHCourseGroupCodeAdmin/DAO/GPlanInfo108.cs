@@ -362,7 +362,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // row
                     XElement subjGroupElm = new XElement("Grouping");
                     subjGroupElm.SetAttributeValue("RowIndex", RowIndex);
-                    //subjGroupElm.SetAttributeValue("startLevel", startLevel);
+                    subjGroupElm.SetAttributeValue("startLevel", startLevel);
                     subjElm.Add(subjGroupElm);
 
                     MOEXml.Add(subjElm);

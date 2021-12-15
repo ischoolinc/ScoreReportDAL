@@ -51,6 +51,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             dgData.Rows.Clear();
 
+            // 排序資料
+            foreach (chkSubjectInfo subj in _GPlanInfo.chkSubjectInfoList)
+            {
+                subj.OrderBy = 99;
+                if (subj.ProcessStatus == "更新")
+                    subj.OrderBy = 1;
+                if (subj.ProcessStatus == "新增")
+                    subj.OrderBy = 2;
+                if (subj.ProcessStatus == "刪除")
+                    subj.OrderBy = 3;
+            }
+
+            _GPlanInfo.chkSubjectInfoList = _GPlanInfo.chkSubjectInfoList.OrderBy(x => x.OrderBy).ToList();
+
             foreach (chkSubjectInfo subj in _GPlanInfo.chkSubjectInfoList)
             {
                 int rowIdx = dgData.Rows.Add();
@@ -315,7 +329,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void dgData_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > -1 && e.ColumnIndex> -1)
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
                 dgDataCount();
             }
@@ -323,7 +337,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-             _GPlanInfo.chkSubjectInfoList.Clear();
+            _GPlanInfo.chkSubjectInfoList.Clear();
             foreach (DataGridViewRow drv in dgData.Rows)
             {
                 chkSubjectInfo subj = drv.Tag as chkSubjectInfo;
