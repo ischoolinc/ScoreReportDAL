@@ -47,12 +47,11 @@
             // 
             this.btnCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.AutoSize = true;
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.Location = new System.Drawing.Point(281, 322);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 30);
+            this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "離開";
@@ -62,12 +61,11 @@
             // 
             this.btnRun.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRun.AutoSize = true;
             this.btnRun.BackColor = System.Drawing.Color.Transparent;
             this.btnRun.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRun.Location = new System.Drawing.Point(181, 322);
+            this.btnRun.Location = new System.Drawing.Point(199, 322);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(75, 30);
+            this.btnRun.Size = new System.Drawing.Size(75, 25);
             this.btnRun.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnRun.TabIndex = 10;
             this.btnRun.Text = "執行";
@@ -85,11 +83,11 @@
             this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
             this.iptSchoolYear.Location = new System.Drawing.Point(71, 17);
             this.iptSchoolYear.MaxValue = 200;
-            this.iptSchoolYear.MinValue = 100;
+            this.iptSchoolYear.MinValue = 110;
             this.iptSchoolYear.Name = "iptSchoolYear";
-            this.iptSchoolYear.Size = new System.Drawing.Size(59, 25);
+            this.iptSchoolYear.Size = new System.Drawing.Size(59, 29);
             this.iptSchoolYear.TabIndex = 14;
-            this.iptSchoolYear.Value = 100;
+            this.iptSchoolYear.Value = 110;
             // 
             // labelX2
             // 
@@ -102,7 +100,7 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(19, 19);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 21);
+            this.labelX2.Size = new System.Drawing.Size(58, 26);
             this.labelX2.TabIndex = 15;
             this.labelX2.Text = "學年度";
             // 
@@ -120,7 +118,7 @@
             this.iptSemester.MaxValue = 2;
             this.iptSemester.MinValue = 1;
             this.iptSemester.Name = "iptSemester";
-            this.iptSemester.Size = new System.Drawing.Size(51, 25);
+            this.iptSemester.Size = new System.Drawing.Size(51, 29);
             this.iptSemester.TabIndex = 16;
             this.iptSemester.Value = 1;
             // 
@@ -135,7 +133,7 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(143, 19);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(34, 21);
+            this.labelX3.Size = new System.Drawing.Size(41, 26);
             this.labelX3.TabIndex = 17;
             this.labelX3.Text = "學期";
             // 
@@ -144,10 +142,10 @@
             this.cboGradeYear.DisplayMember = "Text";
             this.cboGradeYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cboGradeYear.FormattingEnabled = true;
-            this.cboGradeYear.ItemHeight = 19;
+            this.cboGradeYear.ItemHeight = 23;
             this.cboGradeYear.Location = new System.Drawing.Point(288, 17);
             this.cboGradeYear.Name = "cboGradeYear";
-            this.cboGradeYear.Size = new System.Drawing.Size(68, 25);
+            this.cboGradeYear.Size = new System.Drawing.Size(68, 29);
             this.cboGradeYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboGradeYear.TabIndex = 18;
             // 
@@ -162,7 +160,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(248, 19);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(34, 21);
+            this.labelX1.Size = new System.Drawing.Size(41, 26);
             this.labelX1.TabIndex = 19;
             this.labelX1.Text = "年級";
             // 
@@ -191,7 +189,7 @@
             this.chkPreScoreXls.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.chkPreScoreXls.Location = new System.Drawing.Point(13, 308);
             this.chkPreScoreXls.Name = "chkPreScoreXls";
-            this.chkPreScoreXls.Size = new System.Drawing.Size(156, 21);
+            this.chkPreScoreXls.Size = new System.Drawing.Size(189, 26);
             this.chkPreScoreXls.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkPreScoreXls.TabIndex = 21;
             this.chkPreScoreXls.Text = "產生預檢成績名冊(日)";
@@ -209,7 +207,7 @@
             this.chkPreScoreXlsN.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.chkPreScoreXlsN.Location = new System.Drawing.Point(13, 333);
             this.chkPreScoreXlsN.Name = "chkPreScoreXlsN";
-            this.chkPreScoreXlsN.Size = new System.Drawing.Size(156, 21);
+            this.chkPreScoreXlsN.Size = new System.Drawing.Size(189, 26);
             this.chkPreScoreXlsN.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkPreScoreXlsN.TabIndex = 22;
             this.chkPreScoreXlsN.Text = "產生預檢成績名冊(進)";
@@ -217,7 +215,7 @@
             // 
             // frmCheckSCAttendCourseCode
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(377, 361);
             this.Controls.Add(this.chkPreScoreXlsN);

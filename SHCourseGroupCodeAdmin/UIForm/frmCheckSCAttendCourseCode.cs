@@ -94,7 +94,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             SCAttendCodeChkInfoErrorList.Clear();
             SCAttendCodeChkInfoNoList.Clear();
 
-            // 取得使用者設定學年度學期
+            // 取得使用者設定學年度學期  //2021-12-16 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊。
             List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoList = da.GetGetStudentCourseInfoBySchoolYearSemester(_SchoolYear, _Semester, _StrGradeYear);
 
             Dictionary<string, List<string>> chkHasCourseCodeDict = new Dictionary<string, List<string>>();
@@ -601,12 +601,26 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 //}
 
 
-                // 2021/9/24 討論先固定110學年度第1學期
-                iptSchoolYear.MinValue = iptSchoolYear.MaxValue = 110;
-                iptSemester.MinValue = iptSemester.MaxValue = 1;
+                // 2021-12-11 Cynthia 為了測試，改為預設學年度學期
+                int sy, ss;
+                if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sy))
+                {
+                   // if (sy <= iptSchoolYear.MaxValue && sy >= iptSchoolYear.MinValue)
+                        iptSchoolYear.Value = sy;
+                }
 
-                iptSchoolYear.Value = 110;
-                iptSemester.Value = 1;
+                if (int.TryParse(K12.Data.School.DefaultSemester, out ss))
+                {
+                  //  if (ss <= iptSemester.MaxValue && ss >= iptSemester.MinValue)
+                        iptSemester.Value = ss;
+                }
+
+                // 2021/9/24 討論先固定110學年度第1學期
+                //iptSchoolYear.MinValue = iptSchoolYear.MaxValue = 110;
+                //iptSemester.MinValue = iptSemester.MaxValue = 1;
+
+                //iptSchoolYear.Value = 110;
+                //iptSemester.Value = 1;
 
                 // 載入年級
                 _grList = da.GetClassGradeYear();
