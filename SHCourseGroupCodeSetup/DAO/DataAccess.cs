@@ -217,13 +217,14 @@ namespace SHCourseGroupCodeSetup.DAO
             value.Add("n.sphs.hc.edu.tw", "181307");
             value.Add("n.youth.tc.edu.tw", "061316");
             value.Add("n.csvs.chc.edu.tw", "070409");
+            value.Add("n2.tcivs.tc.edu.tw", "193407");
             value.Add("n.tcivs.tc.edu.tw", "193407");
-
             return value;
         }
 
         public static string GetCourseCodeWhereCond()
         {
+            // ('進修部','實用技能學程(夜)')
             string value = " WHERE course_type NOT IN('進修部','實用技能學程(夜)') ";
             // 進校
             if (GetSchoolNMapping().Keys.Contains(DSAServices.AccessPoint))
