@@ -167,7 +167,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " (CASE WHEN length(subject_type)>0 THEN '_'||subject_type END) || " +
 " (CASE WHEN length(class_type)>0 THEN '_'||class_type END) " +
 " ) AS group_name" +
-" ,(entry_year||(CASE WHEN length(subject_type)>0 THEN ''||subject_type END) || " +
+" ,(entry_year||(CASE WHEN length(group_type)>0 THEN ''||group_type END)||(CASE WHEN length(subject_type)>0 THEN ''||subject_type END) || " +
 " (CASE WHEN length(class_type) > 0 THEN '' || class_type END)) AS gplan_name " +
 " FROM $moe.subjectcode " + courseType + " ORDER BY group_name DESC; ";
 
