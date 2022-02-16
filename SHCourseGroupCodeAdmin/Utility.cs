@@ -267,6 +267,7 @@ T	12學分
             value.Add("n.sphs.hc.edu.tw", "181307");
             value.Add("n.youth.tc.edu.tw", "061316");
             value.Add("n.csvs.chc.edu.tw", "070409");
+            value.Add("n2.csvs.chc.edu.tw", "070409");
             value.Add("n.tcivs.tc.edu.tw", "193407");
             value.Add("n2.tcivs.tc.edu.tw", "193407");
             return value;
