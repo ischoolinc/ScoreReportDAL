@@ -91,8 +91,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
             StudSemsScoreCodeChkInfoErrorList.Clear();
             StudSemsScoreCodeChkInfoNoList.Clear();
 
-
-            /// todo
             /// https://3.basecamp.com/4399967/buckets/15765350/todos/4245362818#__recording_4286998512
             /// 判斷學年度/學期 是否和當前學年度學期一樣，若是，成績年級=現在年級 處理，若否，成績年級=學期對照表上的年級
 
