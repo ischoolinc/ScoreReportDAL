@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SHCourseGroupCodeAdmin</RootNamespace>
     <AssemblyName>SHCourseGroupCodeAdmin</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,6 +34,16 @@
     <Reference Include="Aspose.Cells_201402, Version=7.7.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Aspose.Cells_201402.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Aspose.Words_201402, Version=14.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Aspose.Words_201402.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Campus.ePaperCloud, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Campus.ePaperCloud.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Campus.Windows, Version=1.0.4.3, Culture=neutral, processorArchitecture=MSIL">
@@ -81,6 +91,11 @@
       <HintPath>Library\FISCA.Presentation.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.UDT, Version=1.0.2.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\FISCA.UDT.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="K12.Data, Version=2.0.0.12, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\K12.Data.dll</HintPath>
@@ -103,6 +118,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configure.cs" />
     <Compile Include="DAO\CClassCourseInfo.cs" />
     <Compile Include="DAO\chkCourseInfo.cs" />
     <Compile Include="DAO\chkSubjectInfo.cs" />
@@ -120,6 +136,7 @@
     <Compile Include="DAO\rptSCAttendCodeChkInfo.cs" />
     <Compile Include="DAO\rptStudSemsScoreCodeChkInfo.cs" />
     <Compile Include="DAO\rptSubjectInfo.cs" />
+    <Compile Include="DAO\StudentInfo.cs" />
     <Compile Include="DAO\StudentSubjectInfoChk.cs" />
     <Compile Include="DAO\SubjectCourseInfo.cs" />
     <Compile Include="DAO\SubjectInfoChk.cs" />
@@ -136,6 +153,7 @@
       <DependentUpon>chkStudSubjectScoreCourseCode.cs</DependentUpon>
     </Compile>
     <Compile Include="DataCheck\rptCheckClassGroupCode.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -276,9 +294,17 @@
     <Compile Include="UIForm\NotHasSemsHistoryStudents.Designer.cs">
       <DependentUpon>NotHasSemsHistoryStudents.cs</DependentUpon>
     </Compile>
+    <Compile Include="Report\Student6thSemesterCorseCodeRank.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\Student6thSemesterCorseCodeRank.Designer.cs">
+      <DependentUpon>Student6thSemesterCorseCodeRank.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Template\DefaultTemplate.docx" />
+    <None Include="Template\Template.docx" />
     <None Include="Template\修課檢核課程代碼樣板.xlsx" />
     <None Include="Template\學期成績檢核課程代碼樣板.xlsx" />
     <None Include="Template\學期科目成績課程代碼檢查樣版.xlsx" />
@@ -299,6 +325,8 @@
     <Content Include="Icons\update_1.png" />
     <Content Include="Library\Aspose.Cells_201402.dll" />
     <Content Include="Library\Aspose.Cells_201402.xml" />
+    <Content Include="Library\Aspose.Words_201402.dll" />
+    <Content Include="Library\Campus.ePaperCloud.dll" />
     <Content Include="Library\Campus.Windows.dll" />
     <Content Include="Library\Campus.Windows.pdb" />
     <Content Include="Library\Campus.Windows.xml" />
@@ -322,6 +350,7 @@
     <Content Include="Library\FISCA.Permission.xml" />
     <Content Include="Library\FISCA.Presentation.dll" />
     <Content Include="Library\FISCA.Presentation.pdb" />
+    <Content Include="Library\FISCA.UDT.dll" />
     <Content Include="Library\FISCA.xml" />
     <Content Include="Library\K12.Data.dll" />
     <Content Include="Library\K12.Data.pdb" />
@@ -405,6 +434,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\NotHasSemsHistoryStudents.resx">
       <DependentUpon>NotHasSemsHistoryStudents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\Student6thSemesterCorseCodeRank.resx">
+      <DependentUpon>Student6thSemesterCorseCodeRank.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3597,5 +3597,70 @@ WHERE
             return value;
         }
 
+        /// <summary>
+        /// 取得學生基本資料
+        /// </summary>
+        /// <param name="StudentIDList"></param>
+        /// <returns></returns>
+        public static List<StudentInfo> GetStudentInfoListByIDs(List<string> StudentIDList)
+        {
+            List<StudentInfo> StudentInfoList = new List<StudentInfo>();
+
+            if (StudentIDList.Count > 0)
+            {
+                QueryHelper qh = new QueryHelper();
+                string qry = @"
+WITH student_data AS(
+SELECT 
+        student.id AS student_id
+        , class.class_name
+        , student.seat_no
+        , student.name AS student_name
+		, COALESCE(student.ref_dept_id,class.ref_dept_id)  AS dept_id
+		, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code
+FROM student 
+LEFT JOIN class ON student.ref_class_id = class.id
+LEFT JOIN dept ON class.ref_dept_id = dept.id 
+WHERE student.status IN (1, 2) AND class.grade_year IN (3, 6, 12) AND student.id IN(" + string.Join(",", StudentIDList.ToArray()) + @")
+ORDER BY class.grade_year, class.display_order, class.class_name, seat_no
+)SELECT 
+	student_id
+	, class_name
+	, seat_no
+	, student_name
+	, name AS dept_name
+	, gdc_code
+	FROM student_data 
+	LEFT JOIN dept ON student_data.dept_id = dept.id 
+";
+                try
+                {
+                    DataTable dt = qh.Select(qry);
+                    if (dt != null)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            StudentInfo si = new StudentInfo();
+                            si.StudentID = dr["student_id"].ToString();
+                            si.ClassName = dr["class_name"].ToString();
+                            si.SeatNo = dr["seat_no"].ToString();
+                            si.Dept = dr["dept_name"].ToString();
+                            //si.SchoolYear = K12.Data.School.DefaultSchoolYear;
+                            //si.SchoolName = K12.Data.School.ChineseName;
+                            si.Name = dr["student_name"].ToString();
+
+                            StudentInfoList.Add(si);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return StudentInfoList;
+        }
     }
 }
