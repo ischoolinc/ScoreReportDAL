@@ -33,7 +33,6 @@ namespace SHCourseGroupCodeAdmin.Report
             this.labelX9 = new DevComponents.DotNetBar.LabelX();
             this.labelX7 = new DevComponents.DotNetBar.LabelX();
             this.cboSchoolYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
             this.lnkDefault = new System.Windows.Forms.LinkLabel();
             this.lnkViewMapColumns = new System.Windows.Forms.LinkLabel();
             this.lnkViewTemplate = new System.Windows.Forms.LinkLabel();
@@ -42,6 +41,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.txtSchoolYear = new DevComponents.DotNetBar.LabelX();
             this.txtSemester = new DevComponents.DotNetBar.LabelX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.SuspendLayout();
             // 
             // cboSemester
@@ -52,7 +52,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.cboSemester.Enabled = false;
             this.cboSemester.FormattingEnabled = true;
             this.cboSemester.ItemHeight = 19;
-            this.cboSemester.Location = new System.Drawing.Point(512, 22);
+            this.cboSemester.Location = new System.Drawing.Point(512, 4);
             this.cboSemester.Name = "cboSemester";
             this.cboSemester.Size = new System.Drawing.Size(54, 25);
             this.cboSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -97,67 +97,45 @@ namespace SHCourseGroupCodeAdmin.Report
             this.cboSchoolYear.Enabled = false;
             this.cboSchoolYear.FormattingEnabled = true;
             this.cboSchoolYear.ItemHeight = 19;
-            this.cboSchoolYear.Location = new System.Drawing.Point(411, 22);
+            this.cboSchoolYear.Location = new System.Drawing.Point(411, 4);
             this.cboSchoolYear.Name = "cboSchoolYear";
             this.cboSchoolYear.Size = new System.Drawing.Size(54, 25);
             this.cboSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboSchoolYear.TabIndex = 6;
             this.cboSchoolYear.Visible = false;
             // 
-            // circularProgress1
-            // 
-            this.circularProgress1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.circularProgress1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.circularProgress1.BackgroundStyle.Class = "";
-            this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.circularProgress1.FocusCuesEnabled = false;
-            this.circularProgress1.Location = new System.Drawing.Point(296, -16);
-            this.circularProgress1.Name = "circularProgress1";
-            this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
-            this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
-            this.circularProgress1.ProgressTextVisible = true;
-            this.circularProgress1.Size = new System.Drawing.Size(65, 63);
-            this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
-            this.circularProgress1.TabIndex = 17;
-            // 
             // lnkDefault
             // 
-            this.lnkDefault.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkDefault.AutoSize = true;
             this.lnkDefault.BackColor = System.Drawing.Color.Transparent;
-            this.lnkDefault.Location = new System.Drawing.Point(306, 64);
+            this.lnkDefault.Location = new System.Drawing.Point(306, 122);
             this.lnkDefault.Name = "lnkDefault";
             this.lnkDefault.Size = new System.Drawing.Size(86, 17);
             this.lnkDefault.TabIndex = 21;
             this.lnkDefault.TabStop = true;
-            this.lnkDefault.Text = "檢視預設樣板";
+            this.lnkDefault.Text = "下載預設樣板";
             this.lnkDefault.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkDefault_LinkClicked);
             // 
             // lnkViewMapColumns
             // 
-            this.lnkViewMapColumns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkViewMapColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkViewMapColumns.AutoSize = true;
             this.lnkViewMapColumns.BackColor = System.Drawing.Color.Transparent;
-            this.lnkViewMapColumns.Location = new System.Drawing.Point(188, 64);
+            this.lnkViewMapColumns.Location = new System.Drawing.Point(188, 122);
             this.lnkViewMapColumns.Name = "lnkViewMapColumns";
             this.lnkViewMapColumns.Size = new System.Drawing.Size(112, 17);
             this.lnkViewMapColumns.TabIndex = 20;
             this.lnkViewMapColumns.TabStop = true;
-            this.lnkViewMapColumns.Text = "檢視合併欄位總表";
+            this.lnkViewMapColumns.Text = "下載合併欄位總表";
             this.lnkViewMapColumns.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkViewMapColumns_LinkClicked);
             // 
             // lnkViewTemplate
             // 
-            this.lnkViewTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkViewTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkViewTemplate.AutoSize = true;
             this.lnkViewTemplate.BackColor = System.Drawing.Color.Transparent;
-            this.lnkViewTemplate.Location = new System.Drawing.Point(9, 64);
+            this.lnkViewTemplate.Location = new System.Drawing.Point(9, 122);
             this.lnkViewTemplate.Name = "lnkViewTemplate";
             this.lnkViewTemplate.Size = new System.Drawing.Size(86, 17);
             this.lnkViewTemplate.TabIndex = 18;
@@ -167,11 +145,10 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             // lnkChangeTemplate
             // 
-            this.lnkChangeTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkChangeTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkChangeTemplate.AutoSize = true;
             this.lnkChangeTemplate.BackColor = System.Drawing.Color.Transparent;
-            this.lnkChangeTemplate.Location = new System.Drawing.Point(98, 64);
+            this.lnkChangeTemplate.Location = new System.Drawing.Point(98, 122);
             this.lnkChangeTemplate.Name = "lnkChangeTemplate";
             this.lnkChangeTemplate.Size = new System.Drawing.Size(86, 17);
             this.lnkChangeTemplate.TabIndex = 19;
@@ -182,11 +159,12 @@ namespace SHCourseGroupCodeAdmin.Report
             // btnPrint
             // 
             this.btnPrint.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPrint.BackColor = System.Drawing.Color.Transparent;
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(411, 61);
+            this.btnPrint.Location = new System.Drawing.Point(455, 116);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(67, 23);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -197,10 +175,11 @@ namespace SHCourseGroupCodeAdmin.Report
             // btnCancel
             // 
             this.btnCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(484, 61);
+            this.btnCancel.Location = new System.Drawing.Point(528, 116);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(67, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -238,12 +217,30 @@ namespace SHCourseGroupCodeAdmin.Report
             this.txtSemester.TabIndex = 25;
             this.txtSemester.Text = "2";
             // 
+            // labelX1
+            // 
+            this.labelX1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(14, 36);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(579, 80);
+            this.labelX1.TabIndex = 26;
+            this.labelX1.Text = "1. 列印將同時產生PDF和Word。\r\n2. 學校上傳：請使用PDF檔案。\r\n3. 學生上傳：請使用「學生：其它→電子報表上傳」，選擇「系統編號」選項及Word" +
+    "檔案，\r\n　分析後勾選「上傳時Word檔轉為PDF」。\r\n";
+            // 
             // Student6thSemesterCorseCodeRank
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 90);
-            this.Controls.Add(this.circularProgress1);
+            this.ClientSize = new System.Drawing.Size(605, 148);
+            this.Controls.Add(this.labelX1);
             this.Controls.Add(this.txtSemester);
             this.Controls.Add(this.txtSchoolYear);
             this.Controls.Add(this.labelX9);
@@ -257,6 +254,8 @@ namespace SHCourseGroupCodeAdmin.Report
             this.Controls.Add(this.cboSemester);
             this.Controls.Add(this.cboSchoolYear);
             this.DoubleBuffered = true;
+            this.MaximumSize = new System.Drawing.Size(800, 200);
+            this.MinimumSize = new System.Drawing.Size(621, 187);
             this.Name = "Student6thSemesterCorseCodeRank";
             this.Text = "學生第6學期修課紀錄";
             this.Load += new System.EventHandler(this.Student6thSemesterCorseCodeRank_Load);
@@ -271,7 +270,6 @@ namespace SHCourseGroupCodeAdmin.Report
         private DevComponents.DotNetBar.LabelX labelX9;
         private DevComponents.DotNetBar.LabelX labelX7;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboSchoolYear;
-        private DevComponents.DotNetBar.Controls.CircularProgress circularProgress1;
         private System.Windows.Forms.LinkLabel lnkDefault;
         private System.Windows.Forms.LinkLabel lnkViewMapColumns;
         private System.Windows.Forms.LinkLabel lnkViewTemplate;
@@ -280,5 +278,6 @@ namespace SHCourseGroupCodeAdmin.Report
         private DevComponents.DotNetBar.ButtonX btnCancel;
         private DevComponents.DotNetBar.LabelX txtSchoolYear;
         private DevComponents.DotNetBar.LabelX txtSemester;
+        private DevComponents.DotNetBar.LabelX labelX1;
     }
 }

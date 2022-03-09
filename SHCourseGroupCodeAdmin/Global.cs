@@ -52,6 +52,10 @@ namespace SHCourseGroupCodeAdmin
             //builder.InsertCell();
             //builder.InsertField("MERGEFIELD " + "學年度" + " \\* MERGEFORMAT ", "«" + "學年度" + "»");
             //builder.EndRow();
+            builder.InsertCell(); builder.Write("學生系統編號");
+            builder.InsertCell();
+            builder.InsertField("MERGEFIELD " + "學生系統編號" + " \\* MERGEFORMAT ", "«" + "學生系統編號" + "»");
+            builder.EndRow();
 
             builder.InsertCell(); builder.Write("學校名稱");
             builder.InsertCell();

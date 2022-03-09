@@ -20,27 +20,27 @@ namespace SHCourseGroupCodeAdmin
         public static void main()
         {
             #region 學生第6學期修課紀錄
-            //RibbonBarItem rbItem1 = MotherForm.RibbonBarItems["學生", "資料統計"];
-            //rbItem1["報表"]["成績相關報表"]["學生第6學期修課紀錄"].Enable = UserAcl.Current["SH_6thSemesterCorseCodeRank"].Executable;
-            //rbItem1["報表"]["成績相關報表"]["學生第6學期修課紀錄"].Click += delegate
-            //{
-            //    if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
-            //    {
-            //        Student6thSemesterCorseCodeRank srf = new Student6thSemesterCorseCodeRank();
-            //        srf.SetStudentIDs(K12.Presentation.NLDPanels.Student.SelectedSource);
-            //        srf.ShowDialog();
+            RibbonBarItem rbItem1 = MotherForm.RibbonBarItems["學生", "資料統計"];
+            rbItem1["報表"]["成績相關報表"]["學生第6學期修課紀錄"].Enable = UserAcl.Current["SH_6thSemesterCorseCodeRank"].Executable;
+            rbItem1["報表"]["成績相關報表"]["學生第6學期修課紀錄"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
+                {
+                    Student6thSemesterCorseCodeRank srf = new Student6thSemesterCorseCodeRank();
+                    srf.SetStudentIDs(K12.Presentation.NLDPanels.Student.SelectedSource);
+                    srf.ShowDialog();
 
-            //    }
-            //    else
-            //    {
-            //        FISCA.Presentation.Controls.MsgBox.Show("請選擇選學生。");
-            //        return;
-            //    }
-            //};
+                }
+                else
+                {
+                    FISCA.Presentation.Controls.MsgBox.Show("請選擇選學生。");
+                    return;
+                }
+            };
 
-            //// 權限
-            //Catalog catalog1 = RoleAclSource.Instance["學生"]["功能按鈕"];
-            //catalog1.Add(new RibbonFeature("SH_6thSemesterCorseCodeRank", "學生第6學期修課紀錄"));
+            // 權限
+            Catalog catalog1 = RoleAclSource.Instance["學生"]["功能按鈕"];
+            catalog1.Add(new RibbonFeature("SH_6thSemesterCorseCodeRank", "學生第6學期修課紀錄"));
 
             #endregion
             // 權限註冊

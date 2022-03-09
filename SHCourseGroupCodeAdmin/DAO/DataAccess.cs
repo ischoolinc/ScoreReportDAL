@@ -2214,7 +2214,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         data.MOECourseCodeInfoList = MOECourseCodeDict[code].OrderBy(x => x.course_code).ToList();
                     }
 
-                    data.Status = "無變動";                   
+                    data.Status = "無變動";
                     data.ParseOrderByInt();
 
 
@@ -3152,6 +3152,7 @@ WHERE
 "  	, sems_subj_score_ext.semester  " +
 "  	, sems_subj_score_ext.school_year	  " +
 "  	, array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目  " +
+"  	, array_to_string(xpath('//Subject/@原始成績', subj_score_ele), '')::text AS 原始成績  " +
 "  	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別  " +
 "  	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	  " +
 "  	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修  " +
@@ -3177,6 +3178,7 @@ WHERE
 "  ,semester  " +
 "  ,grade_year  " +
 "  ,科目 AS subject " +
+"  ,原始成績 AS score" +
 "  ,科目級別 AS subj_level " +
 "  ,學分數 AS credit " +
 "  ,必選修 AS required " +
@@ -3208,6 +3210,14 @@ WHERE
                     data.IsRequired = dr["required"] + "";
                     data.GradeYear = dr["grade_year"] + "";
                     data.Credit = dr["credit"] + "";
+
+                    decimal score;
+                    if (dr["score"].ToString() != "")
+                        if (decimal.TryParse(dr["score"].ToString(), out score))
+                        {
+                            data.Score = score;
+                        }
+
                     if (dr["gdc_code"] != null)
                     {
                         data.gdc_code = dr["gdc_code"] + "";
@@ -3435,7 +3445,7 @@ WITH student_data AS (
                         {
                             if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
                             {
-                                
+
                                 #region 2022-03-07 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
 
                                 int idx = -1;
@@ -3602,7 +3612,7 @@ WHERE
         /// </summary>
         /// <param name="StudentIDList"></param>
         /// <returns></returns>
-        public static List<StudentInfo> GetStudentInfoListByIDs(List<string> StudentIDList)
+        public static List<StudentInfo> GetStudentInfoListByIDs(List<string> StudentIDList, int schoolYear, int semester)
         {
             List<StudentInfo> StudentInfoList = new List<StudentInfo>();
 
@@ -3614,14 +3624,19 @@ WITH student_data AS(
 SELECT 
         student.id AS student_id
         , class.class_name
+        , class.grade_year
         , student.seat_no
         , student.name AS student_name
 		, COALESCE(student.ref_dept_id,class.ref_dept_id)  AS dept_id
 		, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code
+		, array_to_string(xpath('//SemesterEntryScore/Entry[@分項=''學業(原始)'']/@成績', xmlparse(content score_info)), '')::text AS entry_score
+        , display_order
 FROM student 
 LEFT JOIN class ON student.ref_class_id = class.id
 LEFT JOIN dept ON class.ref_dept_id = dept.id 
-WHERE student.status IN (1, 2) AND class.grade_year IN (3, 6, 12) AND student.id IN(" + string.Join(",", StudentIDList.ToArray()) + @")
+LEFT JOIN sems_entry_score ON sems_entry_score.ref_student_id = student.id AND school_year=" + schoolYear + " AND semester = " + semester +
+@"WHERE student.status IN (1, 2) --AND class.grade_year IN (3, 6, 12) 
+AND student.id IN(" + string.Join(",", StudentIDList.ToArray()) + @")
 ORDER BY class.grade_year, class.display_order, class.class_name, seat_no
 )SELECT 
 	student_id
@@ -3630,8 +3645,10 @@ ORDER BY class.grade_year, class.display_order, class.class_name, seat_no
 	, student_name
 	, name AS dept_name
 	, gdc_code
+	, entry_score
 	FROM student_data 
 	LEFT JOIN dept ON student_data.dept_id = dept.id 
+ORDER BY grade_year, display_order, class_name, seat_no, student_name
 ";
                 try
                 {
@@ -3648,6 +3665,7 @@ ORDER BY class.grade_year, class.display_order, class.class_name, seat_no
                             //si.SchoolYear = K12.Data.School.DefaultSchoolYear;
                             //si.SchoolName = K12.Data.School.ChineseName;
                             si.Name = dr["student_name"].ToString();
+                            si.EntryScore= dr["entry_score"].ToString();
 
                             StudentInfoList.Add(si);
                         }

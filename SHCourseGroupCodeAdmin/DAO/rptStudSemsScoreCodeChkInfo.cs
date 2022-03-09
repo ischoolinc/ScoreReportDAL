@@ -37,6 +37,15 @@ namespace SHCourseGroupCodeAdmin.DAO
         public List<string> ErrorMsgList = new List<string>();
 
         /// <summary>
+        /// 原始分數(6學期修課紀錄報表用)
+        /// </summary>
+        public decimal? Score { get; set; }
+        /// <summary>
+        /// 排名百分比(6學期修課紀錄報表用)
+        /// </summary>
+        public int? Rank { get; set; }
+
+        /// <summary>
         /// 檢查學分數
         /// </summary>
         /// <returns></returns>

@@ -40,5 +40,10 @@ namespace SHCourseGroupCodeAdmin
         /// 科別
         /// </summary>
         public string Dept { get; set; }
+
+        /// <summary>
+        /// 學業(原始)成績
+        /// </summary>
+        public string EntryScore { get; set; }
     }
 }

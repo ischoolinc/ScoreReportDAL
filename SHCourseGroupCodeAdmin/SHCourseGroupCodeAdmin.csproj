@@ -41,11 +41,6 @@
       <HintPath>Library\Aspose.Words_201402.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Campus.ePaperCloud, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\Campus.ePaperCloud.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Campus.Windows, Version=1.0.4.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Campus.Windows.dll</HintPath>
@@ -326,7 +321,6 @@
     <Content Include="Library\Aspose.Cells_201402.dll" />
     <Content Include="Library\Aspose.Cells_201402.xml" />
     <Content Include="Library\Aspose.Words_201402.dll" />
-    <Content Include="Library\Campus.ePaperCloud.dll" />
     <Content Include="Library\Campus.Windows.dll" />
     <Content Include="Library\Campus.Windows.pdb" />
     <Content Include="Library\Campus.Windows.xml" />
