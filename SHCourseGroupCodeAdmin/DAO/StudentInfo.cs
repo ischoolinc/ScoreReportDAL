@@ -17,9 +17,9 @@ namespace SHCourseGroupCodeAdmin
         public string StudentID { get; set; }
 
         /// <summary>
-        /// 學校名稱
+        /// 身分證號
         /// </summary>
-        public string SchoolName { get; set; }
+        public string IDNumber { get; set; }
 
         /// <summary>
         /// 班級

@@ -3184,7 +3184,7 @@ WHERE
 "  ,必選修 AS required " +
 "  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by  " +
 "   FROM student_data INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
-"    ORDER BY class_name,seat_no,school_year,semester ";
+"    ORDER BY class_name,seat_no,school_year,semester, 科目 ";
 
 
                 DataTable dt = qh.Select(query);
@@ -3627,21 +3627,22 @@ SELECT
         , class.grade_year
         , student.seat_no
         , student.name AS student_name
+        , id_number
 		, COALESCE(student.ref_dept_id,class.ref_dept_id)  AS dept_id
 		, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code
 		, array_to_string(xpath('//SemesterEntryScore/Entry[@分項=''學業(原始)'']/@成績', xmlparse(content score_info)), '')::text AS entry_score
         , display_order
 FROM student 
 LEFT JOIN class ON student.ref_class_id = class.id
-LEFT JOIN dept ON class.ref_dept_id = dept.id 
 LEFT JOIN sems_entry_score ON sems_entry_score.ref_student_id = student.id AND school_year=" + schoolYear + " AND semester = " + semester +
-@"WHERE student.status IN (1, 2) --AND class.grade_year IN (3, 6, 12) 
+@"WHERE student.status IN (1, 2) 
 AND student.id IN(" + string.Join(",", StudentIDList.ToArray()) + @")
 ORDER BY class.grade_year, class.display_order, class.class_name, seat_no
 )SELECT 
 	student_id
 	, class_name
 	, seat_no
+	, id_number
 	, student_name
 	, name AS dept_name
 	, gdc_code
@@ -3662,8 +3663,7 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
                             si.ClassName = dr["class_name"].ToString();
                             si.SeatNo = dr["seat_no"].ToString();
                             si.Dept = dr["dept_name"].ToString();
-                            //si.SchoolYear = K12.Data.School.DefaultSchoolYear;
-                            //si.SchoolName = K12.Data.School.ChineseName;
+                            si.IDNumber = dr["id_number"].ToString();
                             si.Name = dr["student_name"].ToString();
                             si.EntryScore= dr["entry_score"].ToString();
 

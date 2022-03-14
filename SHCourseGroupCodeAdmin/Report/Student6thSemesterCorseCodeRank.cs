@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-
 namespace SHCourseGroupCodeAdmin.Report
 {
     public partial class Student6thSemesterCorseCodeRank : BaseForm
@@ -23,8 +22,6 @@ namespace SHCourseGroupCodeAdmin.Report
         public Configure _Configure { get; private set; }
 
         BackgroundWorker bgWorkerReport = new BackgroundWorker();
-
-
 
         DataAccess da = new DataAccess();
 
@@ -35,6 +32,8 @@ namespace SHCourseGroupCodeAdmin.Report
         int SchoolYear = 110;
         int Semester = 2;
 
+        Dictionary<string, Document> StudentDocDict = new Dictionary<string, Document>();
+        Dictionary<string, string> StudentDocNameDict = new Dictionary<string, string>();
 
         public Student6thSemesterCorseCodeRank()
         {
@@ -63,10 +62,8 @@ namespace SHCourseGroupCodeAdmin.Report
         {
             bgWorkerReport.ReportProgress(1);
 
-            DataTable dtTable = new DataTable();
-            Document docTemplate = _Configure.Template;
-            if (docTemplate == null)
-                docTemplate = new Document(new MemoryStream(Properties.Resources.DefaultTemplate));
+            StudentDocDict.Clear();
+            StudentDocNameDict.Clear();
 
             // 取得所選學生資料
             List<StudentInfo> StudentInfoList = DataAccess.GetStudentInfoListByIDs(StudentIDList, SchoolYear, Semester);
@@ -75,25 +72,6 @@ namespace SHCourseGroupCodeAdmin.Report
 
             // 取得(3,6,12年級) 110-2 學期科目原始成績
             List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfo("3,6,12", SchoolYear, Semester);
-
-            #region 產生合併欄位
-            dtTable.Columns.Add("學生系統編號");
-            dtTable.Columns.Add("學年度");
-            dtTable.Columns.Add("學期");
-            dtTable.Columns.Add("學校名稱");
-            dtTable.Columns.Add("班級");
-            dtTable.Columns.Add("座號");
-            dtTable.Columns.Add("姓名");
-            dtTable.Columns.Add("科別");
-            dtTable.Columns.Add("學期學業成績總平均");
-            for (int i = 1; i <= 60; i++)
-            {
-                dtTable.Columns.Add("科目名稱" + i);
-                dtTable.Columns.Add("單科學分數" + i);
-                dtTable.Columns.Add("單科成績" + i);
-                dtTable.Columns.Add("單科成績排名百分比" + i);
-            }
-            #endregion
 
             bgWorkerReport.ReportProgress(30);
 
@@ -119,7 +97,7 @@ namespace SHCourseGroupCodeAdmin.Report
             //排序
             foreach (var k in rankDic.Keys)
             {
-                var rankscores = rankDic[k];               
+                var rankscores = rankDic[k];
                 rankscores.Sort();
                 rankscores.Reverse();
             }
@@ -146,51 +124,76 @@ namespace SHCourseGroupCodeAdmin.Report
 
             bgWorkerReport.ReportProgress(60);
 
-            #region 群科班對照表設定
+            #region 群科班對照表設定(暫時不用)
             //群科班對照表設定
-            Dictionary<string, string> MappingTag1 = new Dictionary<string, string>();
-            try
-            {
-                //< MappingConfig >
-                //    < Group Name = "科班學程對照" >
-                //        < Item Name = "普通科普通班" TagName = "普通科" />
-                //        < Item Name = "普通科體育班班" TagName = "普通科" />
-                //        < Item Name = "商經科" TagName = "商業經營科" />
-                //    </ Group >
-                //</ MappingConfig >
+            //Dictionary<string, string> MappingTag1 = new Dictionary<string, string>();
+            //try
+            //{
+            //    //< MappingConfig >
+            //    //    < Group Name = "科班學程對照" >
+            //    //        < Item Name = "普通科普通班" TagName = "普通科" />
+            //    //        < Item Name = "普通科體育班班" TagName = "普通科" />
+            //    //        < Item Name = "商經科" TagName = "商業經營科" />
+            //    //    </ Group >
+            //    //</ MappingConfig >
 
-                // 解析對照設定
-                XElement elmRoot = XElement.Parse(_Configure.MappingContent);
-                if (elmRoot != null)
-                {
-                    foreach (XElement elm in elmRoot.Elements("Group"))
-                    {
-                        string gpName = elm.Attribute("Name").Value;
-                        if (gpName == "科班學程對照")
-                        {
-                            foreach (XElement elm1 in elm.Elements("Item"))
-                            {
-                                string name = elm1.Attribute("Name").Value;
-                                string tagName = elm1.Attribute("TagName").Value;
-                                if (!MappingTag1.ContainsKey(name) && name.Length > 0)
-                                    MappingTag1.Add(name, tagName);
-                            }
-                        }
+            //    // 解析對照設定
+            //    XElement elmRoot = XElement.Parse(_Configure.MappingContent);
+            //    if (elmRoot != null)
+            //    {
+            //        foreach (XElement elm in elmRoot.Elements("Group"))
+            //        {
+            //            string gpName = elm.Attribute("Name").Value;
+            //            if (gpName == "科班學程對照")
+            //            {
+            //                foreach (XElement elm1 in elm.Elements("Item"))
+            //                {
+            //                    string name = elm1.Attribute("Name").Value;
+            //                    string tagName = elm1.Attribute("TagName").Value;
+            //                    if (!MappingTag1.ContainsKey(name) && name.Length > 0)
+            //                        MappingTag1.Add(name, tagName);
+            //                }
+            //            }
 
 
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //errorMsgList.Add(ex.Message);
-            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //errorMsgList.Add(ex.Message);
+            //}
             #endregion
 
             bgWorkerReport.ReportProgress(70);
             // 整理資料，填入 DataTable
             foreach (StudentInfo si in StudentInfoList)
             {
+                // 因為每位學生單檔列印，所以複製一份
+                Document docTemplate = _Configure.Template.Clone();
+                if (docTemplate == null)
+                    docTemplate = new Document(new MemoryStream(Properties.Resources.DefaultTemplate));
+
+                #region 產生合併欄位
+                DataTable dtTable = new DataTable();
+                dtTable.Columns.Add("學生系統編號");
+                dtTable.Columns.Add("學年度");
+                dtTable.Columns.Add("學期");
+                dtTable.Columns.Add("學校名稱");
+                dtTable.Columns.Add("班級");
+                dtTable.Columns.Add("座號");
+                dtTable.Columns.Add("姓名");
+                dtTable.Columns.Add("科別");
+                dtTable.Columns.Add("學期學業成績總平均");
+                for (int i = 1; i <= 60; i++)
+                {
+                    dtTable.Columns.Add("科目名稱" + i);
+                    dtTable.Columns.Add("單科學分數" + i);
+                    dtTable.Columns.Add("單科成績" + i);
+                    dtTable.Columns.Add("單科成績排名百分比" + i);
+                }
+                #endregion
+
                 DataRow row = dtTable.NewRow();
 
                 row["學生系統編號"] = si.StudentID;
@@ -219,159 +222,167 @@ namespace SHCourseGroupCodeAdmin.Report
                         }
                     }
                 }
+
                 dtTable.Rows.Add(row);
+                docTemplate.MailMerge.Execute(dtTable);
+                docTemplate.MailMerge.RemoveEmptyParagraphs = true;
+                docTemplate.MailMerge.DeleteFields();
+
+                if (!StudentDocDict.ContainsKey(si.StudentID))
+                {
+                    StudentDocDict.Add(si.StudentID, docTemplate);
+                    StudentDocNameDict.Add(si.StudentID, si.IDNumber);
+                }
+
+
             }
 
             bgWorkerReport.ReportProgress(80);
-            docTemplate.MailMerge.Execute(dtTable);
-            docTemplate.MailMerge.RemoveEmptyParagraphs = true;
-            docTemplate.MailMerge.DeleteFields();
 
-            #region Word 合併列印
-
-            try
-            {
-                e.Result = new object[] { docTemplate };
-            }
-            catch (Exception exow)
-            {
-                MsgBox.Show(exow.Message);
-            }
-
-            #endregion
             bgWorkerReport.ReportProgress(100);
         }
 
         private void BgWorkerReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            string reportName = SchoolYear + "學年度第" + Semester + "學期學生第6學期修課紀錄";
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            #region 單檔列印
+            string pathDocx = "";
+            string pathPDF = "";
+            // 完成後開啟資料夾
+            string folderDocx = "";
+            string folderPDF = "";
 
-            //if (e.Error != null)
-            //{
-            //    MessageBox.Show(e.Error.Message);
-            //    return;
-            //}
-            //Document doc = e.Result as Document;
-
-            ////string reportName = _SelSchoolYear + "學年度第" + _SelSemester + "學期學期成績通知單";
-            //MemoryStream memoryStream = new MemoryStream();
-            //doc.Save(memoryStream, SaveFormat.Doc);
-            //ePaperCloud ePaperCloud = new ePaperCloud();
-            //ePaperCloud.upload_ePaper(SchoolYear, Semester, reportName, "", memoryStream, ePaperCloud.ViewerType.Student, ePaperCloud.FormatType.Docx);
-
-            // 產生
-            try
+            foreach (string sid in StudentDocDict.Keys)
             {
-                object[] objArray = (object[])e.Result;
+                string fileDateTime = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
-                btnPrint.Enabled = true;
-
-                #region 儲存檔案
-                string pathQ = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
-                if (!Directory.Exists(pathQ))
-                    Directory.CreateDirectory(pathQ);
-                string path = Path.Combine(pathQ, reportName + ".docx");
-                string fPath = Path.Combine(pathQ, reportName + ".pdf");
-
-                if (File.Exists(path))
-                {
-                    int i = 1;
-                    while (true)
-                    {
-                        string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
-                        if (!File.Exists(newPath))
-                        {
-                            path = newPath;
-                            break;
-                        }
-                    }
-                }
-
-                Document document = new Document();
+                #region Word
                 try
                 {
-                    document = (Document)objArray[0];
-                    document.Save(path, SaveFormat.Docx);
-                    System.Diagnostics.Process.Start(path);
-                }
-                catch
-                {
-                    System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
-                    sd.Title = "另存新檔";
-                    sd.FileName = reportName + ".docx";
-                    sd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
-                    if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        try
-                        {
-                            document.Save(sd.FileName, Aspose.Words.SaveFormat.Docx);
+                    Document document = StudentDocDict[sid];
 
-                        }
-                        catch (Exception ex)
+                    #region 儲存檔案
+                    string reportNameSingle = StudentDocNameDict[sid];
+                    pathDocx = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄Docx_" + fileDateTime);
+
+                    folderDocx = pathDocx;
+                    if (!Directory.Exists(pathDocx))
+                        Directory.CreateDirectory(pathDocx);
+
+                    pathDocx = Path.Combine(pathDocx, reportNameSingle + ".docx");
+
+                    if (File.Exists(pathDocx))
+                    {
+                        int i = 1;
+                        while (true)
                         {
-                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗" + ex.Message, System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                            return;
+                            string newPath = Path.GetDirectoryName(pathDocx) + "\\" + Path.GetFileNameWithoutExtension(pathDocx) + "_" + (i++) + Path.GetExtension(pathDocx);
+                            if (!File.Exists(newPath))
+                            {
+                                pathDocx = newPath;
+                                break;
+                            }
                         }
                     }
-                }
 
-                #region pdf
-                if (File.Exists(fPath))
-                {
-                    int i = 1;
-                    while (true)
+                    try
                     {
-                        string newPath = Path.GetDirectoryName(fPath) + "\\" + Path.GetFileNameWithoutExtension(fPath) + (i++) + Path.GetExtension(fPath);
-                        if (!File.Exists(newPath))
+                        document.Save(pathDocx, SaveFormat.Docx);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
+                        sd.Title = "另存新檔";
+                        sd.FileName = reportNameSingle + ".docx";
+                        sd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
+                        if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         {
-                            fPath = newPath;
-                            break;
+                            try
+                            {
+                                document.Save(sd.FileName, Aspose.Words.SaveFormat.Docx);
+
+                            }
+                            catch
+                            {
+                                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                                return;
+                            }
                         }
                     }
-                }
+                    #endregion
 
-                Document documentPDF = new Document();
-                try
-                {
-                    documentPDF = (Document)objArray[0];
-                    documentPDF.Save(fPath, SaveFormat.Pdf);
-                    System.Diagnostics.Process.Start(fPath);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
-                    sd.Title = "另存新檔";
-                    sd.FileName = reportName + ".pdf";
-                    sd.Filter = "PDF檔案 (*.pdf)|*.pdf|所有檔案 (*.*)|*.*";
-                    if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        try
-                        {
-                            documentPDF.Save(sd.FileName, Aspose.Words.SaveFormat.Pdf);
-
-                        }
-                        catch (Exception ex)
-                        {
-                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗" + ex.Message, System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
+                    FISCA.Presentation.Controls.MsgBox.Show("產生過程發生錯誤," + ex.Message);
                 }
                 #endregion
 
+                #region  PDF
+                try
+                {
+                    Document document = StudentDocDict[sid];
 
+                    #region 儲存檔案
+                    string reportNameSingle = StudentDocNameDict[sid];
+                    pathPDF = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄PDF_" + fileDateTime);
+
+                    folderPDF = pathPDF;
+                    if (!Directory.Exists(pathPDF))
+                        Directory.CreateDirectory(pathPDF);
+
+                    pathPDF = Path.Combine(pathPDF, reportNameSingle + ".PDF");
+
+                    if (File.Exists(pathPDF))
+                    {
+                        int i = 1;
+                        while (true)
+                        {
+                            string newPath = Path.GetDirectoryName(pathPDF) + "\\" + Path.GetFileNameWithoutExtension(pathPDF) + "_" + (i++) + Path.GetExtension(pathPDF);
+                            if (!File.Exists(newPath))
+                            {
+                                pathPDF = newPath;
+                                break;
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        document.Save(pathPDF, SaveFormat.Pdf);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
+                        sd.Title = "另存新檔";
+                        sd.FileName = reportNameSingle + ".PDF";
+                        sd.Filter = "PDF檔案 (*.PDF)|*.PDF|所有檔案 (*.*)|*.*";
+                        if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            try
+                            {
+                                document.Save(sd.FileName, Aspose.Words.SaveFormat.Pdf);
+
+                            }
+                            catch
+                            {
+                                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+                    }
+                    #endregion
+
+                }
+                catch (Exception ex)
+                {
+                    FISCA.Presentation.Controls.MsgBox.Show("產生過程發生錯誤," + ex.Message);
+                }
                 #endregion
-
-
-
-                MotherForm.SetStatusBarMessage(reportName + "產生完成");
-            }
-            catch (Exception ex)
-            {
-                MsgBox.Show(reportName + "產生過程發生錯誤," + ex.Message);
             }
 
+            System.Diagnostics.Process.Start(folderDocx);
+            System.Diagnostics.Process.Start(folderPDF);
+            #endregion
         }
 
         /// <summary>
@@ -471,9 +482,9 @@ namespace SHCourseGroupCodeAdmin.Report
                     _Configure.Save();
 
                 }
-                catch
+                catch (Exception ex)
                 {
-                    MessageBox.Show("樣板開啟失敗。");
+                    MessageBox.Show("樣板開啟失敗：" + ex.Message);
                 }
             }
             lnkChangeTemplate.Enabled = true;
