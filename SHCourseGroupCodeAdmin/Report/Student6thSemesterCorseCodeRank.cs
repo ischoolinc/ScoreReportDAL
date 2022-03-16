@@ -29,11 +29,17 @@ namespace SHCourseGroupCodeAdmin.Report
 
         List<string> StudentIDList = new List<string>();
 
-        int SchoolYear = 110;
-        int Semester = 2;
+        int SchoolYear;
+        int Semester;
 
         Dictionary<string, Document> StudentDocDict = new Dictionary<string, Document>();
         Dictionary<string, string> StudentDocNameDict = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 依照班級名稱建立資料夾再產出檔案
+        /// </summary>
+        bool IsAccordingToClass = false;
+        Dictionary<string, string> StudentClassFolderDict = new Dictionary<string, string>();
 
         public Student6thSemesterCorseCodeRank()
         {
@@ -64,6 +70,7 @@ namespace SHCourseGroupCodeAdmin.Report
 
             StudentDocDict.Clear();
             StudentDocNameDict.Clear();
+            StudentClassFolderDict.Clear();
 
             // 取得所選學生資料
             List<StudentInfo> StudentInfoList = DataAccess.GetStudentInfoListByIDs(StudentIDList, SchoolYear, Semester);
@@ -232,9 +239,8 @@ namespace SHCourseGroupCodeAdmin.Report
                 {
                     StudentDocDict.Add(si.StudentID, docTemplate);
                     StudentDocNameDict.Add(si.StudentID, si.IDNumber);
+                    StudentClassFolderDict.Add(si.StudentID, si.ClassName);
                 }
-
-
             }
 
             bgWorkerReport.ReportProgress(80);
@@ -244,16 +250,84 @@ namespace SHCourseGroupCodeAdmin.Report
 
         private void BgWorkerReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            #region 單檔列印
+            MotherForm.SetStatusBarMessage("完成。");
+            #region 建立資料夾
+            //時間戳印
+            string fileDateTime = DateTime.Now.ToString("yyyyMMdd");
+
+            //Docx
             string pathDocx = "";
+            string pathDefaultFolderDocx = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄Docx_" + fileDateTime);
+            string pathFolderDocx = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄Docx_" + fileDateTime);
+
+            //PDF
             string pathPDF = "";
+            string pathDefaultFolderPDF = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄PDF_" + fileDateTime);
+            string pathFolderPDF = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄PDF_" + fileDateTime);
             // 完成後開啟資料夾
             string folderDocx = "";
             string folderPDF = "";
 
+            //建立Word資料夾
+            try
+            {
+                if (Directory.Exists(pathFolderDocx))
+                {
+                    int a = 1;
+                    while (true)
+                    {
+                        string newPath = Path.GetDirectoryName(pathFolderDocx) + "\\" + Path.GetFileNameWithoutExtension(pathDefaultFolderDocx) + "_" + (a++) + Path.GetExtension(pathFolderDocx);
+                        if (!Directory.Exists(newPath))
+                        {
+                            pathFolderDocx = newPath;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(pathFolderDocx);
+                }
+
+                folderDocx = pathFolderDocx;
+            }
+            catch (Exception ex)
+            {
+                FISCA.Presentation.Controls.MsgBox.Show("建立資料夾失敗：" + ex.Message);
+            }
+
+            //建立PDF資料夾
+            try
+            {
+                if (Directory.Exists(pathFolderPDF))
+                {
+                    int a = 1;
+                    while (true)
+                    {
+                        string newPath = Path.GetDirectoryName(pathFolderPDF) + "\\" + Path.GetFileNameWithoutExtension(pathDefaultFolderPDF) + "_" + (a++) + Path.GetExtension(pathFolderPDF);
+                        if (!Directory.Exists(newPath))
+                        {
+                            pathFolderPDF = newPath;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(pathFolderPDF);
+                }
+
+                folderPDF = pathFolderPDF;
+            }
+            catch (Exception ex)
+            {
+                FISCA.Presentation.Controls.MsgBox.Show("建立資料夾失敗：" + ex.Message);
+            }
+            #endregion
+
+            #region 單檔列印
             foreach (string sid in StudentDocDict.Keys)
             {
-                string fileDateTime = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
                 #region Word
                 try
@@ -262,13 +336,13 @@ namespace SHCourseGroupCodeAdmin.Report
 
                     #region 儲存檔案
                     string reportNameSingle = StudentDocNameDict[sid];
-                    pathDocx = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄Docx_" + fileDateTime);
+                    string className = StudentClassFolderDict[sid];
 
-                    folderDocx = pathDocx;
-                    if (!Directory.Exists(pathDocx))
-                        Directory.CreateDirectory(pathDocx);
+                    
 
-                    pathDocx = Path.Combine(pathDocx, reportNameSingle + ".docx");
+                    pathDocx = Path.Combine(pathFolderDocx, reportNameSingle + ".docx");
+                    if(IsAccordingToClass)
+                        pathDocx = Path.Combine(pathFolderDocx, className, reportNameSingle + ".docx");
 
                     if (File.Exists(pathDocx))
                     {
@@ -283,7 +357,6 @@ namespace SHCourseGroupCodeAdmin.Report
                             }
                         }
                     }
-
                     try
                     {
                         document.Save(pathDocx, SaveFormat.Docx);
@@ -313,7 +386,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 }
                 catch (Exception ex)
                 {
-                    FISCA.Presentation.Controls.MsgBox.Show("產生過程發生錯誤," + ex.Message);
+                    FISCA.Presentation.Controls.MsgBox.Show("產生過程發生錯誤：" + ex.Message);
                 }
                 #endregion
 
@@ -324,13 +397,11 @@ namespace SHCourseGroupCodeAdmin.Report
 
                     #region 儲存檔案
                     string reportNameSingle = StudentDocNameDict[sid];
-                    pathPDF = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports\\學生第6學期修課紀錄PDF_" + fileDateTime);
+                    string className = StudentClassFolderDict[sid];
 
-                    folderPDF = pathPDF;
-                    if (!Directory.Exists(pathPDF))
-                        Directory.CreateDirectory(pathPDF);
-
-                    pathPDF = Path.Combine(pathPDF, reportNameSingle + ".PDF");
+                    pathPDF = Path.Combine(pathFolderPDF, reportNameSingle + ".PDF");
+                    if (IsAccordingToClass)
+                        pathPDF = Path.Combine(pathFolderPDF, className, reportNameSingle + ".PDF");
 
                     if (File.Exists(pathPDF))
                     {
@@ -380,9 +451,17 @@ namespace SHCourseGroupCodeAdmin.Report
                 #endregion
             }
 
-            System.Diagnostics.Process.Start(folderDocx);
-            System.Diagnostics.Process.Start(folderPDF);
+            try
+            {
+                System.Diagnostics.Process.Start(folderDocx);
+                System.Diagnostics.Process.Start(folderPDF);
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Show(ex.Message);
+            }
             #endregion
+
         }
 
         /// <summary>
@@ -397,7 +476,7 @@ namespace SHCourseGroupCodeAdmin.Report
             lnkViewTemplate.Enabled = false;
             #region 儲存檔案
 
-            string reportName = "學生第6學期修課紀錄";
+            string reportName = "學生第6學期修課紀錄樣板";
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
             if (!Directory.Exists(path))
@@ -591,7 +670,9 @@ namespace SHCourseGroupCodeAdmin.Report
         private void btnPrint_Click(object sender, EventArgs e)
         {
             UserControlEnable(false);
-
+            SchoolYear = iptSchoolYear.Value;
+            Semester = iptSemester.Value;
+            IsAccordingToClass = chkAccordingToClass.Checked;
             bgWorkerReport.RunWorkerAsync();
         }
 
