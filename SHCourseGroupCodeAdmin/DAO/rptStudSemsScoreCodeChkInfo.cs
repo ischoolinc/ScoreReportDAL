@@ -31,6 +31,8 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string CourseCode { get; set; }
         public string credit_period { get; set; }
 
+        public string ScoreType { get; set; }
+
         public string entry_year { get; set; }
 
         public string gdc_code { get; set; }
@@ -56,7 +58,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             bool value = false;
 
             if (credit_period == null)
-                return false;
+                return true;
             char[] ret = credit_period.ToCharArray();
 
             if (int.TryParse(entry_year, out ey))

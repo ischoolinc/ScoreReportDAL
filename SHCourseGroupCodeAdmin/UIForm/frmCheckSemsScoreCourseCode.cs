@@ -57,7 +57,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 //若查詢到 學期對照表 不完整的學生，則跳出提示。
                 if (notHasSemsHistoryStudents.Rows.Count > 0)
                 {
-                    NotHasSemsHistoryStudents nhshs = new NotHasSemsHistoryStudents(notHasSemsHistoryStudents, _GradeYear, _SchoolYear, _Semester );
+                    NotHasSemsHistoryStudents nhshs = new NotHasSemsHistoryStudents(notHasSemsHistoryStudents, _GradeYear, _SchoolYear, _Semester);
 
                     if (nhshs.ShowDialog() == DialogResult.Cancel)
                     {
@@ -229,6 +229,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         data.IsRequired = coInfo.is_required;
                         data.RequiredBy = coInfo.require_by;
                         data.SubjectName = coInfo.subject_name;
+                        data.ScoreType = coInfo.score_type;
+
                         StudSemsScoreCodeChkInfoNoList.Add(data);
                     }
                 }
@@ -268,6 +270,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSC.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSC.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
+                wstSC.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
                 wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSC.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
@@ -297,6 +300,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSCError.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSCError.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
+                wstSCError.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
                 wstSCError.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
@@ -338,6 +342,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCNo.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
                 wstSCNo.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSCNo.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
+                wstSCNo.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSCNo.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCNo.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCNo.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);

@@ -69,5 +69,10 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// 課程屬性
         /// </summary>
         public string course_attr { get; set; }
+
+        /// <summary>
+        /// 分項類別(非實際值，而是從course_attr擷取判斷，2022-03-23新增)
+        /// </summary>
+        public string score_type { get; set; }
     }
 }

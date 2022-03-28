@@ -88,6 +88,20 @@ namespace SHCourseGroupCodeAdmin.DAO
                             data.require_by = "校訂";
                         }
                     }
+                    if (data.course_attr.Length > 2)
+                    {
+                        string code2 = data.course_attr.Substring(1, 1);
+                        if (code2 == "2")
+                        {
+                            data.score_type = "專業科目";
+                        }
+                        else if (code2 == "3")
+                        {
+                            data.score_type = "實習科目";
+                        }
+                        else
+                            data.score_type = "學業";
+                    }
 
                     value.Add(data);
                 }
@@ -1628,6 +1642,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , course.ref_class_id AS c_ref_class_id " +
 " , course.credit " +
 " , course.period " +
+" , course.score_type " +
 " , course.school_year " +
 " , course.semester " +
 " , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
@@ -1652,6 +1667,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     errItem.Add("科目名稱");
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
+                    errItem.Add("分項類別");
                     errItem.Add("學分數");
 
                     rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
@@ -1673,6 +1689,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.GradeYear = dr["grade_year"] + "";
                     data.Credit = dr["credit"] + "";
                     data.Period = dr["period"] + "";
+                    data.ScoreType = dr["score_type"] + "";
                     if (dr["gdc_code"] != null)
                     {
                         data.gdc_code = dr["gdc_code"] + "";
@@ -1688,7 +1705,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     {
                         foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
+                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by && data.ScoreType == Mco.score_type)
                             {
                                 #region 2021-12-11 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
 
@@ -1744,6 +1761,16 @@ namespace SHCourseGroupCodeAdmin.DAO
                             {
                                 errItem.Remove("科目名稱");
                                 errItem.Remove("部定校訂");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("分項類別");
                                 break;
                             }
                         }
@@ -3157,6 +3184,7 @@ WHERE
 "  	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	  " +
 "  	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修  " +
 "  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂	  " +
+"  	, array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別	  " +
 "  FROM (  " +
 "  		SELECT   " +
 "  			sems_subj_score.*  " +
@@ -3183,6 +3211,7 @@ WHERE
 "  ,學分數 AS credit " +
 "  ,必選修 AS required " +
 "  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by  " +
+" , 分項類別 AS scoreType" +
 "   FROM student_data INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
 "    ORDER BY class_name,seat_no,school_year,semester, 科目 ";
 
@@ -3195,6 +3224,7 @@ WHERE
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
                     errItem.Add("學分數");
+                    errItem.Add("分項類別");
 
                     rptStudSemsScoreCodeChkInfo data = new rptStudSemsScoreCodeChkInfo();
                     data.StudentID = dr["student_id"] + "";
@@ -3210,6 +3240,7 @@ WHERE
                     data.IsRequired = dr["required"] + "";
                     data.GradeYear = dr["grade_year"] + "";
                     data.Credit = dr["credit"] + "";
+                    data.ScoreType = dr["scoreType"] + "";
 
                     decimal score;
                     if (dr["score"].ToString() != "")
@@ -3233,7 +3264,7 @@ WHERE
                     {
                         foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
+                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by && data.ScoreType == Mco.score_type)
                             {
                                 data.entry_year = Mco.entry_year;
                                 data.credit_period = Mco.credit_period;
@@ -3258,6 +3289,16 @@ WHERE
                             {
                                 errItem.Remove("科目名稱");
                                 errItem.Remove("部定校訂");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("分項類別");
                                 break;
                             }
                         }
@@ -3361,7 +3402,8 @@ WITH student_data AS (
   	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別   
   	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	   
   	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修   
-  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂	   
+  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂
+    , array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別
   FROM (   
   		SELECT    
   			sems_subj_score.*   
@@ -3389,6 +3431,7 @@ WITH student_data AS (
   ,科目級別 AS subj_level  
   ,學分數 AS credit  
   ,必選修 AS required  
+ , 分項類別 AS scoreType
   ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by   
    FROM ta_student_data 
    INNER JOIN sems_score_data 
@@ -3408,6 +3451,7 @@ WITH student_data AS (
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
                     errItem.Add("學分數");
+                    errItem.Add("分項類別");
 
                     rptStudSemsScoreCodeChkInfo data = new rptStudSemsScoreCodeChkInfo();
                     data.StudentID = dr["student_id"] + "";
@@ -3421,6 +3465,7 @@ WITH student_data AS (
                     data.Semester = dr["semester"] + "";
                     data.RequiredBy = dr["required_by"] + "";
                     data.IsRequired = dr["required"] + "";
+                    data.ScoreType = dr["scoreType"] + "";
 
                     /// 年級 
                     data.GradeYear = dr["grade_year"] + "";
@@ -3443,7 +3488,7 @@ WITH student_data AS (
                     {
                         foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
+                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by && data.ScoreType == Mco.score_type)
                             {
 
                                 #region 2022-03-07 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
@@ -3500,6 +3545,16 @@ WITH student_data AS (
                             {
                                 errItem.Remove("科目名稱");
                                 errItem.Remove("部定校訂");
+                                break;
+                            }
+                        }
+
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
+                            {
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("分項類別");
                                 break;
                             }
                         }
@@ -3665,7 +3720,7 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
                             si.Dept = dr["dept_name"].ToString();
                             si.IDNumber = dr["id_number"].ToString();
                             si.Name = dr["student_name"].ToString();
-                            si.EntryScore= dr["entry_score"].ToString();
+                            si.EntryScore = dr["entry_score"].ToString();
 
                             StudentInfoList.Add(si);
                         }

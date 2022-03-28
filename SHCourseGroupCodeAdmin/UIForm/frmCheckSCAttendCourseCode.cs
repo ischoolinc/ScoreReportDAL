@@ -94,7 +94,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             SCAttendCodeChkInfoErrorList.Clear();
             SCAttendCodeChkInfoNoList.Clear();
 
-            // 取得使用者設定學年度學期  //2021-12-16 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊。
+            // 取得使用者設定學年度學期修課紀錄  //2021-12-16 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊。
             List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoList = da.GetGetStudentCourseInfoBySchoolYearSemester(_SchoolYear, _Semester, _StrGradeYear);
 
             Dictionary<string, List<string>> chkHasCourseCodeDict = new Dictionary<string, List<string>>();
@@ -192,6 +192,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         data.IsRequired = coInfo.is_required;
                         data.RequiredBy = coInfo.require_by;
                         data.SubjectName = coInfo.subject_name;
+                        data.ScoreType = coInfo.score_type;
 
                         //if (data.IsRequired == "必修")
                         SCAttendCodeChkInfoNoList.Add(data);
@@ -202,49 +203,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             }
 
-
-            //// 需要調整 ---
-            //// 取得課程大表資料
-            //Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();
-
-            //// 
-            //List<DataRow> haGDCCodeStudents = da.GetHasGDCCodeStudent();
-
-            //foreach (DataRow dr in haGDCCodeStudents)
-            //{
-            //    string sid = dr["student_id"] + "";
-            //    string gdc_code = dr["gdc_code"] + "";
-            //    if (MOECourseDict.ContainsKey(gdc_code))
-            //    {
-            //        foreach (MOECourseCodeInfo Mo in MOECourseDict[gdc_code])
-            //        {
-            //            // 已修
-            //            if (chkHasCourseCodeDict.ContainsKey(sid))
-            //            {
-            //                if (chkHasCourseCodeDict[sid].Contains(Mo.course_code))
-            //                    continue;
-            //            }
-
-            //            rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
-            //            data.StudentID = sid;
-            //            data.ClassName = dr["class_name"] + "";
-            //            data.SeatNo = dr["seat_no"] + "";
-            //            data.StudentNumber = dr["student_number"] + "";
-            //            data.StudentName = dr["student_name"] + "";
-            //            data.CourseCode = Mo.course_code;
-            //            data.credit_period = Mo.credit_period;
-            //            data.gdc_code = gdc_code;
-            //            data.IsRequired = Mo.is_required;
-            //            data.RequiredBy = Mo.require_by;
-            //            data.SubjectName = Mo.subject_name;
-
-
-            //            SCAttendCodeChkInfoNoList.Add(data);
-            //        }
-            //    }
-            //}
-
-            // ----
 
 
             _bgWorker.ReportProgress(70);
@@ -285,6 +243,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSC.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSC.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
+                wstSC.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
                 wstSC.Cells[rowIdx, GetColIndex("節數")].PutValue(data.Period);
                 wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
@@ -317,6 +276,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("科目級別")].PutValue(data.SubjectLevel);
                 wstSCError.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSCError.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
+                wstSCError.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
                 wstSCError.Cells[rowIdx, GetColIndex("節數")].PutValue(data.Period);
                 wstSCError.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
@@ -364,6 +324,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCNo.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(data.SubjectName);
                 wstSCNo.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSCNo.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
+                wstSCNo.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSCNo.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCNo.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCNo.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);

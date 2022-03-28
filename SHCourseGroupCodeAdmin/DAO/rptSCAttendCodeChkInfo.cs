@@ -28,6 +28,10 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string credit_period { get; set; }
 
         public string entry_year { get; set; }
+        /// <summary>
+        /// 分項類別
+        /// </summary>
+        public string ScoreType { get; set; }
 
         public string CourseID { get; set; }
 
@@ -57,8 +61,12 @@ namespace SHCourseGroupCodeAdmin.DAO
             int idx = -1;
             bool value = false;
 
+            // 2022-03-23 Cynthia 先找 科目名稱、校部定、必選修、分項類別後，才會找到credit_period，
+            // 所以當找不到 credit_period = null，也無法判斷學分數是否正確，那就不要出現學分數錯誤的提示，
+            // 故直接return true，當成是正確來判斷。
             if (credit_period == null)
-                return false;
+                return true;
+
             char[] ret = credit_period.ToCharArray();
 
             if (int.TryParse(entry_year, out ey))
