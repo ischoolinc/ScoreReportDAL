@@ -3194,7 +3194,18 @@ WHERE
 "  			INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id  " +
 "  	) as sems_subj_score_ext   " +
 "WHERE school_year = " + SchoolYear + " AND semester = " + Semester +
-"  )  " +
+"  ) , subject_order AS("+
+@"SELECT
+	    array_to_string(xpath('//Subject/@Chinese', each_period.period), '')::text as subj_chinese_name
+	   -- , array_to_string(xpath('//Subject/@English', each_period.period), '')::text as subj_english_name
+	    , ROW_NUMBER() OVER () as order
+    FROM (
+	    SELECT 
+		    unnest(xpath('//Content/Subject', xmlparse(content content))) as period
+	    FROM list 
+	    WHERE name = '科目中英文對照表'
+    ) as each_period
+), score_result AS ( " +
 "  SELECT   " +
 "  student_id  " +
 "  ,student_number  " +
@@ -3212,8 +3223,14 @@ WHERE
 "  ,必選修 AS required " +
 "  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by  " +
 " , 分項類別 AS scoreType" +
-"   FROM student_data INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
-"    ORDER BY class_name,seat_no,school_year,semester, 科目 ";
+"   FROM student_data " +
+"   INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
+"    ORDER BY class_name,seat_no,school_year, semester" +
+@") SELECT score_result.* 
+    FROM score_result
+    LEFT JOIN subject_order
+        ON score_result.subject = subject_order.subj_chinese_name
+    ORDER BY class_name,seat_no,school_year, semester, subject_order.order";
 
 
                 DataTable dt = qh.Select(query);
