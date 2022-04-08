@@ -283,7 +283,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCError.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);
                 wstSCError.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
-                if (data.ErrorMsgList.Contains("群科班代碼無法對照"))
+                if (data.ErrorMsgList.Contains("群科班代碼 不同"))
                 {
                     wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + "");
                 }
@@ -292,7 +292,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     // 科目名稱無法對照
                     if (data.ErrorMsgList.Contains("科目名稱"))
                     {
-                        wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("科目名稱無法對照");
+                        wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("科目名稱 不同");
                     }
                     else
                     {

@@ -1549,7 +1549,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("群科班代碼 不同");
+                        //data.ErrorMsgList.Add("群科班代碼無法對照");
                     }
 
                     value.Add(data);
@@ -1799,7 +1800,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("群科班代碼 不同");
+                        //data.ErrorMsgList.Add("群科班代碼無法對照");
                     }
 
                     value.Add(data);
@@ -2163,7 +2165,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("群科班代碼 不同");
+                        //data.ErrorMsgList.Add("群科班代碼無法對照");
                     }
 
                     value.Add(data);
@@ -3344,7 +3347,8 @@ WHERE
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("群科班代碼 不同");
+                        //data.ErrorMsgList.Add("群科班代碼無法對照");
                     }
 
                     value.Add(data);
@@ -3600,7 +3604,8 @@ WITH student_data AS (
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("群科班代碼 不同");
+                        //data.ErrorMsgList.Add("群科班代碼無法對照");
                     }
 
                     value.Add(data);

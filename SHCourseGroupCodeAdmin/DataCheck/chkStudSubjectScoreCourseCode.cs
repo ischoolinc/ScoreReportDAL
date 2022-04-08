@@ -164,7 +164,7 @@ namespace SHCourseGroupCodeAdmin.DataCheck
                     }
                     else
                     {
-                        errMesList.Add("群科班代碼無法對照");
+                        errMesList.Add("群科班代碼 不同");
                     }
 
 
