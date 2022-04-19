@@ -72,6 +72,11 @@ namespace SHCourseGroupCodeAdmin
             builder.InsertField("MERGEFIELD " + "座號" + " \\* MERGEFORMAT ", "«" + "座號" + "»");
             builder.EndRow();
 
+            builder.InsertCell(); builder.Write("學號");
+            builder.InsertCell();
+            builder.InsertField("MERGEFIELD " + "學號" + " \\* MERGEFORMAT ", "«" + "學號" + "»");
+            builder.EndRow();
+
             builder.InsertCell(); builder.Write("姓名");
             builder.InsertCell();
             builder.InsertField("MERGEFIELD " + "姓名" + " \\* MERGEFORMAT ", "«" + "姓名" + "»");

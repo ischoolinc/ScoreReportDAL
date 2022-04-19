@@ -3983,7 +3983,7 @@ SELECT
 FROM student 
 LEFT JOIN class ON student.ref_class_id = class.id
 LEFT JOIN sems_entry_score ON sems_entry_score.ref_student_id = student.id AND school_year=" + schoolYear + " AND semester = " + semester +
-@"WHERE student.status IN (1, 2) 
+@" AND entry_group = 1 WHERE student.status IN (1, 2) 
 AND student.id IN(" + string.Join(",", StudentIDList.ToArray()) + @")
 ORDER BY class.grade_year, class.display_order, class.class_name, seat_no
 )SELECT 
