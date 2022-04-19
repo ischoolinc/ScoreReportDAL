@@ -32,6 +32,11 @@ namespace SHCourseGroupCodeAdmin
         public string SeatNo { get; set; }
 
         /// <summary>
+        /// 學號
+        /// </summary>
+        public string StudentNumber { get; set; }
+
+        /// <summary>
         /// 姓名
         /// </summary>
         public string Name { get; set; }

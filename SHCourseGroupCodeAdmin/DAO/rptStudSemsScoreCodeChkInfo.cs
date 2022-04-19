@@ -48,6 +48,11 @@ namespace SHCourseGroupCodeAdmin.DAO
         public int? Rank { get; set; }
 
         /// <summary>
+        /// 是否修課中(6學期修課紀錄報表用)
+        /// </summary>
+        public bool IsStudying { get; set; }
+
+        /// <summary>
         /// 檢查學分數
         /// </summary>
         /// <returns></returns>
