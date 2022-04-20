@@ -80,6 +80,14 @@ namespace SHCourseGroupCodeAdmin.Report
             // 取得(3,6,12年級) 110-2 學期科目原始成績
             List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfo("3,6,12", SchoolYear, Semester);
 
+            // 取得修課紀錄
+            List<rptStudSemsScoreCodeChkInfo> StudSCAttendCodeInfoList = da.GetStudentCourseInfoBySchoolYearSemesterFor6thRank(SchoolYear, Semester, "3,6,12");
+            //List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfo("3", 109, 1);
+            //List<rptStudSemsScoreCodeChkInfo> StudSCAttendCodeInfoList = da.GetStudentCourseInfoBySchoolYearSemesterFor6thRank(109, 1, "3");
+
+            //最後要產出的學期成績&修課紀錄合併
+            List<rptStudSemsScoreCodeChkInfo> ResultList = new List<rptStudSemsScoreCodeChkInfo>();
+
             bgWorkerReport.ReportProgress(30);
 
             #region 計算排名百分比
@@ -127,6 +135,29 @@ namespace SHCourseGroupCodeAdmin.Report
                 }
             }
 
+            #endregion
+
+            bgWorkerReport.ReportProgress(40);
+
+            #region 修課中標記處理
+            //移除相同校部定、必選修、科目名稱者
+            for (int i = StudSCAttendCodeInfoList.Count - 1; i >= 0; i--)
+            {
+                foreach (rptStudSemsScoreCodeChkInfo sem in StudSemsScoreCodeChkInfoList)
+                {
+                    if (StudSCAttendCodeInfoList[i].StudentID == sem.StudentID
+                        && StudSCAttendCodeInfoList[i].SubjectName == sem.SubjectName
+                        && StudSCAttendCodeInfoList[i].IsRequired == sem.IsRequired
+                        && StudSCAttendCodeInfoList[i].RequiredBy == sem.RequiredBy)
+                    {
+                        StudSCAttendCodeInfoList.Remove(StudSCAttendCodeInfoList[i]);
+                        break;
+                    }
+                }
+            }
+            //合併剩餘的修課紀錄和學期成績
+            ResultList.AddRange(StudSemsScoreCodeChkInfoList);
+            ResultList.AddRange(StudSCAttendCodeInfoList);
             #endregion
 
             bgWorkerReport.ReportProgress(60);
@@ -189,6 +220,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 dtTable.Columns.Add("學校名稱");
                 dtTable.Columns.Add("班級");
                 dtTable.Columns.Add("座號");
+                dtTable.Columns.Add("學號");
                 dtTable.Columns.Add("姓名");
                 dtTable.Columns.Add("科別");
                 dtTable.Columns.Add("學期學業成績總平均");
@@ -209,13 +241,14 @@ namespace SHCourseGroupCodeAdmin.Report
                 row["學校名稱"] = K12.Data.School.ChineseName;
                 row["班級"] = si.ClassName;
                 row["座號"] = si.SeatNo;
+                row["學號"] = si.StudentNumber;
                 row["姓名"] = si.Name;
                 row["科別"] = si.Dept;
                 row["學期學業成績總平均"] = si.EntryScore;
                 //學期學業成績總平均
 
                 int index = 1;
-                foreach (rptStudSemsScoreCodeChkInfo data in StudSemsScoreCodeChkInfoList)
+                foreach (rptStudSemsScoreCodeChkInfo data in ResultList)
                 {
                     if (data.StudentID == si.StudentID)
                     {
@@ -223,8 +256,18 @@ namespace SHCourseGroupCodeAdmin.Report
                         {
                             row["科目名稱" + index] = data.SubjectName;
                             row["單科學分數" + index] = data.Credit;
-                            row["單科成績" + index] = data.Score;
-                            row["單科成績排名百分比" + index] = data.Rank;
+
+                            if (data.IsStudying)
+                            {
+                                row["單科成績" + index] = "修課中";
+                                row["學期學業成績總平均"] = "-";
+                            }
+                            else
+                                row["單科成績" + index] = data.Score;
+
+                            if (data.Rank.HasValue)
+                                row["單科成績排名百分比" + index] = data.Rank + "%";
+
                             index++;
                         }
                     }
@@ -338,10 +381,10 @@ namespace SHCourseGroupCodeAdmin.Report
                     string reportNameSingle = StudentDocNameDict[sid];
                     string className = StudentClassFolderDict[sid];
 
-                    
+
 
                     pathDocx = Path.Combine(pathFolderDocx, reportNameSingle + ".docx");
-                    if(IsAccordingToClass)
+                    if (IsAccordingToClass)
                         pathDocx = Path.Combine(pathFolderDocx, className, reportNameSingle + ".docx");
 
                     if (File.Exists(pathDocx))
