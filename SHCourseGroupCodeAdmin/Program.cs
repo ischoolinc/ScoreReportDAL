@@ -11,6 +11,7 @@ using FISCA.Presentation;
 using SHCourseGroupCodeAdmin.Report;
 using SHCourseGroupCodeAdmin.DataCheck;
 using SHCourseGroupCodeAdmin.UIForm;
+using Campus.Message;
 
 namespace SHCourseGroupCodeAdmin
 {
@@ -165,6 +166,17 @@ namespace SHCourseGroupCodeAdmin
                 scAPI.ShowDialog();
             };
 
+            Catalog ribbon8_1 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon8_1.Add(new RibbonFeature("010627DB-C14E-43BB-9407-BF5550391FBA", "課程計畫平台原始課程代碼"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Enable = UserAcl.Current["010627DB-C14E-43BB-9407-BF5550391FBA"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Click += delegate
+            {
+                frmCourseCodeSource fcc = new frmCourseCodeSource();
+                fcc.ShowDialog();
+            };
+
             Catalog ribbon9 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon9.Add(new RibbonFeature("604F7D79-4B25-41DC-9E45-FCC328AF61C7", "學期成績檢核課程代碼"));
 
@@ -195,6 +207,13 @@ namespace SHCourseGroupCodeAdmin
             //    fMain.ShowDialog();
 
             //};
+
+            //// Test Message
+            //CustomRecord cr = new CustomRecord();
+            //cr.Type = CrType.Type.Warning_Red;
+            //cr.Title = "測試";
+            //cr.Content ="資料錯誤";
+            //Campus.Message.MessageRobot.AddMessage(cr);
 
 
             //Catalog ribbon11 = RoleAclSource.Instance["教務作業"]["課程代碼"];

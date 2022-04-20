@@ -41,6 +41,10 @@
       <HintPath>Library\Aspose.Words_201402.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Campus.Message, Version=1.0.0.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Campus.Message.dll</HintPath>
+    </Reference>
     <Reference Include="Campus.Windows, Version=1.0.4.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Campus.Windows.dll</HintPath>
@@ -104,6 +108,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -118,6 +123,8 @@
     <Compile Include="DAO\chkCourseInfo.cs" />
     <Compile Include="DAO\chkSubjectInfo.cs" />
     <Compile Include="DAO\ClassInfo.cs" />
+    <Compile Include="DAO\CourseCodeInfo.cs" />
+    <Compile Include="DAO\CourseCodeRoot.cs" />
     <Compile Include="DAO\CourseInfoChk.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\GPCourseInfo.cs" />
@@ -180,6 +187,12 @@
     </Compile>
     <Compile Include="UIForm\frmCheckSemsScoreCourseCode.Designer.cs">
       <DependentUpon>frmCheckSemsScoreCourseCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCourseCodeSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCourseCodeSource.Designer.cs">
+      <DependentUpon>frmCourseCodeSource.cs</DependentUpon>
     </Compile>
     <Compile Include="UIForm\frmCreateClassGPlan.cs">
       <SubType>Form</SubType>
@@ -306,6 +319,7 @@
     <None Include="Template\成績名冊樣板%28108課綱%29.xlsx" />
     <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\班級課程規劃表資料樣版.xlsx" />
+    <None Include="Template\課程代碼原始資料樣板.xlsx" />
     <None Include="Template\課程代碼表樣版.xlsx" />
     <None Include="Template\課程規劃表開課檢核樣版.xlsx" />
     <None Include="Template\課程開課檢查樣版.xlsx" />
@@ -321,6 +335,9 @@
     <Content Include="Library\Aspose.Cells_201402.dll" />
     <Content Include="Library\Aspose.Cells_201402.xml" />
     <Content Include="Library\Aspose.Words_201402.dll" />
+    <Content Include="Library\Campus.Message.dll" />
+    <Content Include="Library\Campus.Message.pdb" />
+    <Content Include="Library\Campus.Message.xml" />
     <Content Include="Library\Campus.Windows.dll" />
     <Content Include="Library\Campus.Windows.pdb" />
     <Content Include="Library\Campus.Windows.xml" />
@@ -374,6 +391,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCheckSemsScoreCourseCode.resx">
       <DependentUpon>frmCheckSemsScoreCourseCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCourseCodeSource.resx">
+      <DependentUpon>frmCourseCodeSource.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateClassGPlan.resx">
       <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>

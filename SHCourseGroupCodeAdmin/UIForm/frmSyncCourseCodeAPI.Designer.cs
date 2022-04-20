@@ -108,7 +108,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 154);
+            this.ClientSize = new System.Drawing.Size(219, 143);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.cboSchoolYear);
             this.Controls.Add(this.lblSchoolCode);

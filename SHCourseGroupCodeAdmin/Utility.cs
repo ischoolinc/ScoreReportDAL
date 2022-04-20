@@ -70,6 +70,64 @@ namespace SHCourseGroupCodeAdmin
             }
         }
 
+        /// <summary>
+        /// 匯出 JSON
+        /// </summary>
+        public static void ExprotJSON(string ReportName, string text)
+        {
+            string reportName = ReportName;
+
+            string path = Path.Combine(Application.StartupPath, "Reports");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            path = Path.Combine(path, reportName + ".json");
+
+            
+
+            if (File.Exists(path))
+            {
+                int i = 1;
+                while (true)
+                {
+                    string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
+                    if (!File.Exists(newPath))
+                    {
+                        path = newPath;
+                        break;
+                    }
+                }
+            }
+
+            try
+            {
+                StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8);
+                sw.WriteLine(text);
+                sw.Close();
+                System.Diagnostics.Process.Start("notepad.exe", path);
+            }
+            catch
+            {
+                SaveFileDialog sd = new SaveFileDialog();
+                sd.Title = "另存新檔";
+                sd.FileName = reportName + ".json";
+                sd.Filter = "JSON檔案 (*.json)|*.json|所有檔案 (*.*)|*.*";
+                if (sd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8);
+                        sw.WriteLine(text);
+                        sw.Close();
+                    }
+                    catch
+                    {
+                        MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// 取得API學分對照

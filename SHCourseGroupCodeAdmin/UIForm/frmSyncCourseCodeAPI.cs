@@ -11,6 +11,7 @@ using FISCA.Presentation.Controls;
 using System.Net;
 using System.IO;
 using FISCA.Authentication;
+using SHCourseGroupCodeAdmin.DAO;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -49,11 +50,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _SchoolNDict = Utility.GetSchoolNMapping();
 
             // 進校轉換日校
-            if(_SchoolNDict.ContainsKey(DSNS))
+            if (_SchoolNDict.ContainsKey(DSNS))
             {
                 _SchoolCode = _SchoolNDict[DSNS];
             }
-            
+
 
             lblSchoolCode.Text = "學校代碼：" + _SchoolCode;
             cboSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
@@ -136,5 +137,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
             return value;
         }
 
+        private void btnGetCourseCodeSource_Click(object sender, EventArgs e)
+        {
+          
+            
+            //解析資料
+        }
+
+      
     }
 }
