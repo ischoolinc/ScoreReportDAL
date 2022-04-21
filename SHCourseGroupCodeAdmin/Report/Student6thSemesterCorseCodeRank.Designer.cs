@@ -80,7 +80,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkDefault.AutoSize = true;
             this.lnkDefault.BackColor = System.Drawing.Color.Transparent;
-            this.lnkDefault.Location = new System.Drawing.Point(306, 151);
+            this.lnkDefault.Location = new System.Drawing.Point(306, 173);
             this.lnkDefault.Name = "lnkDefault";
             this.lnkDefault.Size = new System.Drawing.Size(86, 17);
             this.lnkDefault.TabIndex = 21;
@@ -93,7 +93,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkViewMapColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkViewMapColumns.AutoSize = true;
             this.lnkViewMapColumns.BackColor = System.Drawing.Color.Transparent;
-            this.lnkViewMapColumns.Location = new System.Drawing.Point(188, 151);
+            this.lnkViewMapColumns.Location = new System.Drawing.Point(188, 173);
             this.lnkViewMapColumns.Name = "lnkViewMapColumns";
             this.lnkViewMapColumns.Size = new System.Drawing.Size(112, 17);
             this.lnkViewMapColumns.TabIndex = 20;
@@ -106,7 +106,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkViewTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkViewTemplate.AutoSize = true;
             this.lnkViewTemplate.BackColor = System.Drawing.Color.Transparent;
-            this.lnkViewTemplate.Location = new System.Drawing.Point(9, 151);
+            this.lnkViewTemplate.Location = new System.Drawing.Point(9, 173);
             this.lnkViewTemplate.Name = "lnkViewTemplate";
             this.lnkViewTemplate.Size = new System.Drawing.Size(86, 17);
             this.lnkViewTemplate.TabIndex = 18;
@@ -119,7 +119,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkChangeTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkChangeTemplate.AutoSize = true;
             this.lnkChangeTemplate.BackColor = System.Drawing.Color.Transparent;
-            this.lnkChangeTemplate.Location = new System.Drawing.Point(98, 151);
+            this.lnkChangeTemplate.Location = new System.Drawing.Point(98, 173);
             this.lnkChangeTemplate.Name = "lnkChangeTemplate";
             this.lnkChangeTemplate.Size = new System.Drawing.Size(86, 17);
             this.lnkChangeTemplate.TabIndex = 19;
@@ -135,7 +135,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(455, 145);
+            this.btnPrint.Location = new System.Drawing.Point(455, 167);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(67, 23);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -150,7 +150,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(528, 145);
+            this.btnCancel.Location = new System.Drawing.Point(528, 167);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(67, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -171,10 +171,10 @@ namespace SHCourseGroupCodeAdmin.Report
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(14, 36);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(579, 80);
+            this.labelX1.Size = new System.Drawing.Size(579, 102);
             this.labelX1.TabIndex = 26;
             this.labelX1.Text = "1. 列印將同時產生PDF和Word。\r\n2. 學校上傳：請使用PDF檔案。\r\n3. 學生上傳：請使用「學生：其它→電子報表上傳」，選擇「系統編號」選項及Word" +
-    "檔案，\r\n　分析後勾選「上傳時Word檔轉為PDF」。\r\n";
+    "檔案，\r\n　分析後勾選「上傳時Word檔轉為PDF」。\r\n4. 產出條件： 3年級學生且須有110-2學期成績或修課紀錄。";
             // 
             // chkAccordingToClass
             // 
@@ -186,7 +186,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.chkAccordingToClass.BackgroundStyle.Class = "";
             this.chkAccordingToClass.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkAccordingToClass.Location = new System.Drawing.Point(10, 122);
+            this.chkAccordingToClass.Location = new System.Drawing.Point(10, 144);
             this.chkAccordingToClass.Name = "chkAccordingToClass";
             this.chkAccordingToClass.Size = new System.Drawing.Size(174, 21);
             this.chkAccordingToClass.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -235,7 +235,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(605, 177);
+            this.ClientSize = new System.Drawing.Size(605, 199);
             this.Controls.Add(this.iptSemester);
             this.Controls.Add(this.iptSchoolYear);
             this.Controls.Add(this.chkAccordingToClass);
