@@ -103,7 +103,7 @@ namespace SHCourseGroupCodeAdmin
                 fpc.ShowDialog();
             };
 
-     
+
             //  被 更新班級課程規劃表 取代
             Catalog ribbon6 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon6.Add(new RibbonFeature("C6063F22-FF7C-4AB5-82F8-4FC82B205B1A", "產生課程規劃"));
@@ -166,16 +166,7 @@ namespace SHCourseGroupCodeAdmin
                 scAPI.ShowDialog();
             };
 
-            Catalog ribbon8_1 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            ribbon8_1.Add(new RibbonFeature("010627DB-C14E-43BB-9407-BF5550391FBA", "課程計畫平台原始課程代碼"));
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Enable = UserAcl.Current["010627DB-C14E-43BB-9407-BF5550391FBA"].Executable;
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Click += delegate
-            {
-                frmCourseCodeSource fcc = new frmCourseCodeSource();
-                fcc.ShowDialog();
-            };
+       
 
             Catalog ribbon9 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon9.Add(new RibbonFeature("604F7D79-4B25-41DC-9E45-FCC328AF61C7", "學期成績檢核課程代碼"));
@@ -192,11 +183,23 @@ namespace SHCourseGroupCodeAdmin
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"].Size = RibbonBarButton.MenuButtonSize.Large;
 
             // --- 開發中
-            // 108 版本 -----
-            //Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            //ribbon10.Add(new RibbonFeature("84066116-8124-41F4-8149-0877dA75a417", "產生課程規劃"));
 
-            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Enable = UserAcl.Current["84066116-8124-41F4-8149-0877dA75a417"].Executable;
+            Catalog ribbon8_1 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon8_1.Add(new RibbonFeature("010627DB-C14E-43BB-9407-BF5550391FBA", "課程計畫平台原始課程代碼"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Enable = UserAcl.Current["010627DB-C14E-43BB-9407-BF5550391FBA"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Click += delegate
+            {
+                frmCourseCodeSource fcc = new frmCourseCodeSource();
+                fcc.ShowDialog();
+            };
+
+            //// 108 版本 -----
+            //Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            //ribbon10.Add(new RibbonFeature("C6063F22-FF7C-4AB5-82F8-4FC82B205B1A", "產生課程規劃"));
+
+            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Enable = UserAcl.Current["C6063F22-FF7C-4AB5-82F8-4FC82B205B1A"].Executable;
 
             //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Image = Properties.Resources.online_library;
             //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Size = RibbonBarButton.MenuButtonSize.Medium;
@@ -208,12 +211,12 @@ namespace SHCourseGroupCodeAdmin
 
             //};
 
-            //// Test Message
-            //CustomRecord cr = new CustomRecord();
-            //cr.Type = CrType.Type.Warning_Red;
-            //cr.Title = "測試";
-            //cr.Content ="資料錯誤";
-            //Campus.Message.MessageRobot.AddMessage(cr);
+            ////// Test Message
+            ////CustomRecord cr = new CustomRecord();
+            ////cr.Type = CrType.Type.Warning_Red;
+            ////cr.Title = "測試";
+            ////cr.Content ="資料錯誤";
+            ////Campus.Message.MessageRobot.AddMessage(cr);
 
 
             //Catalog ribbon11 = RoleAclSource.Instance["教務作業"]["課程代碼"];

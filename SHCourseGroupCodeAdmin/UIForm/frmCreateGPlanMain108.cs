@@ -110,7 +110,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (string.IsNullOrEmpty(data.RefGPID))
                     data.Status = "新增";
 
-                if (data.calSubjDiffCount() > 0)
+                if (data.calSubjDiffCount() > 0 && !string.IsNullOrEmpty(data.RefGPID))
                     data.Status = "更新";
 
                 data.ParseOrderByInt();
@@ -359,7 +359,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     GPlanInfo108 data = dgData.Rows[e.RowIndex].Tag as GPlanInfo108;
                     if (data != null)
                     {
-                        frmCreateGPlanItemSetup108 fgpd = new frmCreateGPlanItemSetup108();
+                         frmCreateGPlanItemSetup108 fgpd = new frmCreateGPlanItemSetup108();
                         fgpd.SetGPlanInfo(data);
 
                         if (fgpd.ShowDialog() == DialogResult.OK)

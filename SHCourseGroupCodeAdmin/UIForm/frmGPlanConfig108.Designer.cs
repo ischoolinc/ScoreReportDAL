@@ -43,6 +43,8 @@
             this.listViewEx1 = new DevComponents.DotNetBar.Controls.ListViewEx();
             this.tabItem2 = new DevComponents.DotNetBar.TabItem(this.components);
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbxEntryYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
@@ -62,17 +64,18 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.itemPanel1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 38);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(263, 552);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(263, 526);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // itemPanel1
             // 
             this.itemPanel1.AutoScroll = true;
+            this.itemPanel1.BackColor = System.Drawing.Color.Transparent;
             // 
             // 
             // 
@@ -84,7 +87,7 @@
             this.itemPanel1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.itemPanel1.Location = new System.Drawing.Point(3, 3);
             this.itemPanel1.Name = "itemPanel1";
-            this.itemPanel1.Size = new System.Drawing.Size(257, 546);
+            this.itemPanel1.Size = new System.Drawing.Size(257, 520);
             this.itemPanel1.TabIndex = 0;
             this.itemPanel1.Text = "itemPanel1";
             // 
@@ -99,13 +102,13 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.tabControl1, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.btnSave, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(281, 12);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(281, -1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.615942F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 94.38406F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 1.630435F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 98.36957F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(805, 552);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(805, 565);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // tabControl1
@@ -115,11 +118,11 @@
             this.tabControl1.Controls.Add(this.tabControlPanel1);
             this.tabControl1.Controls.Add(this.tabControlPanel2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(3, 33);
+            this.tabControl1.Location = new System.Drawing.Point(3, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedTabFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold);
             this.tabControl1.SelectedTabIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(799, 516);
+            this.tabControl1.Size = new System.Drawing.Size(799, 550);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.TabLayoutType = DevComponents.DotNetBar.eTabLayoutType.FixedWithNavigationBox;
             this.tabControl1.Tabs.Add(this.tabItem1);
@@ -134,7 +137,7 @@
             this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel1.Name = "tabControlPanel1";
             this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel1.Size = new System.Drawing.Size(799, 487);
+            this.tabControlPanel1.Size = new System.Drawing.Size(799, 521);
             this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
             this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
             this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -157,7 +160,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.126006F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.87399F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(797, 485);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(797, 519);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // lblGroupName
@@ -171,7 +174,7 @@
             this.lblGroupName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGroupName.Location = new System.Drawing.Point(3, 3);
             this.lblGroupName.Name = "lblGroupName";
-            this.lblGroupName.Size = new System.Drawing.Size(791, 28);
+            this.lblGroupName.Size = new System.Drawing.Size(791, 30);
             this.lblGroupName.TabIndex = 0;
             this.lblGroupName.Text = "群組名稱";
             // 
@@ -189,10 +192,10 @@
             this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgData.Location = new System.Drawing.Point(3, 37);
+            this.dgData.Location = new System.Drawing.Point(3, 39);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
-            this.dgData.Size = new System.Drawing.Size(791, 445);
+            this.dgData.Size = new System.Drawing.Size(791, 477);
             this.dgData.TabIndex = 1;
             // 
             // tabItem1
@@ -208,7 +211,7 @@
             this.tabControlPanel2.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel2.Name = "tabControlPanel2";
             this.tabControlPanel2.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel2.Size = new System.Drawing.Size(799, 487);
+            this.tabControlPanel2.Size = new System.Drawing.Size(799, 521);
             this.tabControlPanel2.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
             this.tabControlPanel2.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
             this.tabControlPanel2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -229,7 +232,7 @@
             this.listViewEx1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewEx1.Location = new System.Drawing.Point(1, 1);
             this.listViewEx1.Name = "listViewEx1";
-            this.listViewEx1.Size = new System.Drawing.Size(797, 485);
+            this.listViewEx1.Size = new System.Drawing.Size(797, 519);
             this.listViewEx1.TabIndex = 0;
             this.listViewEx1.UseCompatibleStateImageBehavior = false;
             this.listViewEx1.View = System.Windows.Forms.View.SmallIcon;
@@ -247,17 +250,43 @@
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSave.Location = new System.Drawing.Point(727, 3);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(75, 3);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "儲存";
+            this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Location = new System.Drawing.Point(17, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 17);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "實施年度";
+            // 
+            // cbxEntryYear
+            // 
+            this.cbxEntryYear.DisplayMember = "Text";
+            this.cbxEntryYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxEntryYear.FormattingEnabled = true;
+            this.cbxEntryYear.ItemHeight = 19;
+            this.cbxEntryYear.Location = new System.Drawing.Point(86, 6);
+            this.cbxEntryYear.Name = "cbxEntryYear";
+            this.cbxEntryYear.Size = new System.Drawing.Size(81, 25);
+            this.cbxEntryYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbxEntryYear.TabIndex = 3;
+            this.cbxEntryYear.SelectedIndexChanged += new System.EventHandler(this.cbxEntryYear_SelectedIndexChanged);
             // 
             // frmGPlanConfig108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1098, 574);
+            this.Controls.Add(this.cbxEntryYear);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
@@ -274,6 +303,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.tabControlPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -292,5 +322,7 @@
         private DevComponents.DotNetBar.LabelX lblGroupName;
         private DevComponents.DotNetBar.Controls.DataGridViewX dgData;
         private DevComponents.DotNetBar.ButtonX btnSave;
+        private System.Windows.Forms.Label label1;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx cbxEntryYear;
     }
 }

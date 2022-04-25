@@ -23,7 +23,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         string _SchoolCode = "";
         string DSNS = "";
         Dictionary<string, int> _ColIdxDict;
-
+        CoureseCodeChecker ccChecker;
         List<CourseCodeRoot> _dataList = new List<CourseCodeRoot>();
 
         public frmCourseCodeSource()
@@ -57,6 +57,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     dgData.Rows[rowIdx].Cells["課程屬性"].Value = rd.課程屬性;
                 }
             }
+
+            lblCount.Text = "共" + dgData.Rows.Count + "筆";
         }
 
         private void LoadColumns()
@@ -136,6 +138,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             _SchoolCode = K12.Data.School.Code;
             DSNS = DSAServices.AccessPoint;
+            ccChecker = new CoureseCodeChecker(_SchoolCode, DSNS);
 
             lblSchoolCode.Text = "學校代碼：" + _SchoolCode;
             cboSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
@@ -147,6 +150,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            List<string> str = ccChecker.CheckSystemMOEData(108, 110);
+
             ControlEnable(false);
             LoadCourseCodeJSONData();
             LoadData();
@@ -155,26 +160,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void LoadCourseCodeJSONData()
         {
-            try
-            {
-                int sc;
-                if (int.TryParse(cboSchoolYear.Text, out sc))
-                {
-                    // 呼叫取得資料                
-                    string jsonString = CallMOECourseSourceBySchoolYear(sc);
+            int sy;
 
-                    // 解析 json 資料
-                    var courseDataList = new JavaScriptSerializer().Deserialize<List<CourseCodeRoot>>(jsonString);
-                    SetData(jsonString, courseDataList);
+            if (int.TryParse(cboSchoolYear.Text, out sy))
+            {
+                ccChecker.LoadCouseCodeSourceData(sy, sy);
+                Dictionary<int, List<CourseCodeRoot>> courseDataDict = ccChecker.GetCourseCodeRootDict();
+                Dictionary<int, string> jsondataDict = ccChecker.GetJSONStringDict();
+                if (jsondataDict.Count > 0 && jsondataDict[sy] != "")
+                {
+                    SetData(jsondataDict[sy], courseDataDict[sy]);
                 }
             }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-            }            
         }
-
 
         private void ControlEnable(bool value)
         {
@@ -253,39 +251,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
             return value;
         }
 
-
-        /// <summary>
-        /// 取得課程計畫平台原始資料
-        /// </summary>
-        /// <param name="SchoolYear"></param>
-        /// <returns></returns>
-        private string CallMOECourseSourceBySchoolYear(int SchoolYear)
+        private void cboSchoolYear_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string value = "";
-            string school_code = _SchoolCode;
-
-            try
-            {
-                String targetUrl = @"https://courseid.cloud.ncnu.edu.tw/api/GetAllCourses/" + school_code + "/" + SchoolYear;
-                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(targetUrl);
-                req.Method = "GET";
-                //req.ContentType = "application/json";
-                req.Headers.Add("ApiKey: xx");
-                req.Headers.Add("Secret: xx");
-
-                var response = req.GetResponse();
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-                value = readStream.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Call MOE Course Error:" + ex.Message);
-            }
-
-
-            return value;
+            dgData.Rows.Clear();
+            lblCount.Text = "共0筆";
         }
-
     }
 }

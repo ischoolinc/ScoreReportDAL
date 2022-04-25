@@ -2550,7 +2550,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                 Dictionary<string, List<MOECourseCodeInfo>> MOECourseCodeDict = GetCourseGroupCodeDict();
 
                 // 取得課程規劃表，新格式
-                string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text <>'' AND moe_group_code<>''";
+                //string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text <>'' AND moe_group_code<>''";
+
+                string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE  moe_group_code<>''";
 
                 //string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text <>'' AND moe_group_code<>''";
 
@@ -2562,6 +2564,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                     string moe_group_code = dr["moe_group_code"] + "";
                     if (!dtDict.ContainsKey(moe_group_code))
                         dtDict.Add(moe_group_code, new List<DataRow>());
+                    else
+                    {
+                        Console.WriteLine("多筆");
+                    }
+                    
 
                     dtDict[moe_group_code].Add(dr);
                 }

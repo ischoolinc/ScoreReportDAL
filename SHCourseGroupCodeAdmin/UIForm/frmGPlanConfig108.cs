@@ -38,24 +38,58 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成。");
-            itemPanel1.Items.Clear();
-            _SelectButton = null;
+            List<int> sYear = new List<int>();
+            cbxEntryYear.Enabled = true;
+
             foreach (GPlanInfo108 data in GP108List)
             {
-                ButtonItem item = new ButtonItem(data.RefGPID, data.RefGPName);
-                item.Tag = data;
+                int sy;
+                if (int.TryParse(data.EntrySchoolYear,out sy))
+                {
+                    if (!sYear.Contains(sy))
+                        sYear.Add(sy);
+                }        
+            }
 
-                item.ImagePosition = eImagePosition.Left;
-                item.ImageFixedSize = new Size(14, 14);
-                item.Image = null;
-                item.ButtonStyle = eButtonStyle.TextOnlyAlways;
-                item.Click += new EventHandler(item_Click);
-                itemPanel1.Items.Add(item);
+            sYear.Sort();
+            sYear.Reverse();
+            foreach (int s in sYear)
+                cbxEntryYear.Items.Add(s + "");
 
+
+            int iSY = int.Parse(K12.Data.School.DefaultSchoolYear);
+
+            if (sYear.Contains(iSY))
+            {
+                cbxEntryYear.Text = iSY + "";
+                LoadDataByEntryYear(cbxEntryYear.Text);
+            }            
+
+        }
+
+        private void LoadDataByEntryYear(string entryYear)
+        {
+            itemPanel1.Items.Clear();
+            lblGroupName.Text = "";
+            dgData.Rows.Clear();
+            _SelectButton = null;
+
+            foreach (GPlanInfo108 data in GP108List)
+            {
+                if (data.EntrySchoolYear == entryYear)
+                {
+                    ButtonItem item = new ButtonItem(data.RefGPID, data.RefGPName);
+                    item.Tag = data;                    
+                    item.ImagePosition = eImagePosition.Left;
+                    item.ImageFixedSize = new Size(14, 14);
+                    item.Image = null;
+                    item.ButtonStyle = eButtonStyle.TextOnlyAlways;
+                    item.Click += new EventHandler(item_Click);
+                    itemPanel1.Items.Add(item);
+                }
             }
 
             LoadDataGridViewColumns();
-
             itemPanel1.Refresh();
         }
 
@@ -212,14 +246,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+            // 不能修改，如果需要修改待開發
             MsgBox.Show("儲存完成");
         }
 
         private void frmGPlanConfig108_Load(object sender, EventArgs e)
         {
-            _bgWorker.RunWorkerAsync();
-            btnSave.Enabled = false;
+            cbxEntryYear.Enabled = btnSave.Enabled = false;
+            cbxEntryYear.DropDownStyle = ComboBoxStyle.DropDownList;
+            
+            _bgWorker.RunWorkerAsync();            
         }
               
         private void LoadDataGridViewColumns()
@@ -348,6 +384,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void tabControl1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbxEntryYear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadDataByEntryYear(cbxEntryYear.Text);
         }
     }
 }
