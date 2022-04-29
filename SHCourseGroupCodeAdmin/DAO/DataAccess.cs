@@ -606,7 +606,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                         otStr = "原班";
 
                     subjElm.SetAttributeValue("開課方式", otStr);
-
+                    subjElm.SetAttributeValue("OpenType", data.open_type);
+                    subjElm.SetAttributeValue("CourseAttr", data.course_attr);
                     subjElm.SetAttributeValue("領域名稱", "");
                     subjElm.SetAttributeValue("課程名稱", data.subject_name);
                     subjElm.SetAttributeValue("學分", credit);
@@ -2195,64 +2196,94 @@ namespace SHCourseGroupCodeAdmin.DAO
                 // 取得課程規劃表，新格式
                 //string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text <>'' AND moe_group_code<>''";
 
+                // 取得所有有群科班
                 string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@EntryYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE  moe_group_code<>''";
 
                 //string query = "SELECT id,name,moe_group_code,content,array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text AS entry_year FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text <>'' AND moe_group_code<>''";
 
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query);
-                Dictionary<string, List<DataRow>> dtDict = new Dictionary<string, List<DataRow>>();
+                // Dictionary<string, List<DataRow>> dtDict = new Dictionary<string, List<DataRow>>();
+
+                Dictionary<string, Dictionary<string, List<DataRow>>> dtDict = new Dictionary<string, Dictionary<string, List<DataRow>>>();
+
+
                 foreach (DataRow dr in dt.Rows)
                 {
                     string moe_group_code = dr["moe_group_code"] + "";
+                    string gpid = dr["id"] + "";
                     if (!dtDict.ContainsKey(moe_group_code))
-                        dtDict.Add(moe_group_code, new List<DataRow>());
-                    else
-                    {
-                        Console.WriteLine("多筆");
-                    }
-                    
+                        dtDict.Add(moe_group_code, new Dictionary<string, List<DataRow>>());
 
-                    dtDict[moe_group_code].Add(dr);
+                    if (!dtDict[moe_group_code].ContainsKey(gpid))
+                        dtDict[moe_group_code].Add(gpid, new List<DataRow>());
+
+                    dtDict[moe_group_code][gpid].Add(dr);
                 }
 
                 // 建立資料
                 foreach (string code in MOEGroupCodeDict.Keys)
-                {
-                    GPlanInfo108 data = new GPlanInfo108();
-                    data.GDCCode = code;
-                    if (code.Length > 3)
-                    {
-                        data.EntrySchoolYear = code.Substring(0, 3);
-                    }
-                    data.GDCName = MOEGroupCodeDict[code];
-                    if (MOEGPlanDict.ContainsKey(code))
-                    {
-                        // 解析出來課程規劃表名稱
-                        data.RefGPName = MOEGPlanDict[code];
-                    }
-
-
-                    // 填入課程規劃表大表
-                    if (MOECourseCodeDict.ContainsKey(code))
-                    {
-                        data.MOECourseCodeInfoList = MOECourseCodeDict[code].OrderBy(x => x.course_code).ToList();
-                    }
+                {                
 
                     // 放入課程規劃表原始
                     if (dtDict.ContainsKey(code))
                     {
-                        data.GPlanList = dtDict[code];
-                        // id 
-                        data.RefGPID = dtDict[code][0] + "";
+                        foreach (string gpid in dtDict[code].Keys)
+                        {
+                            GPlanInfo108 data = new GPlanInfo108();
+                            data.GDCCode = code;
+                            if (code.Length > 3)
+                            {
+                                data.EntrySchoolYear = code.Substring(0, 3);
+                            }
+                            data.GDCName = MOEGroupCodeDict[code];
+                            if (MOEGPlanDict.ContainsKey(code))
+                            {
+                                // 解析出來課程規劃表名稱
+                                data.RefGPName = MOEGPlanDict[code];
+                            }
+
+
+                            // 填入課程規劃表大表
+                            if (MOECourseCodeDict.ContainsKey(code))
+                            {
+                                data.MOECourseCodeInfoList = MOECourseCodeDict[code].OrderBy(x => x.course_code).ToList();
+                            }
+
+                            data.GPlanList = dtDict[code][gpid];
+                            // id 
+                            data.RefGPID = gpid;
+
+                            data.Status = "無變動";
+                            data.ParseOrderByInt();
+                            value.Add(data);
+                        }
                     }
+                    else
+                    {
+                        GPlanInfo108 data = new GPlanInfo108();
+                        data.GDCCode = code;
+                        if (code.Length > 3)
+                        {
+                            data.EntrySchoolYear = code.Substring(0, 3);
+                        }
+                        data.GDCName = MOEGroupCodeDict[code];
+                        if (MOEGPlanDict.ContainsKey(code))
+                        {
+                            // 解析出來課程規劃表名稱
+                            data.RefGPName = MOEGPlanDict[code];
+                        }
 
 
-                    data.Status = "無變動";
-                    data.ParseOrderByInt();
-
-
-                    value.Add(data);
+                        // 填入課程規劃表大表
+                        if (MOECourseCodeDict.ContainsKey(code))
+                        {
+                            data.MOECourseCodeInfoList = MOECourseCodeDict[code].OrderBy(x => x.course_code).ToList();
+                        }
+                        data.Status = "無變動";
+                        data.ParseOrderByInt();
+                        value.Add(data);
+                    }
                 }
             }
             catch (Exception ex)
@@ -3117,7 +3148,7 @@ WHERE
 "  			INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id  " +
 "  	) as sems_subj_score_ext   " +
 "WHERE school_year = " + SchoolYear + " AND semester = " + Semester +
-"  ) , subject_order AS("+
+"  ) , subject_order AS(" +
 @"SELECT
 	    array_to_string(xpath('//Subject/@Chinese', each_period.period), '')::text as subj_chinese_name
 	   -- , array_to_string(xpath('//Subject/@English', each_period.period), '')::text as subj_english_name
@@ -3665,7 +3696,7 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
                             si.IDNumber = dr["id_number"].ToString();
                             si.Name = dr["student_name"].ToString();
                             si.EntryScore = dr["entry_score"].ToString();
-                            si.StudentNumber= dr["student_number"].ToString();
+                            si.StudentNumber = dr["student_number"].ToString();
                             StudentInfoList.Add(si);
                         }
                     }

@@ -19,6 +19,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 {
     public partial class frmCourseCodeSource : BaseForm
     {
+       
         string jsonSource = "";
         string _SchoolCode = "";
         string DSNS = "";
@@ -36,7 +37,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             jsonSource = jsonString;
             _dataList = dataList;
+
+   
+
         }
+
 
         private void LoadData()
         {
@@ -79,14 +84,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             DataGridViewTextBoxColumn tbCourseCode = new DataGridViewTextBoxColumn();
             tbCourseCode.Name = "課程代碼";
-            tbCourseCode.Width = 250;
+            tbCourseCode.Width = 220;
             tbCourseCode.HeaderText = "課程代碼";
             tbCourseCode.ReadOnly = true;
             tbCourseCode.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             DataGridViewTextBoxColumn tbSubjectName = new DataGridViewTextBoxColumn();
             tbSubjectName.Name = "科目名稱";
-            tbSubjectName.Width = 100;
+            tbSubjectName.Width = 250;
             tbSubjectName.HeaderText = "科目名稱";
             tbSubjectName.ReadOnly = true;
             tbSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -130,10 +135,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmCourseCodeSource_Load(object sender, EventArgs e)
         {
+            // 載入資料欄位
+            LoadColumns();
+
             int sy;
             if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sy))
             {
-                for (int s = sy - 3; s <= sy + 3; s++)
+                for (int s = sy - 2; s <= sy + 1; s++)
                     cboSchoolYear.Items.Add(s);
             }
             _SchoolCode = K12.Data.School.Code;
@@ -142,16 +150,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             lblSchoolCode.Text = "學校代碼：" + _SchoolCode;
             cboSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
-            cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;      
 
-            // 載入資料欄位
-            LoadColumns();
+            LoadDataToDataGridView();
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            List<string> str = ccChecker.CheckSystemMOEData(108, 110);
 
+        private void LoadDataToDataGridView()
+        {
             ControlEnable(false);
             LoadCourseCodeJSONData();
             LoadData();
@@ -176,7 +182,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void ControlEnable(bool value)
         {
-            btnExcel.Enabled = btnJSON.Enabled = btnSearch.Enabled = value;
+            btnExcel.Enabled = btnJSON.Enabled  = value;
         }
 
         private void btnExcel_Click(object sender, EventArgs e)
@@ -255,6 +261,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             dgData.Rows.Clear();
             lblCount.Text = "共0筆";
+            LoadDataToDataGridView();
         }
     }
 }

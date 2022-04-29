@@ -161,6 +161,12 @@ namespace SHCourseGroupCodeAdmin.DAO
             if (GDCCode.Length > 3)
                 MOEXml.SetAttributeValue("EntryYear", GDCCode.Substring(0, 3));
 
+            // 支援就格式
+            if (MOEXml.Attribute("SchoolYear") != null)
+            {
+                Console.WriteLine(MOEXml.Attribute("SchoolYear").Value);
+            }
+
             Dictionary<string, string> CreditMappingTableDict = Utility.GetCreditMappingTable();
 
             Dictionary<string, int> chkCourseCodeCount = new Dictionary<string, int>();
@@ -305,9 +311,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                         otStr = "原班";
 
                     subjElm.SetAttributeValue("開課方式", otStr);
-
+                    
                     subjElm.SetAttributeValue("領域名稱", "");
                     subjElm.SetAttributeValue("課程名稱", data.subject_name);
+                    subjElm.SetAttributeValue("OpenType", data.open_type);
+                    subjElm.SetAttributeValue("CourseAttr", data.course_attr);
                     subjElm.SetAttributeValue("學分", credit);
                     subjElm.SetAttributeValue("授課學期學分", data.credit_period);
 
@@ -544,6 +552,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.CourseCode = GetAttribute(elm, "課程代碼");
                         subj.credit_period = GetAttribute(elm, "授課學期學分");
                         subj.OpenStatus = GetAttribute(elm, "開課方式");
+                        subj.open_type = GetAttribute(elm, "OpenType");
+                        subj.course_attr = GetAttribute(elm, "CourseAttr");
                         subj.ProcessStatus = "新增";
                         subj.DiffStatusList.Add("缺");
                         subj.MOEXml = MOEDict[mCo];
@@ -552,7 +562,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
                 }
 
-                
+
 
             }
             else
@@ -563,6 +573,12 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     MOEDict.Clear();
                     GPlanDict.Clear();
+
+                    if (RefGPContentXml.Attribute("SchoolYear") != null)
+                    {
+                        MOEXml.SetAttributeValue("SchoolYear", RefGPContentXml.Attribute("SchoolYear").Value);
+                    }
+
 
                     foreach (XElement elm in MOEXml.Elements("Subject"))
                     {
@@ -653,6 +669,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.CourseCode = GetAttribute(elm, "課程代碼");
                             subj.credit_period = GetAttribute(elm, "授課學期學分");
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
+                            subj.open_type = GetAttribute(elm, "OpenType");
+                            subj.course_attr = GetAttribute(elm, "CourseAttr");
                             subj.ProcessStatus = "新增";
                             subj.DiffStatusList.Add("缺");
                             subj.MOEXml = MOEDict[mCo];
@@ -681,6 +699,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.CourseCode = GetAttribute(elm, "課程代碼");
                             subj.credit_period = GetAttribute(elm, "授課學期學分");
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
+                            subj.open_type = GetAttribute(elm, "OpenType");
+                            subj.course_attr = GetAttribute(elm, "CourseAttr");
                             subj.ProcessStatus = "刪除";
                             subj.DiffStatusList.Add("多");
                             subj.GPlanXml = GPlanDict[mCo];
@@ -710,6 +730,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.CourseCode = GetAttribute(elm, "課程代碼");
                             subj.credit_period = GetAttribute(elm, "授課學期學分");
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
+                            subj.open_type = GetAttribute(elm, "OpenType");
+                            subj.course_attr = GetAttribute(elm, "CourseAttr");
 
                             if (MOEDict[mCo].Count != GPlanDict[mCo].Count)
                             {

@@ -22,6 +22,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string Credit { get; set; }
         public string credit_period { get; set; }
         public string course_attr { get; set; }
+        public string open_type { get; set; }
         public string ProcessStatus { get; set; }
         public List<string> DiffStatusList = new List<string>();
         public List<string> DiffMessageList = new List<string>();

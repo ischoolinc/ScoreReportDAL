@@ -127,6 +127,7 @@
     <Compile Include="DAO\CoureseCodeChecker.cs" />
     <Compile Include="DAO\CourseCodeInfo.cs" />
     <Compile Include="DAO\CourseCodeRoot.cs" />
+    <Compile Include="DAO\CourseCodeTagHelper.cs" />
     <Compile Include="DAO\CourseInfoChk.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\GPCourseInfo.cs" />
