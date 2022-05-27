@@ -1844,6 +1844,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , course.score_type " +
 " , course.school_year " +
 " , course.semester " +
+" , (CASE not_included_in_credit WHEN '1' THEN '是' WHEN '0' THEN '否' ELSE '' END) AS not_included_in_credit" +
+" ,  (CASE not_included_in_calc WHEN '1' THEN '是' WHEN '0' THEN '否' ELSE '' END) AS not_included_in_calc" +
 " , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
 " , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
 " , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
@@ -1878,6 +1880,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.Credit = dr["credit"] + "";
                     data.Period = dr["period"] + "";
                     data.ScoreType = dr["score_type"] + "";
+                    data.NScore = dr["not_included_in_calc"] + "";
+                    data.NCredit = dr["not_included_in_credit"] + "";
                     data.IsStudying = true;
 
                     value.Add(data);
@@ -2223,7 +2227,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                 // 建立資料
                 foreach (string code in MOEGroupCodeDict.Keys)
-                {                
+                {
 
                     // 放入課程規劃表原始
                     if (dtDict.ContainsKey(code))
@@ -3139,6 +3143,8 @@ WHERE
 "  	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修  " +
 "  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂	  " +
 "  	, array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別	  " +
+"  	, array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '')::text AS 不計學分	  " +
+"  	, array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '')::text AS 不需評分	  " +
 "  FROM (  " +
 "  		SELECT   " +
 "  			sems_subj_score.*  " +
@@ -3177,6 +3183,8 @@ WHERE
 "  ,必選修 AS required " +
 "  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by  " +
 " , 分項類別 AS scoreType" +
+" , 不計學分 AS NCredit" +
+" , 不需評分 AS NScore" +
 "   FROM student_data " +
 "   INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
 "    ORDER BY class_name,seat_no,school_year, semester" +
@@ -3212,6 +3220,8 @@ WHERE
                     data.GradeYear = dr["grade_year"] + "";
                     data.Credit = dr["credit"] + "";
                     data.ScoreType = dr["scoreType"] + "";
+                    data.NCredit = dr["NCredit"] + "";
+                    data.NScore = dr["NScore"] + "";
 
                     decimal score;
                     if (dr["score"].ToString() != "")

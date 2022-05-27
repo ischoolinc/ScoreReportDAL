@@ -203,7 +203,6 @@ namespace SHCourseGroupCodeAdmin.Report
             this.iptSemester.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSemester.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSemester.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSemester.Enabled = false;
             this.iptSemester.Location = new System.Drawing.Point(181, 6);
             this.iptSemester.MaxValue = 2;
             this.iptSemester.MinValue = 2;
@@ -222,10 +221,9 @@ namespace SHCourseGroupCodeAdmin.Report
             this.iptSchoolYear.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSchoolYear.Enabled = false;
             this.iptSchoolYear.Location = new System.Drawing.Point(74, 6);
-            this.iptSchoolYear.MaxValue = 110;
-            this.iptSchoolYear.MinValue = 110;
+            this.iptSchoolYear.MaxValue = 200;
+            this.iptSchoolYear.MinValue = 108;
             this.iptSchoolYear.Name = "iptSchoolYear";
             this.iptSchoolYear.Size = new System.Drawing.Size(46, 25);
             this.iptSchoolYear.TabIndex = 28;

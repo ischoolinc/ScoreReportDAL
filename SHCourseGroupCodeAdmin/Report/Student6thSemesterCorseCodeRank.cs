@@ -52,6 +52,10 @@ namespace SHCourseGroupCodeAdmin.Report
 
         private void Student6thSemesterCorseCodeRank_Load(object sender, EventArgs e)
         {
+            string defaultSchoolYear = K12.Data.School.DefaultSchoolYear;
+            int schoolYear = 0;
+            if (int.TryParse(defaultSchoolYear, out schoolYear))
+                iptSchoolYear.Value = schoolYear;
             LoadTemplate();
         }
         public void SetStudentIDs(List<string> studIDs)
@@ -252,6 +256,9 @@ namespace SHCourseGroupCodeAdmin.Report
                 {
                     if (data.StudentID == si.StudentID)
                     {
+                        if (data.NCredit == "是" && data.NScore == "是")
+                            continue; //不計學分也不須評分 跳過
+
                         if (index <= 60)
                         {
                             row["科目名稱" + index] = data.SubjectName;

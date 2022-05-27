@@ -53,6 +53,16 @@ namespace SHCourseGroupCodeAdmin.DAO
         public bool IsStudying { get; set; }
 
         /// <summary>
+        /// 不計學分(6學期修課紀錄報表用)
+        /// </summary>
+        public string NCredit { get; set; }
+
+        /// <summary>
+        /// 不需評分(6學期修課紀錄報表用)
+        /// </summary>
+        public string NScore { get; set; }
+
+        /// <summary>
         /// 檢查學分數
         /// </summary>
         /// <returns></returns>
