@@ -39,5 +39,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// 排序使用
         /// </summary>
         public int OrderBy { get; set; }
+
+        public string NotIncludedInCalc { get; set; }
+
+        public string NotIncludedInCredit { get; set; }
     }
 }

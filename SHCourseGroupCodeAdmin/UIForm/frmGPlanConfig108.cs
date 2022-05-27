@@ -44,11 +44,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             foreach (GPlanInfo108 data in GP108List)
             {
                 int sy;
-                if (int.TryParse(data.EntrySchoolYear,out sy))
+                if (int.TryParse(data.EntrySchoolYear, out sy))
                 {
                     if (!sYear.Contains(sy))
                         sYear.Add(sy);
-                }        
+                }
             }
 
             sYear.Sort();
@@ -63,7 +63,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 cbxEntryYear.Text = iSY + "";
                 LoadDataByEntryYear(cbxEntryYear.Text);
-            }            
+            }
 
         }
 
@@ -79,7 +79,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (data.EntrySchoolYear == entryYear)
                 {
                     ButtonItem item = new ButtonItem(data.RefGPID, data.RefGPName);
-                    item.Tag = data;                    
+                    item.Tag = data;
                     item.ImagePosition = eImagePosition.Left;
                     item.ImageFixedSize = new Size(14, 14);
                     item.Image = null;
@@ -199,6 +199,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     catch (Exception ex) { Console.WriteLine(ex.Message); }
                 }
 
+                dgData.Rows[rowIdx].Cells["不需評分"].Value = "否";
+                dgData.Rows[rowIdx].Cells["不計學分"].Value = "否";
+
+                if (firstElm.Attribute("NotIncludedInCalc").Value == "True")
+                    dgData.Rows[rowIdx].Cells["不需評分"].Value = "是";
+
+                if (firstElm.Attribute("NotIncludedInCredit").Value == "True")
+                    dgData.Rows[rowIdx].Cells["不計學分"].Value = "是";
+
                 dgData.Rows[rowIdx].Cells["開課方式"].Value = firstElm.Attribute("開課方式").Value;
                 dgData.Rows[rowIdx].Cells["課程代碼"].Value = firstElm.Attribute("課程代碼").Value;
             }
@@ -254,12 +263,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             cbxEntryYear.Enabled = btnSave.Enabled = false;
             cbxEntryYear.DropDownStyle = ComboBoxStyle.DropDownList;
-            
-            _bgWorker.RunWorkerAsync();            
+
+            _bgWorker.RunWorkerAsync();
         }
-              
+
         private void LoadDataGridViewColumns()
         {
+            dgData.Columns.Clear();
             try
             {
 
@@ -340,6 +350,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbGS32.ReadOnly = true;
                 tbGS32.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+                DataGridViewTextBoxColumn tbNotIncludedInCalc = new DataGridViewTextBoxColumn();
+                tbNotIncludedInCalc.Name = "不需評分";
+                tbNotIncludedInCalc.Width = 60;
+                tbNotIncludedInCalc.HeaderText = "不需評分";
+                tbNotIncludedInCalc.ReadOnly = true;
+                tbNotIncludedInCalc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbNotIncludedInCredit = new DataGridViewTextBoxColumn();
+                tbNotIncludedInCredit.Name = "不計學分";
+                tbNotIncludedInCredit.Width = 60;
+                tbNotIncludedInCredit.HeaderText = "不計學分";
+                tbNotIncludedInCredit.ReadOnly = true;
+                tbNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
                 DataGridViewTextBoxColumn tbOpenStatus = new DataGridViewTextBoxColumn();
                 tbOpenStatus.Name = "開課方式";
                 tbOpenStatus.Width = 60;
@@ -365,6 +390,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgData.Columns.Add(tbGS22);
                 dgData.Columns.Add(tbGS31);
                 dgData.Columns.Add(tbGS32);
+                dgData.Columns.Add(tbNotIncludedInCalc);
+                dgData.Columns.Add(tbNotIncludedInCredit);
                 dgData.Columns.Add(tbOpenStatus);
                 dgData.Columns.Add(tbCourseCode);
 

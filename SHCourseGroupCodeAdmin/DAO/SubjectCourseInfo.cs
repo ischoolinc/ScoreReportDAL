@@ -19,6 +19,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 
         public XElement SubjectXML { get; set; }
 
+        public List<string> CourseCodeList = new List<string>();
+
         /// <summary>
         /// 班級名稱,ID 對照
         /// </summary>

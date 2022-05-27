@@ -202,6 +202,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                         }
 
+                        if (subj.CourseCode == "110070406V2640408D00001")
+                            Console.WriteLine("");
+
+                       
+                        dgData.Rows[rowIdx].Cells["不需評分"].Value = "否";
+                        dgData.Rows[rowIdx].Cells["不計學分"].Value = "否";
+
+                        if (subj.NotIncludedInCalc == "True")
+                            dgData.Rows[rowIdx].Cells["不需評分"].Value = "是";
+
+                        if (subj.NotIncludedInCredit == "True")
+                            dgData.Rows[rowIdx].Cells["不計學分"].Value = "是";
+
 
                         dgData.Rows[rowIdx].Cells["開課方式"].Value = subj.OpenStatus;
                         dgData.Rows[rowIdx].Cells["課程代碼"].Value = subj.CourseCode;
@@ -328,6 +341,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbGS32.HeaderText = "3下";
                 tbGS32.ReadOnly = true;
 
+                DataGridViewTextBoxColumn tbNotIncludedInCalc = new DataGridViewTextBoxColumn();
+                tbNotIncludedInCalc.Name = "不需評分";
+                tbNotIncludedInCalc.Width = 60;
+                tbNotIncludedInCalc.HeaderText = "不需評分";
+                tbNotIncludedInCalc.ReadOnly = true;
+                tbNotIncludedInCalc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbNotIncludedInCredit = new DataGridViewTextBoxColumn();
+                tbNotIncludedInCredit.Name = "不計學分";
+                tbNotIncludedInCredit.Width = 60;
+                tbNotIncludedInCredit.HeaderText = "不計學分";
+                tbNotIncludedInCredit.ReadOnly = true;
+                tbNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
                 DataGridViewTextBoxColumn tbOpenStatus = new DataGridViewTextBoxColumn();
                 tbOpenStatus.Name = "開課方式";
                 tbOpenStatus.Width = 90;
@@ -354,6 +382,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgData.Columns.Add(tbGS22);
                 dgData.Columns.Add(tbGS31);
                 dgData.Columns.Add(tbGS32);
+                dgData.Columns.Add(tbNotIncludedInCalc);
+                dgData.Columns.Add(tbNotIncludedInCredit);
                 dgData.Columns.Add(tbOpenStatus);
                 dgData.Columns.Add(tbCourseCode);
             }

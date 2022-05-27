@@ -131,6 +131,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                                 string subjKey = openSems + "_" + subjName;
 
+                                // 課程代碼
+                                string course_code = "";
+
+                                if (subjElm.Attribute("課程代碼") != null)
+                                {
+                                    course_code = subjElm.Attribute("課程代碼").Value;
+                                }
+
                                 if (!_SubjectCourseInfoDict.ContainsKey(subjKey))
                                 {
                                     SubjectCourseInfo sci = new SubjectCourseInfo();
@@ -141,8 +149,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     sci.CourseCount = 0;
                                     sci.ClassNameDict = new Dictionary<string, string>();
                                     sci.ClassStudentIDDict = new Dictionary<string, List<string>>();
+                                    sci.CourseCodeList.Add(course_code);
                                     sci.OpenSemester = openSems;
                                     _SubjectCourseInfoDict.Add(subjKey, sci);
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrEmpty(course_code))
+                                    {
+                                        if (!_SubjectCourseInfoDict[subjKey].CourseCodeList.Contains(course_code))
+                                            _SubjectCourseInfoDict[subjKey].CourseCodeList.Add(course_code);
+                                    }
                                 }
 
                                 // 班級

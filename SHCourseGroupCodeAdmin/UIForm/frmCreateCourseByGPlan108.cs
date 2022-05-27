@@ -96,9 +96,64 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         {
                             if (subjElm.Attribute("開課方式").Value == "原班")
                             {
-                                if (subjElm.Attribute("Credit").Value == subjElm.Attribute("學分").Value)
+                                string credit = "";
+                                string Dcredit = ""; // 上下學分
+
+                                // 處理對開
+                                if (subjElm.Attribute("授課學期學分") != null)
                                 {
-                                    // 一般
+                                    if (subjElm.Attribute("授課學期學分").Value.Length > 5)
+                                    {
+                                        string credit_period = subjElm.Attribute("授課學期學分").Value;
+                                        char[] cp = credit_period.ToArray();
+
+                                        if (data.GradeYear == "1" && _Semester == "1")
+                                            credit = cp[0] + "";
+
+                                        if (data.GradeYear == "1" && _Semester == "2")
+                                            credit = cp[1] + "";
+
+                                        if (data.GradeYear == "2" && _Semester == "1")
+                                            credit = cp[2] + "";
+
+                                        if (data.GradeYear == "2" && _Semester == "2")
+                                            credit = cp[3] + "";
+
+                                        if (data.GradeYear == "3" && _Semester == "1")
+                                            credit = cp[4] + "";
+
+                                        if (data.GradeYear == "3" && _Semester == "2")
+                                            credit = cp[5] + "";
+
+                                        if (data.GradeYear == "1")
+                                        {
+                                            if ((cp[1] + "") == "B")
+                                            {
+                                                Console.WriteLine("");
+                                            }
+                                            Dcredit = cp[0] + "" + cp[1] + "";
+                                        }
+
+                                        if (data.GradeYear == "2")
+                                        {
+                                            Dcredit = cp[2] + "" + cp[3] + "";
+                                        }
+
+                                        if (data.GradeYear == "3")
+                                        {
+                                            Dcredit = cp[4] + "" + cp[5] + "";
+                                        }
+
+                                    }
+                                }
+
+                                // 將授課學分數記下來
+                                subjElm.SetAttributeValue("ref_credit", credit);
+
+                                int dP;
+                                // 一般
+                                if (int.TryParse(Dcredit, out dP))
+                                {
                                     data.OpenSubjectSourceList.Add(subjElm);
                                     string subjName = subjElm.Attribute("SubjectName").Value;
                                     if (!tmpSubj.Contains(subjName))
@@ -109,6 +164,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     {
                                         Console.WriteLine(subjName);
                                     }
+
                                 }
                                 else
                                 {
@@ -117,7 +173,32 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     string subjName = subjElm.Attribute("SubjectName").Value;
                                     if (!data.SubjectBDict.ContainsKey(subjName))
                                         data.SubjectBDict.Add(subjName, false);
+
                                 }
+
+
+                                //if (subjElm.Attribute("Credit").Value == subjElm.Attribute("學分").Value)
+                                //{
+                                //    // 一般
+                                //    data.OpenSubjectSourceList.Add(subjElm);
+                                //    string subjName = subjElm.Attribute("SubjectName").Value;
+                                //    if (!tmpSubj.Contains(subjName))
+                                //    {
+                                //        tmpSubj.Add(subjName);
+                                //    }
+                                //    else
+                                //    {
+                                //        Console.WriteLine(subjName);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    // 對開
+                                //    data.OpenSubjectSourceBList.Add(subjElm);
+                                //    string subjName = subjElm.Attribute("SubjectName").Value;
+                                //    if (!data.SubjectBDict.ContainsKey(subjName))
+                                //        data.SubjectBDict.Add(subjName, false);
+                                //}
                             }
                         }
 

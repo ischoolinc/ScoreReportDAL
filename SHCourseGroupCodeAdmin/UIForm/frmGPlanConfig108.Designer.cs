@@ -158,8 +158,8 @@
             this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 1);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.126006F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.87399F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(797, 519);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
@@ -174,12 +174,15 @@
             this.lblGroupName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGroupName.Location = new System.Drawing.Point(3, 3);
             this.lblGroupName.Name = "lblGroupName";
-            this.lblGroupName.Size = new System.Drawing.Size(791, 30);
+            this.lblGroupName.Size = new System.Drawing.Size(791, 24);
             this.lblGroupName.TabIndex = 0;
             this.lblGroupName.Text = "群組名稱";
             // 
             // dgData
             // 
+            this.dgData.AllowUserToAddRows = false;
+            this.dgData.AllowUserToDeleteRows = false;
+            this.dgData.AllowUserToResizeRows = false;
             this.dgData.BackgroundColor = System.Drawing.Color.White;
             this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -192,10 +195,10 @@
             this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgData.Location = new System.Drawing.Point(3, 39);
+            this.dgData.Location = new System.Drawing.Point(3, 33);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
-            this.dgData.Size = new System.Drawing.Size(791, 477);
+            this.dgData.Size = new System.Drawing.Size(791, 483);
             this.dgData.TabIndex = 1;
             // 
             // tabItem1

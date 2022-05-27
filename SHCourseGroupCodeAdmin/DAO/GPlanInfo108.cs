@@ -258,8 +258,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                     subjElm.SetAttributeValue("GradeYear", strGearYear);
                     subjElm.SetAttributeValue("Level", idx);
                     subjElm.SetAttributeValue("FullName", SubjFullName(data.subject_name, idx));
-                    subjElm.SetAttributeValue("NotIncludedInCalc", "False");
-                    subjElm.SetAttributeValue("NotIncludedInCredit", "False");
+
+                    subjElm.SetAttributeValue("NotIncludedInCalc", CheckNotIncludedInCredit(data.course_code));
+                    subjElm.SetAttributeValue("NotIncludedInCredit", CheckNotIncludedInCredit(data.course_code));
+
                     subjElm.SetAttributeValue("Required", data.is_required);
                     if (data.require_by == "部定")
                         subjElm.SetAttributeValue("RequiredBy", "部訂");
@@ -444,6 +446,33 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
+
+        public string CheckNotIncludedInCredit(string CourseCode)
+        {
+            string value = "False";
+            // 判斷 8,9D 問題
+            if (!string.IsNullOrWhiteSpace(CourseCode) && CourseCode.Length > 21)
+            {
+                string k1 = CourseCode.Substring(16, 1);
+                string k2 = CourseCode.Substring(18, 1);
+
+                // 8/團體活動時間、9/彈性學習時間 
+                if (k1 == "8" || k1 == "9")
+                {
+                    value = "True";
+
+                    // 需要評分
+                    if (k2 == "D")
+                    {
+                        value = "False";
+                    }
+                }
+            }
+
+
+            return value;
+        }
+
         /// <summary>
         /// 解析目前課程規劃 ToXML
         /// </summary>
@@ -554,6 +583,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.OpenStatus = GetAttribute(elm, "開課方式");
                         subj.open_type = GetAttribute(elm, "OpenType");
                         subj.course_attr = GetAttribute(elm, "CourseAttr");
+                        subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
+                        subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+                        elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
+                        elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
+
                         subj.ProcessStatus = "新增";
                         subj.DiffStatusList.Add("缺");
                         subj.MOEXml = MOEDict[mCo];
@@ -671,6 +705,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
                             subj.open_type = GetAttribute(elm, "OpenType");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+                            subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
+                            subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+                            elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
+                            elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
                             subj.ProcessStatus = "新增";
                             subj.DiffStatusList.Add("缺");
                             subj.MOEXml = MOEDict[mCo];
@@ -701,6 +739,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
                             subj.open_type = GetAttribute(elm, "OpenType");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+                            subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
+                            subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.ProcessStatus = "刪除";
                             subj.DiffStatusList.Add("多");
                             subj.GPlanXml = GPlanDict[mCo];
@@ -732,6 +772,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
                             subj.open_type = GetAttribute(elm, "OpenType");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+                            subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
+                            subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+                            elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
+                            elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
+                           
 
                             if (MOEDict[mCo].Count != GPlanDict[mCo].Count)
                             {
@@ -826,15 +871,26 @@ namespace SHCourseGroupCodeAdmin.DAO
                                                 subj.DiffMessageList.Add(msg);
 
                                         }
+                                    }
 
+                                    // 檢查不需評分、不計學分不同
+                                    if (elmM.Attribute("NotIncludedInCredit").Value != elmG.Attribute("NotIncludedInCredit").Value)
+                                    {
+                                        if (!subj.DiffStatusList.Contains("不需評分、不計學分不同"))
+                                            subj.DiffStatusList.Add("不需評分、不計學分不同");
+
+                                        string msg = "不需評分、不計學分：課程代碼表「" + elmM.Attribute("NotIncludedInCredit").Value + "」、課程規劃表「" + elmG.Attribute("NotIncludedInCredit").Value + "」";
+                                        if (!subj.DiffMessageList.Contains(msg))
+                                            subj.DiffMessageList.Add(msg);
                                     }
                                 }
                             }
 
+
                             if (subj.DiffStatusList.Count > 0)
                                 subj.ProcessStatus = "更新";
                             else
-                                subj.ProcessStatus = "略過";
+                                subj.ProcessStatus = "略過";                            
 
 
                             subj.GPlanXml = GPlanDict[mCo];
