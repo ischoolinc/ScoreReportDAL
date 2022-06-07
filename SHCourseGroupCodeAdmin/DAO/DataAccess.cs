@@ -8,6 +8,7 @@ using FISCA.Data;
 using System.Xml.Linq;
 using System.IO;
 using System.Windows.Forms;
+using FISCA.LogAgent;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -2642,11 +2643,13 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 取得系統內課程
             Dictionary<string, string> hasCourseIDDict = new Dictionary<string, string>();
             List<string> insertSQLList = new List<string>();
+            List<string> logCourseNameList = new List<string>();
 
             hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
 
             try
             {
+                List<string> chkCourseNameList = new List<string>();
                 QueryHelper qh = new QueryHelper();
 
                 // 處理一般開課
@@ -2657,16 +2660,28 @@ namespace SHCourseGroupCodeAdmin.DAO
                     foreach (XElement subjElm in data.OpenSubjectSourceList)
                     {
                         // 檢查課程名稱是否存在
-                        string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value;
+                        string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value + " " + GetGradeSemester(data.GradeYear, Semester);
                         string chkName = courseName.Trim();
-                        if (!data.AddCourseNameList.Contains(courseName))
-                            data.AddCourseNameList.Add(courseName);
 
                         // 已存在跳過
                         if (hasCourseIDDict.ContainsKey(chkName))
+                            continue;
+
+                        if (chkCourseNameList.Contains(chkName))
                         {
                             continue;
                         }
+                        else
+                        {
+                            chkCourseNameList.Add(chkName);
+                        }
+
+                        if (!data.AddCourseNameList.Contains(courseName))
+                            data.AddCourseNameList.Add(courseName);
+
+                        // log course name
+                        logCourseNameList.Add(courseName);
+
                         string isReq = "", ReqBy = "";
 
                         if (subjElm.Attribute("RequiredBy").Value == "部訂" || subjElm.Attribute("RequiredBy").Value == "部定")
@@ -2702,15 +2717,30 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (data.SubjectBDict[subjName] == true)
                             {
                                 // 檢查課程名稱是否存在
-                                string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value;
+                                string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value + " " + GetGradeSemester(data.GradeYear, Semester); ;
                                 string chkName = courseName.Trim();
-                                if (!data.AddCourseNameList.Contains(courseName))
-                                    data.AddCourseNameList.Add(courseName);
+
                                 // 已存在跳過
                                 if (hasCourseIDDict.ContainsKey(chkName))
                                 {
                                     continue;
                                 }
+
+                                if (chkCourseNameList.Contains(chkName))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    chkCourseNameList.Add(chkName);
+                                }
+
+                                if (!data.AddCourseNameList.Contains(courseName))
+                                    data.AddCourseNameList.Add(courseName);
+
+                                // log course name
+                                logCourseNameList.Add(courseName);
+
                                 string isReq = "", ReqBy = "";
 
                                 if (subjElm.Attribute("RequiredBy").Value == "部訂" || subjElm.Attribute("RequiredBy").Value == "部定")
@@ -2738,14 +2768,14 @@ namespace SHCourseGroupCodeAdmin.DAO
                 }
 
 
-                // debug write text file
-                using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug.txt", false))
-                {
-                    foreach (string sid in insertSQLList)
-                    {
-                        sw.WriteLine(sid);
-                    }
-                }
+                //// debug write text file
+                //using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug.txt", false))
+                //{
+                //    foreach (string sid in insertSQLList)
+                //    {
+                //        sw.WriteLine(sid);
+                //    }
+                //}
 
 
                 if (insertSQLList.Count > 0)
@@ -2753,6 +2783,13 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 執行寫入
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
                     uh.Execute(insertSQLList);
+
+                    // log 
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine(SchoolYear + "學年度 第" + Semester + "學期 班級依課程規劃表開課108適用(對開)");
+                    sb.AppendLine("開課課程：");
+                    sb.AppendLine(string.Join(",\n", logCourseNameList.ToArray()));
+                    ApplicationLog.Log("班級.依課程規劃開課", sb.ToString());
                 }
 
             }
@@ -2762,6 +2799,31 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return dataList;
         }
+
+        /// <summary>
+        /// 傳入年級與學期，回傳學年期
+        /// </summary>
+        /// <param name="GradeYear"></param>
+        /// <param name="Semester"></param>
+        /// <returns></returns>
+        private string GetGradeSemester(string GradeYear, string Semester)
+        {
+            if (GradeYear == "1" && Semester == "1")
+            {
+                return "1";
+
+            }
+            else if (GradeYear == "1" && Semester == "2") { return "2"; }
+            else if (GradeYear == "2" && Semester == "1") { return "3"; }
+            else if (GradeYear == "2" && Semester == "2") { return "4"; }
+            else if (GradeYear == "3" && Semester == "1") { return "5"; }
+            else if (GradeYear == "3" && Semester == "2") { return "6"; }
+            else
+            {
+                return "";
+            }
+        }
+
 
         /// <summary>
         /// 原班開課加入學生
@@ -2926,7 +2988,8 @@ namespace SHCourseGroupCodeAdmin.DAO
             List<string> insertSQLList = new List<string>();
 
             hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
-
+            List<string> chkCourseNameList = new List<string>();
+            List<string> logCourseNameList = new List<string>();
             try
             {
                 QueryHelper qh = new QueryHelper();
@@ -2946,6 +3009,15 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (hasCourseIDDict.ContainsKey(chkName))
                             {
                                 continue;
+                            }
+
+                            // 檢查課程名稱自己是否重複
+                            if (chkCourseNameList.Contains(chkName))
+                            {
+                                continue;
+                            }else
+                            {
+                                chkCourseNameList.Add(chkName);
                             }
 
                             string isReq = "", ReqBy = "";
@@ -2982,6 +3054,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                                     continue;
                                 }
 
+                                // log course name
+                                logCourseNameList.Add(courseName);
+
+
                                 string isReq = "", ReqBy = "";
 
                                 if (subj.SubjectXML.Attribute("RequiredBy").Value == "部訂" || subj.SubjectXML.Attribute("RequiredBy").Value == "部定")
@@ -3012,6 +3088,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 執行寫入
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
                     uh.Execute(insertSQLList);
+                    // log 
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine(SchoolYear + "學年度 第" + Semester + "學期 班級依課程規劃表開課108適用(跨班)");
+                    sb.AppendLine("開課課程：");
+                    sb.AppendLine(string.Join(",\n", logCourseNameList.ToArray()));
+                    ApplicationLog.Log("班級.依課程規劃開課", sb.ToString());
                 }
 
             }

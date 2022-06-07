@@ -70,7 +70,7 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(262, 152);
+            this.btnCancel.Location = new System.Drawing.Point(262, 133);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -84,7 +84,7 @@
             this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCreate.BackColor = System.Drawing.Color.Transparent;
             this.btnCreate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCreate.Location = new System.Drawing.Point(165, 152);
+            this.btnCreate.Location = new System.Drawing.Point(165, 133);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -129,15 +129,15 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(23, 50);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(316, 87);
+            this.labelX2.Size = new System.Drawing.Size(316, 70);
             this.labelX2.TabIndex = 16;
-            this.labelX2.Text = "步驟1.建立「上課方式」為「跨班上課」之課程。\r\n步驟2.點「下一步」設定跨班課程。\r\n步驟3.點「下一步」檢視跨班課程。\r\n步驟4.點「產生」跨班課程。";
+            this.labelX2.Text = "步驟1.點「下一步」設定跨班課程。\r\n步驟2.點「下一步」檢視跨班課程。\r\n步驟3.點「產生」跨班課程。";
             // 
             // frmCreateCourseByGPlan108_C
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 187);
+            this.ClientSize = new System.Drawing.Size(363, 168);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.cboSemester);
             this.Controls.Add(this.labelX4);

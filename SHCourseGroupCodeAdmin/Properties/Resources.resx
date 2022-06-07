@@ -175,4 +175,7 @@
   <data name="課程代碼原始資料樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\課程代碼原始資料樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="群科班學分數總計樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\群科班學分數總計樣版.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

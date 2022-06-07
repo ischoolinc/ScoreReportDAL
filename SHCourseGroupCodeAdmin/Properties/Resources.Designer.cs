@@ -203,6 +203,16 @@ namespace SHCourseGroupCodeAdmin.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
+        internal static byte[] 群科班學分數總計樣版 {
+            get {
+                object obj = ResourceManager.GetObject("群科班學分數總計樣版", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Byte[] 的當地語系化資源。
+        /// </summary>
         internal static byte[] 課程代碼原始資料樣板 {
             get {
                 object obj = ResourceManager.GetObject("課程代碼原始資料樣板", resourceCulture);

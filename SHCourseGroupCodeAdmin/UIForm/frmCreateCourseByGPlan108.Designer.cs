@@ -62,10 +62,9 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(25, 49);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(316, 87);
+            this.labelX2.Size = new System.Drawing.Size(316, 63);
             this.labelX2.TabIndex = 1;
-            this.labelX2.Text = "步驟1.建立「上課方式」為「原班上課」之課程。\r\n步驟2.點「下一步」設定對開課程。\r\n步驟3.點「下一步」檢視對開課程。\r\n步驟4.點「產生」建立符合課程代碼總" +
-    "表規範課程。\r\n";
+            this.labelX2.Text = "步驟1.點「下一步」設定對開課程。\r\n步驟2.點「下一步」檢視對開課程。\r\n步驟3.點「產生」建立符合課程代碼總表規範課程。";
             this.labelX2.Click += new System.EventHandler(this.labelX2_Click);
             // 
             // cboSchoolYear
@@ -86,7 +85,7 @@
             this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCreate.BackColor = System.Drawing.Color.Transparent;
             this.btnCreate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCreate.Location = new System.Drawing.Point(169, 152);
+            this.btnCreate.Location = new System.Drawing.Point(169, 131);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -100,7 +99,7 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(266, 152);
+            this.btnCancel.Location = new System.Drawing.Point(266, 131);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -139,7 +138,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 187);
+            this.ClientSize = new System.Drawing.Size(363, 166);
             this.Controls.Add(this.cboSemester);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.btnCancel);

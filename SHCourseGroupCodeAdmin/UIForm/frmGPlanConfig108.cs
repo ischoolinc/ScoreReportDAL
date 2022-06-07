@@ -11,6 +11,7 @@ using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
 using DevComponents.DotNetBar;
 using System.Xml.Linq;
+using DevComponents.AdvTree;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -20,11 +21,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
         DataAccess _da;
         List<GPlanInfo108> GP108List;
 
-        private ButtonItem _SelectButton;
+        private Node _SelectItem;
+        Dictionary<string, bool> _AdvTreeExpandStatus = new Dictionary<string, bool>();
 
         public frmGPlanConfig108()
         {
             InitializeComponent();
+
+            this.expandablePanel1.TitleText = "課程規劃表(108課綱)";
+            _AdvTreeExpandStatus.Clear();
+
             GP108List = new List<GPlanInfo108>();
 
             _da = new DataAccess();
@@ -38,209 +44,80 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成。");
-            List<int> sYear = new List<int>();
-            cbxEntryYear.Enabled = true;
 
-            foreach (GPlanInfo108 data in GP108List)
-            {
-                int sy;
-                if (int.TryParse(data.EntrySchoolYear, out sy))
-                {
-                    if (!sYear.Contains(sy))
-                        sYear.Add(sy);
-                }
-            }
-
-            sYear.Sort();
-            sYear.Reverse();
-            foreach (int s in sYear)
-                cbxEntryYear.Items.Add(s + "");
-
-
-            int iSY = int.Parse(K12.Data.School.DefaultSchoolYear);
-
-            if (sYear.Contains(iSY))
-            {
-                cbxEntryYear.Text = iSY + "";
-                LoadDataByEntryYear(cbxEntryYear.Text);
-            }
-
+            LoadData();
         }
 
-        private void LoadDataByEntryYear(string entryYear)
+        private void LoadData()
         {
-            itemPanel1.Items.Clear();
-            lblGroupName.Text = "";
-            dgData.Rows.Clear();
-            _SelectButton = null;
+            string noSchoolYear = "未分類";
+            Dictionary<string, Node> itemNodes = new Dictionary<string, Node>();
 
             foreach (GPlanInfo108 data in GP108List)
             {
-                if (data.EntrySchoolYear == entryYear)
+                string schoolYear = data.EntrySchoolYear;
+
+                if (string.IsNullOrEmpty(data.EntrySchoolYear))
                 {
-                    ButtonItem item = new ButtonItem(data.RefGPID, data.RefGPName);
-                    item.Tag = data;
-                    item.ImagePosition = eImagePosition.Left;
-                    item.ImageFixedSize = new Size(14, 14);
-                    item.Image = null;
-                    item.ButtonStyle = eButtonStyle.TextOnlyAlways;
-                    item.Click += new EventHandler(item_Click);
-                    itemPanel1.Items.Add(item);
+                    schoolYear = noSchoolYear;
                 }
+
+                if (!itemNodes.ContainsKey(schoolYear))
+                {
+                    itemNodes.Add(schoolYear, new Node());
+                    itemNodes[schoolYear].Text = (schoolYear == noSchoolYear) ? noSchoolYear : schoolYear + "學年度";
+                    itemNodes[schoolYear].TagString = (schoolYear == noSchoolYear) ? "" : schoolYear;
+                }
+
+                Node childNode = new Node();
+                childNode.Tag = data;
+                childNode.Text = data.RefGPName;
+                childNode.Name = data.RefGPName;
+
+                if (_AdvTreeExpandStatus.ContainsKey(itemNodes[schoolYear].TagString))
+                    itemNodes[schoolYear].Expanded = _AdvTreeExpandStatus[itemNodes[schoolYear].TagString];
+
+                itemNodes[schoolYear].Nodes.Add(childNode);
+            }
+
+            List<string> sortedKey = itemNodes.Keys.ToList<string>();
+            sortedKey.Sort(delegate (string key1, string key2)
+            {
+                if (key1 == "未分類") return 1;
+                if (key2 == "未分類") return -1;
+
+                string sort1 = key1.PadLeft(10, '0');
+                string sort2 = key2.PadLeft(10, '0');
+                return sort2.CompareTo(sort1);
+            });
+
+
+            // 把結果填入畫面
+            #region 把結果填入畫面
+            advTree1.BeginUpdate();
+            advTree1.Nodes.Clear();
+            foreach (string key in sortedKey)
+            {
+                advTree1.Nodes.Add(itemNodes[key]);
+            }
+
+            if (_AdvTreeExpandStatus.Count == 0)
+            {
+                if (advTree1.Nodes.Count > 0)
+                    advTree1.Nodes[0].Expand();
+            }
+
+            advTree1.EndUpdate();
+            #endregion 把結果填入畫面
+
+            if (_SelectItem != null)
+            {
+                advTree1.SelectedNode = _SelectItem;
             }
 
             LoadDataGridViewColumns();
-            itemPanel1.Refresh();
         }
-
-        private void item_Click(object sender, EventArgs e)
-        {
-            if (_SelectButton != null)
-                _SelectButton.Checked = false;
-
-            ButtonItem item = (ButtonItem)sender;
-            GPlanInfo108 info = (GPlanInfo108)item.Tag;
-
-            try
-            {
-                // 解析 XML
-                info.RefGPContentXml = XElement.Parse(info.RefGPContent);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            _SelectButton = item;
-            lblGroupName.Text = info.RefGPName;
-            item.Checked = true;
-
-            // 資料整理
-            Dictionary<string, List<XElement>> dataDict = new Dictionary<string, List<XElement>>();
-            foreach (XElement elm in info.RefGPContentXml.Elements("Subject"))
-            {
-                string idx = elm.Element("Grouping").Attribute("RowIndex").Value;
-
-                if (!dataDict.ContainsKey(idx))
-                    dataDict.Add(idx, new List<XElement>());
-
-                dataDict[idx].Add(elm);
-            }
-
-            // 取得採用班級
-            Dictionary<string, List<DataRow>> classRows = _da.GetGPlanRefClaasByID(info.RefGPID);
-
-
-            dgData.Rows.Clear();
-
-            // 填入資料
-            foreach (string idx in dataDict.Keys)
-            {
-                int rowIdx = dgData.Rows.Add();
-                XElement firstElm = null;
-                if (dataDict[idx].Count > 0)
-                {
-                    firstElm = dataDict[idx][0];
-                }
-
-                // 將資料存入 Tag
-                dgData.Rows[rowIdx].Tag = firstElm;
-
-                dgData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
-                dgData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
-                dgData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;
-
-                if (firstElm.Attribute("RequiredBy").Value == "部訂")
-                {
-                    dgData.Rows[rowIdx].Cells["校訂部定"].Value = "部定";
-                }
-                else
-                    dgData.Rows[rowIdx].Cells["校訂部定"].Value = firstElm.Attribute("RequiredBy").Value;
-
-                dgData.Rows[rowIdx].Cells["必選修"].Value = firstElm.Attribute("Required").Value;
-
-                foreach (XElement elmD in dataDict[idx])
-                {
-                    try
-                    {
-
-                        if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "1")
-                        {
-                            dgData.Rows[rowIdx].Cells["1上"].Value = elmD.Attribute("學分").Value;
-                        }
-
-                        if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "2")
-                        {
-                            dgData.Rows[rowIdx].Cells["1下"].Value = elmD.Attribute("學分").Value;
-                        }
-
-                        if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "1")
-                        {
-                            dgData.Rows[rowIdx].Cells["2上"].Value = elmD.Attribute("學分").Value;
-                        }
-
-                        if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "2")
-                        {
-                            dgData.Rows[rowIdx].Cells["2下"].Value = elmD.Attribute("學分").Value;
-                        }
-
-                        if (elmD.Attribute("GradeYear").Value == "3" && elmD.Attribute("Semester").Value == "1")
-                        {
-                            dgData.Rows[rowIdx].Cells["3上"].Value = elmD.Attribute("學分").Value;
-                        }
-
-                        if (elmD.Attribute("GradeYear").Value == "3" && elmD.Attribute("Semester").Value == "2")
-                        {
-                            dgData.Rows[rowIdx].Cells["3下"].Value = elmD.Attribute("學分").Value;
-                        }
-
-
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                }
-
-                dgData.Rows[rowIdx].Cells["不需評分"].Value = "否";
-                dgData.Rows[rowIdx].Cells["不計學分"].Value = "否";
-
-                if (firstElm.Attribute("NotIncludedInCalc").Value == "True")
-                    dgData.Rows[rowIdx].Cells["不需評分"].Value = "是";
-
-                if (firstElm.Attribute("NotIncludedInCredit").Value == "True")
-                    dgData.Rows[rowIdx].Cells["不計學分"].Value = "是";
-
-                dgData.Rows[rowIdx].Cells["開課方式"].Value = firstElm.Attribute("開課方式").Value;
-                dgData.Rows[rowIdx].Cells["課程代碼"].Value = firstElm.Attribute("課程代碼").Value;
-            }
-
-
-
-
-
-            listViewEx1.SuspendLayout();
-            listViewEx1.Items.Clear();
-            listViewEx1.Groups.Clear();
-
-            foreach (string key in classRows.Keys)
-            {
-                string groupKey;
-
-                groupKey = key + "　年級";
-
-                foreach (DataRow dr in classRows[key])
-                {
-                    ListViewGroup group = listViewEx1.Groups[groupKey];
-                    if (group == null)
-                        group = listViewEx1.Groups.Add(groupKey, groupKey);
-
-                    string c_name = dr["class_name"] + "(" + dr["stud_cot"] + ")";
-                    ListViewItem lvi = new ListViewItem(c_name, 0, group);
-                    listViewEx1.Items.Add(lvi);
-                }
-            }
-            listViewEx1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listViewEx1.ResumeLayout();
-        }
-
+             
         private void _bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取課程規劃表...", e.ProgressPercentage);
@@ -261,9 +138,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmGPlanConfig108_Load(object sender, EventArgs e)
         {
-            cbxEntryYear.Enabled = btnSave.Enabled = false;
-            cbxEntryYear.DropDownStyle = ComboBoxStyle.DropDownList;
-
+            advTree1.Nodes.Clear();
             _bgWorker.RunWorkerAsync();
         }
 
@@ -408,14 +283,189 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
-        private void tabControl1_Click(object sender, EventArgs e)
+        private void advTree1_Click(object sender, EventArgs e)
         {
+            
+        }
+
+        private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
+        {
+            this.lblGroupName.Text = "";
+            dgData.Rows.Clear();
+
+            if (!(e.Node.Tag is GPlanInfo108))
+            {
+                _SelectItem = null;
+                return;
+            }
+
+            if (_SelectItem != null)
+                _SelectItem.Checked = false;
+
+            _SelectItem = e.Node;            
+            _SelectItem.Checked = true;
+
+            GPlanInfo108 info = (GPlanInfo108)_SelectItem.Tag;
+
+            dgData.Rows.Clear();
+
+            try
+            {
+                // 解析 XML
+                info.RefGPContentXml = XElement.Parse(info.RefGPContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+            lblGroupName.Text = info.RefGPName;
+
+            // 資料整理
+            Dictionary<string, List<XElement>> dataDict = new Dictionary<string, List<XElement>>();
+            foreach (XElement elm in info.RefGPContentXml.Elements("Subject"))
+            {
+                string idx = elm.Element("Grouping").Attribute("RowIndex").Value;
+
+                if (!dataDict.ContainsKey(idx))
+                    dataDict.Add(idx, new List<XElement>());
+
+                dataDict[idx].Add(elm);
+            }
+
+            // 取得採用班級
+            Dictionary<string, List<DataRow>> classRows = _da.GetGPlanRefClaasByID(info.RefGPID);
+
+
+            dgData.Rows.Clear();
+
+            // 填入資料
+            foreach (string idx in dataDict.Keys)
+            {
+                int rowIdx = dgData.Rows.Add();
+                XElement firstElm = null;
+                if (dataDict[idx].Count > 0)
+                {
+                    firstElm = dataDict[idx][0];
+                }
+
+                // 將資料存入 Tag
+                dgData.Rows[rowIdx].Tag = firstElm;
+
+                dgData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
+                dgData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
+                dgData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;
+
+                if (firstElm.Attribute("RequiredBy").Value == "部訂")
+                {
+                    dgData.Rows[rowIdx].Cells["校訂部定"].Value = "部定";
+                }
+                else
+                    dgData.Rows[rowIdx].Cells["校訂部定"].Value = firstElm.Attribute("RequiredBy").Value;
+
+                dgData.Rows[rowIdx].Cells["必選修"].Value = firstElm.Attribute("Required").Value;
+
+                foreach (XElement elmD in dataDict[idx])
+                {
+                    try
+                    {
+
+                        if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "1")
+                        {
+                            dgData.Rows[rowIdx].Cells["1上"].Value = GetCreditAttr(elmD);
+                        }
+
+                        if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "2")
+                        {
+                            dgData.Rows[rowIdx].Cells["1下"].Value = GetCreditAttr(elmD);
+                        }
+
+                        if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "1")
+                        {
+                            dgData.Rows[rowIdx].Cells["2上"].Value = GetCreditAttr(elmD);
+                        }
+
+                        if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "2")
+                        {
+                            dgData.Rows[rowIdx].Cells["2下"].Value = GetCreditAttr(elmD);
+
+                        }
+
+                        if (elmD.Attribute("GradeYear").Value == "3" && elmD.Attribute("Semester").Value == "1")
+                        {
+                            dgData.Rows[rowIdx].Cells["3上"].Value = GetCreditAttr(elmD);
+
+                        }
+
+                        if (elmD.Attribute("GradeYear").Value == "3" && elmD.Attribute("Semester").Value == "2")
+                        {
+                            dgData.Rows[rowIdx].Cells["3下"].Value = GetCreditAttr(elmD);
+                        }
+
+
+                    }
+                    catch (Exception ex) {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+
+                dgData.Rows[rowIdx].Cells["不需評分"].Value = "否";
+                dgData.Rows[rowIdx].Cells["不計學分"].Value = "否";
+
+                if (firstElm.Attribute("NotIncludedInCalc").Value == "True")
+                    dgData.Rows[rowIdx].Cells["不需評分"].Value = "是";
+
+                if (firstElm.Attribute("NotIncludedInCredit").Value == "True")
+                    dgData.Rows[rowIdx].Cells["不計學分"].Value = "是";
+
+                dgData.Rows[rowIdx].Cells["開課方式"].Value = firstElm.Attribute("開課方式").Value;
+                dgData.Rows[rowIdx].Cells["課程代碼"].Value = firstElm.Attribute("課程代碼").Value;
+            }
+            
+
+            listViewEx1.SuspendLayout();
+            listViewEx1.Items.Clear();
+            listViewEx1.Groups.Clear();
+
+            foreach (string key in classRows.Keys)
+            {
+                string groupKey;
+
+                groupKey = key + "　年級";
+
+                foreach (DataRow dr in classRows[key])
+                {
+                    ListViewGroup group = listViewEx1.Groups[groupKey];
+                    if (group == null)
+                        group = listViewEx1.Groups.Add(groupKey, groupKey);
+
+                    string c_name = dr["class_name"] + "(" + dr["stud_cot"] + ")";
+                    ListViewItem lvi = new ListViewItem(c_name, 0, group);
+                    listViewEx1.Items.Add(lvi);
+                }
+            }
+            listViewEx1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listViewEx1.ResumeLayout();
 
         }
 
-        private void cbxEntryYear_SelectedIndexChanged(object sender, EventArgs e)
+        private string GetCreditAttr(XElement elm)
         {
-            LoadDataByEntryYear(cbxEntryYear.Text);
+            string value = "";
+
+            if (elm.Attribute("學分") != null)
+            {
+                value = elm.Attribute("學分").Value;
+            }else
+            {
+                if (elm.Attribute("Credit") != null)
+                {
+                    value = elm.Attribute("Credit").Value;
+                }
+            }
+
+            return value;
         }
+
     }
 }

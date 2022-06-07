@@ -80,6 +80,11 @@
       <HintPath>Library\FISCA.DSAUtil.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.LogAgent, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\FISCA.LogAgent.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA.Permission, Version=1.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\FISCA.Permission.dll</HintPath>
@@ -136,6 +141,7 @@
     <Compile Include="DAO\GPlanInfo.cs" />
     <Compile Include="DAO\GPlanInfo108.cs" />
     <Compile Include="DAO\MOECourseCodeInfo.cs" />
+    <Compile Include="DAO\MOECourseCodeSumCreditInfo.cs" />
     <Compile Include="DAO\rptGPlanClassChkInfo.cs" />
     <Compile Include="DAO\rptGPlanCourseChkInfo.cs" />
     <Compile Include="DAO\rptSCAttendCodeChkInfo.cs" />
@@ -172,7 +178,9 @@
     <Compile Include="Report\frmUploadCourseCode.Designer.cs">
       <DependentUpon>frmUploadCourseCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Report\rptDBGPlanXML.cs" />
     <Compile Include="Report\rptMOECourseCode.cs" />
+    <Compile Include="Report\rptMOECourseCodeSumCredit.cs" />
     <Compile Include="UIForm\frmCheckGPlanCourseCode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -322,6 +330,7 @@
     <None Include="Template\成績名冊樣板%28108課綱%29.xlsx" />
     <None Include="Template\檢查班級群科班設定樣版.xlsx" />
     <None Include="Template\班級課程規劃表資料樣版.xlsx" />
+    <None Include="Template\群科班學分數總計樣版.xlsx" />
     <None Include="Template\課程代碼原始資料樣板.xlsx" />
     <None Include="Template\課程代碼表樣版.xlsx" />
     <None Include="Template\課程規劃表開課檢核樣版.xlsx" />
@@ -358,6 +367,9 @@
     <Content Include="Library\FISCA.DSAUtil.dll" />
     <Content Include="Library\FISCA.DSAUtil.pdb" />
     <Content Include="Library\FISCA.DSAUtil.xml" />
+    <Content Include="Library\FISCA.LogAgent.dll" />
+    <Content Include="Library\FISCA.LogAgent.pdb" />
+    <Content Include="Library\FISCA.LogAgent.xml" />
     <Content Include="Library\FISCA.pdb" />
     <Content Include="Library\FISCA.Permission.dll" />
     <Content Include="Library\FISCA.Permission.pdb" />
