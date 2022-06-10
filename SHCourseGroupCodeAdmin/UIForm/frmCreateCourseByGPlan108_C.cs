@@ -49,11 +49,22 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (e.Cancelled)
             {
                 MsgBox.Show("班級：" + string.Join(",", _errClassList.ToArray()) + "，使用課程規劃非108適用，無法產生。");
+                ControlEnable(true);
             }
             else
             {
                 ControlEnable(true);              
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成");
+
+                frmCreateCourseByGPlan108_C_Detail fcc = new frmCreateCourseByGPlan108_C_Detail();
+                fcc.SetSchoolYearSemester(_SchoolYear, _Semester);
+                fcc.SetSubjectCourseInfoDict(_SubjectCourseInfoDict);
+
+                if (fcc.ShowDialog() == DialogResult.OK)
+                {
+                    this.Close();
+                }
+
             }
         }
 
@@ -198,14 +209,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            frmCreateCourseByGPlan108_C_Detail fcc = new frmCreateCourseByGPlan108_C_Detail();
-            fcc.SetSchoolYearSemester(_SchoolYear, _Semester);
-            fcc.SetSubjectCourseInfoDict(_SubjectCourseInfoDict);
-
-            if (fcc.ShowDialog() == DialogResult.OK)
-            {
-                this.Close();
-            }
+            // 傳入所選的學年度、學期
+            _SchoolYear = cboSchoolYear.Text;
+            _Semester = cboSemester.Text;
+            
+            ControlEnable(false);
+            _bwWorker.RunWorkerAsync();            
         }
 
         private void frmCreateCourseByGPlan108_C_Load(object sender, EventArgs e)
@@ -229,10 +238,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
 
             _Semester = cboSemester.Text;
-            _SchoolYear = cboSchoolYear.Text;
-
-            ControlEnable(false);
-            _bwWorker.RunWorkerAsync();
+            _SchoolYear = cboSchoolYear.Text;            
         }
     }
 }
