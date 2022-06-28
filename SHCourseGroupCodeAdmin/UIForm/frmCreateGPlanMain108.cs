@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
 using System.Xml.Linq;
+using FISCA.LogAgent;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -93,12 +94,30 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _GPlanInfo108List = _da.GPlanInfo108List();
             _bgWorker.ReportProgress(30);
 
-            // 解析課程代碼大表 XML
+            // 處理綜合型高中學術學程1年級不分群不分班群，群科班代碼包含這串 M111960
+            // 請空田值
+            Global._GPlanInfo108MDict.Clear();
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
                 data.ParseMOEXml();
-
                 data.ParseRefGPContentXml();
+
+                if (data.GDCCode.IndexOf("M111960") > -1)
+                {
+                    // 取前面學年度
+                    string key = data.GDCCode.Substring(0, 3);
+                    if (!Global._GPlanInfo108MDict.ContainsKey(key))
+                        Global._GPlanInfo108MDict.Add(key, data);
+                }
+            }
+            _bgWorker.ReportProgress(50);
+
+            // 解析課程代碼大表 XML
+            foreach (GPlanInfo108 data in _GPlanInfo108List)
+            {
+                //data.ParseMOEXml();
+
+                //data.ParseRefGPContentXml();
 
                 data.CheckData();
 
@@ -111,6 +130,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     data.Status = "新增";
 
                 if (data.calSubjDiffCount() > 0 && !string.IsNullOrEmpty(data.RefGPID))
+                    data.Status = "更新";
+
+                if (data.needUpdateEntryYear)
                     data.Status = "更新";
 
                 data.ParseOrderByInt();
@@ -134,7 +156,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void btnCreate_Click(object sender, EventArgs e)
         {
             ControlEnable(false);
-
             try
             {
                 List<GPlanInfo108> insertDataList = new List<GPlanInfo108>();
@@ -149,14 +170,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         updateDataList.Add(data);
                 }
 
+                if (insertDataList.Count == 0 && updateDataList.Count == 0)
+                {
+                    MsgBox.Show("沒有新增或更新資料。");
+                    ControlEnable(true);
+                    return;
+                }
+
                 // 新增資料
                 List<string> insertSQLList = new List<string>();
                 if (insertDataList.Count > 0)
-                {                  
+                {
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
 
                     try
                     {
+                        StringBuilder sbIns = new StringBuilder();
+                        sbIns.AppendLine("新增課程規劃表資料：");
+
                         foreach (GPlanInfo108 data in insertDataList)
                         {
                             string sql = "" +
@@ -170,8 +201,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
 " ,'" + data.GDCCode + "' " +
 " ); ";
                             insertSQLList.Add(sql);
+
+                            // log
+                            sbIns.AppendLine("課程規劃表名稱：" + data.GDCName + "，群科班代碼：" + data.GDCCode + "。");
                         }
                         uh.Execute(insertSQLList);
+
+                        // log data
+                        ApplicationLog.Log("課程規劃表.新增課程規劃表", sbIns.ToString());
+
                         MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
                     }
                     catch (Exception ex)
@@ -183,11 +221,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 更新資料
                 List<string> updateSQLList = new List<string>();
                 if (updateDataList.Count > 0)
-                {                    
+                {
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
 
                     try
                     {
+                        StringBuilder sbUpd = new StringBuilder();
+                        sbUpd.AppendLine("更新課程規劃表資料：");
+
                         foreach (GPlanInfo108 data in updateDataList)
                         {
                             XElement GPlanXml = new XElement("GraduationPlan");
@@ -275,21 +316,33 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                             GPlanXml.ReplaceAll(orderList);
                             if (data.GDCCode.Length > 3)
+                            {
                                 GPlanXml.SetAttributeValue("EntryYear", data.GDCCode.Substring(0, 3));
+
+                                // 舊有
+                                GPlanXml.SetAttributeValue("SchoolYear", data.GDCCode.Substring(0, 3));
+                            }
+
 
                             data.RefGPContent = GPlanXml.ToString();
 
 
                             if (!string.IsNullOrEmpty(data.RefGPID))
                             {
-                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID+";";
-                                
+
+                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID + ";";
+
                                 updateSQLList.Add(sql);
-                            }                            
+                                // log
+                                sbUpd.AppendLine("課程規劃表名稱：" + data.GDCName + "，群科班代碼：" + data.GDCCode + "。");
+                            }
                         }
 
                         // 更新資料
                         uh.Execute(updateSQLList);
+                        // log data
+                        ApplicationLog.Log("課程規劃表.更新課程規劃表", sbUpd.ToString());
+
                         MsgBox.Show("更新" + updateSQLList.Count + "筆課程規劃表");
                     }
                     catch (Exception ex)
@@ -298,7 +351,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
                 }
 
-               if(insertSQLList.Count > 0 || updateSQLList.Count > 0)
+                if (insertSQLList.Count > 0 || updateSQLList.Count > 0)
                 {
                     ControlEnable(false);
                     _bgWorker.RunWorkerAsync();
@@ -359,7 +412,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     GPlanInfo108 data = dgData.Rows[e.RowIndex].Tag as GPlanInfo108;
                     if (data != null)
                     {
-                         frmCreateGPlanItemSetup108 fgpd = new frmCreateGPlanItemSetup108();
+                        frmCreateGPlanItemSetup108 fgpd = new frmCreateGPlanItemSetup108();
                         fgpd.SetGPlanInfo(data);
 
                         if (fgpd.ShowDialog() == DialogResult.OK)
@@ -374,6 +427,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     GPlanDataCount();
                 }
             }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(dgData.CurrentCell.ColumnIndex + ":" + dgData.CurrentCell.RowIndex);
         }
     }
 }

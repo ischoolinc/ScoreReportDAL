@@ -134,6 +134,7 @@
     <Compile Include="DAO\CourseCodeRoot.cs" />
     <Compile Include="DAO\CourseCodeTagHelper.cs" />
     <Compile Include="DAO\CourseInfoChk.cs" />
+    <Compile Include="DAO\CreditInfo.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\GPCourseInfo.cs" />
     <Compile Include="DAO\GPlanCourseInfo108.cs" />

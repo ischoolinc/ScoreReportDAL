@@ -12,6 +12,7 @@ using SHCourseGroupCodeAdmin.DAO;
 using DevComponents.DotNetBar;
 using System.Xml.Linq;
 using DevComponents.AdvTree;
+using FISCA.LogAgent;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -20,6 +21,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
         BackgroundWorker _bgWorker;
         DataAccess _da;
         List<GPlanInfo108> GP108List;
+        GPlanInfo108 SelectInfo = null;
+        int dgColIdx = 0, dgRowIdx = 0;
 
         private Node _SelectItem;
         Dictionary<string, bool> _AdvTreeExpandStatus = new Dictionary<string, bool>();
@@ -117,7 +120,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             LoadDataGridViewColumns();
         }
-             
+
         private void _bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取課程規劃表...", e.ProgressPercentage);
@@ -150,7 +153,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 DataGridViewTextBoxColumn tbDomain = new DataGridViewTextBoxColumn();
                 tbDomain.Name = "領域";
-                tbDomain.Width = 70;
+                tbDomain.Width = 80;
                 tbDomain.HeaderText = "領域";
                 tbDomain.ReadOnly = true;
                 tbDomain.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -164,21 +167,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 DataGridViewTextBoxColumn tbSubjectName = new DataGridViewTextBoxColumn();
                 tbSubjectName.Name = "科目名稱";
-                tbSubjectName.Width = 150;
+                tbSubjectName.Width = 160;
                 tbSubjectName.HeaderText = "科目名稱";
                 tbSubjectName.ReadOnly = true;
                 tbSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbRequiredBy = new DataGridViewTextBoxColumn();
                 tbRequiredBy.Name = "校訂部定";
-                tbRequiredBy.Width = 60;
+                tbRequiredBy.Width = 40;
                 tbRequiredBy.HeaderText = "校訂部定";
                 tbRequiredBy.ReadOnly = true;
                 tbRequiredBy.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbIsRequired = new DataGridViewTextBoxColumn();
                 tbIsRequired.Name = "必選修";
-                tbIsRequired.Width = 60;
+                tbIsRequired.Width = 40;
                 tbIsRequired.HeaderText = "必選修";
                 tbIsRequired.ReadOnly = true;
                 tbIsRequired.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -213,7 +216,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 DataGridViewTextBoxColumn tbGS31 = new DataGridViewTextBoxColumn();
                 tbGS31.Name = "3上";
-                tbGS31.Width = 60;
+                tbGS31.Width = 40;
                 tbGS31.HeaderText = "3上";
                 tbGS31.ReadOnly = true;
                 tbGS31.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -227,14 +230,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 DataGridViewTextBoxColumn tbNotIncludedInCalc = new DataGridViewTextBoxColumn();
                 tbNotIncludedInCalc.Name = "不需評分";
-                tbNotIncludedInCalc.Width = 60;
+                tbNotIncludedInCalc.Width = 40;
                 tbNotIncludedInCalc.HeaderText = "不需評分";
                 tbNotIncludedInCalc.ReadOnly = true;
                 tbNotIncludedInCalc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 DataGridViewTextBoxColumn tbNotIncludedInCredit = new DataGridViewTextBoxColumn();
                 tbNotIncludedInCredit.Name = "不計學分";
-                tbNotIncludedInCredit.Width = 60;
+                tbNotIncludedInCredit.Width = 40;
                 tbNotIncludedInCredit.HeaderText = "不計學分";
                 tbNotIncludedInCredit.ReadOnly = true;
                 tbNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -242,7 +245,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 DataGridViewTextBoxColumn tbOpenStatus = new DataGridViewTextBoxColumn();
                 tbOpenStatus.Name = "開課方式";
-                tbOpenStatus.Width = 60;
+                tbOpenStatus.Width = 40;
                 tbOpenStatus.HeaderText = "開課方式";
                 tbOpenStatus.ReadOnly = true;
                 tbOpenStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -285,13 +288,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void advTree1_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
         {
             this.lblGroupName.Text = "";
             dgData.Rows.Clear();
+            SelectInfo = null;
 
             if (!(e.Node.Tag is GPlanInfo108))
             {
@@ -302,28 +306,29 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (_SelectItem != null)
                 _SelectItem.Checked = false;
 
-            _SelectItem = e.Node;            
+            _SelectItem = e.Node;
             _SelectItem.Checked = true;
 
-            GPlanInfo108 info = (GPlanInfo108)_SelectItem.Tag;
+            SelectInfo = (GPlanInfo108)_SelectItem.Tag;
 
             dgData.Rows.Clear();
 
             try
             {
                 // 解析 XML
-                info.RefGPContentXml = XElement.Parse(info.RefGPContent);
+                if (SelectInfo.RefGPContentXml == null)                
+                    SelectInfo.RefGPContentXml = XElement.Parse(SelectInfo.RefGPContent);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
-            lblGroupName.Text = info.RefGPName;
+
+            lblGroupName.Text = SelectInfo.RefGPName;
 
             // 資料整理
             Dictionary<string, List<XElement>> dataDict = new Dictionary<string, List<XElement>>();
-            foreach (XElement elm in info.RefGPContentXml.Elements("Subject"))
+            foreach (XElement elm in SelectInfo.RefGPContentXml.Elements("Subject"))
             {
                 string idx = elm.Element("Grouping").Attribute("RowIndex").Value;
 
@@ -334,7 +339,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
 
             // 取得採用班級
-            Dictionary<string, List<DataRow>> classRows = _da.GetGPlanRefClaasByID(info.RefGPID);
+            Dictionary<string, List<DataRow>> classRows = _da.GetGPlanRefClaasByID(SelectInfo.RefGPID);
 
 
             dgData.Rows.Clear();
@@ -369,42 +374,60 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     try
                     {
-
                         if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "1")
                         {
-                            dgData.Rows[rowIdx].Cells["1上"].Value = GetCreditAttr(elmD);
+                            CreditInfo c1 = GetCreditAttr(elmD);
+                            dgData.Rows[rowIdx].Cells["1上"].Tag = elmD;
+                            dgData.Rows[rowIdx].Cells["1上"].Style.BackColor = c1.BackgroundColor;
+                            dgData.Rows[rowIdx].Cells["1上"].Value = c1.StringValue;
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "2")
                         {
-                            dgData.Rows[rowIdx].Cells["1下"].Value = GetCreditAttr(elmD);
+                            CreditInfo c1 = GetCreditAttr(elmD);
+                            dgData.Rows[rowIdx].Cells["1下"].Tag = elmD;
+                            dgData.Rows[rowIdx].Cells["1下"].Style.BackColor = c1.BackgroundColor;
+                            dgData.Rows[rowIdx].Cells["1下"].Value = c1.StringValue;
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "1")
                         {
-                            dgData.Rows[rowIdx].Cells["2上"].Value = GetCreditAttr(elmD);
+                            CreditInfo c1 = GetCreditAttr(elmD);
+                            dgData.Rows[rowIdx].Cells["2上"].Tag = elmD;
+                            dgData.Rows[rowIdx].Cells["2上"].Style.BackColor = c1.BackgroundColor;
+                            dgData.Rows[rowIdx].Cells["2上"].Value = c1.StringValue;
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "2")
                         {
-                            dgData.Rows[rowIdx].Cells["2下"].Value = GetCreditAttr(elmD);
+                            CreditInfo c1 = GetCreditAttr(elmD);
+                            dgData.Rows[rowIdx].Cells["2下"].Tag = elmD;
+                            dgData.Rows[rowIdx].Cells["2下"].Style.BackColor = c1.BackgroundColor;
+                            dgData.Rows[rowIdx].Cells["2下"].Value = c1.StringValue;
 
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "3" && elmD.Attribute("Semester").Value == "1")
                         {
-                            dgData.Rows[rowIdx].Cells["3上"].Value = GetCreditAttr(elmD);
+                            CreditInfo c1 = GetCreditAttr(elmD);
+                            dgData.Rows[rowIdx].Cells["3上"].Tag = elmD;
+                            dgData.Rows[rowIdx].Cells["3上"].Style.BackColor = c1.BackgroundColor;
+                            dgData.Rows[rowIdx].Cells["3上"].Value = c1.StringValue;
 
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "3" && elmD.Attribute("Semester").Value == "2")
                         {
-                            dgData.Rows[rowIdx].Cells["3下"].Value = GetCreditAttr(elmD);
+                            CreditInfo c1 = GetCreditAttr(elmD);
+                            dgData.Rows[rowIdx].Cells["3下"].Tag = elmD;
+                            dgData.Rows[rowIdx].Cells["3下"].Style.BackColor = c1.BackgroundColor;
+                            dgData.Rows[rowIdx].Cells["3下"].Value = c1.StringValue;
                         }
 
 
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         Console.WriteLine(ex.Message);
                     }
                 }
@@ -420,8 +443,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 dgData.Rows[rowIdx].Cells["開課方式"].Value = firstElm.Attribute("開課方式").Value;
                 dgData.Rows[rowIdx].Cells["課程代碼"].Value = firstElm.Attribute("課程代碼").Value;
+
             }
-            
+
 
             listViewEx1.SuspendLayout();
             listViewEx1.Items.Clear();
@@ -449,23 +473,196 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         }
 
-        private string GetCreditAttr(XElement elm)
+        private CreditInfo GetCreditAttr(XElement elm)
         {
-            string value = "";
+            CreditInfo value = new CreditInfo();
+            if (elm != null)
+            {
+                int idx = -1;
 
-            if (elm.Attribute("學分") != null)
-            {
-                value = elm.Attribute("學分").Value;
-            }else
-            {
-                if (elm.Attribute("Credit") != null)
+                if (elm.Attribute("GradeYear").Value == "1" && elm.Attribute("Semester").Value == "1")
+                    idx = 0;
+
+                if (elm.Attribute("GradeYear").Value == "1" && elm.Attribute("Semester").Value == "2")
+                    idx = 1;
+
+                if (elm.Attribute("GradeYear").Value == "2" && elm.Attribute("Semester").Value == "1")
+                    idx = 2;
+
+                if (elm.Attribute("GradeYear").Value == "2" && elm.Attribute("Semester").Value == "2")
+                    idx = 3;
+
+                if (elm.Attribute("GradeYear").Value == "3" && elm.Attribute("Semester").Value == "1")
+                    idx = 4;
+
+                if (elm.Attribute("GradeYear").Value == "3" && elm.Attribute("Semester").Value == "2")
+                    idx = 5;
+
+
+                // 對開初始
+                value.isOpenD = false;
+                // null 表示使用者未設定
+                value.isSetOpenD = null;
+                value.BackgroundColor = Color.White;
+
+                if (elm.Attribute("設定對開") != null)
                 {
-                    value = elm.Attribute("Credit").Value;
+                    if (elm.Attribute("設定對開").Value == "是")
+                        value.isSetOpenD = true;
+
+                    if (elm.Attribute("設定對開").Value == "否")
+                        value.isSetOpenD = false;
+
+                    if (elm.Attribute("設定對開").Value == "")
+                        value.isSetOpenD = null;
+                }
+
+                if (elm.Attribute("授課學期學分") != null)
+                {
+                    char[] cc = elm.Attribute("授課學期學分").Value.ToCharArray();
+
+                    if (idx < cc.Length)
+                    {
+                        value.StringValue = cc[idx].ToString();
+                        value.isOpenD = true;
+
+                        int cr;
+                        if (int.TryParse(value.StringValue, out cr))
+                        {
+                            value.isOpenD = false;
+                        }
+                        else
+                            value.isOpenD = true;
+                    }
+
+                }
+
+                // 先判斷使用者設定對開
+                if (value.isSetOpenD.HasValue)
+                {
+                    // 設定 是
+                    if (value.isSetOpenD.Value)
+                        value.BackgroundColor = Color.LightPink;
+                    else
+                    {
+                        // 設定否
+                        if (value.isSetOpenD.Value == false)
+                        {
+                            value.BackgroundColor = Color.White;
+                        }
+                        else
+                        {
+                            if (value.isOpenD)
+                            {
+                                value.BackgroundColor = Color.Yellow;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // 使用者未設
+                    // 程式判斷對開
+                    if (value.isOpenD)
+                    {
+                        value.BackgroundColor = Color.Yellow;
+                    }
                 }
             }
 
             return value;
         }
 
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+            if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
+            {
+                XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
+                if (elm != null)
+                {
+                    elm.SetAttributeValue("設定對開", "是");
+                }
+                CreditInfo c1 = GetCreditAttr(elm);
+                dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
+                dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
+
+                // 更新資料
+                UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:是");
+            }
+        }
+
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
+            {
+                XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
+                if (elm != null)
+                {
+                    elm.SetAttributeValue("設定對開", "否");
+                }
+
+                CreditInfo c1 = GetCreditAttr(elm);
+                dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
+                dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
+                // 更新資料
+                UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:否");
+            }
+        }
+
+        private void dgData_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dgColIdx = e.ColumnIndex;
+                dgRowIdx = e.RowIndex;
+            }
+        }
+
+        private string UpdateGPlaDataSubjectOpen(GPlanInfo108 item, XElement updateData, string logMsg)
+        {
+            string value = "";
+            if (item != null)
+            {
+                try
+                {
+                    // 比對資料並更新設定對開
+                    foreach (XElement sElm in item.RefGPContentXml.Elements("Subject"))
+                    {
+                        if (sElm.Attribute("Semester").Value == updateData.Attribute("Semester").Value &&
+                            sElm.Attribute("GradeYear").Value == updateData.Attribute("GradeYear").Value &&
+                            sElm.Attribute("Domain").Value == updateData.Attribute("Domain").Value &&
+                            sElm.Attribute("課程代碼").Value == updateData.Attribute("課程代碼").Value &&
+                            sElm.Attribute("授課學期學分").Value == updateData.Attribute("授課學期學分").Value)
+                        {
+                            sElm.SetAttributeValue("設定對開", updateData.Attribute("設定對開").Value);
+                        }
+                    }
+
+                    // 回寫資料
+                    _da.UpdateGPlanXML(item.RefGPID, item.RefGPContentXml.ToString());
+                    //item.RefGPContent = item.RefGPContentXml.ToString();
+                    _SelectItem.Tag = item;                    
+                    
+                    ApplicationLog.Log("課程規劃表(108適用)", logMsg);
+                }
+                catch (Exception ex)
+                {
+                    value = ex.Message;
+                }
+            }
+            else
+            {
+                value = "沒有資料";
+            }
+
+            return value;
+        }
     }
 }

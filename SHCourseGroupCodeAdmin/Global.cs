@@ -149,5 +149,9 @@ namespace SHCourseGroupCodeAdmin
                 }
             }
         }
+
+
+        // 暫存綜合型高中學術學程1年級不分群不分班群，群科班代碼包含這串 M111960
+        public static Dictionary<string, DAO.GPlanInfo108> _GPlanInfo108MDict = new Dictionary<string, DAO.GPlanInfo108>();
     }
 }

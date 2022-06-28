@@ -60,6 +60,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// </summary>
         public List<DataRow> GPlanList = new List<DataRow>();
 
+
+        public bool needUpdateEntryYear = false;
+
         /// <summary>
         /// 課程代碼代表原始資料
         /// </summary>
@@ -313,7 +316,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         otStr = "原班";
 
                     subjElm.SetAttributeValue("開課方式", otStr);
-                    
+
                     subjElm.SetAttributeValue("領域名稱", "");
                     subjElm.SetAttributeValue("課程名稱", data.subject_name);
                     subjElm.SetAttributeValue("OpenType", data.open_type);
@@ -525,6 +528,95 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 用課程規劃表比對大表沒有需要刪除
             List<string> DelList = new List<string>();
 
+            Dictionary<string, List<XElement>> CourseCodeMDict = new Dictionary<string, List<XElement>>();
+
+            // 綜合型高中學術學程1年級不分群不分班群，群科班代碼包含這串 M111960
+            // 找出綜高 M            
+            if (!GDCCode.Contains("M111960"))
+            {
+                if (GDCCode.Contains("M"))
+                {
+                    string key = GDCCode.Substring(0, 3);
+                    // 檢查 是否有一年籍資料
+                    bool hasGradeYear1 = false;
+
+                    if (Global._GPlanInfo108MDict.ContainsKey(key))
+                    {
+                        if (RefGPContentXml != null)
+                        {
+                            foreach (XElement elm in RefGPContentXml.Elements("Subject"))
+                            {
+                                if (elm.Attribute("GradeYear") != null && elm.Attribute("GradeYear").Value == "1")
+                                {
+                                    // 表示有一年級的資料
+                                    hasGradeYear1 = true;
+                                }                                
+                            }
+                        }
+
+
+                        if (hasGradeYear1)
+                        {
+                            Console.WriteLine("已有資料。");
+                        }
+                        else
+                        {
+                            GPlanInfo108 AddGPinfo = Global._GPlanInfo108MDict[key];
+                            CourseCodeMDict.Clear();
+
+                            // 整理新增資料
+                            foreach (XElement elm in AddGPinfo.MOEXml.Elements("Subject"))
+                            {
+                                string coCode = GetAttribute(elm, "課程代碼");
+
+                                if (!CourseCodeMDict.ContainsKey(coCode))
+                                    CourseCodeMDict.Add(coCode, new List<XElement>());
+
+                                CourseCodeMDict[coCode].Add(elm);
+                            }
+                               
+                            // 新增資料
+                            foreach(string coCode in CourseCodeMDict.Keys)                                
+                            {
+                                if (CourseCodeMDict.ContainsKey(coCode))
+                                {
+                                    XElement elm = CourseCodeMDict[coCode][0];
+                                    chkSubjectInfo subj = new chkSubjectInfo();
+                                    subj.Domain = GetAttribute(elm, "Domain");
+                                    subj.Entry = GetAttribute(elm, "Entry");
+                                    subj.SubjectName = GetAttribute(elm, "SubjectName");
+
+                                    if (GetAttribute(elm, "RequiredBy") == "部訂")
+                                        subj.RequiredBy = "部定";
+                                    else
+                                        subj.RequiredBy = GetAttribute(elm, "RequiredBy");
+
+                                    subj.isRequired = GetAttribute(elm, "Required");
+                                    subj.CourseCode = GetAttribute(elm, "課程代碼");
+                                    subj.credit_period = GetAttribute(elm, "授課學期學分");
+                                    subj.OpenStatus = GetAttribute(elm, "開課方式");
+                                    subj.open_type = GetAttribute(elm, "OpenType");
+                                    subj.course_attr = GetAttribute(elm, "CourseAttr");
+                                    subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
+                                    subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+                                    elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
+                                    elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
+
+                                    subj.ProcessStatus = "新增";
+                                    subj.DiffStatusList.Add("缺");
+                                    subj.MOEXml = CourseCodeMDict[coCode];
+                                    subj.GDCCode = Global._GPlanInfo108MDict[key].GDCCode;
+                                    chkSubjectInfoList.Add(subj);
+                                }                                
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+
             // 新增資料
             if (MOEXml != null && RefGPContentXml == null)
             {
@@ -613,6 +705,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                         MOEXml.SetAttributeValue("SchoolYear", RefGPContentXml.Attribute("SchoolYear").Value);
                     }
 
+                    if (RefGPContentXml.Attribute("EntryYear") == null)
+                    {
+                        needUpdateEntryYear = true;
+                    }
+
 
                     foreach (XElement elm in MOEXml.Elements("Subject"))
                     {
@@ -679,6 +776,10 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     foreach (string gCo in GPlanDict.Keys)
                     {
+                        // 有綜高一年級部分班不刪除
+                        if (gCo.Contains("M111960"))
+                            continue;
+
                         if (!MOEDict.ContainsKey(gCo))
                             DelList.Add(gCo);
                     }
@@ -776,7 +877,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                             elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
                             elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
-                           
+
 
                             if (MOEDict[mCo].Count != GPlanDict[mCo].Count)
                             {
@@ -890,7 +991,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (subj.DiffStatusList.Count > 0)
                                 subj.ProcessStatus = "更新";
                             else
-                                subj.ProcessStatus = "略過";                            
+                                subj.ProcessStatus = "略過";
 
 
                             subj.GPlanXml = GPlanDict[mCo];

@@ -54,6 +54,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 ControlEnable(true);
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成");
+                frmCreateCourseByGPlan108_Detail fccd = new frmCreateCourseByGPlan108_Detail();
+                fccd.SetCClassCourseInfo(CClassCourseInfoList);
+                fccd.SetSchoolYearSemester(cboSchoolYear.Text, cboSemester.Text);
+                if (fccd.ShowDialog() == DialogResult.OK)
+                {
+                    this.Close();
+                }
             }
         }
 
@@ -96,8 +103,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         {
                             if (subjElm.Attribute("開課方式").Value == "原班")
                             {
-                                string credit = "";
-                                string Dcredit = ""; // 上下學分
+                                // 判斷對開
+                                bool isOpenD = false;
+
+                                // 使用者手動設定
+                                if (subjElm.Attribute("設定對開") != null)
+                                {
+                                    if (subjElm.Attribute("設定對開").Value == "是")
+                                        isOpenD = true;
+                                }
 
                                 // 處理對開
                                 if (subjElm.Attribute("授課學期學分") != null)
@@ -105,6 +119,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     if (subjElm.Attribute("授課學期學分").Value.Length > 5)
                                     {
                                         string credit_period = subjElm.Attribute("授課學期學分").Value;
+                                        string credit = "0";
                                         char[] cp = credit_period.ToArray();
 
                                         if (data.GradeYear == "1" && _Semester == "1")
@@ -125,80 +140,39 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         if (data.GradeYear == "3" && _Semester == "2")
                                             credit = cp[5] + "";
 
-                                        if (data.GradeYear == "1")
+                                        int x;
+                                        if (int.TryParse(credit, out x))
                                         {
-                                            if ((cp[1] + "") == "B")
-                                            {
-                                                Console.WriteLine("");
-                                            }
-                                            Dcredit = cp[0] + "" + cp[1] + "";
+                                            // 一般學分
                                         }
-
-                                        if (data.GradeYear == "2")
+                                        else
                                         {
-                                            Dcredit = cp[2] + "" + cp[3] + "";
-                                        }
-
-                                        if (data.GradeYear == "3")
-                                        {
-                                            Dcredit = cp[4] + "" + cp[5] + "";
+                                            //對開
+                                            isOpenD = true;
                                         }
 
                                     }
                                 }
 
-                                // 將授課學分數記下來
-                                subjElm.SetAttributeValue("ref_credit", credit);
 
-                                int dP;
-                                // 一般
-                                if (int.TryParse(Dcredit, out dP))
+                                if (isOpenD)
                                 {
+                                    // 是對開
+                                    data.OpenSubjectSourceBList.Add(subjElm);
+                                    string subjName = subjElm.Attribute("SubjectName").Value;
+                                    if (!data.SubjectBDict.ContainsKey(subjName))
+                                        data.SubjectBDict.Add(subjName, false);
+                                }
+                                else
+                                {
+                                    // 一般
                                     data.OpenSubjectSourceList.Add(subjElm);
                                     string subjName = subjElm.Attribute("SubjectName").Value;
                                     if (!tmpSubj.Contains(subjName))
                                     {
                                         tmpSubj.Add(subjName);
                                     }
-                                    else
-                                    {
-                                        Console.WriteLine(subjName);
-                                    }
-
                                 }
-                                else
-                                {
-                                    // 對開
-                                    data.OpenSubjectSourceBList.Add(subjElm);
-                                    string subjName = subjElm.Attribute("SubjectName").Value;
-                                    if (!data.SubjectBDict.ContainsKey(subjName))
-                                        data.SubjectBDict.Add(subjName, false);
-
-                                }
-
-
-                                //if (subjElm.Attribute("Credit").Value == subjElm.Attribute("學分").Value)
-                                //{
-                                //    // 一般
-                                //    data.OpenSubjectSourceList.Add(subjElm);
-                                //    string subjName = subjElm.Attribute("SubjectName").Value;
-                                //    if (!tmpSubj.Contains(subjName))
-                                //    {
-                                //        tmpSubj.Add(subjName);
-                                //    }
-                                //    else
-                                //    {
-                                //        Console.WriteLine(subjName);
-                                //    }
-                                //}
-                                //else
-                                //{
-                                //    // 對開
-                                //    data.OpenSubjectSourceBList.Add(subjElm);
-                                //    string subjName = subjElm.Attribute("SubjectName").Value;
-                                //    if (!data.SubjectBDict.ContainsKey(subjName))
-                                //        data.SubjectBDict.Add(subjName, false);
-                                //}
                             }
                         }
 
@@ -239,22 +213,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            _Semester = cboSemester.Text;
-            _SchoolYear = cboSchoolYear.Text;
-
-            ControlEnable(false);
-            _bwWorker.RunWorkerAsync();
+            
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            frmCreateCourseByGPlan108_Detail fccd = new frmCreateCourseByGPlan108_Detail();
-            fccd.SetCClassCourseInfo(CClassCourseInfoList);
-            fccd.SetSchoolYearSemester(cboSchoolYear.Text, cboSemester.Text);
-            if (fccd.ShowDialog() == DialogResult.OK)
-            {
-                this.Close();
-            }
+            _Semester = cboSemester.Text;
+            _SchoolYear = cboSchoolYear.Text;
+
+            ControlEnable(false);
+            _bwWorker.RunWorkerAsync();         
         }
 
         private void labelX2_Click(object sender, EventArgs e)
