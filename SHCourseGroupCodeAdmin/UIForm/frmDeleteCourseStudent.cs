@@ -131,11 +131,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             FISCA.Presentation.MotherForm.SetStatusBarMessage("課程資料讀取完成.");
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("請問要刪除 " + _CourseIDNameDict.Keys.Count + " 筆課程紀錄 ? ");
-            if (_SCAttendIDList.Count > 0)
-            {
-                sb.AppendLine("這些課程包含 " + _SCAttendIDList.Count + " 筆修課學生也會一起刪除。");
-            }
+            sb.AppendLine("刪除課程時會一併刪除【修課紀錄】及【評量成績】，成績刪除後將無法恢復。請確認是否要刪除 " + _CourseIDNameDict.Keys.Count + " 筆課程 ? ");
+            //if (_SCAttendIDList.Count > 0)
+            //{
+            //    sb.AppendLine("這些課程包含 " + _SCAttendIDList.Count + " 筆修課學生也會一起刪除。");
+            //}
             lblMsg.Text = sb.ToString();
 
         }
@@ -190,12 +190,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnDel_Click(object sender, EventArgs e)
         {
-            btnDel.Enabled = false;
-            _bgWorkerDel.RunWorkerAsync();
+            PasswordForm pf = new PasswordForm();
+            if(pf.ShowDialog() == DialogResult.OK)
+            {
+                if (pf.GetPass())
+                {
+                    btnDel.Enabled = false;
+                    _bgWorkerDel.RunWorkerAsync();
+                }               
+            }            
         }
 
         private void frmDeleteCourseStudent_Load(object sender, EventArgs e)
         {
+            this.MaximumSize = this.MinimumSize = this.Size;
+
             btnDel.Enabled = false;
 
             // 載入資料檢查

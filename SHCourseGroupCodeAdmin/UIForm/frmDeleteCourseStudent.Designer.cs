@@ -50,6 +50,7 @@
             this.lblMsg.TabIndex = 0;
             this.lblMsg.Text = "訊息";
             this.lblMsg.TextLineAlignment = System.Drawing.StringAlignment.Near;
+            this.lblMsg.WordWrap = true;
             // 
             // btnDel
             // 

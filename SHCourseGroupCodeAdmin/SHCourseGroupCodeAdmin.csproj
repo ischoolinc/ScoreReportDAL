@@ -326,6 +326,12 @@
     <Compile Include="Report\Student6thSemesterCorseCodeRank.Designer.cs">
       <DependentUpon>Student6thSemesterCorseCodeRank.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\PasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\PasswordForm.Designer.cs">
+      <DependentUpon>PasswordForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -476,6 +482,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Report\Student6thSemesterCorseCodeRank.resx">
       <DependentUpon>Student6thSemesterCorseCodeRank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\PasswordForm.resx">
+      <DependentUpon>PasswordForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
