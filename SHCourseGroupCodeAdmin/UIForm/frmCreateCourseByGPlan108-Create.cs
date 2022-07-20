@@ -53,6 +53,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 // 呼叫課程同步
                 FISCA.Features.Invoke("CourseSyncAllBackground");
+                
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("產生完成。");
                 MsgBox.Show("產生完成。");
                 this.DialogResult = DialogResult.OK;

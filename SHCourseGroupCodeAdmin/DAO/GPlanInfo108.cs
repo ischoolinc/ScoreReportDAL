@@ -162,13 +162,17 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             // 在課程群組代碼取前3，填入入學年
             if (GDCCode.Length > 3)
-                MOEXml.SetAttributeValue("EntryYear", GDCCode.Substring(0, 3));
-
-            // 支援就格式
-            if (MOEXml.Attribute("SchoolYear") != null)
             {
-                Console.WriteLine(MOEXml.Attribute("SchoolYear").Value);
+                MOEXml.SetAttributeValue("EntryYear", GDCCode.Substring(0, 3));
+                MOEXml.SetAttributeValue("SchoolYear", GDCCode.Substring(0, 3));
             }
+               
+
+            //// 支援就格式
+            //if (MOEXml.Attribute("SchoolYear") != null)
+            //{
+            //    Console.WriteLine(MOEXml.Attribute("SchoolYear").Value);
+            //}
 
             Dictionary<string, string> CreditMappingTableDict = Utility.GetCreditMappingTable();
 
@@ -443,6 +447,25 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             if (level == 6)
                 lev = " VI";
+
+            if (level == 7)
+                lev = " VII";
+
+            if (level == 8)
+                lev = " VIII";
+
+            if (level == 9)
+                lev = " IX";
+
+            if (level == 10)
+                lev = " X";
+
+            if (level == 11)
+                lev = " 11";
+
+            if (level == 12)
+                lev = " 12";
+
 
             string value = SubjectName + lev;
 

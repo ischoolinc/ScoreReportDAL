@@ -410,6 +410,24 @@ T	12學分
             if (level == 6)
                 lev = " VI";
 
+            if (level == 7)
+                lev = " VII";
+
+            if (level == 8)
+                lev = " VIII";
+
+            if (level == 9)
+                lev = " IX";
+
+            if (level == 10)
+                lev = " X";
+
+            if (level == 11)
+                lev = " 11";
+
+            if (level == 12)
+                lev = " 12";
+
             string value = SubjectName + lev;
 
             return value;
