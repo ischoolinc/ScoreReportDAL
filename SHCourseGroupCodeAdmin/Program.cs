@@ -47,6 +47,8 @@ namespace SHCourseGroupCodeAdmin
             // 權限註冊
             Catalog ribbon1 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon1.Add(new RibbonFeature("C26EDE96-1018-45E5-9280-61D4B0986F80", "課程代碼表"));
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["報表"].Image = Properties.Resources.Report;
 
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["報表"]["課程代碼表"].Enable = UserAcl.Current["C26EDE96-1018-45E5-9280-61D4B0986F80"].Executable;
 
@@ -176,20 +178,7 @@ namespace SHCourseGroupCodeAdmin
             };
 
 
-            Catalog ribbon8 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            ribbon8.Add(new RibbonFeature("83FB7115-548B-4C63-840C-5967A0725189", "手動同步課程代碼API"));
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Enable = UserAcl.Current["83FB7115-548B-4C63-840C-5967A0725189"].Executable;
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Image = Properties.Resources.update_1;
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Size = RibbonBarButton.MenuButtonSize.Medium;
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Click += delegate
-            {
-                frmSyncCourseCodeAPI scAPI = new frmSyncCourseCodeAPI();
-                scAPI.ShowDialog();
-            };
+            
 
        
 
@@ -212,50 +201,62 @@ namespace SHCourseGroupCodeAdmin
             Catalog ribbon8_1 = RoleAclSource.Instance["教務作業"]["課程代碼"];
             ribbon8_1.Add(new RibbonFeature("010627DB-C14E-43BB-9407-BF5550391FBA", "課程計畫平台原始課程代碼"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Enable = UserAcl.Current["010627DB-C14E-43BB-9407-BF5550391FBA"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"]["課程計畫平台原始課程代碼"].Enable = UserAcl.Current["010627DB-C14E-43BB-9407-BF5550391FBA"].Executable;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Image = Properties.Resources.update_1;
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Size = RibbonBarButton.MenuButtonSize.Medium;
+            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Image = Properties.Resources.update_1;
+            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Size = RibbonBarButton.MenuButtonSize.Medium;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫平台原始課程代碼"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"]["課程計畫平台原始課程代碼"].Click += delegate
             {
                 frmCourseCodeSource fcc = new frmCourseCodeSource();
                 fcc.ShowDialog();
             };
 
+            Catalog ribbon8 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            ribbon8.Add(new RibbonFeature("83FB7115-548B-4C63-840C-5967A0725189", "手動同步課程代碼API"));
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"]["手動同步課程代碼API"].Enable = UserAcl.Current["83FB7115-548B-4C63-840C-5967A0725189"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"].Size = RibbonBarButton.MenuButtonSize.Large;
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"].Image = Properties.Resources.update_1;
+
+            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Image = Properties.Resources.update_1;
+
+            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["手動同步課程代碼API"].Size = RibbonBarButton.MenuButtonSize.Medium;
+
+            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"]["手動同步課程代碼API"].Click += delegate
+            {
+                frmSyncCourseCodeAPI scAPI = new frmSyncCourseCodeAPI();
+                scAPI.ShowDialog();
+            };
+
             // 108 版本 -----
-            Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["課程代碼"];
+            Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["基本設定"];
             ribbon10.Add(new RibbonFeature("C6063F22-FF7C-4AB5-82F8-4FC82B205B1A", "產生課程規劃"));
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Enable = UserAcl.Current["C6063F22-FF7C-4AB5-82F8-4FC82B205B1A"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"]["產生課程規劃"].Enable = UserAcl.Current["C6063F22-FF7C-4AB5-82F8-4FC82B205B1A"].Executable;
+            MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"]["產生課程規劃"].BeginGroup = true;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Image = Properties.Resources.online_library;
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Size = RibbonBarButton.MenuButtonSize.Medium;
+            //MotherForm.RibbonBarItems["教務作業", "基本設定"]["產生課程規劃"].Image = Properties.Resources.online_library;
+            //MotherForm.RibbonBarItems["教務作業", "基本設定"]["產生課程規劃"].Size = RibbonBarButton.MenuButtonSize.Medium;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["產生課程規劃"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"]["產生課程規劃"].Click += delegate
             {
                 frmCreateGPlanMain108 fMain = new frmCreateGPlanMain108();
                 fMain.ShowDialog();
 
             };
 
-            ////// Test Message
-            ////CustomRecord cr = new CustomRecord();
-            ////cr.Type = CrType.Type.Warning_Red;
-            ////cr.Title = "測試";
-            ////cr.Content ="資料錯誤";
-            ////Campus.Message.MessageRobot.AddMessage(cr);
 
+            Catalog ribbon11 = RoleAclSource.Instance["教務作業"]["基本設定"];
+            ribbon11.Add(new RibbonFeature("B1E6A402-F173-42B5-8785-7250CF6D46BD", "班級課程規劃表(108課綱適用)"));
 
-            Catalog ribbon11 = RoleAclSource.Instance["教務作業"]["課程代碼"];
-            ribbon11.Add(new RibbonFeature("B1E6A402-F173-42B5-8785-7250CF6D46BD", "課程規劃(108適用)"));
+            MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"]["班級課程規劃表(108課綱適用)"].Enable = UserAcl.Current["B1E6A402-F173-42B5-8785-7250CF6D46BD"].Executable;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程規劃(108適用)"].Enable = UserAcl.Current["B1E6A402-F173-42B5-8785-7250CF6D46BD"].Executable;
+            //MotherForm.RibbonBarItems["教務作業", "基本設定"]["班級課程規劃表(108課綱適用)"].Image = Properties.Resources.schedule;
+            //MotherForm.RibbonBarItems["教務作業", "基本設定"]["班級課程規劃表(108課綱適用)"].Size = RibbonBarButton.MenuButtonSize.Medium;
 
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程規劃(108適用)"].Image = Properties.Resources.schedule;
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程規劃(108適用)"].Size = RibbonBarButton.MenuButtonSize.Medium;
-
-            MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程規劃(108適用)"].Click += delegate
+            MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"]["班級課程規劃表(108課綱適用)"].Click += delegate
             {
                 frmGPlanConfig108 fgc = new frmGPlanConfig108();
                 fgc.ShowDialog();
@@ -264,11 +265,11 @@ namespace SHCourseGroupCodeAdmin
 
 
             Catalog ribbon12 = RoleAclSource.Instance["班級"]["教務"]["班級開課"];
-            ribbon12.Add(new RibbonFeature("375D9EC7-E4C2-46FB-AA5D-7ADE4A5F7F03", "依課程規劃表開課(108適用)"));
+            ribbon12.Add(new RibbonFeature("375D9EC7-E4C2-46FB-AA5D-7ADE4A5F7F03", "依課程規劃表開課(108課綱適用)"));
 
-            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108適用)"].Enable = UserAcl.Current["375D9EC7-E4C2-46FB-AA5D-7ADE4A5F7F03"].Executable;
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108課綱適用)"].Enable = UserAcl.Current["375D9EC7-E4C2-46FB-AA5D-7ADE4A5F7F03"].Executable;
 
-            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108適用)"].Click += delegate
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課(108課綱適用)"].Click += delegate
             {
                 if (K12.Presentation.NLDPanels.Class.SelectedSource.Count > 0)
                 {
@@ -278,11 +279,11 @@ namespace SHCourseGroupCodeAdmin
             };
 
             Catalog ribbon13 = RoleAclSource.Instance["班級"]["教務"]["班級開課"];
-            ribbon13.Add(new RibbonFeature("E5FD6FD7-7641-4E04-81B7-C2A5A1A346F8", "依課程規劃表開課-跨班(108適用)"));
+            ribbon13.Add(new RibbonFeature("E5FD6FD7-7641-4E04-81B7-C2A5A1A346F8", "依課程規劃表開課-跨班(108課綱適用)"));
 
-            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課-跨班(108適用)"].Enable = UserAcl.Current["E5FD6FD7-7641-4E04-81B7-C2A5A1A346F8"].Executable;
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課-跨班(108課綱適用)"].Enable = UserAcl.Current["E5FD6FD7-7641-4E04-81B7-C2A5A1A346F8"].Executable;
 
-            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課-跨班(108適用)"].Click += delegate
+            MotherForm.RibbonBarItems["班級", "教務"]["班級開課"]["依課程規劃表開課-跨班(108課綱適用)"].Click += delegate
             {
                 if (K12.Presentation.NLDPanels.Class.SelectedSource.Count > 0)
                 {

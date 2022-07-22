@@ -396,6 +396,7 @@
     <Content Include="Library\K12.Data.xml" />
     <Content Include="Library\K12.Presentation.dll" />
     <Content Include="Library\K12.Presentation.xml" />
+    <None Include="Resources\Report.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataCheck\chkCheckCourseCode.resx">
