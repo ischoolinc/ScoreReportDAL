@@ -3920,5 +3920,28 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
             return value;
         }
 
+        public int DeleteGPlanByID(string id)
+        {
+            int value = 0;
+            try
+            {
+                K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    //  刪除資料
+                    string deleteQry = "DELETE FROM graduation_plan WHERE id = " + id;
+
+                    value = uh.Execute(deleteQry);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
     }
 }

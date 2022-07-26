@@ -151,6 +151,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void ReloadData()
         {
             advTree1.Nodes.Clear();
+            tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = false;
             _bgWorker.RunWorkerAsync();
         }
 
@@ -447,6 +448,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     btnEditName.Enabled = btnDelete.Enabled = true;
                     tabItem1.Visible = false;
                     tabItem2.Visible = tabItem4.Visible = true;
+
                 }
                 else
                 {
@@ -454,9 +456,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     tabItem2.Visible = tabItem4.Visible = true;
                     btnEditName.Enabled = btnDelete.Enabled = false;
                 }
-
             }
 
+            tabControl1.SelectedTabIndex = 0;
 
             dgData.Rows.Clear();
 
@@ -624,11 +626,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
             listViewEx1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listViewEx1.ResumeLayout();
 
-            btnSave.Enabled = false;
+            btnUpdate.Enabled = false;
             isDgDataChange = false;
             isUDDgDataChange = false;
          
 
+        }
+
+        private void TabItem2_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private CreditInfo GetCreditAttr(XElement elm)
@@ -805,7 +812,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             btnCreate.Enabled = false;
             frmAddGPlan fgg = new frmAddGPlan();
             if (fgg.ShowDialog() == DialogResult.OK)
-            {
+            {                
                 ReloadData();
             }
             btnCreate.Enabled = true;
@@ -832,15 +839,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
-        {
-
+        {            
+            if (MsgBox.Show("請問要刪除「"+SelectInfo.RefGPName+"」? 選「是」將刪除。", "刪除課程規劃表",MessageBoxButtons.YesNo,MessageBoxIcon.Warning,MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            {
+                int c = _da.DeleteGPlanByID(SelectInfo.RefGPID);
+                btnDelete.Enabled = false;
+                SelectInfo = null;
+                ReloadData();
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             try
             {
-                btnSave.Enabled = false;
+                btnUpdate.Enabled = false;
                 // 回寫資料
                 _da.UpdateGPlanXML(SelectInfo.RefGPID, SelectInfo.RefGPContentXml.ToString());
                 SelectInfo.RefGPContent = SelectInfo.RefGPContentXml.ToString();
@@ -911,7 +924,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void SetIsDirtyDisplay(bool isD)
         {            
             lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
-            btnSave.Enabled = isD;
+            btnUpdate.Enabled = isD;
             isDgDataChange = isD;
         }
     }
