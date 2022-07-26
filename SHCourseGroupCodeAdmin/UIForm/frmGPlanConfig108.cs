@@ -22,6 +22,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
         DataAccess _da;
         List<GPlanInfo108> GP108List;
         GPlanInfo108 SelectInfo = null;
+        bool isDgDataChange = false;
+        bool isUDDgDataChange = false;
+
+
         int dgColIdx = 0, dgRowIdx = 0;
 
         private Node _SelectItem;
@@ -141,6 +145,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmGPlanConfig108_Load(object sender, EventArgs e)
         {
+            ReloadData();
+        }
+
+        private void ReloadData()
+        {
             advTree1.Nodes.Clear();
             _bgWorker.RunWorkerAsync();
         }
@@ -148,6 +157,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void LoadDataGridViewColumns()
         {
             dgData.Columns.Clear();
+            dgUDData.Columns.Clear();
             try
             {
 
@@ -279,6 +289,121 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 //    col.SortMode = DataGridViewColumnSortMode.NotSortable;
                 //}
 
+
+                // --使用者自訂
+                DataGridViewTextBoxColumn tbUDDomain = new DataGridViewTextBoxColumn();
+                tbUDDomain.Name = "領域";
+                tbUDDomain.Width = 80;
+                tbUDDomain.HeaderText = "領域";
+                tbUDDomain.ReadOnly = true;
+                tbUDDomain.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDScoreType = new DataGridViewTextBoxColumn();
+                tbUDScoreType.Name = "分項類別";
+                tbUDScoreType.Width = 80;
+                tbUDScoreType.HeaderText = "分項類別";
+                tbUDScoreType.ReadOnly = true;
+                tbUDScoreType.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDSubjectName = new DataGridViewTextBoxColumn();
+                tbUDSubjectName.Name = "科目名稱";
+                tbUDSubjectName.Width = 160;
+                tbUDSubjectName.HeaderText = "科目名稱";
+                tbUDSubjectName.ReadOnly = true;
+                tbUDSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDRequiredBy = new DataGridViewTextBoxColumn();
+                tbUDRequiredBy.Name = "校訂部定";
+                tbUDRequiredBy.Width = 40;
+                tbUDRequiredBy.HeaderText = "校訂部定";
+                tbUDRequiredBy.ReadOnly = true;
+                tbUDRequiredBy.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDIsRequired = new DataGridViewTextBoxColumn();
+                tbUDIsRequired.Name = "必選修";
+                tbUDIsRequired.Width = 40;
+                tbUDIsRequired.HeaderText = "必選修";
+                tbUDIsRequired.ReadOnly = true;
+                tbUDIsRequired.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDGS11 = new DataGridViewTextBoxColumn();
+                tbUDGS11.Name = "1上";
+                tbUDGS11.Width = 40;
+                tbUDGS11.HeaderText = "1上";
+                tbUDGS11.ReadOnly = true;
+                tbUDGS11.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDGS12 = new DataGridViewTextBoxColumn();
+                tbUDGS12.Name = "1下";
+                tbUDGS12.Width = 40;
+                tbUDGS12.HeaderText = "1下";
+                tbUDGS12.ReadOnly = true;
+                tbUDGS12.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDGS21 = new DataGridViewTextBoxColumn();
+                tbUDGS21.Name = "2上";
+                tbUDGS21.Width = 40;
+                tbUDGS21.HeaderText = "2上";
+                tbUDGS21.ReadOnly = true;
+                tbUDGS21.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDGS22 = new DataGridViewTextBoxColumn();
+                tbUDGS22.Name = "2下";
+                tbUDGS22.Width = 40;
+                tbUDGS22.HeaderText = "2下";
+                tbUDGS22.ReadOnly = true;
+                tbUDGS22.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDGS31 = new DataGridViewTextBoxColumn();
+                tbUDGS31.Name = "3上";
+                tbUDGS31.Width = 40;
+                tbUDGS31.HeaderText = "3上";
+                tbUDGS31.ReadOnly = true;
+                tbUDGS31.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDGS32 = new DataGridViewTextBoxColumn();
+                tbUDGS32.Name = "3下";
+                tbUDGS32.Width = 40;
+                tbUDGS32.HeaderText = "3下";
+                tbUDGS32.ReadOnly = true;
+                tbUDGS32.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDNotIncludedInCalc = new DataGridViewTextBoxColumn();
+                tbUDNotIncludedInCalc.Name = "不需評分";
+                tbUDNotIncludedInCalc.Width = 40;
+                tbUDNotIncludedInCalc.HeaderText = "不需評分";
+                tbUDNotIncludedInCalc.ReadOnly = true;
+                tbUDNotIncludedInCalc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataGridViewTextBoxColumn tbUDNotIncludedInCredit = new DataGridViewTextBoxColumn();
+                tbUDNotIncludedInCredit.Name = "不計學分";
+                tbUDNotIncludedInCredit.Width = 40;
+                tbUDNotIncludedInCredit.HeaderText = "不計學分";
+                tbUDNotIncludedInCredit.ReadOnly = true;
+                tbUDNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
+                DataGridViewTextBoxColumn tbUDOpenStatus = new DataGridViewTextBoxColumn();
+                tbUDOpenStatus.Name = "開課方式";
+                tbUDOpenStatus.Width = 40;
+                tbUDOpenStatus.HeaderText = "開課方式";
+                tbUDOpenStatus.ReadOnly = true;
+                tbUDOpenStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;                
+
+                dgUDData.Columns.Add(tbUDDomain);
+                dgUDData.Columns.Add(tbUDScoreType);
+                dgUDData.Columns.Add(tbUDSubjectName);
+                dgUDData.Columns.Add(tbUDRequiredBy);
+                dgUDData.Columns.Add(tbUDIsRequired);
+                dgUDData.Columns.Add(tbUDGS11);
+                dgUDData.Columns.Add(tbUDGS12);
+                dgUDData.Columns.Add(tbUDGS21);
+                dgUDData.Columns.Add(tbUDGS22);
+                dgUDData.Columns.Add(tbUDGS31);
+                dgUDData.Columns.Add(tbUDGS32);
+                dgUDData.Columns.Add(tbUDNotIncludedInCalc);
+                dgUDData.Columns.Add(tbUDNotIncludedInCredit);
+                dgUDData.Columns.Add(tbUDOpenStatus);
             }
             catch (Exception ex)
             {
@@ -294,15 +419,18 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
         {
             this.lblGroupName.Text = "";
+            lblUDGroupName.Text = "";
+            dgUDData.Rows.Clear();
             dgData.Rows.Clear();
             SelectInfo = null;
 
             if (!(e.Node.Tag is GPlanInfo108))
             {
                 _SelectItem = null;
+                tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = false;
                 return;
             }
-
+            
             if (_SelectItem != null)
                 _SelectItem.Checked = false;
 
@@ -311,12 +439,31 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             SelectInfo = (GPlanInfo108)_SelectItem.Tag;
 
+            // 判斷功能項目是否顯示
+            if (SelectInfo != null)
+            {
+                if (string.IsNullOrEmpty(SelectInfo.GDCCode))
+                {
+                    btnEditName.Enabled = btnDelete.Enabled = true;
+                    tabItem1.Visible = false;
+                    tabItem2.Visible = tabItem4.Visible = true;
+                }
+                else
+                {
+                    tabItem1.Visible = true;
+                    tabItem2.Visible = tabItem4.Visible = true;
+                    btnEditName.Enabled = btnDelete.Enabled = false;
+                }
+
+            }
+
+
             dgData.Rows.Clear();
 
             try
             {
                 // 解析 XML
-                if (SelectInfo.RefGPContentXml == null)                
+                if (SelectInfo.RefGPContentXml == null)
                     SelectInfo.RefGPContentXml = XElement.Parse(SelectInfo.RefGPContent);
             }
             catch (Exception ex)
@@ -325,7 +472,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
 
             lblGroupName.Text = SelectInfo.RefGPName;
-
+            lblUDGroupName.Text = SelectInfo.RefGPName;
             // 資料整理
             Dictionary<string, List<XElement>> dataDict = new Dictionary<string, List<XElement>>();
             foreach (XElement elm in SelectInfo.RefGPContentXml.Elements("Subject"))
@@ -380,6 +527,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgData.Rows[rowIdx].Cells["1上"].Tag = elmD;
                             dgData.Rows[rowIdx].Cells["1上"].Style.BackColor = c1.BackgroundColor;
                             dgData.Rows[rowIdx].Cells["1上"].Value = c1.StringValue;
+                            dgData.Rows[rowIdx].Cells["1上"].ToolTipText = c1.ToolTipText;
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "1" && elmD.Attribute("Semester").Value == "2")
@@ -388,6 +536,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgData.Rows[rowIdx].Cells["1下"].Tag = elmD;
                             dgData.Rows[rowIdx].Cells["1下"].Style.BackColor = c1.BackgroundColor;
                             dgData.Rows[rowIdx].Cells["1下"].Value = c1.StringValue;
+                            dgData.Rows[rowIdx].Cells["1下"].ToolTipText = c1.ToolTipText;
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "1")
@@ -396,6 +545,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgData.Rows[rowIdx].Cells["2上"].Tag = elmD;
                             dgData.Rows[rowIdx].Cells["2上"].Style.BackColor = c1.BackgroundColor;
                             dgData.Rows[rowIdx].Cells["2上"].Value = c1.StringValue;
+                            dgData.Rows[rowIdx].Cells["2上"].ToolTipText = c1.ToolTipText;
                         }
 
                         if (elmD.Attribute("GradeYear").Value == "2" && elmD.Attribute("Semester").Value == "2")
@@ -404,6 +554,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgData.Rows[rowIdx].Cells["2下"].Tag = elmD;
                             dgData.Rows[rowIdx].Cells["2下"].Style.BackColor = c1.BackgroundColor;
                             dgData.Rows[rowIdx].Cells["2下"].Value = c1.StringValue;
+                            dgData.Rows[rowIdx].Cells["2下"].ToolTipText = c1.ToolTipText;
 
                         }
 
@@ -413,6 +564,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgData.Rows[rowIdx].Cells["3上"].Tag = elmD;
                             dgData.Rows[rowIdx].Cells["3上"].Style.BackColor = c1.BackgroundColor;
                             dgData.Rows[rowIdx].Cells["3上"].Value = c1.StringValue;
+                            dgData.Rows[rowIdx].Cells["3上"].ToolTipText = c1.ToolTipText;
 
                         }
 
@@ -422,6 +574,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgData.Rows[rowIdx].Cells["3下"].Tag = elmD;
                             dgData.Rows[rowIdx].Cells["3下"].Style.BackColor = c1.BackgroundColor;
                             dgData.Rows[rowIdx].Cells["3下"].Value = c1.StringValue;
+                            dgData.Rows[rowIdx].Cells["3下"].ToolTipText = c1.ToolTipText;
                         }
 
 
@@ -471,6 +624,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             listViewEx1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listViewEx1.ResumeLayout();
 
+            btnSave.Enabled = false;
+            isDgDataChange = false;
+            isUDDgDataChange = false;
+         
+
         }
 
         private CreditInfo GetCreditAttr(XElement elm)
@@ -504,6 +662,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // null 表示使用者未設定
                 value.isSetOpenD = null;
                 value.BackgroundColor = Color.White;
+                value.ToolTipText = "";
 
                 if (elm.Attribute("設定對開") != null)
                 {
@@ -542,19 +701,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     // 設定 是
                     if (value.isSetOpenD.Value)
+                    {
                         value.BackgroundColor = Color.LightPink;
+                        value.ToolTipText = "使用者設定";
+                    }                        
                     else
                     {
                         // 設定否
                         if (value.isSetOpenD.Value == false)
                         {
                             value.BackgroundColor = Color.White;
+                            value.ToolTipText = "";
                         }
                         else
                         {
                             if (value.isOpenD)
                             {
                                 value.BackgroundColor = Color.Yellow;
+                                value.ToolTipText = "系統判斷";
                             }
                         }
                     }
@@ -566,6 +730,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (value.isOpenD)
                     {
                         value.BackgroundColor = Color.Yellow;
+                        value.ToolTipText = "系統判斷";
                     }
                 }
             }
@@ -591,9 +756,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 CreditInfo c1 = GetCreditAttr(elm);
                 dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
                 dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
+                dgData.Rows[dgRowIdx].Cells[dgColIdx].ToolTipText = c1.ToolTipText;
+
 
                 // 更新資料
                 UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:是");
+                SetIsDirtyDisplay(true);
             }
         }
 
@@ -611,8 +779,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 CreditInfo c1 = GetCreditAttr(elm);
                 dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
                 dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
+                dgData.Rows[dgRowIdx].Cells[dgColIdx].ToolTipText = c1.ToolTipText;
                 // 更新資料
                 UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:否");
+                SetIsDirtyDisplay(true);
             }
         }
 
@@ -623,6 +793,67 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgColIdx = e.ColumnIndex;
                 dgRowIdx = e.RowIndex;
             }
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            btnCreate.Enabled = false;
+            frmAddGPlan fgg = new frmAddGPlan();
+            if (fgg.ShowDialog() == DialogResult.OK)
+            {
+                ReloadData();
+            }
+            btnCreate.Enabled = true;
+        }
+
+        private void btnEditName_Click(object sender, EventArgs e)
+        {
+            if (SelectInfo != null)
+            {
+                btnEditName.Enabled = false;
+
+                frmEditGPlanName fdg = new frmEditGPlanName();
+                fdg.SetGPlanInfo108(SelectInfo);
+                if (fdg.ShowDialog() == DialogResult.OK)
+                {
+                    ReloadData();
+                }
+                btnEditName.Enabled = true;
+            }
+            else
+            {
+                MsgBox.Show("請選擇課程規劃表");
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                btnSave.Enabled = false;
+                // 回寫資料
+                _da.UpdateGPlanXML(SelectInfo.RefGPID, SelectInfo.RefGPContentXml.ToString());
+                SelectInfo.RefGPContent = SelectInfo.RefGPContentXml.ToString();
+                _SelectItem.Tag = SelectInfo;
+                SetIsDirtyDisplay(false);
+                MsgBox.Show("儲存完成");
+                //       ApplicationLog.Log("課程規劃表(108適用)", logMsg);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
 
         private string UpdateGPlaDataSubjectOpen(GPlanInfo108 item, XElement updateData, string logMsg)
@@ -645,12 +876,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         }
                     }
 
-                    // 回寫資料
-                    _da.UpdateGPlanXML(item.RefGPID, item.RefGPContentXml.ToString());
+                    //// 回寫資料
+                    //_da.UpdateGPlanXML(item.RefGPID, item.RefGPContentXml.ToString());
                     //item.RefGPContent = item.RefGPContentXml.ToString();
-                    _SelectItem.Tag = item;                    
-                    
-                    ApplicationLog.Log("課程規劃表(108適用)", logMsg);
+                    //_SelectItem.Tag = item;
+
+                    //ApplicationLog.Log("課程規劃表(108適用)", logMsg);
                 }
                 catch (Exception ex)
                 {
@@ -663,6 +894,25 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
 
             return value;
+        }
+
+        private void frmGPlanConfig108_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isDgDataChange)
+            {                
+                if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+        }
+
+        private void SetIsDirtyDisplay(bool isD)
+        {            
+            lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+            btnSave.Enabled = isD;
+            isDgDataChange = isD;
         }
     }
 }

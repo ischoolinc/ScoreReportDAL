@@ -3015,7 +3015,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (chkCourseNameList.Contains(chkName))
                             {
                                 continue;
-                            }else
+                            }
+                            else
                             {
                                 chkCourseNameList.Add(chkName);
                             }
@@ -3802,5 +3803,122 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
 
             return StudentInfoList;
         }
+
+        /// <summary>
+        /// 取得所以有課程規劃表名稱
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetAllGPNameDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            QueryHelper qh = new QueryHelper();
+            string query = "SELECT name,id FROM graduation_plan";
+            DataTable dt = qh.Select(query);
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string name = (dr["name"] + "").Trim();
+                    if (!value.ContainsKey(name))
+                        value.Add(name, dr["id"] + "");
+                }
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// 透過名稱新增一個空的課程規劃表
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string AddGPlanByName(string name)
+        {
+            string value = "";
+            try
+            {
+                int sy;
+                // 解析三位數字
+                string numStr = "";
+                // 解析前3碼來分類
+                if (name.Length > 2)
+                {
+                    string x = name.Substring(0, 3);
+                    if (int.TryParse(x, out sy))
+                    {
+                        numStr = sy + "";
+                    }
+                }
+
+                XElement elmRoot = new XElement("GraduationPlan");
+                elmRoot.SetAttributeValue("EntryYear", numStr);
+                elmRoot.SetAttributeValue("SchoolYear", numStr);
+
+                QueryHelper qh = new QueryHelper();
+                string query = "INSERT INTO graduation_plan(name,content) VALUES('" + name + "'" +
+                    ",'" + elmRoot.ToString() + "') RETURNING id;";
+                DataTable dt = qh.Select(query);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    value = dt.Rows[0][0].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// 透過名稱更新課程規劃表名稱
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string UpdateGPlanByName(string NewName, GPlanInfo108 info)
+        {
+            string value = "";
+            try
+            {
+                int sy;
+                // 解析三位數字
+                string numStr = "";
+                // 解析前3碼來分類
+                if (NewName.Length > 2)
+                {
+                    string x = NewName.Substring(0, 3);
+                    if (int.TryParse(x, out sy))
+                    {
+                        numStr = sy + "";
+                    }
+                }
+
+                QueryHelper qh = new QueryHelper();
+                // 讀取原本資料與解析XML
+                info.ParseRefGPContentXml();
+                info.RefGPContentXml.SetAttributeValue("EntryYear", numStr);
+                info.RefGPContentXml.SetAttributeValue("SchoolYear", numStr);
+                if (!string.IsNullOrWhiteSpace(info.RefGPID))
+                {
+                    // 回寫資料
+                    string updateQry = "UPDATE graduation_plan SET name= '" + NewName + "',content = '" + info.RefGPContentXml.ToString() + "' WHERE id = " + info.RefGPID + " RETURNING id; ";
+
+                    DataTable dt = qh.Select(updateQry);
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        value = dt.Rows[0][0].ToString();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
     }
 }

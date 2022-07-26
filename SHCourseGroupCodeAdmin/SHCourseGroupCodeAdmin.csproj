@@ -182,6 +182,12 @@
     <Compile Include="Report\rptDBGPlanXML.cs" />
     <Compile Include="Report\rptMOECourseCode.cs" />
     <Compile Include="Report\rptMOECourseCodeSumCredit.cs" />
+    <Compile Include="UIForm\frmAddGPlan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmAddGPlan.Designer.cs">
+      <DependentUpon>frmAddGPlan.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmCheckGPlanCourseCode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,6 +308,12 @@
     <Compile Include="UIForm\frmDeleteCourseStudent.Designer.cs">
       <DependentUpon>frmDeleteCourseStudent.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmEditGPlanName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmEditGPlanName.Designer.cs">
+      <DependentUpon>frmEditGPlanName.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmGPlanConfig108.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -412,6 +424,9 @@
     <EmbeddedResource Include="Report\frmUploadCourseCode.resx">
       <DependentUpon>frmUploadCourseCode.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmAddGPlan.resx">
+      <DependentUpon>frmAddGPlan.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCheckGPlanCourseCode.resx">
       <DependentUpon>frmCheckGPlanCourseCode.cs</DependentUpon>
     </EmbeddedResource>
@@ -471,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmDeleteCourseStudent.resx">
       <DependentUpon>frmDeleteCourseStudent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmEditGPlanName.resx">
+      <DependentUpon>frmEditGPlanName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmGPlanConfig108.resx">
       <DependentUpon>frmGPlanConfig108.cs</DependentUpon>

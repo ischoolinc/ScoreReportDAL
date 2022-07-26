@@ -26,5 +26,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         public bool? isSetOpenD;
 
         public Color BackgroundColor = Color.White;
+
+        public string ToolTipText = "";
     }
 }
