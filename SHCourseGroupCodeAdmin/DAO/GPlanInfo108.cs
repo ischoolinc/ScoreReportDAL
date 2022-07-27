@@ -72,6 +72,11 @@ namespace SHCourseGroupCodeAdmin.DAO
         public Dictionary<string, List<XElement>> MOEDict = new Dictionary<string, List<XElement>>();
         public Dictionary<string, List<XElement>> GPlanDict = new Dictionary<string, List<XElement>>();
         public List<chkSubjectInfo> chkSubjectInfoList = new List<chkSubjectInfo>();
+
+        private string UserDefSubjectRoot = "使用者自訂科目";
+        // 使用者自訂科目
+        public Dictionary<string, List<XElement>> UserDefSubjectDict = new Dictionary<string, List<XElement>>();
+
         /// <summary>
         /// 解析狀態
         /// </summary>
@@ -166,7 +171,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 MOEXml.SetAttributeValue("EntryYear", GDCCode.Substring(0, 3));
                 MOEXml.SetAttributeValue("SchoolYear", GDCCode.Substring(0, 3));
             }
-               
+
 
             //// 支援就格式
             //if (MOEXml.Attribute("SchoolYear") != null)
@@ -573,7 +578,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 {
                                     // 表示有一年級的資料
                                     hasGradeYear1 = true;
-                                }                                
+                                }
                             }
                         }
 
@@ -597,9 +602,9 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                 CourseCodeMDict[coCode].Add(elm);
                             }
-                               
+
                             // 新增資料
-                            foreach(string coCode in CourseCodeMDict.Keys)                                
+                            foreach (string coCode in CourseCodeMDict.Keys)
                             {
                                 if (CourseCodeMDict.ContainsKey(coCode))
                                 {
@@ -630,7 +635,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                     subj.MOEXml = CourseCodeMDict[coCode];
                                     subj.GDCCode = Global._GPlanInfo108MDict[key].GDCCode;
                                     chkSubjectInfoList.Add(subj);
-                                }                                
+                                }
                             }
                         }
 
@@ -1034,5 +1039,77 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
+
+        public Dictionary<string, List<XElement>> GetUserDefSubjectDict()
+        {
+            UserDefSubjectDict.Clear();
+
+            try
+            {
+                if (RefGPContentXml == null)
+                {
+                    ParseRefGPContentXml();
+                }
+
+                if (RefGPContentXml != null)
+                {
+                    XElement elmUDRoot = RefGPContentXml.Element(UserDefSubjectRoot);
+                    if (elmUDRoot != null)
+                    {
+                        // 讀取科目名稱當 Key
+                        foreach (XElement elm in elmUDRoot.Elements("Subject"))
+                        {
+                            string key = GetAttribute(elm, "Domain") + "_" + GetAttribute(elm, "Entry") + "_" + GetAttribute(elm, "Required") + "_" + GetAttribute(elm, "RequiredBy") + "_" + GetAttribute(elm, "SubjectName");
+
+                            if (!UserDefSubjectDict.ContainsKey(key))
+                                UserDefSubjectDict.Add(key, new List<XElement>());
+
+                            UserDefSubjectDict[key].Add(elm);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return UserDefSubjectDict;
+        }
+
+        /// <summary>
+        ///  設定使用者自訂
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetUserDefSubjectDict(Dictionary<string, List<XElement>> value)
+        {
+            try
+            {
+                if (RefGPContentXml != null)
+                {
+                    XElement elmUDRoot = new XElement(UserDefSubjectRoot);
+                    foreach (string key in value.Keys)
+                    {
+                        foreach (XElement elm in value[key])
+                            elmUDRoot.Add(elm);
+                    }
+
+                    if (RefGPContentXml.Element(UserDefSubjectRoot) != null)
+                    {
+                        // 先移除
+                        RefGPContentXml.Element(UserDefSubjectRoot).Remove();
+                    }
+
+                    // 再新增
+                    RefGPContentXml.Add(elmUDRoot);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
     }
 }
