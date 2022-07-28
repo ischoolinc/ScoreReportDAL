@@ -26,6 +26,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
         bool isUDDgDataChange = false;
         bool isLoadUDDataFinish = true;
 
+        // 檢查科目是否重複
+        List<string> chkSubjectNameList = new List<string>();
+        List<string> chkSubjectNameDList = new List<string>();
+
         int dgColIdx = 0, dgRowIdx = 0, dgUDColIdx = 0, dgUDRowIdx = 0;
 
         private Node _SelectItem;
@@ -425,6 +429,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {                  
                     return;
                 }
+                isDgDataChange = isUDDgDataChange = false;
             }
 
 
@@ -433,6 +438,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lblUDGroupName.Text = "";
             dgUDData.Rows.Clear();
             dgData.Rows.Clear();
+            chkSubjectNameList.Clear();
             SelectInfo = null;
 
             if (!(e.Node.Tag is GPlanInfo108))
@@ -518,6 +524,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
                 dgData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
                 dgData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;
+
+                chkSubjectNameList.Add(firstElm.Attribute("SubjectName").Value);
 
                 if (firstElm.Attribute("RequiredBy").Value == "部訂")
                 {
@@ -646,7 +654,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 dgUDData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
                 dgUDData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
-                dgUDData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;
+                dgUDData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;                
 
                 if (firstElm.Attribute("RequiredBy").Value == "部訂")
                 {
@@ -1003,6 +1011,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {             
                     return;
                 }
+                isDgDataChange = isUDDgDataChange = false;
             }
 
             btnCreate.Enabled = false;
@@ -1281,6 +1290,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     e.Cancel = true;
                     return;
                 }
+                isDgDataChange = isUDDgDataChange = false;
             }
         }
 
@@ -1389,6 +1399,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (tabControl1.SelectedTabIndex == 1)
             {
                 lblUDGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                btnUpdate.Enabled = isD;
                 isUDDgDataChange = isD;
             }
         }
@@ -1449,6 +1460,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
             }
 
+            chkSubjectNameDList.Clear();
+
+
             foreach (DataGridViewRow dr in dgUDData.Rows)
             {
                 if (dr.IsNewRow)
@@ -1493,6 +1507,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             else
                             {
                                 string strValue = dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value.ToString();
+
+                                // 檢查科目名稱
+                                if (cell.ColumnIndex == 2)
+                                {
+                                    if (chkSubjectNameList.Contains(strValue))
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "科目名稱與國教署科目名稱相同";
+                                        value = false;
+                                    }
+
+                                    if (chkSubjectNameDList.Contains(strValue))
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "科目名稱重複";
+                                        value = false;
+                                    }
+                                    else
+                                        chkSubjectNameDList.Add(strValue);
+                                }
 
                                 // 檢查校部定 3
                                 if (cell.ColumnIndex == 3)
