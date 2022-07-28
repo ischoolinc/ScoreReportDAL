@@ -24,8 +24,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
         GPlanInfo108 SelectInfo = null;
         bool isDgDataChange = false;
         bool isUDDgDataChange = false;
+        bool isLoadUDDataFinish = true;
 
-        int dgColIdx = 0, dgRowIdx = 0;
+        int dgColIdx = 0, dgRowIdx = 0, dgUDColIdx = 0, dgUDRowIdx = 0;
 
         private Node _SelectItem;
         Dictionary<string, bool> _AdvTreeExpandStatus = new Dictionary<string, bool>();
@@ -418,6 +419,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
         {
+            if (isDgDataChange || isUDDgDataChange)
+            {
+                if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
+                {                  
+                    return;
+                }
+            }
+
+
+            isLoadUDDataFinish = false;
             this.lblGroupName.Text = "";
             lblUDGroupName.Text = "";
             dgUDData.Rows.Clear();
@@ -455,6 +466,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     tabItem1.Visible = true;
                     tabItem2.Visible = tabItem4.Visible = true;
                     btnEditName.Enabled = btnDelete.Enabled = false;
+                    tabControl1.SelectedTab = tabItem4;
                     tabControl1.SelectedTab = tabItem1;
                     //tabControl1.SelectedTabIndex = 0;
                 }
@@ -763,7 +775,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             btnUpdate.Enabled = false;
             isDgDataChange = false;
             isUDDgDataChange = false;
-
+            isLoadUDDataFinish = true;
 
         }
 
@@ -886,44 +898,86 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
-            if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
+            if (tabControl1.SelectedTabIndex == 0)
             {
-                XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
-                if (elm != null)
+                if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
                 {
-                    elm.SetAttributeValue("設定對開", "是");
+                    XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
+                    if (elm != null)
+                    {
+                        elm.SetAttributeValue("設定對開", "是");
+                    }
+                    CreditInfo c1 = GetCreditAttr(elm);
+                    dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
+                    dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
+                    dgData.Rows[dgRowIdx].Cells[dgColIdx].ToolTipText = c1.ToolTipText;
+
+
+                    // 更新資料
+                    UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:是");
+                    SetIsDirtyDisplay(true);
                 }
-                CreditInfo c1 = GetCreditAttr(elm);
-                dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
-                dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
-                dgData.Rows[dgRowIdx].Cells[dgColIdx].ToolTipText = c1.ToolTipText;
-
-
-                // 更新資料
-                UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:是");
-                SetIsDirtyDisplay(true);
             }
+
+
+            if (tabControl1.SelectedTabIndex == 1)
+            {
+                if (dgUDColIdx > 4 && dgUDColIdx < 11 && dgUDRowIdx > -1)
+                {
+                    XElement elm = dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Tag as XElement;
+                    if (elm != null)
+                    {
+                        elm.SetAttributeValue("設定對開", "是");
+                    }
+                    CreditInfo c1 = GetCreditAttr(elm);
+                    dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Tag = elm;
+                    dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Style.BackColor = c1.BackgroundColor;
+                    dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].ToolTipText = c1.ToolTipText;
+                    SetIsDirtyDisplay(true);
+                }
+            }
+
         }
 
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
+            if (tabControl1.SelectedTabIndex == 0)
             {
-                XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
-                if (elm != null)
+                if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
                 {
-                    elm.SetAttributeValue("設定對開", "否");
-                }
+                    XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
+                    if (elm != null)
+                    {
+                        elm.SetAttributeValue("設定對開", "否");
+                    }
 
-                CreditInfo c1 = GetCreditAttr(elm);
-                dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
-                dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
-                dgData.Rows[dgRowIdx].Cells[dgColIdx].ToolTipText = c1.ToolTipText;
-                // 更新資料
-                UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:否");
-                SetIsDirtyDisplay(true);
+                    CreditInfo c1 = GetCreditAttr(elm);
+                    dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag = elm;
+                    dgData.Rows[dgRowIdx].Cells[dgColIdx].Style.BackColor = c1.BackgroundColor;
+                    dgData.Rows[dgRowIdx].Cells[dgColIdx].ToolTipText = c1.ToolTipText;
+                    // 更新資料
+                    UpdateGPlaDataSubjectOpen(SelectInfo, elm, "設定對開:否");
+                    SetIsDirtyDisplay(true);
+                }
+            }
+
+            if (tabControl1.SelectedTabIndex == 1)
+            {
+                if (dgUDColIdx > 4 && dgUDColIdx < 11 && dgUDRowIdx > -1)
+                {
+                    XElement elm = dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Tag as XElement;
+                    if (elm != null)
+                    {
+                        elm.SetAttributeValue("設定對開", "否");
+                    }
+
+                    CreditInfo c1 = GetCreditAttr(elm);
+                    dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Tag = elm;
+                    dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Style.BackColor = c1.BackgroundColor;
+                    dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].ToolTipText = c1.ToolTipText;
+                    SetIsDirtyDisplay(true);
+                }
             }
         }
 
@@ -943,6 +997,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
+            if (isDgDataChange || isUDDgDataChange)
+            {
+                if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
+                {             
+                    return;
+                }
+            }
+
             btnCreate.Enabled = false;
             frmAddGPlan fgg = new frmAddGPlan();
             if (fgg.ShowDialog() == DialogResult.OK)
@@ -989,8 +1051,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 btnUpdate.Enabled = false;
 
+                // 檢查使用這自訂科目資料
+                if (CheckUDDataGridData() == false)
+                {
+                    MsgBox.Show("自訂課程規劃表資料有錯誤，無法儲存。");
+                    btnUpdate.Enabled = true;
+                    return;
+                }
+
                 // 檢查使用者自訂
-                if (isDgDataChange)
+                if (isUDDgDataChange)
                 {
                     SelectInfo.SetUserDefSubjectDict(ConvertDGYDDToXML());
                 }
@@ -1066,32 +1136,41 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         elm.SetAttributeValue("開課方式", GetDRVCellValue(dr, "開課方式"));
 
                         elm.SetAttributeValue("Credit", GetDRVCellValue(dr, key));
-                                 
+
 
                         if (key == "1上")
                         {
+                            elm.SetAttributeValue("設定對開", GetDDOpenString(dr.Cells[key]));
                             elm.SetAttributeValue("GradeYear", "1");
                             elm.SetAttributeValue("Semester", "1");
                         }
                         else if (key == "1下")
                         {
+                            elm.SetAttributeValue("設定對開", GetDDOpenString(dr.Cells[key]));
                             elm.SetAttributeValue("GradeYear", "1");
                             elm.SetAttributeValue("Semester", "2");
                         }
-                        else if (key == "2上") {
+                        else if (key == "2上")
+                        {
+                            elm.SetAttributeValue("設定對開", GetDDOpenString(dr.Cells[key]));
                             elm.SetAttributeValue("GradeYear", "2");
                             elm.SetAttributeValue("Semester", "1");
                         }
-                        else if (key == "2下") {
+                        else if (key == "2下")
+                        {
+                            elm.SetAttributeValue("設定對開", GetDDOpenString(dr.Cells[key]));
                             elm.SetAttributeValue("GradeYear", "2");
                             elm.SetAttributeValue("Semester", "2");
                         }
-                        else if (key == "3上") {
+                        else if (key == "3上")
+                        {
+                            elm.SetAttributeValue("設定對開", GetDDOpenString(dr.Cells[key]));
                             elm.SetAttributeValue("GradeYear", "3");
                             elm.SetAttributeValue("Semester", "1");
                         }
                         else if (key == "3下")
                         {
+                            elm.SetAttributeValue("設定對開", GetDDOpenString(dr.Cells[key]));
                             elm.SetAttributeValue("GradeYear", "3");
                             elm.SetAttributeValue("Semester", "2");
                         }
@@ -1104,7 +1183,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
                 }
 
-                if (dataXList.Count>0)
+                if (dataXList.Count > 0)
                 {
                     XElement elm = dataXList[0];
                     string key = GetAttribute(elm, "Domain") + "_" + GetAttribute(elm, "Entry") + "_" + GetAttribute(elm, "Required") + "_" + GetAttribute(elm, "RequiredBy") + "_" + GetAttribute(elm, "SubjectName");
@@ -1115,6 +1194,32 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 rowIdx++;
             }
+            return value;
+        }
+
+        /// <summary>
+        ///  取得使用者對開設定
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        private string GetDDOpenString(DataGridViewCell cell)
+        {
+            string value = "";
+
+            if (cell.Tag != null)
+            {
+                try
+                {
+                    XElement elm = XElement.Parse(cell.Tag.ToString());
+                    if (elm.Attribute("設定對開") != null)
+                        value = elm.Attribute("設定對開").Value;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
             return value;
         }
 
@@ -1169,7 +1274,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmGPlanConfig108_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isDgDataChange)
+            if (isDgDataChange || isUDDgDataChange )
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
                 {
@@ -1181,14 +1286,139 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void dgUDData_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            SetIsDirtyDisplay(true);
+            if (tabControl1.SelectedTabIndex == 1  && isLoadUDDataFinish == true)
+            {
+                SetIsDirtyDisplay(true);
+                if (e.RowIndex > -1 && e.ColumnIndex > -1)
+                {
+                    dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+
+
+                    if (e.ColumnIndex >= 5 && e.ColumnIndex <= 10)
+                    {
+                        if (dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                        {
+                            string strValue = dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                            // 檢查填學分數
+                            if (e.ColumnIndex >= 5 && e.ColumnIndex <= 10)
+                            {
+                                decimal d;
+                                if (decimal.TryParse(strValue, out d) == false)
+                                {
+                                    dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "必須填數字";
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null)
+                            dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "不能空值";
+                        else
+                        {
+                            if (dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "")
+                                dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "不能空值";
+                            else
+                            {
+                                string strValue = dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                                // 檢查校部定 3
+                                if (e.ColumnIndex == 3)
+                                {
+                                    if (strValue != "部定" && strValue != "校訂")
+                                    {
+                                        dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "必須填部定或校訂";
+                                    }
+                                }
+
+                                // 檢查必選修 4                        
+                                if (e.ColumnIndex == 4)
+                                {
+                                    if (strValue != "必修" && strValue != "選修")
+                                    {
+                                        dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "必須填必修或選修";
+                                    }
+                                }
+
+                                // 檢查不需評分 NotIncludedInCalc 11
+                                if (e.ColumnIndex == 11)
+                                {
+                                    if (strValue != "是" && strValue != "否")
+                                    {
+                                        dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "必須填是或否";
+                                    }
+                                }
+
+                                // 檢查不計學分 NotIncludedInCredit 12
+                                if (e.ColumnIndex == 12)
+                                {
+                                    if (strValue != "是" && strValue != "否")
+                                    {
+                                        dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "必須填是或否";
+                                    }
+                                }
+
+                                // 檢查開課方式 13
+                                if (e.ColumnIndex == 13)
+                                {
+                                    if (strValue != "原班" && strValue != "跨班")
+                                    {
+                                        dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "必須填原班或跨班";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }            
         }
 
         private void SetIsDirtyDisplay(bool isD)
         {
-            lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
-            btnUpdate.Enabled = isD;
-            isDgDataChange = isD;
+            // 原本課程規劃
+            if (tabControl1.SelectedTabIndex ==  0)
+            {
+                lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                btnUpdate.Enabled = isD;
+                isDgDataChange = isD;
+            }
+
+            // 自訂課程
+            if (tabControl1.SelectedTabIndex == 1)
+            {
+                lblUDGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                isUDDgDataChange = isD;
+            }
+        }
+
+        private void dgUDData_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            // index 5 ~ 10 輸入學分數
+            if (e.ColumnIndex >= 5 && e.ColumnIndex <= 10)
+                dgUDData.ImeMode = ImeMode.Off;
+            else
+                dgUDData.ImeMode = ImeMode.On;
+
+        }
+
+        private void dgUDData_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dgUDColIdx = e.ColumnIndex;
+                dgUDRowIdx = e.RowIndex;
+            }
+        }
+
+        private void dgUDData_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgUDData.IsCurrentCellDirty)
+            {
+                dgUDData.CommitEdit(DataGridViewDataErrorContexts.Commit);
+
+            }
         }
 
         private string GetAttribute(XElement elm, string attrName)
@@ -1197,6 +1427,129 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             if (elm.Attribute(attrName) != null)
                 value = elm.Attribute(attrName).Value;
+
+            return value;
+        }
+
+        /// <summary>
+        ///  檢查使用自訂欄位值
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckUDDataGridData()
+        {
+            bool value = true;
+
+            // 檢查輸入值
+            foreach (DataGridViewRow dr in dgUDData.Rows)
+            {
+                dr.ErrorText = "";
+                foreach (DataGridViewCell cell in dr.Cells)
+                {
+                    cell.ErrorText = "";
+                }
+            }
+
+            foreach (DataGridViewRow dr in dgUDData.Rows)
+            {
+                if (dr.IsNewRow)
+                    continue;
+
+                foreach (DataGridViewCell cell in dr.Cells)
+                {
+
+                    // 檢查填學分數
+                    if (cell.ColumnIndex >= 5 && cell.ColumnIndex <= 10)
+                    {
+                        if (cell.Value != null)
+                        {
+                            string strValue = dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value.ToString();
+
+                            // 檢查填學分數
+                            if (cell.ColumnIndex >= 5 && cell.ColumnIndex <= 10)
+                            {
+                                decimal d;
+                                if (decimal.TryParse(strValue, out d) == false)
+                                {
+                                    dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "必須填數字";
+                                    value = false;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (cell.Value == null)
+                        {
+                            cell.ErrorText = "不能空值";
+                            value = false;
+                        }
+                        else
+                        {
+                            if (dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value.ToString() == "")
+                            {
+                                dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "不能空值";
+                                value = false;
+                            }
+                            else
+                            {
+                                string strValue = dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value.ToString();
+
+                                // 檢查校部定 3
+                                if (cell.ColumnIndex == 3)
+                                {
+                                    if (strValue != "部定" && strValue != "校訂")
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "必須填部定或校訂";
+                                        value = false;
+                                    }
+                                }
+
+                                // 檢查必選修 4                        
+                                if (cell.ColumnIndex == 4)
+                                {
+                                    if (strValue != "必修" && strValue != "選修")
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "必須填必修或選修";
+                                        value = false;
+                                    }
+                                }
+
+                                // 檢查不需評分 NotIncludedInCalc 11
+                                if (cell.ColumnIndex == 11)
+                                {
+                                    if (strValue != "是" && strValue != "否")
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "必須填是或否";
+                                        value = false;
+                                    }
+                                }
+
+                                // 檢查不計學分 NotIncludedInCredit 12
+                                if (cell.ColumnIndex == 12)
+                                {
+                                    if (strValue != "是" && strValue != "否")
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "必須填是或否";
+                                        value = false;
+                                    }
+                                }
+
+                                // 檢查開課方式 13
+                                if (cell.ColumnIndex == 13)
+                                {
+                                    if (strValue != "原班" && strValue != "跨班")
+                                    {
+                                        dgUDData.Rows[cell.RowIndex].Cells[cell.ColumnIndex].ErrorText = "必須填原班或跨班";
+                                        value = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
 
             return value;
         }
