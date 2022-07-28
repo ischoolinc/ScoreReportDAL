@@ -97,6 +97,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 if (data.RefGPlanXML != null)
                 {
+                    // 原本課規
                     foreach (XElement subjElm in data.RefGPlanXML.Elements("Subject"))
                     {
                         if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
@@ -176,6 +177,50 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             }
                         }
 
+                    }
+
+                    // 使用者自訂
+                    if (data.RefGPlanXML.Element("使用者自訂科目") != null)
+                    {
+                        foreach (XElement subjElm in data.RefGPlanXML.Element("使用者自訂科目").Elements("Subject"))
+                        {
+                            if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
+                            {
+                                if (subjElm.Attribute("開課方式").Value == "原班")
+                                {
+                                    // 判斷對開
+                                    bool isOpenD = false;
+
+                                    // 使用者手動設定
+                                    if (subjElm.Attribute("設定對開") != null)
+                                    {
+                                        if (subjElm.Attribute("設定對開").Value == "是")
+                                            isOpenD = true;
+                                    }                              
+
+
+                                    if (isOpenD)
+                                    {
+                                        // 是對開
+                                        data.OpenSubjectSourceBList.Add(subjElm);
+                                        string subjName = subjElm.Attribute("SubjectName").Value;
+                                        if (!data.SubjectBDict.ContainsKey(subjName))
+                                            data.SubjectBDict.Add(subjName, false);
+                                    }
+                                    else
+                                    {
+                                        // 一般
+                                        data.OpenSubjectSourceList.Add(subjElm);
+                                        string subjName = subjElm.Attribute("SubjectName").Value;
+                                        if (!tmpSubj.Contains(subjName))
+                                        {
+                                            tmpSubj.Add(subjName);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
                     }
                 }
             }

@@ -2698,7 +2698,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                         else
                             isReq = "0";
 
-                        string insStr = insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
+                        string subjLevel = "";
+
+                        if (subjElm.Attribute("Level") != null)
+                            subjLevel = subjElm.Attribute("Level").Value;
+
+                            string insStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
 
                         if (!insertSQLList.Contains(insStr))
                             insertSQLList.Add(insStr);
@@ -2757,8 +2762,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 else
                                     isReq = "0";
 
+                                string subjLevel = "";
 
-                                string inStr = insertCourseSQL(courseName, subjElm.Attribute("Level").Value, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
+                                if (subjElm.Attribute("Level") != null)
+                                    subjLevel = subjElm.Attribute("Level").Value;
+
+                                string inStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
 
                                 if (!insertSQLList.Contains(inStr))
                                     insertSQLList.Add(inStr);
@@ -2940,7 +2949,9 @@ namespace SHCourseGroupCodeAdmin.DAO
             if (ref_class_id != "")
                 refClassStr = "'" + ref_class_id + "'";
 
-
+            string subjLevel = "null";
+            if (subj_level != "")
+                subjLevel = "'" + subj_level + "'";
 
             string value = "" +
                 " INSERT INTO course(" +
@@ -2959,7 +2970,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " ) " +
 " VALUES ( " +
 " 	'" + course_name + "' " +
-" 	,'" + subj_level + "' " +
+" 	," + subjLevel + " " +
 " 	,'" + subject + "' " +
 " 	," + refClassStr + " " +
 " 	," + school_year + "" +
@@ -3037,7 +3048,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                             else
                                 isReq = "0";
 
-                            string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
+                            string subjLevel = "";
+                            if (subj.SubjectXML.Attribute("Level") != null)
+                                subjLevel = subj.SubjectXML.Attribute("Level").Value;
+
+                            string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
 
                             if (!insertSQLList.Contains(insStr))
                                 insertSQLList.Add(insStr);
@@ -3075,7 +3090,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 else
                                     isReq = "0";
 
-                                string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
+                                string subjLevel = "";
+                                if (subj.SubjectXML.Attribute("Level") != null)
+                                    subjLevel = subj.SubjectXML.Attribute("Level").Value;
+
+                                string insStr = insertCourseSQL(courseName,subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
 
                                 if (!insertSQLList.Contains(insStr))
                                     insertSQLList.Add(insStr);

@@ -99,6 +99,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 if (data.RefGPlanXML != null)
                 {
+                    // 原本課規
                     foreach (XElement subjElm in data.RefGPlanXML.Elements("Subject"))
                     {
                         if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
@@ -187,6 +188,100 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             }
                         }
 
+                    }
+
+                    // 使用者自訂
+                    if (data.RefGPlanXML.Element("使用者自訂科目") != null)
+                    {
+                        foreach (XElement subjElm in data.RefGPlanXML.Element("使用者自訂科目").Elements("Subject"))
+                        {
+                            if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
+                            {
+                                if (subjElm.Attribute("開課方式").Value == "跨班")
+                                {
+                                    data.OpenSubjectSourceList.Add(subjElm);
+                                    string subjName = subjElm.Attribute("SubjectName").Value;
+                                    if (!data.SubjectBDict.ContainsKey(subjName))
+                                        data.SubjectBDict.Add(subjName, false);
+
+
+                                    // 處理科目
+                                    string openSems = "0";
+
+                                    if (data.GradeYear == "3" && _Semester == "2")
+                                    {
+                                        openSems = "6";
+                                    }
+                                    else if (data.GradeYear == "3" && _Semester == "1")
+                                    {
+                                        openSems = "5";
+                                    }
+                                    else if (data.GradeYear == "2" && _Semester == "2")
+                                    {
+                                        openSems = "4";
+                                    }
+                                    else if (data.GradeYear == "2" && _Semester == "1")
+                                    {
+                                        openSems = "3";
+                                    }
+                                    else if (data.GradeYear == "1" && _Semester == "2")
+                                    {
+                                        openSems = "2";
+                                    }
+                                    else if (data.GradeYear == "1" && _Semester == "1")
+                                    {
+                                        openSems = "1";
+                                    }
+                                    else { }
+
+                                    string subjKey = openSems + "_" + subjName;
+
+                                    //// 課程代碼
+                                    //string course_code = "";
+
+                                    //if (subjElm.Attribute("課程代碼") != null)
+                                    //{
+                                    //    course_code = subjElm.Attribute("課程代碼").Value;
+                                    //}
+
+                                    if (!_SubjectCourseInfoDict.ContainsKey(subjKey))
+                                    {
+                                        SubjectCourseInfo sci = new SubjectCourseInfo();
+                                        sci.SubjectName = subjName;
+                                        sci.SubjectXML = subjElm;
+                                        sci.SchoolYear = _SchoolYear;
+                                        sci.Semester = _Semester;
+                                        sci.CourseCount = 0;
+                                        sci.ClassNameDict = new Dictionary<string, string>();
+                                        sci.ClassStudentIDDict = new Dictionary<string, List<string>>();
+                                     //   sci.CourseCodeList.Add(course_code);
+                                        sci.OpenSemester = openSems;
+                                        _SubjectCourseInfoDict.Add(subjKey, sci);
+                                    }
+                                    else
+                                    {
+                                        //if (!string.IsNullOrEmpty(course_code))
+                                        //{
+                                        //    if (!_SubjectCourseInfoDict[subjKey].CourseCodeList.Contains(course_code))
+                                        //        _SubjectCourseInfoDict[subjKey].CourseCodeList.Add(course_code);
+                                        //}
+                                    }
+
+                                    // 班級
+                                    if (!_SubjectCourseInfoDict[subjKey].ClassNameDict.ContainsKey(data.ClassName))
+                                    {
+                                        _SubjectCourseInfoDict[subjKey].ClassNameDict.Add(data.ClassName, data.ClassID);
+                                    }
+
+                                    // 班級學生
+                                    if (!_SubjectCourseInfoDict[subjKey].ClassStudentIDDict.ContainsKey(data.ClassID))
+                                    {
+                                        _SubjectCourseInfoDict[subjKey].ClassStudentIDDict.Add(data.ClassID, data.RefStudentIDList);
+                                    }
+                                }
+                            }
+
+                        }
                     }
                 }
             }
