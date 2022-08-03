@@ -155,6 +155,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void ReloadData()
         {
             advTree1.Nodes.Clear();
+            btnEditName.Enabled = btnUpdate.Enabled = btnDelete.Enabled = false;
             tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = false;
             _bgWorker.RunWorkerAsync();
         }
@@ -300,15 +301,35 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbUDDomain.Name = "領域";
                 tbUDDomain.Width = 80;
                 tbUDDomain.HeaderText = "領域";
-                tbUDDomain.ReadOnly = false;
                 tbUDDomain.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                DataGridViewTextBoxColumn tbUDScoreType = new DataGridViewTextBoxColumn();
-                tbUDScoreType.Name = "分項類別";
-                tbUDScoreType.Width = 80;
-                tbUDScoreType.HeaderText = "分項類別";
-                tbUDScoreType.ReadOnly = false;
-                tbUDScoreType.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                DataGridViewComboBoxColumn cbUDScoreType = new DataGridViewComboBoxColumn();
+                cbUDScoreType.Name = "分項類別";
+                cbUDScoreType.Width = 80;
+                cbUDScoreType.DropDownWidth = 90;
+                cbUDScoreType.HeaderText = "分項類別";
+                cbUDScoreType.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                List<string> ScoreTypeList = new List<string>();
+                ScoreTypeList.Add("學業");
+                ScoreTypeList.Add("專業科目");
+                ScoreTypeList.Add("實習科目");
+
+                DataTable dtUDScoreType = new DataTable();
+                dtUDScoreType.Columns.Add("VALUE");
+                dtUDScoreType.Columns.Add("ITEM");
+
+                foreach (string str in ScoreTypeList)
+                {
+                    DataRow dr = dtUDScoreType.NewRow();
+                    dr["VALUE"] = str;
+                    dr["ITEM"] = str;
+                    dtUDScoreType.Rows.Add(dr);
+                }
+                cbUDScoreType.DataSource = dtUDScoreType;
+                cbUDScoreType.DisplayMember = "ITEM";
+                cbUDScoreType.ValueMember = "VALUE";
+
+
 
                 DataGridViewTextBoxColumn tbUDSubjectName = new DataGridViewTextBoxColumn();
                 tbUDSubjectName.Name = "科目名稱";
@@ -317,19 +338,58 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbUDSubjectName.ReadOnly = false;
                 tbUDSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                DataGridViewTextBoxColumn tbUDRequiredBy = new DataGridViewTextBoxColumn();
-                tbUDRequiredBy.Name = "校訂部定";
-                tbUDRequiredBy.Width = 40;
-                tbUDRequiredBy.HeaderText = "校訂部定";
-                tbUDRequiredBy.ReadOnly = false;
-                tbUDRequiredBy.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                DataGridViewComboBoxColumn cbUDRequiredBy = new DataGridViewComboBoxColumn();
+                cbUDRequiredBy.Name = "校訂部定";
+                cbUDRequiredBy.Width = 60;
+                cbUDRequiredBy.HeaderText = "校訂部定";
+                cbUDRequiredBy.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                DataGridViewTextBoxColumn tbUDIsRequired = new DataGridViewTextBoxColumn();
-                tbUDIsRequired.Name = "必選修";
-                tbUDIsRequired.Width = 40;
-                tbUDIsRequired.HeaderText = "必選修";
-                tbUDIsRequired.ReadOnly = false;
-                tbUDIsRequired.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                List<string> RequiredByList = new List<string>();
+                RequiredByList.Add("部定");
+                RequiredByList.Add("校訂");
+
+                DataTable dtUDRequiredBy = new DataTable();
+                dtUDRequiredBy.Columns.Add("VALUE");
+                dtUDRequiredBy.Columns.Add("ITEM");
+
+                foreach (string str in RequiredByList)
+                {
+                    DataRow dr = dtUDRequiredBy.NewRow();
+                    dr["VALUE"] = str;
+                    dr["ITEM"] = str;
+                    dtUDRequiredBy.Rows.Add(dr);
+                }
+
+                cbUDRequiredBy.DataSource = dtUDRequiredBy;
+                cbUDRequiredBy.DisplayMember = "ITEM";
+                cbUDRequiredBy.ValueMember = "VALUE";
+
+                DataGridViewComboBoxColumn cbUDIsRequired = new DataGridViewComboBoxColumn();
+                cbUDIsRequired.Name = "必選修";
+                cbUDIsRequired.Width = 60;
+                cbUDIsRequired.HeaderText = "必選修";
+                cbUDIsRequired.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                List<string> RequiredList = new List<string>();
+                RequiredList.Add("必修");
+                RequiredList.Add("選修");
+
+                DataTable dtUDRequired = new DataTable();
+                dtUDRequired.Columns.Add("VALUE");
+                dtUDRequired.Columns.Add("ITEM");
+
+                foreach (string str in RequiredList)
+                {
+                    DataRow dr = dtUDRequired.NewRow();
+                    dr["VALUE"] = str;
+                    dr["ITEM"] = str;
+                    dtUDRequired.Rows.Add(dr);
+                }
+
+                cbUDIsRequired.DataSource = dtUDRequired;
+                cbUDIsRequired.DisplayMember = "ITEM";
+                cbUDIsRequired.ValueMember = "VALUE";
+
 
                 DataGridViewTextBoxColumn tbUDGS11 = new DataGridViewTextBoxColumn();
                 tbUDGS11.Name = "1上";
@@ -373,42 +433,96 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbUDGS32.ReadOnly = false;
                 tbUDGS32.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                DataGridViewTextBoxColumn tbUDNotIncludedInCalc = new DataGridViewTextBoxColumn();
-                tbUDNotIncludedInCalc.Name = "不需評分";
-                tbUDNotIncludedInCalc.Width = 40;
-                tbUDNotIncludedInCalc.HeaderText = "不需評分";
-                tbUDNotIncludedInCalc.ReadOnly = false;
-                tbUDNotIncludedInCalc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                DataGridViewComboBoxColumn cbUDNotIncludedInCalc = new DataGridViewComboBoxColumn();
+                cbUDNotIncludedInCalc.Name = "不需評分";
+                cbUDNotIncludedInCalc.Width = 40;
+                cbUDNotIncludedInCalc.HeaderText = "不需評分";
+                cbUDNotIncludedInCalc.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                DataGridViewTextBoxColumn tbUDNotIncludedInCredit = new DataGridViewTextBoxColumn();
-                tbUDNotIncludedInCredit.Name = "不計學分";
-                tbUDNotIncludedInCredit.Width = 40;
-                tbUDNotIncludedInCredit.HeaderText = "不計學分";
-                tbUDNotIncludedInCredit.ReadOnly = false;
-                tbUDNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                List<string> YesNoList = new List<string>();
+                YesNoList.Add("是");
+                YesNoList.Add("否");
+
+                DataTable dtUDNotIncludedInCalc = new DataTable();
+                dtUDNotIncludedInCalc.Columns.Add("VALUE");
+                dtUDNotIncludedInCalc.Columns.Add("ITEM");
+
+                foreach (string str in YesNoList)
+                {
+                    DataRow dr = dtUDNotIncludedInCalc.NewRow();
+                    dr["VALUE"] = str;
+                    dr["ITEM"] = str;
+                    dtUDNotIncludedInCalc.Rows.Add(dr);
+                }
+
+                cbUDNotIncludedInCalc.DataSource = dtUDNotIncludedInCalc;
+                cbUDNotIncludedInCalc.DisplayMember = "ITEM";
+                cbUDNotIncludedInCalc.ValueMember = "VALUE";
+
+                DataGridViewComboBoxColumn cbUDNotIncludedInCredit = new DataGridViewComboBoxColumn();
+                cbUDNotIncludedInCredit.Name = "不計學分";
+                cbUDNotIncludedInCredit.Width = 40;
+                cbUDNotIncludedInCredit.HeaderText = "不計學分";
+                cbUDNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                DataTable dtUDNotIncludedInCredit = new DataTable();
+                dtUDNotIncludedInCredit.Columns.Add("VALUE");
+                dtUDNotIncludedInCredit.Columns.Add("ITEM");
+
+                foreach (string str in YesNoList)
+                {
+                    DataRow dr = dtUDNotIncludedInCredit.NewRow();
+                    dr["VALUE"] = str;
+                    dr["ITEM"] = str;
+                    dtUDNotIncludedInCredit.Rows.Add(dr);
+                }
+
+                cbUDNotIncludedInCredit.DataSource = dtUDNotIncludedInCredit;
+                cbUDNotIncludedInCredit.DisplayMember = "ITEM";
+                cbUDNotIncludedInCredit.ValueMember = "VALUE";
 
 
-                DataGridViewTextBoxColumn tbUDOpenStatus = new DataGridViewTextBoxColumn();
-                tbUDOpenStatus.Name = "開課方式";
-                tbUDOpenStatus.Width = 40;
-                tbUDOpenStatus.HeaderText = "開課方式";
-                tbUDOpenStatus.ReadOnly = false;
-                tbUDOpenStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                DataGridViewComboBoxColumn cbUDOpenStatus = new DataGridViewComboBoxColumn();
+                cbUDOpenStatus.Name = "開課方式";
+                cbUDOpenStatus.Width = 60;
+                cbUDOpenStatus.HeaderText = "開課方式";
+                cbUDOpenStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                List<string> OpenList = new List<string>();
+                OpenList.Add("原班");
+                OpenList.Add("跨班");
+
+                DataTable dtUDOpenStatus = new DataTable();
+                dtUDOpenStatus.Columns.Add("VALUE");
+                dtUDOpenStatus.Columns.Add("ITEM");
+
+                foreach (string str in OpenList)
+                {
+                    DataRow dr = dtUDOpenStatus.NewRow();
+                    dr["VALUE"] = str;
+                    dr["ITEM"] = str;
+                    dtUDOpenStatus.Rows.Add(dr);
+                }
+
+                cbUDOpenStatus.DataSource = dtUDOpenStatus;
+                cbUDOpenStatus.DisplayMember = "ITEM";
+                cbUDOpenStatus.ValueMember = "VALUE";
+
 
                 dgUDData.Columns.Add(tbUDDomain);
-                dgUDData.Columns.Add(tbUDScoreType);
+                dgUDData.Columns.Add(cbUDScoreType);
                 dgUDData.Columns.Add(tbUDSubjectName);
-                dgUDData.Columns.Add(tbUDRequiredBy);
-                dgUDData.Columns.Add(tbUDIsRequired);
+                dgUDData.Columns.Add(cbUDRequiredBy);
+                dgUDData.Columns.Add(cbUDIsRequired);
                 dgUDData.Columns.Add(tbUDGS11);
                 dgUDData.Columns.Add(tbUDGS12);
                 dgUDData.Columns.Add(tbUDGS21);
                 dgUDData.Columns.Add(tbUDGS22);
                 dgUDData.Columns.Add(tbUDGS31);
                 dgUDData.Columns.Add(tbUDGS32);
-                dgUDData.Columns.Add(tbUDNotIncludedInCalc);
-                dgUDData.Columns.Add(tbUDNotIncludedInCredit);
-                dgUDData.Columns.Add(tbUDOpenStatus);
+                dgUDData.Columns.Add(cbUDNotIncludedInCalc);
+                dgUDData.Columns.Add(cbUDNotIncludedInCredit);
+                dgUDData.Columns.Add(cbUDOpenStatus);
             }
             catch (Exception ex)
             {
@@ -418,7 +532,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void advTree1_Click(object sender, EventArgs e)
         {
-
+            btnEditName.Enabled = btnUpdate.Enabled = btnDelete.Enabled = false;
         }
 
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
@@ -426,7 +540,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (isDgDataChange || isUDDgDataChange)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
-                {                  
+                {
                     return;
                 }
                 isDgDataChange = isUDDgDataChange = false;
@@ -654,7 +768,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 dgUDData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
                 dgUDData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
-                dgUDData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;                
+                dgUDData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;
 
                 if (firstElm.Attribute("RequiredBy").Value == "部訂")
                 {
@@ -789,7 +903,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void TabItem2_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
         }
 
         private CreditInfo GetCreditAttr(XElement elm)
@@ -1008,7 +1122,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (isDgDataChange || isUDDgDataChange)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
-                {             
+                {
                     return;
                 }
                 isDgDataChange = isUDDgDataChange = false;
@@ -1018,6 +1132,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
             frmAddGPlan fgg = new frmAddGPlan();
             if (fgg.ShowDialog() == DialogResult.OK)
             {
+                try
+                {
+                    FISCA.Features.Invoke("GraduationPlanSyncAllBackground");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 ReloadData();
             }
             btnCreate.Enabled = true;
@@ -1049,7 +1171,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 int c = _da.DeleteGPlanByID(SelectInfo.RefGPID);
                 btnDelete.Enabled = false;
-                SelectInfo = null;
+                _SelectItem = null;
+                try
+                {
+                    FISCA.Features.Invoke("GraduationPlanSyncAllBackground");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 ReloadData();
             }
         }
@@ -1058,6 +1188,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             try
             {
+
                 btnUpdate.Enabled = false;
 
                 // 檢查使用這自訂科目資料
@@ -1283,7 +1414,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmGPlanConfig108_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isDgDataChange || isUDDgDataChange )
+            if (isDgDataChange || isUDDgDataChange)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
                 {
@@ -1296,13 +1427,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void dgUDData_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (tabControl1.SelectedTabIndex == 1  && isLoadUDDataFinish == true)
+            if (tabControl1.SelectedTabIndex == 1 && isLoadUDDataFinish == true)
             {
                 SetIsDirtyDisplay(true);
                 if (e.RowIndex > -1 && e.ColumnIndex > -1)
                 {
                     dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
-
 
                     if (e.ColumnIndex >= 5 && e.ColumnIndex <= 10)
                     {
@@ -1382,13 +1512,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         }
                     }
                 }
-            }            
+            }
         }
 
         private void SetIsDirtyDisplay(bool isD)
         {
             // 原本課程規劃
-            if (tabControl1.SelectedTabIndex ==  0)
+            if (tabControl1.SelectedTabIndex == 0)
             {
                 lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
                 btnUpdate.Enabled = isD;
@@ -1421,6 +1551,25 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgUDColIdx = e.ColumnIndex;
                 dgUDRowIdx = e.RowIndex;
             }
+
+            if (e.ColumnIndex > -1 && e.RowIndex > -1)
+            {
+                if (e.ColumnIndex == 0)
+                {
+                    if (dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null)
+                    {
+                        dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "不分";
+                    }
+                    else
+                    {
+                        if (dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "")
+                        {
+                            dgUDData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "不分";
+                        }
+                    }
+                }
+            }
+
         }
 
         private void dgUDData_CurrentCellDirtyStateChanged(object sender, EventArgs e)

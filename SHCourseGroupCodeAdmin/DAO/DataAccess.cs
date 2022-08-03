@@ -2904,13 +2904,13 @@ namespace SHCourseGroupCodeAdmin.DAO
                 // 新增資料
                 if (insertCourseStudentSQL.Count > 0)
                 {
-                    using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug1.txt", false))
-                    {
-                        foreach (string sid in insertCourseStudentSQL)
-                        {
-                            sw.WriteLine(sid);
-                        }
-                    }
+                    //using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug1.txt", false))
+                    //{
+                    //    foreach (string sid in insertCourseStudentSQL)
+                    //    {
+                    //        sw.WriteLine(sid);
+                    //    }
+                    //}
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
                     uh.Execute(insertCourseStudentSQL);
                 }

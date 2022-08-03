@@ -32,8 +32,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             btnCreate.Enabled = false;
 
+            // 檢查學年度是否數字
+            string strSchoolYear = cbxSchoolYear.Text.Trim();
+            if(!string.IsNullOrWhiteSpace(strSchoolYear))
+            {
+                int sc;
+                if(int.TryParse(strSchoolYear,out sc) == false)
+                {
+                    MsgBox.Show("學年度 請輸入數字");
+                    btnCreate.Enabled = true;
+                    return;
+                }
+            }
+
             // 檢查資料是否重複
-            _GPName = txtName.Text.Trim();
+            _GPName = strSchoolYear + txtName.Text.Trim();
             Dictionary<string, string> chkNameDict = _da.GetAllGPNameDict();
 
             if (!chkNameDict.ContainsKey(_GPName))
@@ -43,12 +56,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     MessageBox.Show("新增完成");
                     this.DialogResult = DialogResult.OK;
-                }else
+                }
+                else
                 {
                     MessageBox.Show("新增過程發生錯誤。");
                     btnCreate.Enabled = true;
                 }
-                
+
             }
             else
             {
@@ -71,6 +85,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             this.MinimumSize = this.Size;
 
+            // 設定學年度選項
+            cbxSchoolYear.ImeMode = ImeMode.Off;
+            cbxSchoolYear.MaxLength = 3;
+
+            cbxSchoolYear.Items.Add("");
+            int sc;
+            if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sc))
+            {
+                for (int i = sc - 1; i <= sc + 1; i++)
+                {
+                    cbxSchoolYear.Items.Add(i);
+                }
+            }
         }
     }
 }

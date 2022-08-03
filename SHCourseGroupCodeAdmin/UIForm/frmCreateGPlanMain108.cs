@@ -323,6 +323,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 GPlanXml.SetAttributeValue("SchoolYear", data.GDCCode.Substring(0, 3));
                             }
 
+                            // 檢查是否有自訂科目放在一起
+                            if(data.RefGPContentXml.Element("使用者自訂科目") != null)
+                            {
+                                XElement elmUD = new XElement(data.RefGPContentXml.Element("使用者自訂科目"));
+                                GPlanXml.Add(elmUD);
+                            }
+
+
 
                             data.RefGPContent = GPlanXml.ToString();
 
@@ -353,6 +361,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 if (insertSQLList.Count > 0 || updateSQLList.Count > 0)
                 {
+                    try
+                    {
+                        FISCA.Features.Invoke("GraduationPlanSyncAllBackground");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     ControlEnable(false);
                     _bgWorker.RunWorkerAsync();
                 }

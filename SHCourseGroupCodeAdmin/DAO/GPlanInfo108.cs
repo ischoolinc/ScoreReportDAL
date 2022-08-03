@@ -983,6 +983,17 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                     }
 
+                                    if (elmM.Attribute("授課學期學分").Value != elmG.Attribute("授課學期學分").Value)
+                                    {
+                                        if (!subj.DiffStatusList.Contains("授課學期學分不同"))
+                                            subj.DiffStatusList.Add("授課學期學分不同");
+
+                                        string msg = "授課學期學分：課程代碼表「" + elmM.Attribute("授課學期學分").Value + "」、課程規劃表「" + elmG.Attribute("授課學期學分").Value + "」";
+                                        if (!subj.DiffMessageList.Contains(msg))
+                                            subj.DiffMessageList.Add(msg);
+
+                                    }
+
                                     // 檢查學分數不同
                                     if (elmM.Attribute("GradeYear").Value == elmG.Attribute("GradeYear").Value && elmM.Attribute("Semester").Value == elmG.Attribute("Semester").Value)
                                     {

@@ -37,7 +37,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             btnCreate.Enabled = false;
 
             // 檢查資料是否重複
-            _GPNewPName = txtName.Text.Trim();
+            _GPNewPName = cbxSchoolYear.Text.Trim() + txtName.Text.Trim();
             Dictionary<string, string> chkNameDict = _da.GetAllGPNameDict();
 
             if (!chkNameDict.ContainsKey(_GPNewPName))
@@ -66,6 +66,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             this.MinimumSize = this.Size;
             lblOldName.Text = _GPlanInfo108.RefGPName;
+
+            // 設定學年度選項
+            cbxSchoolYear.ImeMode = ImeMode.Off;
+            cbxSchoolYear.MaxLength = 3;
+
+            cbxSchoolYear.Items.Add("");
+            int sc;
+            if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sc))
+            {
+                for (int i = sc - 1; i <= sc + 1; i++)
+                {
+                    cbxSchoolYear.Items.Add(i);
+                }
+            }
 
         }
 
