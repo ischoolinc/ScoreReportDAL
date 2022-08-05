@@ -25,6 +25,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         bool isDgDataChange = false;
         bool isUDDgDataChange = false;
         bool isLoadUDDataFinish = true;
+        bool isUDRowSelect = false;
 
         // 檢查科目是否重複
         List<string> chkSubjectNameList = new List<string>();
@@ -546,7 +547,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 isDgDataChange = isUDDgDataChange = false;
             }
 
-
+            isUDRowSelect = false;
             isLoadUDDataFinish = false;
             this.lblGroupName.Text = "";
             lblUDGroupName.Text = "";
@@ -1517,21 +1518,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void SetIsDirtyDisplay(bool isD)
         {
-            // 原本課程規劃
-            if (tabControl1.SelectedTabIndex == 0)
+            if (SelectInfo != null)
             {
-                lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
-                btnUpdate.Enabled = isD;
-                isDgDataChange = isD;
-            }
+                // 原本課程規劃
+                if (tabControl1.SelectedTabIndex == 0)
+                {
+                    lblGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                    btnUpdate.Enabled = isD;
+                    isDgDataChange = isD;
+                }
 
-            // 自訂課程
-            if (tabControl1.SelectedTabIndex == 1)
-            {
-                lblUDGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
-                btnUpdate.Enabled = isD;
-                isUDDgDataChange = isD;
-            }
+                // 自訂課程
+                if (tabControl1.SelectedTabIndex == 1)
+                {
+                    lblUDGroupName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                    btnUpdate.Enabled = isD;
+                    isUDDgDataChange = isD;
+                }
+            }            
         }
 
         private void dgUDData_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -1576,6 +1580,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             dgUDData.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
             dgUDData.Rows[e.RowIndex].Selected = true;
+
+            isUDRowSelect = true;
+       
+        }
+
+        private void dgUDData_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            if (isUDRowSelect)
+            {
+                SetIsDirtyDisplay(true);
+                btnUpdate.Enabled = true;
+                isUDRowSelect = false;
+            }
         }
 
         private void dgUDData_CurrentCellDirtyStateChanged(object sender, EventArgs e)

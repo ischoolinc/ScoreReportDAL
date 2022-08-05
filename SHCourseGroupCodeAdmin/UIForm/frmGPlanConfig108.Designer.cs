@@ -455,6 +455,7 @@
             this.dgUDData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUDData_CellValueChanged);
             this.dgUDData.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgUDData_CurrentCellDirtyStateChanged);
             this.dgUDData.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgUDData_RowHeaderMouseClick);
+            this.dgUDData.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgUDData_RowsRemoved);
             // 
             // tabItem4
             // 
