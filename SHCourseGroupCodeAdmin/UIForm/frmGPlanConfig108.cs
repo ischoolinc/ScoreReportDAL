@@ -1572,6 +1572,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         }
 
+        private void dgUDData_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dgUDData.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
+            dgUDData.Rows[e.RowIndex].Selected = true;
+        }
+
         private void dgUDData_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dgUDData.IsCurrentCellDirty)
