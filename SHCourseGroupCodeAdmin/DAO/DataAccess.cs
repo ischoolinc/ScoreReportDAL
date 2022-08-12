@@ -2703,7 +2703,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         if (subjElm.Attribute("Level") != null)
                             subjLevel = subjElm.Attribute("Level").Value;
 
-                            string insStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
+                        string insStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value);
 
                         if (!insertSQLList.Contains(insStr))
                             insertSQLList.Add(insStr);
@@ -3094,7 +3094,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 if (subj.SubjectXML.Attribute("Level") != null)
                                     subjLevel = subj.SubjectXML.Attribute("Level").Value;
 
-                                string insStr = insertCourseSQL(courseName,subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
+                                string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
 
                                 if (!insertSQLList.Contains(insStr))
                                     insertSQLList.Add(insStr);
@@ -3960,6 +3960,29 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
                 Console.WriteLine(ex.Message);
             }
 
+            return value;
+        }
+
+        public Dictionary<string, string> GetGPNameIDByNameList(List<string> nameList)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            try
+            {
+                string query = "SELECT name,id FROM graduation_plan WHERE name IN('" + string.Join("','", nameList.ToArray()) + "');";
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string name = dr["name"] + "";
+                    if (!value.ContainsKey(name))
+                        value.Add(name, dr["id"] + "");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return value;
         }
     }

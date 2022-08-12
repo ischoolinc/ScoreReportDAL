@@ -44,7 +44,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
-           
+
                 int rowIdx = dgData.Rows.Add();
                 dgData.Rows[rowIdx].Tag = data;
                 dgData.Rows[rowIdx].Cells[colEntrySchoolYear.Index].Value = data.EntrySchoolYear;
@@ -95,6 +95,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _GPlanInfo108List = _da.GPlanInfoOld108List();
             _bgWorker.ReportProgress(30);
 
+
+            List<string> newGPNameList = new List<string>();
+            foreach (GPlanInfo108 data in _GPlanInfo108List)
+            {
+                if (string.IsNullOrEmpty(data.RefGPID))
+                    newGPNameList.Add(data.RefGPName);
+            }
+
             // 解析課程代碼大表 XML
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
@@ -108,6 +116,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     subj.GDCCode = data.GDCCode;
                 }
+
+                // 已有相同名稱課規名稱
+                if (!string.IsNullOrEmpty(data.RefGPID) && newGPNameList.Contains(data.RefGPName))
+                {
+                    data.RefGPName = data.RefGPName + "_" + data.RefGPID;
+                }
+
 
                 if (string.IsNullOrEmpty(data.RefGPID))
                     data.Status = "新增";
@@ -146,38 +161,38 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 //{
                 //    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
 
-                    // 因為這是過渡期版本，不會有新增
-//                    try
-//                    {
-//                        foreach (GPlanInfo108 data in insertDataList)
-//                        {
-//                            string sql = "" +
-//                                " INSERT INTO graduation_plan(" +
-//" name " +
-//" ,content " +
-//" ,moe_group_code )  " +
-//" VALUES( " +
-//" '" + data.GDCName + "' " +
-//" ,'" + data.MOEXml.ToString() + "' " +
-//" ,'" + data.GDCCode + "' " +
-//" ); ";
-//                            insertSQLList.Add(sql);
-//                        }
-//                        uh.Execute(insertSQLList);
-//                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
-//                    }
-//                    catch (Exception ex)
-//                    {
-//                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
-//                    }
-//                }
+                // 因為這是過渡期版本，不會有新增
+                //                    try
+                //                    {
+                //                        foreach (GPlanInfo108 data in insertDataList)
+                //                        {
+                //                            string sql = "" +
+                //                                " INSERT INTO graduation_plan(" +
+                //" name " +
+                //" ,content " +
+                //" ,moe_group_code )  " +
+                //" VALUES( " +
+                //" '" + data.GDCName + "' " +
+                //" ,'" + data.MOEXml.ToString() + "' " +
+                //" ,'" + data.GDCCode + "' " +
+                //" ); ";
+                //                            insertSQLList.Add(sql);
+                //                        }
+                //                        uh.Execute(insertSQLList);
+                //                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
+                //                    }
+                //                    catch (Exception ex)
+                //                    {
+                //                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
+                //                    }
+                //                }
 
                 // 更新資料
                 List<string> updateSQLList = new List<string>();
                 if (updateDataList.Count > 0)
                 {
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
-                    
+
                     try
                     {
                         foreach (GPlanInfo108 data in updateDataList)

@@ -11,6 +11,7 @@ using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
 using System.Xml.Linq;
 using FISCA.LogAgent;
+using System.IO;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -94,11 +95,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _GPlanInfo108List = _da.GPlanInfo108List();
             _bgWorker.ReportProgress(30);
 
+            List<string> newGPNameList = new List<string>();
+
             // 處理綜合型高中學術學程1年級不分群不分班群，群科班代碼包含這串 M111960
             // 請空田值
             Global._GPlanInfo108MDict.Clear();
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
+                if (string.IsNullOrEmpty(data.RefGPID))
+                {
+                    newGPNameList.Add(data.GDCName);
+                }
                 data.ParseMOEXml();
                 data.ParseRefGPContentXml();
 
@@ -110,6 +117,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         Global._GPlanInfo108MDict.Add(key, data);
                 }
             }
+
+            Dictionary<string, string> hadGPNameIDDict = _da.GetGPNameIDByNameList(newGPNameList);
+
             _bgWorker.ReportProgress(50);
 
             // 解析課程代碼大表 XML
@@ -124,6 +134,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
                 {
                     subj.GDCCode = data.GDCCode;
+                }
+
+                // 檢查系統內可能沒有群科班代碼或代碼不同，但是組合課程規劃表明稱會相同，用新的更新舊的
+                if (hadGPNameIDDict.ContainsKey(data.GDCName))
+                {
+                    data.RefGPID = hadGPNameIDDict[data.GDCName];
                 }
 
                 if (string.IsNullOrEmpty(data.RefGPID))
@@ -175,47 +191,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     MsgBox.Show("沒有新增或更新資料。");
                     ControlEnable(true);
                     return;
-                }
-
-                // 新增資料
-                List<string> insertSQLList = new List<string>();
-                if (insertDataList.Count > 0)
-                {
-                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
-
-                    try
-                    {
-                        StringBuilder sbIns = new StringBuilder();
-                        sbIns.AppendLine("新增課程規劃表資料：");
-
-                        foreach (GPlanInfo108 data in insertDataList)
-                        {
-                            string sql = "" +
-                                " INSERT INTO graduation_plan(" +
-" name " +
-" ,content " +
-" ,moe_group_code )  " +
-" VALUES( " +
-" '" + data.GDCName + "' " +
-" ,'" + data.MOEXml.ToString() + "' " +
-" ,'" + data.GDCCode + "' " +
-" ); ";
-                            insertSQLList.Add(sql);
-
-                            // log
-                            sbIns.AppendLine("課程規劃表名稱：" + data.GDCName + "，群科班代碼：" + data.GDCCode + "。");
-                        }
-                        uh.Execute(insertSQLList);
-
-                        // log data
-                        ApplicationLog.Log("課程規劃表.新增課程規劃表", sbIns.ToString());
-
-                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
-                    }
-                    catch (Exception ex)
-                    {
-                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
-                    }
                 }
 
                 // 更新資料
@@ -324,11 +299,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             }
 
                             // 檢查是否有自訂科目放在一起
-                            if(data.RefGPContentXml.Element("使用者自訂科目") != null)
-                            {
-                                XElement elmUD = new XElement(data.RefGPContentXml.Element("使用者自訂科目"));
-                                GPlanXml.Add(elmUD);
-                            }
+                            if (data.RefGPContentXml != null)
+                                if (data.RefGPContentXml.Element("使用者自訂科目") != null)
+                                {
+                                    XElement elmUD = new XElement(data.RefGPContentXml.Element("使用者自訂科目"));
+                                    GPlanXml.Add(elmUD);
+                                }
 
 
 
@@ -338,7 +314,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             if (!string.IsNullOrEmpty(data.RefGPID))
                             {
 
-                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "' WHERE id = " + data.RefGPID + ";";
+                                string sql = "UPDATE graduation_plan SET content = '" + data.RefGPContent + "',moe_group_code='" + data.GDCCode + "' WHERE id = " + data.RefGPID + ";";
 
                                 updateSQLList.Add(sql);
                                 // log
@@ -358,6 +334,66 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         MsgBox.Show("更新資料發生錯誤" + ex.Message);
                     }
                 }
+
+
+                // 新增資料
+                List<string> insertSQLList = new List<string>();
+                if (insertDataList.Count > 0)
+                {
+                    K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+
+                    try
+                    {
+                        StringBuilder sbIns = new StringBuilder();
+                        sbIns.AppendLine("新增課程規劃表資料：");
+
+                        foreach (GPlanInfo108 data in insertDataList)
+                        {
+                            string sql = "" +
+                                " INSERT INTO graduation_plan(" +
+" name " +
+" ,content " +
+" ,moe_group_code )  " +
+" VALUES( " +
+" '" + data.GDCName + "' " +
+" ,'" + data.MOEXml.ToString() + "' " +
+" ,'" + data.GDCCode + "' " +
+" ); ";
+                            insertSQLList.Add(sql);
+
+                            // log
+                            sbIns.AppendLine("課程規劃表名稱：" + data.GDCName + "，群科班代碼：" + data.GDCCode + "。");
+                        }
+                        uh.Execute(insertSQLList);
+
+                        //// debug
+                        //foreach (string str in insertSQLList)
+                        //{
+                        //    try
+                        //    {
+                        //        uh.Execute(str);
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug.txt", false))
+                        //        {
+                        //            sw.WriteLine(str);
+                        //            sw.WriteLine(ex.Message);
+                        //        }
+                        //    }
+                        //}
+
+                        // log data
+                        ApplicationLog.Log("課程規劃表.新增課程規劃表", sbIns.ToString());
+
+                        MsgBox.Show("新增" + insertSQLList.Count + "筆課程規劃表");
+                    }
+                    catch (Exception ex)
+                    {
+                        MsgBox.Show("新增資料發生錯誤：" + ex.Message);
+                    }
+                }
+
 
                 if (insertSQLList.Count > 0 || updateSQLList.Count > 0)
                 {
