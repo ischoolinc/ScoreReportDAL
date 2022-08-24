@@ -3016,10 +3016,19 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 開課數大於0才需要開課
                     if (subj.CourseCount > 0)
                     {
+
+
                         if (subj.CourseCount == 1)
                         {
+                            // 科目級別使用學期別
+                            string subjLevel = "";
+                            if (subj.SubjectXML.Attribute("GradeYear") != null)
+                            {
+                                subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
+                            }
+
                             string courseName = subj.SubjectXML.Attribute
-                                ("SubjectName").Value;
+                                ("SubjectName").Value + " " + subjLevel;
 
                             string chkName = courseName.Trim();
 
@@ -3053,13 +3062,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 isReq = "1";
                             else
                                 isReq = "0";
-                            
-                            // 科目級別使用學期別
-                            string subjLevel = "";
-                            if (subj.SubjectXML.Attribute("GradeYear") != null)
-                            {
-                                subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
-                            }
+
+
 
                             string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
 
@@ -3070,8 +3074,15 @@ namespace SHCourseGroupCodeAdmin.DAO
                         {
                             for (int i = 1; i <= subj.CourseCount; i++)
                             {
+                                // 科目級別使用學期別
+                                string subjLevel = "";
+                                if (subj.SubjectXML.Attribute("GradeYear") != null)
+                                {
+                                    subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
+                                }
+
                                 string courseName = subj.SubjectXML.Attribute
-                                ("SubjectName").Value + " " + Convert.ToChar(64 + i);
+                                ("SubjectName").Value + " " + Convert.ToChar(64 + i) + " " + subjLevel;
                                 string chkName = courseName.Trim();
 
                                 if (hasCourseIDDict.ContainsKey(chkName))
@@ -3099,11 +3110,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 else
                                     isReq = "0";
 
-                                string subjLevel = "";
-                                if (subj.SubjectXML.Attribute("GradeYear") != null)
-                                {
-                                    subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
-                                }
+                                //string subjLevel = "";
+                                //if (subj.SubjectXML.Attribute("GradeYear") != null)
+                                //{
+                                //    subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
+                                //}
 
                                 string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
 
