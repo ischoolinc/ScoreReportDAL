@@ -33,6 +33,7 @@
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.btnBack = new DevComponents.DotNetBar.ButtonX();
             this.lblSchoolYear = new DevComponents.DotNetBar.LabelX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,14 +99,30 @@
             this.lblSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lblSchoolYear.Location = new System.Drawing.Point(17, 18);
             this.lblSchoolYear.Name = "lblSchoolYear";
-            this.lblSchoolYear.Size = new System.Drawing.Size(735, 23);
+            this.lblSchoolYear.Size = new System.Drawing.Size(281, 23);
             this.lblSchoolYear.TabIndex = 12;
+            // 
+            // labelX1
+            // 
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.ForeColor = System.Drawing.Color.Red;
+            this.labelX1.Location = new System.Drawing.Point(318, 18);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(319, 23);
+            this.labelX1.TabIndex = 13;
+            this.labelX1.Text = "手動設定對開的跨班科目會以原班開課方式處理";
             // 
             // frmCreateCourseByGPlan108_Detail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 433);
+            this.Controls.Add(this.labelX1);
             this.Controls.Add(this.lblSchoolYear);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnNext);
@@ -125,5 +142,6 @@
         private DevComponents.DotNetBar.Controls.DataGridViewX dgData;
         private DevComponents.DotNetBar.ButtonX btnBack;
         private DevComponents.DotNetBar.LabelX lblSchoolYear;
+        private DevComponents.DotNetBar.LabelX labelX1;
     }
 }
