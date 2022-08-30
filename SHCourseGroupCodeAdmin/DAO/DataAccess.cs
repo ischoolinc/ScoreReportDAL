@@ -2645,6 +2645,12 @@ namespace SHCourseGroupCodeAdmin.DAO
             List<string> insertSQLList = new List<string>();
             List<string> logCourseNameList = new List<string>();
 
+            // 收集錯誤訊息
+            Global._CreateCourseErrorMsgList.Clear();
+
+            // 收集重複課程
+            Global._CreateCourseDuplicateList.Clear();
+
             hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
 
             try
@@ -2665,10 +2671,15 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                         // 已存在跳過
                         if (hasCourseIDDict.ContainsKey(chkName))
+                        {
+                            Global._CreateCourseDuplicateList.Add(chkName);
                             continue;
+                        }
+
 
                         if (chkCourseNameList.Contains(chkName))
                         {
+                            Global._CreateCourseDuplicateList.Add(chkName);
                             continue;
                         }
                         else
@@ -2731,11 +2742,13 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 // 已存在跳過
                                 if (hasCourseIDDict.ContainsKey(chkName))
                                 {
+                                    Global._CreateCourseDuplicateList.Add(chkName);
                                     continue;
                                 }
 
                                 if (chkCourseNameList.Contains(chkName))
                                 {
+                                    Global._CreateCourseDuplicateList.Add(chkName);
                                     continue;
                                 }
                                 else
@@ -2810,6 +2823,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             catch (Exception ex)
             {
+                Global._CreateCourseErrorMsgList.Add("班級開課功能發生錯誤：" + ex.Message);
                 Console.WriteLine(ex.Message);
             }
             return dataList;
@@ -3007,6 +3021,11 @@ namespace SHCourseGroupCodeAdmin.DAO
             hasCourseIDDict = GetHasCourseIDDict(SchoolYear, Semester);
             List<string> chkCourseNameList = new List<string>();
             List<string> logCourseNameList = new List<string>();
+
+
+            // 收集錯誤訊息
+            Global._CreateCourseErrorMsgList.Clear();
+
             try
             {
                 QueryHelper qh = new QueryHelper();
@@ -3016,9 +3035,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 開課數大於0才需要開課
                     if (subj.CourseCount > 0)
                     {
-
-
-                        if (subj.CourseCount == 1)
+                        int idxLevl = 1;
+                        bool chkCourseName = true;
+                        for (int i = 1; i <= subj.CourseCount; i++)
                         {
                             // 科目級別使用學期別
                             string subjLevel = "";
@@ -3027,25 +3046,32 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
                             }
 
-                            string courseName = subj.SubjectXML.Attribute
-                                ("SubjectName").Value + " " + subjLevel;
-
-                            string chkName = courseName.Trim();
-
-                            if (hasCourseIDDict.ContainsKey(chkName))
+                            chkCourseName = false;
+                            string courseName = "";
+                            do
                             {
-                                continue;
-                            }
+                                courseName = subj.SubjectXML.Attribute
+                            ("SubjectName").Value + " " + Convert.ToChar(64 + idxLevl) + " " + subjLevel;
+                                string chkName = courseName.Trim();
 
-                            // 檢查課程名稱自己是否重複
-                            if (chkCourseNameList.Contains(chkName))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                chkCourseNameList.Add(chkName);
-                            }
+                                if (hasCourseIDDict.ContainsKey(chkName))
+                                {
+                                    chkCourseName = false;
+                                }
+                                else
+                                {
+                                    hasCourseIDDict.Add(chkName, "");
+                                    chkCourseName = true;
+                                }
+
+                                idxLevl++;
+                            } while (chkCourseName == false);
+
+
+
+                            // log course name
+                            logCourseNameList.Add(courseName);
+
 
                             string isReq = "", ReqBy = "";
 
@@ -3063,65 +3089,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                             else
                                 isReq = "0";
 
-
-
                             string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
 
                             if (!insertSQLList.Contains(insStr))
                                 insertSQLList.Add(insStr);
                         }
-                        else
-                        {
-                            for (int i = 1; i <= subj.CourseCount; i++)
-                            {
-                                // 科目級別使用學期別
-                                string subjLevel = "";
-                                if (subj.SubjectXML.Attribute("GradeYear") != null)
-                                {
-                                    subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
-                                }
 
-                                string courseName = subj.SubjectXML.Attribute
-                                ("SubjectName").Value + " " + Convert.ToChar(64 + i) + " " + subjLevel;
-                                string chkName = courseName.Trim();
-
-                                if (hasCourseIDDict.ContainsKey(chkName))
-                                {
-                                    continue;
-                                }
-
-                                // log course name
-                                logCourseNameList.Add(courseName);
-
-
-                                string isReq = "", ReqBy = "";
-
-                                if (subj.SubjectXML.Attribute("RequiredBy").Value == "部訂" || subj.SubjectXML.Attribute("RequiredBy").Value == "部定")
-                                {
-                                    ReqBy = "1";
-                                }
-                                else
-                                {
-                                    ReqBy = "2";
-                                }
-
-                                if (subj.SubjectXML.Attribute("Required").Value == "必修")
-                                    isReq = "1";
-                                else
-                                    isReq = "0";
-
-                                //string subjLevel = "";
-                                //if (subj.SubjectXML.Attribute("GradeYear") != null)
-                                //{
-                                //    subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
-                                //}
-
-                                string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value);
-
-                                if (!insertSQLList.Contains(insStr))
-                                    insertSQLList.Add(insStr);
-                            }
-                        }
                     }
                 }
 

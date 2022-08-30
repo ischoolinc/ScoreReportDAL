@@ -44,16 +44,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+
+            // 檢查開課過程是否發生錯誤
+            if (Global._CreateCourseErrorMsgList.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("開課課程發生問題：");
+                sb.AppendLine(string.Join(",", Global._CreateCourseErrorMsgList.ToArray()));
+                MsgBox.Show(sb.ToString(), "開課課程發生錯誤", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+            }
+
+            // 檢查開課課程是否重複
+            if (Global._CreateCourseDuplicateList.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("課程已開設，不會新增，請檢查：");
+                sb.AppendLine(string.Join(",", Global._CreateCourseDuplicateList.ToArray()));
+                MsgBox.Show(sb.ToString(), "開課課程已存在", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+            }
+
             if (_sb.Length > 2)
             {
                 MsgBox.Show("錯誤：" + _sb.ToString());
-
             }
             else
             {
                 // 呼叫課程同步
                 FISCA.Features.Invoke("CourseSyncAllBackground");
-                
+
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("產生完成。");
                 MsgBox.Show("產生完成。");
                 this.DialogResult = DialogResult.OK;

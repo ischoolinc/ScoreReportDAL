@@ -102,7 +102,18 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     {
                         if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
                         {
-                            if (subjElm.Attribute("開課方式").Value == "原班")
+                            string OpenType = subjElm.Attribute("開課方式").Value;
+
+                            // 當使用者手動設定對開為是，使用原班開課
+                            if (subjElm.Attribute("設定對開") != null)
+                            {
+                                if (subjElm.Attribute("設定對開").Value == "是")
+                                {
+                                    OpenType = "原班";
+                                }
+                            }
+
+                            if (OpenType == "原班")
                             {
                                 // 判斷對開
                                 bool isOpenD = false;
@@ -186,7 +197,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         {
                             if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
                             {
-                                if (subjElm.Attribute("開課方式").Value == "原班")
+                                string OpenType = subjElm.Attribute("開課方式").Value;
+                                // 當使用者手動設定對開為是，使用原班開課
+                                if (subjElm.Attribute("設定對開") != null)
+                                {
+                                    if (subjElm.Attribute("設定對開").Value == "是")
+                                    {
+                                        OpenType = "原班";
+                                    }
+                                }
+
+                                if (OpenType == "原班")
                                 {
                                     // 判斷對開
                                     bool isOpenD = false;
@@ -196,7 +217,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     {
                                         if (subjElm.Attribute("設定對開").Value == "是")
                                             isOpenD = true;
-                                    }                              
+                                    }
 
 
                                     if (isOpenD)
@@ -258,7 +279,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            
+
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
@@ -267,7 +288,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _SchoolYear = cboSchoolYear.Text;
 
             ControlEnable(false);
-            _bwWorker.RunWorkerAsync();         
+            _bwWorker.RunWorkerAsync();
         }
 
         private void labelX2_Click(object sender, EventArgs e)

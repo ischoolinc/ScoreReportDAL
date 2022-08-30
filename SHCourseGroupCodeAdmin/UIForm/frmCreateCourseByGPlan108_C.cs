@@ -53,7 +53,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             else
             {
-                ControlEnable(true);              
+                ControlEnable(true);
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成");
 
                 frmCreateCourseByGPlan108_C_Detail fcc = new frmCreateCourseByGPlan108_C_Detail();
@@ -104,7 +104,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     {
                         if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
                         {
-                            if (subjElm.Attribute("開課方式").Value == "跨班")
+                            string OpenType = subjElm.Attribute("開課方式").Value;
+
+                            if (OpenType == "跨班")
                             {
                                 data.OpenSubjectSourceList.Add(subjElm);
                                 string subjName = subjElm.Attribute("SubjectName").Value;
@@ -197,7 +199,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         {
                             if (data.GradeYear == subjElm.Attribute("GradeYear").Value && _Semester == subjElm.Attribute("Semester").Value)
                             {
-                                if (subjElm.Attribute("開課方式").Value == "跨班")
+                                string OpenType = subjElm.Attribute("開課方式").Value;
+
+                                if (OpenType == "跨班")
                                 {
                                     data.OpenSubjectSourceList.Add(subjElm);
                                     string subjName = subjElm.Attribute("SubjectName").Value;
@@ -254,7 +258,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         sci.CourseCount = 0;
                                         sci.ClassNameDict = new Dictionary<string, string>();
                                         sci.ClassStudentIDDict = new Dictionary<string, List<string>>();
-                                     //   sci.CourseCodeList.Add(course_code);
+                                        //   sci.CourseCodeList.Add(course_code);
                                         sci.OpenSemester = openSems;
                                         _SubjectCourseInfoDict.Add(subjKey, sci);
                                     }
@@ -286,9 +290,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
             }
 
-
-
-
             _bwWorker.ReportProgress(100);
         }
 
@@ -307,9 +308,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 傳入所選的學年度、學期
             _SchoolYear = cboSchoolYear.Text;
             _Semester = cboSemester.Text;
-            
+
             ControlEnable(false);
-            _bwWorker.RunWorkerAsync();            
+            _bwWorker.RunWorkerAsync();
         }
 
         private void frmCreateCourseByGPlan108_C_Load(object sender, EventArgs e)
@@ -333,7 +334,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
 
             _Semester = cboSemester.Text;
-            _SchoolYear = cboSchoolYear.Text;            
+            _SchoolYear = cboSchoolYear.Text;
         }
     }
 }
