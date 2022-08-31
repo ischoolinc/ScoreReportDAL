@@ -2978,10 +2978,14 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             // 不須評分
             if (NotIncludedInCalc == "False")
+                not_included_in_calc = "0";
+            else
                 not_included_in_calc = "1";
 
             // 不計學分
             if (NotIncludedInCredit == "False")
+                not_included_in_credit = "0";
+            else
                 not_included_in_credit = "1";
 
             string value = "" +

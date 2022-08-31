@@ -58,9 +58,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (Global._CreateCourseDuplicateList.Count > 0)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("課程已開設，不會新增，請檢查：");
-                sb.AppendLine(string.Join(",", Global._CreateCourseDuplicateList.ToArray()));
-                MsgBox.Show(sb.ToString(), "開課課程已存在", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                sb.AppendLine(_SchoolYear + "學年度 第" + _Semester + "學期課程已開設 " + Global._CreateCourseDuplicateList.Count + " 筆，不會新增，請檢查：");
+                sb.AppendLine(string.Join("\n", Global._CreateCourseDuplicateList.ToArray()));
+                string msg = "開課課程已存在 " + Global._CreateCourseDuplicateList.Count + " 筆，不會新增，請檢查。";
+                MsgBox.Show(msg, "開課課程已存在", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                // 產生至文字檔
+                string fileName = _SchoolYear + "學年度第" + _Semester + "學期課程已開設";
+                Utility.ExprotText(fileName, sb.ToString());
             }
 
             if (_sb.Length > 2)
