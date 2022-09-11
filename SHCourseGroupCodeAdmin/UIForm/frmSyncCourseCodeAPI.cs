@@ -86,64 +86,64 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
                 }
 
-                try
-                {
-                    // 處理  class_type 問題
-                    // 取得課程規劃表大表
-                    string query1 = "SELECT uid,class_type,group_code FROM $moe.subjectcode";
-                    Dictionary<string, string> mapDict = new Dictionary<string, string>();
-                    mapDict.Add("1", "建教合作-輪調式");
-                    mapDict.Add("2", "建教合作-階梯式");
-                    mapDict.Add("3", "建教合作-實習式");
-                    mapDict.Add("4", "建教合作-其他式");
-                    mapDict.Add("5", "產學訓專班");
-                    mapDict.Add("6", "雙軌旗艦計畫");
-                    mapDict.Add("7", "產攜專班");
+                //try
+                //{
+                //    // 處理  class_type 問題
+                //    // 取得課程規劃表大表
+                //    string query1 = "SELECT uid,class_type,group_code FROM $moe.subjectcode";
+                //    Dictionary<string, string> mapDict = new Dictionary<string, string>();
+                //    mapDict.Add("1", "建教合作-輪調式");
+                //    mapDict.Add("2", "建教合作-階梯式");
+                //    mapDict.Add("3", "建教合作-實習式");
+                //    mapDict.Add("4", "建教合作-其他式");
+                //    mapDict.Add("5", "產學訓專班");
+                //    mapDict.Add("6", "雙軌旗艦計畫");
+                //    mapDict.Add("7", "產攜專班");
 
-                    List<string> updateSQLList = new List<string>();
+                //    List<string> updateSQLList = new List<string>();
 
 
-                    QueryHelper qh = new QueryHelper();
-                    DataTable dt = qh.Select(query1);
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        string class_type = dr["class_type"] + "";
-                        string uid = dr["uid"] + "";
-                        if (class_type == "" || class_type == "undefined")
-                        {
-                            // 取群科班最後一碼
-                            string gcode = dr["group_code"] + "";
-                            if (gcode.Length > 15)
-                            {
-                                string newType = "不分班群";
-                                string code = gcode.Substring(15, 1);
-                                if (mapDict.ContainsKey(code))
-                                {
-                                    newType = mapDict[code];
-                                }
+                //    QueryHelper qh = new QueryHelper();
+                //    DataTable dt = qh.Select(query1);
+                //    foreach (DataRow dr in dt.Rows)
+                //    {
+                //        string class_type = dr["class_type"] + "";
+                //        string uid = dr["uid"] + "";
+                //        if (class_type == "" || class_type == "undefined")
+                //        {
+                //            // 取群科班最後一碼
+                //            string gcode = dr["group_code"] + "";
+                //            if (gcode.Length > 15)
+                //            {
+                //                string newType = "不分班群";
+                //                string code = gcode.Substring(15, 1);
+                //                if (mapDict.ContainsKey(code))
+                //                {
+                //                    newType = mapDict[code];
+                //                }
 
-                                if (!string.IsNullOrEmpty(uid))
-                                {
-                                    string UpdateStr = "UPDATE $moe.subjectcode SET class_type = '" + newType + "' WHERE uid = " + uid + ";";
-                                    updateSQLList.Add(UpdateStr);
-                                }
+                //                if (!string.IsNullOrEmpty(uid))
+                //                {
+                //                    string UpdateStr = "UPDATE $moe.subjectcode SET class_type = '" + newType + "' WHERE uid = " + uid + ";";
+                //                    updateSQLList.Add(UpdateStr);
+                //                }
 
-                            }
-                        }
-                    }
+                //            }
+                //        }
+                //    }
 
-                    // 更新處理
-                    if (updateSQLList.Count > 0)
-                    {
-                        K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
-                        int cot = uh.Execute(updateSQLList);
-                      //  Console.WriteLine("更新" + cot + "筆");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                //    // 更新處理
+                //    if (updateSQLList.Count > 0)
+                //    {
+                //        K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
+                //        int cot = uh.Execute(updateSQLList);
+                //        //  Console.WriteLine("更新" + cot + "筆");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine(ex.Message);
+                //}
 
                 MsgBox.Show("同步完成");
             }
@@ -165,7 +165,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 //    string DSNS = DSAServices.AccessPoint;
                 string school_code = _SchoolCode;
-
+              //  school_code = "070406";
 
                 String targetUrl = @"https://console.1campus.net/api/moeproxy/sync/" + DSNS + "?school_code=" + school_code + "&year=" + SchoolYear + "&rspcmds=true&school_name=手動呼叫";
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(targetUrl);
