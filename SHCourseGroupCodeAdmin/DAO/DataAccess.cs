@@ -1746,59 +1746,107 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                 #endregion
                             }
-                        }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
+                            if (string.IsNullOrEmpty(data.CourseCode))
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("必修選修");
-                                break;
+                                if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
+                                {
+                                    #region 2021-12-11 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
+
+                                    int idx = -1;
+
+                                    if (data.GradeYear == "1" && data.Semester == "1")
+                                        idx = 0;
+
+                                    if (data.GradeYear == "1" && data.Semester == "2")
+                                        idx = 1;
+
+                                    if (data.GradeYear == "2" && data.Semester == "1")
+                                        idx = 2;
+
+                                    if (data.GradeYear == "2" && data.Semester == "2")
+                                        idx = 3;
+
+                                    if (data.GradeYear == "3" && data.Semester == "1")
+                                        idx = 4;
+
+                                    if (data.GradeYear == "3" && data.Semester == "2")
+                                        idx = 5;
+
+                                    char[] cp = Mco.open_type.ToArray();
+                                    if (idx != -1 && idx < cp.Length)
+                                    {
+                                        if (cp[idx] != '-')
+                                        {
+                                            data.entry_year = Mco.entry_year;
+                                            data.credit_period = Mco.credit_period;
+                                            data.open_type = Mco.open_type;
+                                            data.CourseCode = Mco.course_code;
+                                        }
+                                    }
+
+                                    #endregion
+                                }
+
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        // 當沒有比對到課程代碼才需要處理
+                        if (string.IsNullOrEmpty(data.CourseCode))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("部定校訂");
-                                break;
+                                if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
+                                {
+                                    errItem.Remove("科目名稱");
+                                    errItem.Remove("必修選修");
+                                    break;
+                                }
+                            }
+
+                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                            {
+                                if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                                {
+                                    errItem.Remove("科目名稱");
+                                    errItem.Remove("部定校訂");
+                                    break;
+                                }
+                            }
+
+                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                            {
+                                if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
+                                {
+                                    errItem.Remove("科目名稱");
+                                    errItem.Remove("分項類別");
+                                    break;
+                                }
+                            }
+
+                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                            {
+                                if (data.SubjectName == Mco.subject_name)
+                                {
+                                    errItem.Remove("科目名稱");
+                                    break;
+                                }
+                            }
+
+                            // 檢查學分數
+                            if (data.CheckCreditPass(mappingTable))
+                            {
+                                errItem.Remove("學分數");
+                            }
+
+
+                            if (errItem.Count > 0)
+                            {
+                                foreach (string err in errItem)
+                                    data.ErrorMsgList.Add(err);
                             }
                         }
-
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
-                            {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("分項類別");
-                                break;
-                            }
-                        }
-
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name)
-                            {
-                                errItem.Remove("科目名稱");
-                                break;
-                            }
-                        }
-
-                        // 檢查學分數
-                        if (data.CheckCreditPass(mappingTable))
-                        {
-                            errItem.Remove("學分數");
-                        }
-
-
-                        if (errItem.Count > 0)
-                        {
-                            foreach (string err in errItem)
-                                data.ErrorMsgList.Add(err);
-                        }
+                        
                     }
                     else
                     {

@@ -353,7 +353,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     // 科目名稱無法對照
                     if (data.ErrorMsgList.Contains("科目名稱"))
                     {
-                        wstMOEChkErr.Cells[rowIdx, GetColIndex("說明")].PutValue("科目名稱 不同");
+                        wstMOEChkErr.Cells[rowIdx, GetColIndex("說明")].PutValue("沒有此科目名稱");
                     }
                     else
                     {

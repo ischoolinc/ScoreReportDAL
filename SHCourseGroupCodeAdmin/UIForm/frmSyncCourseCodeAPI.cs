@@ -165,7 +165,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 //    string DSNS = DSAServices.AccessPoint;
                 string school_code = _SchoolCode;
-              //  school_code = "070406";
+                //   school_code = "181307"; //"070406";
 
                 String targetUrl = @"https://console.1campus.net/api/moeproxy/sync/" + DSNS + "?school_code=" + school_code + "&year=" + SchoolYear + "&rspcmds=true&school_name=手動呼叫";
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(targetUrl);
