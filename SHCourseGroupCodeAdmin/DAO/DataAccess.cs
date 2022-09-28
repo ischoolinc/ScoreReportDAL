@@ -2860,6 +2860,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
                     uh.Execute(insertSQLList);
 
+                    InsertTags(logCourseNameList, SchoolYear, Semester);
+
                     // log 
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine(SchoolYear + "學年度 第" + Semester + "學期 班級依課程規劃表開課108適用(對開)");
@@ -3010,7 +3012,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// <param name="period"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain,string NotIncludedInCalc,string NotIncludedInCredit)
+        public string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain, string NotIncludedInCalc, string NotIncludedInCredit)
         {
             string refClassStr = "null";
 
@@ -3051,7 +3053,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " 	,period " +
 " 	,domain " +
 "   ,not_included_in_calc" +
-"   ,not_included_in_credit"+
+"   ,not_included_in_credit" +
 " ) " +
 " VALUES ( " +
 " 	'" + course_name + "' " +
@@ -3170,6 +3172,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 執行寫入
                     K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
                     uh.Execute(insertSQLList);
+
+                    //避免學校手動修改相關課程基本資料
+                    InsertTags(logCourseNameList, SchoolYear, Semester);
+
                     // log 
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine(SchoolYear + "學年度 第" + Semester + "學期 班級依課程規劃表開課108適用(跨班)");
@@ -3185,6 +3191,143 @@ namespace SHCourseGroupCodeAdmin.DAO
                 return ex.Message;
             }
             return "";
+        }
+
+        /// <summary>
+        /// 開課會標記"課程計畫:課程"類別
+        /// </summary>
+        /// <param name="CourseNameList"></param>
+        /// <param name="schoolYear"></param>
+        /// <param name="semester"></param>
+        private void InsertTags(List<string> CourseNameList, string schoolYear, string semester)
+        {
+            string tagID = GetTagID();
+            List<string> newCourseIDList = new List<string>();
+            foreach (string courseName in CourseNameList)
+            {
+                string queryCourseID = QueryCourseID(courseName, schoolYear, semester);
+                QueryHelper queryHelper = new QueryHelper();
+                try
+                {
+                    DataTable dataTable = queryHelper.Select(queryCourseID);
+                    foreach (DataRow dr in dataTable.Rows)
+                    {
+                        newCourseIDList.Add(dr["id"].ToString());
+                    }
+                }
+                catch
+                {
+
+                }
+
+            }
+
+            List<string> listDataRow = new List<string>();
+            foreach (string courseID in newCourseIDList)
+            {
+                string insertTagStr = InsertTagString(courseID, tagID);
+                if (!listDataRow.Contains(insertTagStr))
+                    listDataRow.Add(insertTagStr);
+
+            }
+
+            if (listDataRow.Count > 0)
+            {
+                K12.Data.UpdateHelper updateHelper = new K12.Data.UpdateHelper();
+                try
+                {
+                    updateHelper.Execute(listDataRow);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private string InsertTagString(string courseID, string tagID)
+        {
+            string value = @" INSERT INTO tag_course(
+    ref_course_id
+    , ref_tag_id
+)VALUES (" + courseID + " , " + tagID + " );";
+
+            return value;
+        }
+
+        private string QueryCourseID(string courseName, string schoolYear, string semester)
+        {
+            string value = @"SELECT id, course_name, school_year, semester FROM course
+WHERE 	course_name='{0}'
+AND school_year='{1}'
+AND semester='{2}'";
+            value = string.Format(value, courseName, schoolYear, semester);
+            return value;
+        }
+
+        /// <summary>
+        /// 類別 課程計畫:課程
+        /// </summary>
+        private string GetTagID()
+        {
+            string tagID = "";
+            QueryHelper queryHelper = new QueryHelper();
+            string sql = @"
+SELECT
+    *
+FROM
+    tag
+WHERE
+    prefix = '課程計畫'
+	AND name='課程'
+    AND category = 'Course'
+";
+            try
+            {
+                DataTable dt = queryHelper.Select(sql);
+
+                if (dt.Rows.Count > 0)
+                {
+                    tagID = "" + dt.Rows[0]["id"];
+                }
+                else
+                {
+                    try
+                    {
+                        string insertSql = @"
+WITH insert_data AS(
+    INSERT INTO tag(
+        prefix
+        ,name
+        , category
+    ) VALUES(
+        '課程計畫'
+        ,'課程'
+        , 'Course'
+    )
+    RETURNING *
+)
+SELECT
+    *
+FROM
+    insert_data
+";
+                        DataTable insertDt = queryHelper.Select(insertSql);
+                        tagID = "" + insertDt.Rows[0]["id"];
+                    }
+                    catch (Exception ex)
+                    {
+                        //MsgBox.Show(ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //MsgBox.Show(ex.Message);
+            }
+
+
+            return tagID;
         }
 
         /// <summary>
