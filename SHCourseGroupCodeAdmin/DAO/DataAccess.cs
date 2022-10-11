@@ -1747,48 +1747,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 #endregion
                             }
 
-                            if (string.IsNullOrEmpty(data.CourseCode))
-                            {
-                                if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by)
-                                {
-                                    #region 2021-12-11 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
-
-                                    int idx = -1;
-
-                                    if (data.GradeYear == "1" && data.Semester == "1")
-                                        idx = 0;
-
-                                    if (data.GradeYear == "1" && data.Semester == "2")
-                                        idx = 1;
-
-                                    if (data.GradeYear == "2" && data.Semester == "1")
-                                        idx = 2;
-
-                                    if (data.GradeYear == "2" && data.Semester == "2")
-                                        idx = 3;
-
-                                    if (data.GradeYear == "3" && data.Semester == "1")
-                                        idx = 4;
-
-                                    if (data.GradeYear == "3" && data.Semester == "2")
-                                        idx = 5;
-
-                                    char[] cp = Mco.open_type.ToArray();
-                                    if (idx != -1 && idx < cp.Length)
-                                    {
-                                        if (cp[idx] != '-')
-                                        {
-                                            data.entry_year = Mco.entry_year;
-                                            data.credit_period = Mco.credit_period;
-                                            data.open_type = Mco.open_type;
-                                            data.CourseCode = Mco.course_code;
-                                        }
-                                    }
-
-                                    #endregion
-                                }
-
-                            }
+                           
                         }
 
                         // 當沒有比對到課程代碼才需要處理
