@@ -1671,7 +1671,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
                     errItem.Add("分項類別");
-                    errItem.Add("學分數");
+                    errItem.Add("節數或學分數");
+
+                    // 2022/10/13，調整判斷節數與學分數
 
                     rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
                     data.StudentID = dr["student_id"] + "";
@@ -1737,10 +1739,13 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 {
                                     if (cp[idx] != '-')
                                     {
-                                        data.entry_year = Mco.entry_year;
-                                        data.credit_period = Mco.credit_period;
-                                        data.open_type = Mco.open_type;
-                                        data.CourseCode = Mco.course_code;
+                                        if (data.CheckCreditPass(mappingTable))
+                                        {
+                                            data.entry_year = Mco.entry_year;
+                                            data.credit_period = Mco.credit_period;
+                                            data.open_type = Mco.open_type;
+                                            data.CourseCode = Mco.course_code;
+                                        }                                        
                                     }
                                 }
 
@@ -1751,8 +1756,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                         }
 
                         // 當沒有比對到課程代碼才需要處理
-                        if (string.IsNullOrEmpty(data.CourseCode))
-                        {
+                        //if (string.IsNullOrEmpty(data.CourseCode))
+                        //{
                             foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
                             {
                                 if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
@@ -1795,7 +1800,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             // 檢查學分數
                             if (data.CheckCreditPass(mappingTable))
                             {
-                                errItem.Remove("學分數");
+                                errItem.Remove("節數或學分數");
                             }
 
 
@@ -1804,7 +1809,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 foreach (string err in errItem)
                                     data.ErrorMsgList.Add(err);
                             }
-                        }
+                        //}
                         
                     }
                     else

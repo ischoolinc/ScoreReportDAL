@@ -106,6 +106,23 @@ namespace SHCourseGroupCodeAdmin.DAO
                 {
                     string x = ret[idx] + "";
 
+                    // 加入使用節數來判斷，主要某些匯入課程只有節數沒有學分數
+                    if (x == Period)
+                    {
+                        value = true;
+                    }
+                    else
+                    {
+                        // 有對開
+                        if (mappingTable.ContainsKey(x))
+                        {
+                            if (mappingTable[x] == Period)
+                            {
+                                value = true;
+                            }
+                        }
+                    }
+
                     // 先比是否相同，不同在比對開
                     if (x == Credit)
                     {

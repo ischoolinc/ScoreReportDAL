@@ -167,10 +167,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 string school_code = _SchoolCode;
                 //   school_code = "181307"; //"070406";
 
-                String targetUrl = @"https://console.1campus.net/api/moeproxy/sync/" + DSNS + "?school_code=" + school_code + "&year=" + SchoolYear + "&rspcmds=true&school_name=手動呼叫";
+                              
+
+                // 調整新主機位置 2022/10/19
+                String targetUrl = @"https://moe-inte-service-4twhrljvua-de.a.run.app/api/moeproxy/sync/" + DSNS + "?school_code=" + school_code + "&year=" + SchoolYear + "&rspcmds=true&school_name=手動呼叫";
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(targetUrl);
                 req.Method = "POST";
                 req.ContentType = "application/json";
+                req.ContentLength = 0;
 
                 if (content != "" && content != null)
                 {
