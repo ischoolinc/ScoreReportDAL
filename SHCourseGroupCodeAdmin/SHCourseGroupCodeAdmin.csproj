@@ -212,6 +212,12 @@
     <Compile Include="UIForm\frmCourseCodeSource.Designer.cs">
       <DependentUpon>frmCourseCodeSource.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmCourseCodeTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCourseCodeTest.Designer.cs">
+      <DependentUpon>frmCourseCodeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmCreateClassGPlan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -438,6 +444,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCourseCodeSource.resx">
       <DependentUpon>frmCourseCodeSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCourseCodeTest.resx">
+      <DependentUpon>frmCourseCodeTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCreateClassGPlan.resx">
       <DependentUpon>frmCreateClassGPlan.cs</DependentUpon>
