@@ -18,10 +18,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
 {
     public partial class frmGPlanConfig108 : BaseForm
     {
+        // 讀資料用變數
         BackgroundWorker _bgWorker;
         DataAccess _da;
         List<GPlanInfo108> GP108List;
+
+        // TreeView用變數
+        Dictionary<string, bool> _AdvTreeExpandStatus = new Dictionary<string, bool>();
+        private Node _SelectItem;
         GPlanInfo108 SelectInfo = null;
+
         bool isDgDataChange = false;
         bool isUDDgDataChange = false;
         bool isLoadUDDataFinish = true;
@@ -33,8 +39,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         int dgColIdx = 0, dgRowIdx = 0, dgUDColIdx = 0, dgUDRowIdx = 0;
 
-        private Node _SelectItem;
-        Dictionary<string, bool> _AdvTreeExpandStatus = new Dictionary<string, bool>();
+        // 總表及課程群組通用
+        List<GPlanCourseInfo108> _CourseInfoList = new List<GPlanCourseInfo108>();
+
+        // 總表用
+        bool _MainIsLoading = false;
+        bool _MainIsFirstLoad = false;
+        List<DataGridViewRow> _MainRowList = new List<DataGridViewRow>();
+        DataGridViewRow _MainSelectedRow = new DataGridViewRow();
+        bool _IsMainDataDirty = false;
+
+        // 課程群組用
+        bool _CourseGroupIsLoading = false;
+        bool _CourseGroupIsFirstLoad = false;
+        List<DataGridViewRow> _CourseGroupRowList = new List<DataGridViewRow>();
+        List<CourseGroupSetting> _CourseGroupSettingList = new List<CourseGroupSetting>();
+        Dictionary<string, List<DataGridViewCell>> _CourseGroupSettingDic = new Dictionary<string, List<DataGridViewCell>>(); // 群組測定與所屬課程
+        bool _IsCourseGroupDataDirty = false;
+
 
         public frmGPlanConfig108()
         {
@@ -157,7 +179,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             advTree1.Nodes.Clear();
             btnEditName.Enabled = btnUpdate.Enabled = btnDelete.Enabled = false;
-            tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = false;
+            tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = tbiCourseGroupMain.Visible = tbiSetCourseGroup.Visible = false;
             _bgWorker.RunWorkerAsync();
         }
 
@@ -538,15 +560,39 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
         {
-            if (isDgDataChange || isUDDgDataChange)
+            if (isDgDataChange || isUDDgDataChange || _IsMainDataDirty || _IsCourseGroupDataDirty)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
                 {
                     return;
                 }
-                isDgDataChange = isUDDgDataChange = false;
+                isDgDataChange = isUDDgDataChange = _IsMainDataDirty = _IsCourseGroupDataDirty = false;
             }
 
+            // 讀取選取node
+            if (e != null)
+            {
+                _SelectItem = e.Node;
+                _SelectItem.Checked = true;
+
+                if (!(e.Node.Tag is GPlanInfo108))
+                {
+                    _SelectItem = null;
+                    tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = false;
+                    return;
+                }
+
+                if (_SelectItem != null)
+                    _SelectItem.Checked = false;
+            }
+            else // e為null，代表是儲存後重新讀取
+            {
+                _SelectItem = (Node)sender;
+            }
+
+            SelectInfo = (GPlanInfo108)_SelectItem.Tag;
+
+            // 初始化
             isUDRowSelect = false;
             isLoadUDDataFinish = false;
             this.lblGroupName.Text = "";
@@ -554,22 +600,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
             dgUDData.Rows.Clear();
             dgData.Rows.Clear();
             chkSubjectNameList.Clear();
-            SelectInfo = null;
 
-            if (!(e.Node.Tag is GPlanInfo108))
-            {
-                _SelectItem = null;
-                tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = false;
-                return;
-            }
+            //// 課程群組總表
+            _CourseInfoList = new List<GPlanCourseInfo108>();
+            lbMainGraduationPlanName.Text = SelectInfo.RefGPName;
+            _MainRowList = new List<DataGridViewRow>();
+            _MainSelectedRow = new DataGridViewRow();
 
-            if (_SelectItem != null)
-                _SelectItem.Checked = false;
-
-            _SelectItem = e.Node;
-            _SelectItem.Checked = true;
-
-            SelectInfo = (GPlanInfo108)_SelectItem.Tag;
+            //// 設定課程群組
+            lbCourseGroupGraduationPlanName.Text = SelectInfo.RefGPName;
+            _CourseGroupRowList = new List<DataGridViewRow>();
+            _CourseGroupSettingList.Clear();
+            _CourseGroupSettingDic = new Dictionary<string, List<DataGridViewCell>>();
+            //_CourseGroupSettingIsEditing = false;
 
             // 判斷功能項目是否顯示
             if (SelectInfo != null)
@@ -579,12 +622,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     btnEditName.Enabled = btnDelete.Enabled = true;
                     tabItem1.Visible = false;
                     tabItem2.Visible = tabItem4.Visible = true;
+                    tbiCourseGroupMain.Visible = false;
+                    tbiSetCourseGroup.Visible = false;
                     tabControl1.SelectedTabIndex = 1;
 
                 }
                 else
                 {
                     tabItem1.Visible = true;
+                    tbiCourseGroupMain.Visible = true;
+                    tbiSetCourseGroup.Visible = true;
                     tabItem2.Visible = tabItem4.Visible = true;
                     btnEditName.Enabled = btnDelete.Enabled = false;
                     tabControl1.SelectedTab = tabItem4;
@@ -604,11 +651,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 Console.WriteLine(ex.Message);
             }
 
-
-            #region  課程規劃表(國教署)
-            lblGroupName.Text = SelectInfo.RefGPName;
-
-            // 資料整理
+            // 將選取的課程規畫表用RowIndex切成各個科目
             Dictionary<string, List<XElement>> dataDict = new Dictionary<string, List<XElement>>();
             foreach (XElement elm in SelectInfo.RefGPContentXml.Elements("Subject"))
             {
@@ -620,7 +663,27 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dataDict[idx].Add(elm);
             }
 
+            // 讀取課程群組設定
+            if (SelectInfo.RefGPContentXml.Element("CourseGroupSetting") != null)
+            {
+                foreach (XElement element in SelectInfo.RefGPContentXml.Element("CourseGroupSetting").Elements("CourseGroup"))
+                {
+                    CourseGroupSetting courseGroupSetting = new CourseGroupSetting();
+                    courseGroupSetting.CourseGroupName = element.Attribute("Name").Value;
+                    courseGroupSetting.CourseGroupCredit = element.Attribute("Credit").Value;
+                    courseGroupSetting.CourseGroupColor = Color.FromArgb(Int32.Parse(element.Attribute("Color").Value));
+                    courseGroupSetting.CourseGroupElement = element;
+                    _CourseGroupSettingList.Add(courseGroupSetting);
 
+                    if (!_CourseGroupSettingDic.ContainsKey(courseGroupSetting.CourseGroupName))
+                    {
+                        _CourseGroupSettingDic.Add(courseGroupSetting.CourseGroupName, new List<DataGridViewCell>());
+                    }
+                }
+            }
+
+            #region  課程規劃表(國教署)
+            lblGroupName.Text = SelectInfo.RefGPName;
             dgData.Rows.Clear();
 
             // 填入資料
@@ -864,7 +927,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             #endregion
 
-
             #region 處理採用班級
             listViewEx1.SuspendLayout();
             listViewEx1.Items.Clear();
@@ -893,11 +955,204 @@ namespace SHCourseGroupCodeAdmin.UIForm
             listViewEx1.ResumeLayout();
             #endregion
 
+            #region 課程群組
+            foreach (string index in dataDict.Keys)
+            {
+                XElement firstElement = null;
+                if (dataDict[index].Count > 0)
+                {
+                    firstElement = dataDict[index][0];
+                }
 
+                GPlanCourseInfo108 courseInfo = new GPlanCourseInfo108();
+                courseInfo.RequiredBy = firstElement.Attribute("RequiredBy").Value == "部訂" ? "部定" : firstElement.Attribute("RequiredBy").Value;
+                courseInfo.Required = firstElement.Attribute("Required").Value; ;
+                courseInfo.SpecialCategory = firstElement.Attribute("特殊類別") == null ? "" : firstElement.Attribute("特殊類別").Value;
+                courseInfo.SubjectAttribute = firstElement.Attribute("科目屬性") == null ? "" : firstElement.Attribute("科目屬性").Value;
+                courseInfo.DomainName = firstElement.Attribute("Domain").Value;
+                courseInfo.OfficialSubjectName = firstElement.Attribute("OfficialSubjectName") == null ? firstElement.Attribute("SubjectName").Value : firstElement.Attribute("OfficialSubjectName").Value;
+                courseInfo.StartLevel = firstElement.Element("Grouping").Attribute("startLevel").Value;
+                courseInfo.SubjectName = firstElement.Attribute("SubjectName").Value;
+                courseInfo.SchoolYearGroupName = firstElement.Attribute("指定學年科目名稱") == null ? "" : firstElement.Attribute("指定學年科目名稱").Value;
+                courseInfo.CourseContentList = dataDict[index];
+                _CourseInfoList.Add(courseInfo);
+
+                // 總表表格用
+                DataGridViewRow mainRow = new DataGridViewRow();
+                mainRow.CreateCells(dgvMain);
+                mainRow.Tag = courseInfo;
+                mainRow.Cells[0].Value = courseInfo.RequiredBy;
+                mainRow.Cells[1].Value = courseInfo.Required;
+                mainRow.Cells[2].Value = courseInfo.SpecialCategory;
+                mainRow.Cells[3].Value = courseInfo.SubjectAttribute;
+                mainRow.Cells[4].Value = courseInfo.DomainName;
+                mainRow.Cells[5].Value = courseInfo.OfficialSubjectName;
+                mainRow.Cells[12].Value = courseInfo.StartLevel;
+                mainRow.Cells[13].Value = courseInfo.SubjectName;
+                mainRow.Cells[14].Value = courseInfo.SchoolYearGroupName;
+                foreach (XElement element in courseInfo.CourseContentList)
+                {
+                    string credit = element.Attribute("Credit").Value;
+                    string courseGroupName = element.Attribute("分組名稱") == null ? "" : element.Attribute("分組名稱").Value;
+                    Color courseGroupColor = Color.White;
+
+                    // 讀取群組設定
+                    if (_CourseGroupSettingList.Where(x => x.CourseGroupName == courseGroupName).Count() > 0)
+                    {
+                        CourseGroupSetting courseGroupSetting = _CourseGroupSettingList.Where(x => x.CourseGroupName == courseGroupName).ToList()[0];
+                        courseGroupColor = courseGroupSetting.CourseGroupColor;
+                    }
+
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                    {
+                        mainRow.Cells[6].Tag = element;
+                        mainRow.Cells[6].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[6].Style.BackColor = courseGroupColor;
+                    }
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                    {
+                        mainRow.Cells[7].Tag = element;
+                        mainRow.Cells[7].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[7].Style.BackColor = courseGroupColor;
+                    }
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                    {
+                        mainRow.Cells[8].Tag = element;
+                        mainRow.Cells[8].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[8].Style.BackColor = courseGroupColor;
+                    }
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                    {
+                        mainRow.Cells[9].Tag = element;
+                        mainRow.Cells[9].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[9].Style.BackColor = courseGroupColor;
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                    {
+                        mainRow.Cells[10].Tag = element;
+                        mainRow.Cells[10].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[10].Style.BackColor = courseGroupColor;
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    {
+                        mainRow.Cells[11].Tag = element;
+                        mainRow.Cells[11].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[11].Style.BackColor = courseGroupColor;
+                    }
+                }
+                _MainRowList.Add(mainRow);
+
+                // 課程群組表格用
+                DataGridViewRow courseGroupRow = new DataGridViewRow();
+                courseGroupRow.CreateCells(dgvCourseGroup);
+                courseGroupRow.Tag = courseInfo;
+                courseGroupRow.Cells[0].Value = courseInfo.RequiredBy;
+                courseGroupRow.Cells[1].Value = courseInfo.Required;
+                courseGroupRow.Cells[2].Value = courseInfo.SpecialCategory;
+                courseGroupRow.Cells[3].Value = courseInfo.SubjectAttribute;
+                courseGroupRow.Cells[4].Value = courseInfo.DomainName;
+                courseGroupRow.Cells[5].Value = courseInfo.OfficialSubjectName; ;
+                foreach (XElement element in courseInfo.CourseContentList)
+                {
+                    string credit = element.Attribute("Credit").Value;
+                    string courseGroupName = element.Attribute("分組名稱") == null ? "" : element.Attribute("分組名稱").Value;
+                    Color courseGroupColor = Color.White;
+
+                    // 讀取群組設定
+                    if (_CourseGroupSettingList.Where(x => x.CourseGroupName == courseGroupName).Count() > 0)
+                    {
+                        CourseGroupSetting courseGroupSetting = _CourseGroupSettingList.Where(x => x.CourseGroupName == courseGroupName).ToList()[0];
+                        courseGroupColor = courseGroupSetting.CourseGroupColor;
+                    }
+
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                    {
+                        courseGroupRow.Cells[6].Tag = element;
+                        courseGroupRow.Cells[6].Value = credit;
+                        courseGroupRow.Cells[6].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[6]);
+                        }
+                    }
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                    {
+                        courseGroupRow.Cells[7].Tag = element;
+                        courseGroupRow.Cells[7].Value = credit;
+                        courseGroupRow.Cells[7].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[7]);
+                        }
+                    }
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                    {
+                        courseGroupRow.Cells[8].Tag = element;
+                        courseGroupRow.Cells[8].Value = credit;
+                        courseGroupRow.Cells[8].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[8]);
+                        }
+                    }
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                    {
+                        courseGroupRow.Cells[9].Tag = element;
+                        courseGroupRow.Cells[9].Value = credit;
+                        courseGroupRow.Cells[9].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[9]);
+                        }
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                    {
+                        courseGroupRow.Cells[10].Tag = element;
+                        courseGroupRow.Cells[10].Value = credit;
+                        courseGroupRow.Cells[10].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[10]);
+                        }
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    {
+                        courseGroupRow.Cells[11].Tag = element;
+                        courseGroupRow.Cells[11].Value = credit;
+                        courseGroupRow.Cells[11].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[11]);
+                        }
+                    }
+                }
+                _CourseGroupRowList.Add(courseGroupRow);
+            }
+            #endregion
+
+            _MainIsFirstLoad = true;
+            LoadMainComboBoxData(null, null);
+            _CourseGroupIsFirstLoad = true;
+            LoadCourseGroupComboBoxData(null, null);
+            LoadCourseGroupSettingDataGridView();
 
             btnUpdate.Enabled = false;
             isDgDataChange = false;
             isUDDgDataChange = false;
+            _IsMainDataDirty = false;
+            _IsCourseGroupDataDirty = false;
             isLoadUDDataFinish = true;
 
         }
@@ -1062,7 +1317,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         }
 
-
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             if (tabControl1.SelectedTabIndex == 0)
@@ -1120,13 +1374,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            if (isDgDataChange || isUDDgDataChange)
+            if (isDgDataChange || isUDDgDataChange || _IsMainDataDirty || _IsCourseGroupDataDirty)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
                 {
                     return;
                 }
-                isDgDataChange = isUDDgDataChange = false;
+                isDgDataChange = isUDDgDataChange = _IsMainDataDirty = _IsCourseGroupDataDirty = false;
             }
 
             btnCreate.Enabled = false;
@@ -1211,6 +1465,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 _SelectItem.Tag = SelectInfo;
                 SetIsDirtyDisplay(false);
                 MsgBox.Show("儲存完成");
+                advTree1_NodeClick(_SelectItem, null);
                 //       ApplicationLog.Log("課程規劃表(108適用)", logMsg);
             }
             catch (Exception ex)
@@ -1415,14 +1670,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmGPlanConfig108_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isDgDataChange || isUDDgDataChange)
+            if (isDgDataChange || isUDDgDataChange || _IsMainDataDirty || _IsCourseGroupDataDirty)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
                 {
                     e.Cancel = true;
                     return;
                 }
-                isDgDataChange = isUDDgDataChange = false;
+                isDgDataChange = isUDDgDataChange = _IsMainDataDirty = _IsCourseGroupDataDirty = false;
             }
         }
 
@@ -1535,7 +1790,23 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     btnUpdate.Enabled = isD;
                     isUDDgDataChange = isD;
                 }
-            }            
+
+                // 課程群組總表
+                if (tabControl1.SelectedTabIndex == 4)
+                {
+                    lbMainGraduationPlanName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                    btnUpdate.Enabled = isD;
+                    _IsMainDataDirty = isD;
+                }
+
+                // 設定課程群組
+                if (tabControl1.SelectedTabIndex == 5)
+                {
+                    lbCourseGroupGraduationPlanName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
+                    btnUpdate.Enabled = isD;
+                    _IsMainDataDirty = isD;
+                }
+            }
         }
 
         private void dgUDData_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -1582,7 +1853,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             dgUDData.Rows[e.RowIndex].Selected = true;
 
             isUDRowSelect = true;
-       
+
         }
 
         private void dgUDData_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -1756,6 +2027,615 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
 
             return value;
+        }
+
+        // 總表用事件
+        private void LoadMainComboBoxData(object sender, EventArgs args)
+        {
+            if (_MainIsLoading == true)
+            {
+                return;
+            }
+            _MainIsLoading = true;
+            this.SuspendLayout();
+
+            if (_MainIsFirstLoad)
+            {
+                // 第一次載入，所有下拉式清單刷新
+                // 初始化下拉式清單
+                cboMainRequiredBy.Items.Clear();
+                cboMainRequiredBy.Items.Add("全部");
+                cboMainRequiredBy.SelectedIndex = 0;
+                cboMainRequired.Items.Clear();
+                cboMainRequired.Items.Add("全部");
+                cboMainRequired.SelectedIndex = 0;
+                cboMainSpecialCategory.Items.Clear();
+                cboMainSpecialCategory.Items.Add("全部");
+                cboMainSpecialCategory.SelectedIndex = 0;
+                cboMainSubjectAttribute.Items.Clear();
+                cboMainSubjectAttribute.Items.Add("全部");
+                cboMainSubjectAttribute.SelectedIndex = 0;
+                cboMainDomainName.Items.Clear();
+                cboMainDomainName.Items.Add("全部");
+                cboMainDomainName.SelectedIndex = 0;
+                foreach (GPlanCourseInfo108 courseInfo in _CourseInfoList)
+                {
+                    if (!cboMainRequiredBy.Items.Contains(courseInfo.RequiredBy))
+                    {
+                        cboMainRequiredBy.Items.Add(courseInfo.RequiredBy);
+                    }
+                    if (!cboMainRequired.Items.Contains(courseInfo.Required))
+                    {
+                        cboMainRequired.Items.Add(courseInfo.Required);
+                    }
+                    if (!cboMainSpecialCategory.Items.Contains(courseInfo.SpecialCategory))
+                    {
+                        cboMainSpecialCategory.Items.Add(courseInfo.SpecialCategory);
+                    }
+                    if (!cboMainSubjectAttribute.Items.Contains(courseInfo.SubjectAttribute))
+                    {
+                        cboMainSubjectAttribute.Items.Add(courseInfo.SubjectAttribute);
+                    }
+                    if (!cboMainDomainName.Items.Contains(courseInfo.DomainName))
+                    {
+                        cboMainDomainName.Items.Add(courseInfo.DomainName);
+                    }
+                }
+
+                _MainIsFirstLoad = false;
+            }
+            else
+            {
+                // 非第一次載入代表是篩選觸發事件
+                List<GPlanCourseInfo108> filterList = new List<GPlanCourseInfo108>();
+
+                foreach (GPlanCourseInfo108 courseInfo in _CourseInfoList)
+                {
+                    bool show = true;
+                    if (cboMainRequiredBy.Text != "" && cboMainRequiredBy.Text != "全部" && cboMainRequiredBy.Text != courseInfo.RequiredBy)
+                        show = false;
+                    if (cboMainRequired.Text != "" && cboMainRequired.Text != "全部" && cboMainRequired.Text != courseInfo.Required)
+                        show = false;
+                    if (cboMainSpecialCategory.Text != "" && cboMainSpecialCategory.Text != "全部" && cboMainSpecialCategory.Text != courseInfo.SpecialCategory)
+                        show = false;
+                    if (cboMainSubjectAttribute.Text != "" && cboMainSubjectAttribute.Text != "全部" && cboMainSubjectAttribute.Text != courseInfo.SubjectAttribute)
+                        show = false;
+                    if (cboMainDomainName.Text != "" && cboMainDomainName.Text != "全部" && cboMainDomainName.Text != courseInfo.DomainName)
+                        show = false;
+                    if (show)
+                        filterList.Add(courseInfo);
+                }
+
+                if (cboMainRequiredBy.Text == "全部")
+                {
+                    cboMainRequiredBy.Items.Clear();
+                    cboMainRequiredBy.Items.Add("全部");
+                    cboMainRequiredBy.Items.AddRange(filterList.Select(x => x.RequiredBy).Distinct().ToArray());
+                    cboMainRequiredBy.SelectedIndex = 0;
+                }
+
+                if (cboMainRequired.Text == "全部")
+                {
+                    cboMainRequired.Items.Clear();
+                    cboMainRequired.Items.Add("全部");
+                    cboMainRequired.Items.AddRange(filterList.Select(x => x.Required).Distinct().ToArray());
+                    cboMainRequired.SelectedIndex = 0;
+                }
+
+                if (cboMainSpecialCategory.Text == "全部")
+                {
+                    cboMainSpecialCategory.Items.Clear();
+                    cboMainSpecialCategory.Items.Add("全部");
+                    cboMainSpecialCategory.Items.AddRange(filterList.Select(x => x.SpecialCategory).Distinct().ToArray());
+                    cboMainSpecialCategory.SelectedIndex = 0;
+                }
+
+                if (cboMainSubjectAttribute.Text == "全部")
+                {
+                    cboMainSubjectAttribute.Items.Clear();
+                    cboMainSubjectAttribute.Items.Add("全部");
+                    cboMainSubjectAttribute.Items.AddRange(filterList.Select(x => x.SubjectAttribute).Distinct().ToArray());
+                    cboMainSubjectAttribute.SelectedIndex = 0;
+                }
+
+                if (cboMainDomainName.Text == "全部")
+                {
+                    cboMainDomainName.Items.Clear();
+                    cboMainDomainName.Items.Add("全部");
+                    cboMainDomainName.Items.AddRange(filterList.Select(x => x.DomainName).Distinct().ToArray());
+                    cboMainDomainName.SelectedIndex = 0;
+                }
+
+            }
+
+            this.ResumeLayout();
+            _MainIsLoading = false;
+            LoadMainDataGridViewData();
+        }
+
+        private void LoadMainDataGridViewData()
+        {
+            _MainIsLoading = true;
+            this.SuspendLayout();
+            dgvMain.Rows.Clear();
+
+            List<DataGridViewRow> filterRowList = new List<DataGridViewRow>();
+
+            foreach (DataGridViewRow row in _MainRowList)
+            {
+                bool show = true;
+                if (cboMainRequiredBy.Text != "" && cboMainRequiredBy.Text != "全部" && cboMainRequiredBy.Text != row.Cells[0].Value.ToString())
+                    show = false;
+                if (cboMainRequired.Text != "" && cboMainRequired.Text != "全部" && cboMainRequired.Text != row.Cells[1].Value.ToString())
+                    show = false;
+                if (cboMainSpecialCategory.Text != "" && cboMainSpecialCategory.Text != "全部" && cboMainSpecialCategory.Text != row.Cells[2].Value.ToString())
+                    show = false;
+                if (cboMainSubjectAttribute.Text != "" && cboMainSubjectAttribute.Text != "全部" && cboMainSubjectAttribute.Text != row.Cells[3].Value.ToString())
+                    show = false;
+                if (cboMainDomainName.Text != "" && cboMainDomainName.Text != "全部" && cboMainDomainName.Text != row.Cells[4].Value.ToString())
+                    show = false;
+                if (show)
+                    filterRowList.Add(row);
+            }
+            dgvMain.Rows.AddRange(filterRowList.ToArray());
+            this.ResumeLayout();
+            _MainIsLoading = false;
+        }
+
+        private void dgvMain_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvMain.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = dgvMain.SelectedRows[0];
+
+                if (row.Tag != null)
+                {
+                    GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)row.Tag;
+                    tbMainStartLevel.Text = courseInfo.StartLevel;
+                    tbMainSubjectName.Text = courseInfo.SubjectName;
+                    tbMainSchoolYearGroupName.Text = courseInfo.SchoolYearGroupName;
+                    _MainSelectedRow = row;
+                }
+            }
+        }
+
+        private void btnMainSet_Click(object sender, EventArgs e)
+        {
+            if (_MainSelectedRow.Tag != null)
+            {
+                GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
+                int index = 0;
+                string rowIndex = courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex") == null ? "" : courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex").Value;
+                if (Int32.TryParse(rowIndex, out index))
+                {
+                    index -= 1;
+                    _MainRowList[index].Cells[12].Value = tbMainStartLevel.Text;
+                    _MainRowList[index].Cells[13].Value = tbMainSubjectName.Text;
+                    _MainRowList[index].Cells[14].Value = tbMainSchoolYearGroupName.Text;
+                    courseInfo.StartLevel = tbMainStartLevel.Text;
+                    courseInfo.SubjectName = tbMainSubjectName.Text;
+                    courseInfo.SchoolYearGroupName = tbMainSchoolYearGroupName.Text;
+                    foreach (XElement element in courseInfo.CourseContentList)
+                    {
+                        element.Element("Grouping").SetAttributeValue("startLevel", tbMainStartLevel.Text);
+                        element.SetAttributeValue("SubjectName", tbMainSubjectName.Text);
+                        element.SetAttributeValue("指定學年科目名稱", tbMainSchoolYearGroupName.Text);
+                    }
+
+                    LoadMainDataGridViewData();
+                    SetIsDirtyDisplay(true);
+                }
+            }
+        }
+
+        private void btnMainCancel_Click(object sender, EventArgs e)
+        {
+            GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
+            tbMainStartLevel.Text = courseInfo.StartLevel;
+            tbMainSubjectName.Text = courseInfo.SubjectName;
+            tbMainSchoolYearGroupName.Text = courseInfo.SchoolYearGroupName;
+        }
+
+        // 課程群組用事件
+        //// 篩選
+        private void LoadCourseGroupComboBoxData(object sender, EventArgs e)
+        {
+            if (_CourseGroupIsLoading == true)
+            {
+                return;
+            }
+            _CourseGroupIsLoading = true;
+            this.SuspendLayout();
+
+            if (_CourseGroupIsFirstLoad)
+            {
+                // 第一次載入，所有下拉式清單刷新
+                // 初始化下拉式清單
+                cboCourseGroupRequiredBy.Items.Clear();
+                cboCourseGroupRequiredBy.Items.Add("全部");
+                cboCourseGroupRequiredBy.SelectedIndex = 0;
+                cboCourseGroupRequired.Items.Clear();
+                cboCourseGroupRequired.Items.Add("全部");
+                cboCourseGroupRequired.SelectedIndex = 0;
+                cboCourseGroupSpecialCategory.Items.Clear();
+                cboCourseGroupSpecialCategory.Items.Add("全部");
+                cboCourseGroupSpecialCategory.SelectedIndex = 0;
+                cboCourseGroupSubjectAttribute.Items.Clear();
+                cboCourseGroupSubjectAttribute.Items.Add("全部");
+                cboCourseGroupSubjectAttribute.SelectedIndex = 0;
+                cboCourseGroupDomainName.Items.Clear();
+                cboCourseGroupDomainName.Items.Add("全部");
+                cboCourseGroupDomainName.SelectedIndex = 0;
+                foreach (GPlanCourseInfo108 courseInfo in _CourseInfoList)
+                {
+                    if (!cboCourseGroupRequiredBy.Items.Contains(courseInfo.RequiredBy))
+                    {
+                        cboCourseGroupRequiredBy.Items.Add(courseInfo.RequiredBy);
+                    }
+                    if (!cboCourseGroupRequired.Items.Contains(courseInfo.Required))
+                    {
+                        cboCourseGroupRequired.Items.Add(courseInfo.Required);
+                    }
+                    if (!cboCourseGroupSpecialCategory.Items.Contains(courseInfo.SpecialCategory))
+                    {
+                        cboCourseGroupSpecialCategory.Items.Add(courseInfo.SpecialCategory);
+                    }
+                    if (!cboCourseGroupSubjectAttribute.Items.Contains(courseInfo.SubjectAttribute))
+                    {
+                        cboCourseGroupSubjectAttribute.Items.Add(courseInfo.SubjectAttribute);
+                    }
+                    if (!cboCourseGroupDomainName.Items.Contains(courseInfo.DomainName))
+                    {
+                        cboCourseGroupDomainName.Items.Add(courseInfo.DomainName);
+                    }
+                }
+
+                _CourseGroupIsFirstLoad = false;
+            }
+            else
+            {
+                // 非第一次載入代表是篩選觸發事件
+                List<GPlanCourseInfo108> filterList = new List<GPlanCourseInfo108>();
+
+                foreach (GPlanCourseInfo108 courseInfo in _CourseInfoList)
+                {
+                    bool show = true;
+                    if (cboCourseGroupRequiredBy.Text != "" && cboCourseGroupRequiredBy.Text != "全部" && cboCourseGroupRequiredBy.Text != courseInfo.RequiredBy)
+                        show = false;
+                    if (cboCourseGroupRequired.Text != "" && cboCourseGroupRequired.Text != "全部" && cboCourseGroupRequired.Text != courseInfo.Required)
+                        show = false;
+                    if (cboCourseGroupSpecialCategory.Text != "" && cboCourseGroupSpecialCategory.Text != "全部" && cboCourseGroupSpecialCategory.Text != courseInfo.SpecialCategory)
+                        show = false;
+                    if (cboCourseGroupSubjectAttribute.Text != "" && cboCourseGroupSubjectAttribute.Text != "全部" && cboCourseGroupSubjectAttribute.Text != courseInfo.SubjectAttribute)
+                        show = false;
+                    if (cboCourseGroupDomainName.Text != "" && cboCourseGroupDomainName.Text != "全部" && cboCourseGroupDomainName.Text != courseInfo.DomainName)
+                        show = false;
+                    if (show)
+                        filterList.Add(courseInfo);
+                }
+
+                if (cboCourseGroupRequiredBy.Text == "全部")
+                {
+                    cboCourseGroupRequiredBy.Items.Clear();
+                    cboCourseGroupRequiredBy.Items.Add("全部");
+                    cboCourseGroupRequiredBy.Items.AddRange(filterList.Select(x => x.RequiredBy).Distinct().ToArray());
+                    cboCourseGroupRequiredBy.SelectedIndex = 0;
+                }
+
+                if (cboCourseGroupRequired.Text == "全部")
+                {
+                    cboCourseGroupRequired.Items.Clear();
+                    cboCourseGroupRequired.Items.Add("全部");
+                    cboCourseGroupRequired.Items.AddRange(filterList.Select(x => x.Required).Distinct().ToArray());
+                    cboCourseGroupRequired.SelectedIndex = 0;
+                }
+
+                if (cboCourseGroupSpecialCategory.Text == "全部")
+                {
+                    cboCourseGroupSpecialCategory.Items.Clear();
+                    cboCourseGroupSpecialCategory.Items.Add("全部");
+                    cboCourseGroupSpecialCategory.Items.AddRange(filterList.Select(x => x.SpecialCategory).Distinct().ToArray());
+                    cboCourseGroupSpecialCategory.SelectedIndex = 0;
+                }
+
+                if (cboCourseGroupSubjectAttribute.Text == "全部")
+                {
+                    cboCourseGroupSubjectAttribute.Items.Clear();
+                    cboCourseGroupSubjectAttribute.Items.Add("全部");
+                    cboCourseGroupSubjectAttribute.Items.AddRange(filterList.Select(x => x.SubjectAttribute).Distinct().ToArray());
+                    cboCourseGroupSubjectAttribute.SelectedIndex = 0;
+                }
+
+                if (cboCourseGroupDomainName.Text == "全部")
+                {
+                    cboCourseGroupDomainName.Items.Clear();
+                    cboCourseGroupDomainName.Items.Add("全部");
+                    cboCourseGroupDomainName.Items.AddRange(filterList.Select(x => x.DomainName).Distinct().ToArray());
+                    cboCourseGroupDomainName.SelectedIndex = 0;
+                }
+
+            }
+
+            this.ResumeLayout();
+            _CourseGroupIsLoading = false;
+            LoadCourseGroupDataGridViewData();
+        }
+
+        private void LoadCourseGroupDataGridViewData()
+        {
+            _CourseGroupIsLoading = true;
+            this.SuspendLayout();
+            dgvCourseGroup.Rows.Clear();
+
+            List<DataGridViewRow> filterRowList = new List<DataGridViewRow>();
+
+            foreach (DataGridViewRow row in _CourseGroupRowList)
+            {
+                bool show = true;
+                if (cboCourseGroupRequiredBy.Text != "" && cboCourseGroupRequiredBy.Text != "全部" && cboCourseGroupRequiredBy.Text != row.Cells[0].Value.ToString())
+                    show = false;
+                if (cboCourseGroupRequired.Text != "" && cboCourseGroupRequired.Text != "全部" && cboCourseGroupRequired.Text != row.Cells[1].Value.ToString())
+                    show = false;
+                if (cboCourseGroupSpecialCategory.Text != "" && cboCourseGroupSpecialCategory.Text != "全部" && cboCourseGroupSpecialCategory.Text != row.Cells[2].Value.ToString())
+                    show = false;
+                if (cboCourseGroupSubjectAttribute.Text != "" && cboCourseGroupSubjectAttribute.Text != "全部" && cboCourseGroupSubjectAttribute.Text != row.Cells[3].Value.ToString())
+                    show = false;
+                if (cboCourseGroupDomainName.Text != "" && cboCourseGroupDomainName.Text != "全部" && cboCourseGroupDomainName.Text != row.Cells[4].Value.ToString())
+                    show = false;
+                if (show)
+                    filterRowList.Add(row);
+            }
+            dgvCourseGroup.Rows.AddRange(filterRowList.ToArray());
+            this.ResumeLayout();
+            _CourseGroupIsLoading = false;
+        }
+
+        //// 群組管理 
+        private void LoadCourseGroupSettingDataGridView()
+        {
+            dgvCourseGroupManageGroup.Rows.Clear();
+
+            foreach (CourseGroupSetting setting in _CourseGroupSettingList)
+            {
+                // 宣告16*16點陣圖
+                Bitmap bitmap = new Bitmap(16, 16);
+
+                using (Graphics gx = Graphics.FromImage(bitmap))
+                {
+                    Rectangle rect = new Rectangle(2, 2, 13, 13); // 外框
+                    Rectangle rectSmall = new Rectangle(3, 3, 12, 12); // 填滿
+
+                    SolidBrush brush = new SolidBrush(setting.CourseGroupColor); // 設定填滿色彩
+                    gx.FillRectangle(brush, rectSmall);
+                    gx.DrawRectangle(Pens.Black, rect);
+                }
+
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(dgvCourseGroupManageGroup);
+                row.Tag = setting;
+                row.Cells[0].Value = bitmap;
+                row.Cells[1].Value = setting.CourseGroupName;
+                row.Cells[2].Value = setting.CourseGroupCredit;
+                dgvCourseGroupManageGroup.Rows.Add(row);
+            }
+        }
+
+        private void lbCopyCourseGroupSetting_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmCopyCourseGroupSetting frm = new frmCopyCourseGroupSetting(GP108List, SelectInfo);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                // 讀取課程群組設定
+                _CourseGroupSettingList.Clear();
+                if (SelectInfo.RefGPContentXml.Element("CourseGroupSetting") != null)
+                {
+                    foreach (XElement element in SelectInfo.RefGPContentXml.Element("CourseGroupSetting").Elements("CourseGroup"))
+                    {
+                        CourseGroupSetting courseGroupSetting = new CourseGroupSetting();
+                        courseGroupSetting.CourseGroupName = element.Attribute("Name").Value;
+                        courseGroupSetting.CourseGroupCredit = element.Attribute("Credit").Value;
+                        courseGroupSetting.CourseGroupColor = Color.FromArgb(Int32.Parse(element.Attribute("Color").Value));
+                        courseGroupSetting.CourseGroupElement = element;
+                        _CourseGroupSettingList.Add(courseGroupSetting);
+
+                        if (!_CourseGroupSettingDic.ContainsKey(courseGroupSetting.CourseGroupName))
+                        {
+                            _CourseGroupSettingDic.Add(courseGroupSetting.CourseGroupName, new List<DataGridViewCell>());
+                        }
+                    }
+                }
+
+                LoadCourseGroupSettingDataGridView();
+                SetIsDirtyDisplay(true);
+            }            
+        }
+
+        private void lbInsertCourseGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmInsertCourseGroup frm = new frmInsertCourseGroup(_CourseGroupSettingList);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                LoadCourseGroupSettingDataGridView();
+
+                if (SelectInfo.RefGPContentXml.Element("CourseGroupSetting") == null)
+                {
+                    XElement element = new XElement("CourseGroupSetting");
+                    SelectInfo.RefGPContentXml.Add(element);
+                }
+
+                // 編輯SelectInfo中的群組設定
+                XElement courseGroupElement = SelectInfo.RefGPContentXml.Element("CourseGroupSetting");
+                courseGroupElement.Elements("CourseGroup").Remove(); // 刪除現有Elements中的資料，重新讀取從dataGridView並寫入資料
+
+                foreach (CourseGroupSetting setting in _CourseGroupSettingList)
+                {
+                    XElement element = new XElement("CourseGroup");
+                    element.SetAttributeValue("Name", setting.CourseGroupName);
+                    element.SetAttributeValue("Credit", setting.CourseGroupCredit);
+                    element.SetAttributeValue("Color", setting.CourseGroupColor.ToArgb());
+                    courseGroupElement.Add(element);
+
+                    if (!_CourseGroupSettingDic.ContainsKey(setting.CourseGroupName))
+                    {
+                        _CourseGroupSettingDic.Add(setting.CourseGroupName, new List<DataGridViewCell>());
+                    }
+                }
+
+                LoadCourseGroupSettingDataGridView();
+                SetIsDirtyDisplay(true);
+            }
+        }
+
+        private void lbDeleteCourseGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvCourseGroupManageGroup.SelectedRows)
+            {
+                CourseGroupSetting setting = _CourseGroupSettingList[row.Index];
+
+                // 刪除設定時，一併清除已經設定的群組
+                foreach (DataGridViewCell cell in _CourseGroupSettingDic[setting.CourseGroupName])
+                {
+                    XElement element = (XElement)cell.Tag;
+                    element.SetAttributeValue("分組名稱", "");
+                    element.SetAttributeValue("分組修課學分數", "");
+                    cell.Style.BackColor = Color.White;
+                }
+                _CourseGroupSettingDic.Remove(setting.CourseGroupName);
+
+                _CourseGroupSettingList.Remove(setting);
+            }
+
+            // 編輯SelectInfo中的群組設定
+            XElement courseGroupElement = SelectInfo.RefGPContentXml.Element("CourseGroupSetting");
+            courseGroupElement.Elements("CourseGroup").Remove(); // 刪除現有Elements中的資料，重新讀取從dataGridView並寫入資料
+
+            foreach (CourseGroupSetting setting in _CourseGroupSettingList)
+            {
+                XElement element = new XElement("CourseGroup");
+                element.SetAttributeValue("Name", setting.CourseGroupName);
+                element.SetAttributeValue("Credit", setting.CourseGroupCredit);
+                element.SetAttributeValue("Color", setting.CourseGroupColor.ToArgb());
+                courseGroupElement.Add(element);
+
+                if (!_CourseGroupSettingDic.ContainsKey(setting.CourseGroupName))
+                {
+                    _CourseGroupSettingDic.Add(setting.CourseGroupName, new List<DataGridViewCell>());
+                }
+            }
+
+            LoadCourseGroupSettingDataGridView();
+            SetIsDirtyDisplay(true);
+        }
+
+        private void dgvCourseGroupManageGroup_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // 結束編輯，一併修改已經群組的課程
+            DataGridViewRow row = dgvCourseGroupManageGroup.Rows[e.RowIndex];
+            CourseGroupSetting setting = (CourseGroupSetting)row.Tag;
+            switch (e.ColumnIndex)
+            {
+                case 1:
+                    // 先將舊的群組另外存起來
+                    string oldCourseGroupName = setting.CourseGroupName;
+                    string newCourseGroupName = row.Cells[e.ColumnIndex].Value.ToString();
+                    setting.CourseGroupName = newCourseGroupName;
+                    setting.CourseGroupElement.SetAttributeValue("Name", newCourseGroupName);
+                    List<DataGridViewCell> cellList = new List<DataGridViewCell>();
+
+                    if (_CourseGroupSettingDic.ContainsKey(oldCourseGroupName))
+                    {
+                        cellList = _CourseGroupSettingDic[oldCourseGroupName];
+
+                        // 移除舊的
+                        _CourseGroupSettingDic.Remove(oldCourseGroupName);
+                    }
+
+                    // 依照新的名稱建立字典並加入原本的課程
+                    if (!_CourseGroupSettingDic.ContainsKey(newCourseGroupName))
+                    {
+                        _CourseGroupSettingDic.Add(newCourseGroupName, cellList);
+                    }
+                    else
+                    {
+                        _CourseGroupSettingDic[newCourseGroupName].Clear();
+                        _CourseGroupSettingDic[newCourseGroupName].AddRange(cellList);
+                    }
+
+                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[newCourseGroupName])
+                    {
+                        XElement element = (XElement)cell.Tag;
+                        element.SetAttributeValue("分組名稱", newCourseGroupName);
+                    }
+
+                    break;
+                case 2:
+                    string credit = row.Cells[e.ColumnIndex].Value.ToString();
+                    string courseGroupName = setting.CourseGroupName;
+                    setting.CourseGroupCredit = credit;
+                    setting.CourseGroupElement.SetAttributeValue("Credit", credit);
+
+                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[courseGroupName])
+                    {
+                        XElement element = (XElement)cell.Tag;
+                        element.SetAttributeValue("分組修課學分數", credit);
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            SetIsDirtyDisplay(true);
+        }
+
+        //// 設定群組
+        private void dgvCourseGroup_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvCourseGroupManageGroup.Rows.Count > 0 && e.RowIndex > -1)
+            {
+                if (e.ColumnIndex > 5 && e.ColumnIndex < 12)
+                {
+                    DataGridViewCell cell = dgvCourseGroup[e.ColumnIndex, e.RowIndex];
+
+                    if (cell.Value == null)
+                    {
+                        return;
+                    }
+
+                    int groupIndex = dgvCourseGroupManageGroup.SelectedRows[0].Index;
+                    string courseGroupName = _CourseGroupSettingList[groupIndex].CourseGroupName;
+                    string courseGroupCredit = _CourseGroupSettingList[groupIndex].CourseGroupCredit;
+                    Color color = _CourseGroupSettingList[groupIndex].CourseGroupColor;
+
+                    XElement element = (XElement)cell.Tag;
+
+                    // 格子按下時，如果顏色與原本的相同，會取消群組
+                    if (cell.Style.BackColor == color)
+                    {
+                        cell.Style.BackColor = Color.White;
+                        element.SetAttributeValue("分組名稱", "");
+                        element.SetAttributeValue("分組修課學分數", "");
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            if (_CourseGroupSettingDic[courseGroupName].Contains(cell))
+                            {
+                                _CourseGroupSettingDic[courseGroupName].Remove(cell);  
+                            }
+                        }
+                    }
+                    else
+                    {
+                        cell.Style.BackColor = color;
+                        element.SetAttributeValue("分組名稱", courseGroupName);
+                        element.SetAttributeValue("分組修課學分數", courseGroupCredit);
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(cell); 
+                        }
+                    }
+                    SetIsDirtyDisplay(true);
+                }
+            }
         }
     }
 }

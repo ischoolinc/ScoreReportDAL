@@ -133,6 +133,7 @@
     <Compile Include="DAO\CourseCodeInfo.cs" />
     <Compile Include="DAO\CourseCodeRoot.cs" />
     <Compile Include="DAO\CourseCodeTagHelper.cs" />
+    <Compile Include="DAO\CourseGroupSetting.cs" />
     <Compile Include="DAO\CourseInfoChk.cs" />
     <Compile Include="DAO\CreditInfo.cs" />
     <Compile Include="DAO\DataAccess.cs" />
@@ -205,6 +206,12 @@
     </Compile>
     <Compile Include="UIForm\frmCheckSemsScoreCourseCode.Designer.cs">
       <DependentUpon>frmCheckSemsScoreCourseCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCopyCourseGroupSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCopyCourseGroupSetting.Designer.cs">
+      <DependentUpon>frmCopyCourseGroupSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UIForm\frmCourseCodeSource.cs">
       <SubType>Form</SubType>
@@ -319,6 +326,12 @@
     </Compile>
     <Compile Include="UIForm\frmGPlanConfig108.Designer.cs">
       <DependentUpon>frmGPlanConfig108.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmInsertCourseGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmInsertCourseGroup.Designer.cs">
+      <DependentUpon>frmInsertCourseGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="UIForm\frmSyncCourseCodeAPI.cs">
       <SubType>Form</SubType>
@@ -436,6 +449,9 @@
     <EmbeddedResource Include="UIForm\frmCheckSemsScoreCourseCode.resx">
       <DependentUpon>frmCheckSemsScoreCourseCode.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCopyCourseGroupSetting.resx">
+      <DependentUpon>frmCopyCourseGroupSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCourseCodeSource.resx">
       <DependentUpon>frmCourseCodeSource.cs</DependentUpon>
     </EmbeddedResource>
@@ -492,6 +508,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmGPlanConfig108.resx">
       <DependentUpon>frmGPlanConfig108.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmInsertCourseGroup.resx">
+      <DependentUpon>frmInsertCourseGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmSyncCourseCodeAPI.resx">
       <DependentUpon>frmSyncCourseCodeAPI.cs</DependentUpon>
