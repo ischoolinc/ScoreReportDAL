@@ -65,6 +65,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             _GPlanInfo.chkSubjectInfoList = _GPlanInfo.chkSubjectInfoList.OrderBy(x => x.OrderBy).ToList();
 
+            List<string> SemsStrList = new List<string>();
+            SemsStrList.Add("1上");
+            SemsStrList.Add("1下");
+            SemsStrList.Add("2上");
+            SemsStrList.Add("2下");
+            SemsStrList.Add("3上");
+            SemsStrList.Add("3下");
+
             foreach (chkSubjectInfo subj in _GPlanInfo.chkSubjectInfoList)
             {
                 int rowIdx = dgData.Rows.Add();
@@ -80,17 +88,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     dgData.Rows[rowIdx].Cells["必選修"].Value = subj.isRequired;
 
 
-                    // 缺少解析方式 學分
-                    if (subj.DiffStatusList.Contains("缺"))
+
+                    if (subj.credit_period != null && subj.credit_period.Length == 6)
                     {
-                        if (subj.credit_period != null && subj.credit_period.Length == 6)
+                        foreach (string sems in SemsStrList)
                         {
-                            dgData.Rows[rowIdx].Cells["1上"].Value = subj.credit_period.Substring(0, 1);
-                            dgData.Rows[rowIdx].Cells["1下"].Value = subj.credit_period.Substring(1, 1);
-                            dgData.Rows[rowIdx].Cells["2上"].Value = subj.credit_period.Substring(2, 1);
-                            dgData.Rows[rowIdx].Cells["2下"].Value = subj.credit_period.Substring(3, 1);
-                            dgData.Rows[rowIdx].Cells["3上"].Value = subj.credit_period.Substring(4, 1);
-                            dgData.Rows[rowIdx].Cells["3下"].Value = subj.credit_period.Substring(5, 1);
+                            dgData.Rows[rowIdx].Cells[sems].Value = Utility.GetCreditPeriodString(sems, subj.credit_period);
                         }
                     }
                     else

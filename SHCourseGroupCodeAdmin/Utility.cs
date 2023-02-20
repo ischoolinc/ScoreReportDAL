@@ -82,7 +82,7 @@ namespace SHCourseGroupCodeAdmin
                 Directory.CreateDirectory(path);
             path = Path.Combine(path, reportName + ".json");
 
-            
+
 
             if (File.Exists(path))
             {
@@ -443,6 +443,34 @@ T	12學分
             {
                 value = " WHERE course_type IN('進修部','實用技能學程(夜)') ";
             }
+            return value;
+        }
+
+        public static string GetCreditPeriodString(string sems, string source)
+        {
+            string value = "";
+
+            if (sems == "1上")
+                value = source.Substring(0, 1);
+
+            if (sems == "1下")
+                value = source.Substring(1, 1);
+
+            if (sems == "2上")
+                value = source.Substring(2, 1);
+
+            if (sems == "2下")
+                value = source.Substring(3, 1);
+
+            if (sems == "3上")
+                value = source.Substring(4, 1);
+
+            if (sems == "3下")
+                value = source.Substring(5, 1);
+
+            if (value == "0")
+                value = "";
+
             return value;
         }
     }

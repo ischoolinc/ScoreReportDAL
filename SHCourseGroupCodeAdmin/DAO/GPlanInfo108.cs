@@ -884,6 +884,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                         if (GPlanDict.ContainsKey(mCo))
                         {
                             XElement elm = GPlanDict[mCo][0];
+                            XElement elmMoe = MOEDict[mCo][0];
+
                             chkSubjectInfo subj = new chkSubjectInfo();
                             subj.GDCCode = mCo;
                             subj.Domain = GetAttribute(elm, "Domain");
@@ -897,9 +899,13 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                             subj.isRequired = GetAttribute(elm, "Required");
                             subj.CourseCode = GetAttribute(elm, "課程代碼");
-                            subj.credit_period = GetAttribute(elm, "授課學期學分");
+                            
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
-                            subj.open_type = GetAttribute(elm, "OpenType");
+
+                            // 因為授課學期學分與OpenType，有可能總表調整需要更新，所以需要以總表為主
+                            subj.credit_period = GetAttribute(elmMoe, "授課學期學分");
+                            subj.open_type = GetAttribute(elmMoe, "OpenType");
+
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);

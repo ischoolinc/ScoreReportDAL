@@ -230,6 +230,14 @@ namespace SHCourseGroupCodeAdmin
                 scAPI.ShowDialog();
             };
 
+            //// 測試用，將學校們課程代碼寫入某台主機
+            //MotherForm.RibbonBarItems["教務作業", "課程代碼"]["課程計畫"]["手動同步課程代碼API全"].Click += delegate
+            //{
+            //    frmCourseCodeTest fcc = new frmCourseCodeTest();
+            //    fcc.ShowDialog();
+            //};
+
+
             // 108 版本 -----
             Catalog ribbon10 = RoleAclSource.Instance["教務作業"]["基本設定"];
             ribbon10.Add(new RibbonFeature("C6063F22-FF7C-4AB5-82F8-4FC82B205B1A", "產生課程規劃"));
