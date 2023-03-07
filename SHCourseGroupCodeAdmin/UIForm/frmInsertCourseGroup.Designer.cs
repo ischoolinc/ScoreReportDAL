@@ -37,6 +37,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.tbCourseGroupName = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.cpColorPicker = new DevComponents.DotNetBar.ColorPickerButton();
+            this.cbIsSchoolYearCourseGroup = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.SuspendLayout();
             // 
             // tbCredit
@@ -46,7 +47,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 
             this.tbCredit.Border.Class = "TextBoxBorder";
             this.tbCredit.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCredit.Location = new System.Drawing.Point(132, 52);
+            this.tbCredit.Location = new System.Drawing.Point(132, 55);
             this.tbCredit.Name = "tbCredit";
             this.tbCredit.Size = new System.Drawing.Size(171, 25);
             this.tbCredit.TabIndex = 11;
@@ -60,7 +61,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(16, 54);
+            this.labelX2.Location = new System.Drawing.Point(16, 57);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(114, 21);
             this.labelX2.TabIndex = 10;
@@ -71,7 +72,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.btnCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(254, 93);
+            this.btnCancel.Location = new System.Drawing.Point(254, 122);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(92, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -84,7 +85,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.btnInsert.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnInsert.BackColor = System.Drawing.Color.Transparent;
             this.btnInsert.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnInsert.Location = new System.Drawing.Point(132, 93);
+            this.btnInsert.Location = new System.Drawing.Point(132, 122);
             this.btnInsert.Name = "btnInsert";
             this.btnInsert.Size = new System.Drawing.Size(92, 23);
             this.btnInsert.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -132,11 +133,28 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.cpColorPicker.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cpColorPicker.TabIndex = 9;
             // 
+            // cbIsSchoolYearCourseGroup
+            // 
+            this.cbIsSchoolYearCourseGroup.AutoSize = true;
+            this.cbIsSchoolYearCourseGroup.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbIsSchoolYearCourseGroup.BackgroundStyle.Class = "";
+            this.cbIsSchoolYearCourseGroup.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbIsSchoolYearCourseGroup.Location = new System.Drawing.Point(132, 86);
+            this.cbIsSchoolYearCourseGroup.Name = "cbIsSchoolYearCourseGroup";
+            this.cbIsSchoolYearCourseGroup.Size = new System.Drawing.Size(121, 21);
+            this.cbIsSchoolYearCourseGroup.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbIsSchoolYearCourseGroup.TabIndex = 15;
+            this.cbIsSchoolYearCourseGroup.Text = "是否為學年課程";
+            // 
             // frmInsertCourseGroup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(372, 133);
+            this.ClientSize = new System.Drawing.Size(364, 152);
+            this.Controls.Add(this.cbIsSchoolYearCourseGroup);
             this.Controls.Add(this.tbCredit);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.btnCancel);
@@ -161,5 +179,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private DevComponents.DotNetBar.ColorPickerButton cpColorPicker;
         private DevComponents.DotNetBar.Controls.TextBoxX tbCourseGroupName;
         private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbIsSchoolYearCourseGroup;
     }
 }

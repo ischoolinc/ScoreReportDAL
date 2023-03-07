@@ -26,6 +26,11 @@ namespace SHCourseGroupCodeAdmin.DAO
         public Color CourseGroupColor { get; set; }
 
         /// <summary>
+        /// 是否為學年課程群組
+        /// </summary>
+        public bool IsSchoolYearCourseGroup { get; set; }
+
+        /// <summary>
         /// 課程群組設定Xml Element
         /// </summary>
         public XElement CourseGroupElement { get; set; }

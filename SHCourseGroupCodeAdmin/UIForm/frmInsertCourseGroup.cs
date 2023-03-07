@@ -39,6 +39,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             string courseGroupName = tbCourseGroupName.Text;
             string courseGroupCredit = tbCredit.Text;
             Color color = cpColorPicker.SelectedColor;
+            bool isSchoolYearCourseGroup = cbIsSchoolYearCourseGroup.Checked;
 
             if (color == Color.Empty)
             {
@@ -61,12 +62,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
             element.SetAttributeValue("Name", courseGroupName);
             element.SetAttributeValue("Credit", courseGroupCredit);
             element.SetAttributeValue("Color", color.ToArgb());
+            element.SetAttributeValue("IsSchoolYearCourseGroup", isSchoolYearCourseGroup);
 
             _CourseGroupSettingList.Add(new CourseGroupSetting()
             {
                 CourseGroupName = courseGroupName,
                 CourseGroupCredit = courseGroupCredit,
                 CourseGroupColor = color,
+                IsSchoolYearCourseGroup = isSchoolYearCourseGroup,
                 CourseGroupElement = element
             });
 

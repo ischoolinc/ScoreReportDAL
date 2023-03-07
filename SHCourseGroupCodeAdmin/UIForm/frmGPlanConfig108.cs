@@ -54,8 +54,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
         bool _CourseGroupIsFirstLoad = false;
         List<DataGridViewRow> _CourseGroupRowList = new List<DataGridViewRow>();
         List<CourseGroupSetting> _CourseGroupSettingList = new List<CourseGroupSetting>();
-        Dictionary<string, List<DataGridViewCell>> _CourseGroupSettingDic = new Dictionary<string, List<DataGridViewCell>>(); // 群組測定與所屬課程
+        Dictionary<string, List<DataGridViewCell>> _CourseGroupSettingDic = new Dictionary<string, List<DataGridViewCell>>(); // 群組設定與所屬課程
         bool _IsCourseGroupDataDirty = false;
+
+        /// 學分統計
+        string _CourseType = ""; // 用來判斷學制的變數
 
 
         public frmGPlanConfig108()
@@ -612,7 +615,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _CourseGroupRowList = new List<DataGridViewRow>();
             _CourseGroupSettingList.Clear();
             _CourseGroupSettingDic = new Dictionary<string, List<DataGridViewCell>>();
-            //_CourseGroupSettingIsEditing = false;
+
+            // 學分統計
+            _CourseType = "";
 
             // 判斷功能項目是否顯示
             if (SelectInfo != null)
@@ -672,6 +677,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     courseGroupSetting.CourseGroupName = element.Attribute("Name").Value;
                     courseGroupSetting.CourseGroupCredit = element.Attribute("Credit").Value;
                     courseGroupSetting.CourseGroupColor = Color.FromArgb(Int32.Parse(element.Attribute("Color").Value));
+                    courseGroupSetting.IsSchoolYearCourseGroup = element.Attribute("IsSchoolYearCourseGroup") == null ? false : bool.Parse(element.Attribute("IsSchoolYearCourseGroup").Value);
                     courseGroupSetting.CourseGroupElement = element;
                     _CourseGroupSettingList.Add(courseGroupSetting);
 
@@ -964,11 +970,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     firstElement = dataDict[index][0];
                 }
 
+                _CourseType = firstElement.Attribute("課程類別").Value;
+
                 GPlanCourseInfo108 courseInfo = new GPlanCourseInfo108();
                 courseInfo.RequiredBy = firstElement.Attribute("RequiredBy").Value == "部訂" ? "部定" : firstElement.Attribute("RequiredBy").Value;
-                courseInfo.Required = firstElement.Attribute("Required").Value; ;
+                courseInfo.Required = firstElement.Attribute("Required").Value;
                 courseInfo.SpecialCategory = firstElement.Attribute("特殊類別") == null ? "" : firstElement.Attribute("特殊類別").Value;
                 courseInfo.SubjectAttribute = firstElement.Attribute("科目屬性") == null ? "" : firstElement.Attribute("科目屬性").Value;
+                courseInfo.Entry = firstElement.Attribute("Entry").Value;
                 courseInfo.DomainName = firstElement.Attribute("Domain").Value;
                 courseInfo.OfficialSubjectName = firstElement.Attribute("OfficialSubjectName") == null ? firstElement.Attribute("SubjectName").Value : firstElement.Attribute("OfficialSubjectName").Value;
                 courseInfo.StartLevel = firstElement.Element("Grouping").Attribute("startLevel").Value;
@@ -985,11 +994,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 mainRow.Cells[1].Value = courseInfo.Required;
                 mainRow.Cells[2].Value = courseInfo.SpecialCategory;
                 mainRow.Cells[3].Value = courseInfo.SubjectAttribute;
-                mainRow.Cells[4].Value = courseInfo.DomainName;
-                mainRow.Cells[5].Value = courseInfo.OfficialSubjectName;
-                mainRow.Cells[12].Value = courseInfo.StartLevel;
-                mainRow.Cells[13].Value = courseInfo.SubjectName;
-                mainRow.Cells[14].Value = courseInfo.SchoolYearGroupName;
+                mainRow.Cells[4].Value = courseInfo.Entry;
+                mainRow.Cells[5].Value = courseInfo.DomainName;
+                mainRow.Cells[6].Value = courseInfo.OfficialSubjectName;
+                mainRow.Cells[13].Value = courseInfo.StartLevel;
+                mainRow.Cells[14].Value = courseInfo.SubjectName;
+                mainRow.Cells[15].Value = courseInfo.SchoolYearGroupName;
                 foreach (XElement element in courseInfo.CourseContentList)
                 {
                     string credit = element.Attribute("Credit").Value;
@@ -1005,39 +1015,39 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
                     {
-                        mainRow.Cells[6].Tag = element;
-                        mainRow.Cells[6].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[6].Style.BackColor = courseGroupColor;
-                    }
-                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                    {
                         mainRow.Cells[7].Tag = element;
                         mainRow.Cells[7].Value = element.Attribute("Credit").Value;
                         mainRow.Cells[7].Style.BackColor = courseGroupColor;
                     }
-                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
                     {
                         mainRow.Cells[8].Tag = element;
                         mainRow.Cells[8].Value = element.Attribute("Credit").Value;
                         mainRow.Cells[8].Style.BackColor = courseGroupColor;
                     }
-                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                     {
                         mainRow.Cells[9].Tag = element;
                         mainRow.Cells[9].Value = element.Attribute("Credit").Value;
                         mainRow.Cells[9].Style.BackColor = courseGroupColor;
                     }
-                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                     {
                         mainRow.Cells[10].Tag = element;
                         mainRow.Cells[10].Value = element.Attribute("Credit").Value;
                         mainRow.Cells[10].Style.BackColor = courseGroupColor;
                     }
-                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                     {
                         mainRow.Cells[11].Tag = element;
                         mainRow.Cells[11].Value = element.Attribute("Credit").Value;
                         mainRow.Cells[11].Style.BackColor = courseGroupColor;
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    {
+                        mainRow.Cells[12].Tag = element;
+                        mainRow.Cells[12].Value = element.Attribute("Credit").Value;
+                        mainRow.Cells[12].Style.BackColor = courseGroupColor;
                     }
                 }
                 _MainRowList.Add(mainRow);
@@ -1050,8 +1060,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 courseGroupRow.Cells[1].Value = courseInfo.Required;
                 courseGroupRow.Cells[2].Value = courseInfo.SpecialCategory;
                 courseGroupRow.Cells[3].Value = courseInfo.SubjectAttribute;
-                courseGroupRow.Cells[4].Value = courseInfo.DomainName;
-                courseGroupRow.Cells[5].Value = courseInfo.OfficialSubjectName; ;
+                courseGroupRow.Cells[4].Value = courseInfo.Entry;
+                courseGroupRow.Cells[5].Value = courseInfo.DomainName;
+                courseGroupRow.Cells[6].Value = courseInfo.OfficialSubjectName;
                 foreach (XElement element in courseInfo.CourseContentList)
                 {
                     string credit = element.Attribute("Credit").Value;
@@ -1067,18 +1078,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
                     {
-                        courseGroupRow.Cells[6].Tag = element;
-                        courseGroupRow.Cells[6].Value = credit;
-                        courseGroupRow.Cells[6].Style.BackColor = courseGroupColor;
-
-                        // 依據群組設定分類至CourseGroupSettingDic
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
-                        {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[6]);
-                        }
-                    }
-                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                    {
                         courseGroupRow.Cells[7].Tag = element;
                         courseGroupRow.Cells[7].Value = credit;
                         courseGroupRow.Cells[7].Style.BackColor = courseGroupColor;
@@ -1089,7 +1088,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[7]);
                         }
                     }
-                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
                     {
                         courseGroupRow.Cells[8].Tag = element;
                         courseGroupRow.Cells[8].Value = credit;
@@ -1101,7 +1100,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[8]);
                         }
                     }
-                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                     {
                         courseGroupRow.Cells[9].Tag = element;
                         courseGroupRow.Cells[9].Value = credit;
@@ -1113,7 +1112,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[9]);
                         }
                     }
-                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                     {
                         courseGroupRow.Cells[10].Tag = element;
                         courseGroupRow.Cells[10].Value = credit;
@@ -1125,7 +1124,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[10]);
                         }
                     }
-                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                     {
                         courseGroupRow.Cells[11].Tag = element;
                         courseGroupRow.Cells[11].Value = credit;
@@ -1137,8 +1136,510 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[11]);
                         }
                     }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    {
+                        courseGroupRow.Cells[12].Tag = element;
+                        courseGroupRow.Cells[12].Value = credit;
+                        courseGroupRow.Cells[12].Style.BackColor = courseGroupColor;
+
+                        // 依據群組設定分類至CourseGroupSettingDic
+                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        {
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[12]);
+                        }
+                    }
                 }
                 _CourseGroupRowList.Add(courseGroupRow);
+            }
+            #endregion
+
+            #region 學分統計
+            if (!string.IsNullOrEmpty(_CourseType))
+            {
+                if (_CourseType == "技術型高中")
+                {
+                    tcSwitchCreditStatistics.SelectedTab = tbiCreditTechnical;
+                    tbiCreditNormal.Visible = false;
+
+                    // 學業部定必修
+                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbyDepart.Text).ToList();
+                    tbNormalSubjectRequiredbyDepart1_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart1_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart2_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart2_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart3_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart3_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂必修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolRequired.Text).ToList();
+                    tbNormalSubjectRequiredbySchoolRequired1_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired1_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired2_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired2_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired3_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired3_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂選修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolNonRequired.Text
+                        && x.Cells[6].Value.ToString() != "團體活動時間"
+                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
+                    tbNormalSubjectRequiredbySchoolNonRequired1_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired1_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired2_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired2_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired3_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired3_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 部定專業科目
+                    List<DataGridViewRow> professionalSubjectRequiredByDepartProfessionalList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartProfessional.Text).ToList();
+                    tbProfessionalSubjectRequiredByDepartProfessional1_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional1_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional2_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional2_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional3_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional3_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 部定實習科目
+                    List<DataGridViewRow> professionalSubjectRequiredByDepartPracticeList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartPractice.Text).ToList();
+                    tbProfessionalSubjectRequiredByDepartPractice1_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice1_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice2_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice2_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice3_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice3_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂專業科目必修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂專業科目選修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂實習科目必修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂實習科目選修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    foreach (string groupName in _CourseGroupSettingDic.Keys)
+                    {
+                        if (_CourseGroupSettingDic[groupName].Count > 0)
+                        {
+                            int credit = int.Parse(_CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit);
+                            DataGridViewCell cell = _CourseGroupSettingDic[groupName][0];
+                            XElement element = (XElement)cell.Tag;
+                            string requiredBy = element.Attribute("RequiredBy").Value == "部訂" ? "部定" : element.Attribute("RequiredBy").Value;
+                            string required = element.Attribute("Required").Value;
+                            string entry = element.Attribute("Entry").Value;
+
+                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbyDepart.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbyDepart1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbyDepart1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbyDepart2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbyDepart2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbyDepart3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbyDepart3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbySchool.Text && required == tbNormalSubjectRequiredbySchoolRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolRequired1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolRequired1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolRequired2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolRequired2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolRequired3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolRequired3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbySchool.Text && required == tbNormalSubjectRequiredbySchoolNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolNonRequired1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolNonRequired1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolNonRequired2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolNonRequired2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolNonRequired3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolNonRequired3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredByDepart.Text && entry == tbProfessionalSubjectRequiredByDepartProfessional.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartProfessional1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartProfessional1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartProfessional2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartProfessional2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartProfessional3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartProfessional3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredByDepart.Text && entry == tbProfessionalSubjectRequiredByDepartPractice.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartPractice1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartPractice1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartPractice2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartPractice2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartPractice3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartPractice3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolProfession.Text && required == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolProfession.Text && required == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolPractice.Text && required == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolPractice.Text && required == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text)).ToString();
+                            }
+                        }
+                    }
+
+
+                    tbNormalSubjectRequiredbyDepartSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart1_1.Text,
+                        tbNormalSubjectRequiredbyDepart1_2.Text,
+                        tbNormalSubjectRequiredbyDepart2_1.Text,
+                        tbNormalSubjectRequiredbyDepart2_2.Text,
+                        tbNormalSubjectRequiredbyDepart3_1.Text,
+                        tbNormalSubjectRequiredbyDepart3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSubjectRequiredbySchoolRequiredSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbySchoolRequired1_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired1_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired2_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired2_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired3_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbySchoolNonRequired1_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired1_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired2_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired2_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired3_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredByDepartProfessional1_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional1_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional2_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional2_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional3_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredByDepartPracticeSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredByDepartPractice1_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice1_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice2_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice2_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice3_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+
+                    tbCreditSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepartSummary.Text,
+                        tbNormalSubjectRequiredbySchoolRequiredSummary.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text,
+                        tbProfessionalSubjectRequiredByDepartPracticeSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                }
+                else if (_CourseType == "普通型高中")
+                {
+                    tcSwitchCreditStatistics.SelectedTab = tbiCreditNormal;
+                    tbiCreditTechnical.Visible = false;
+
+                    // 學業部定必修
+                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalNormalRequiredByDepart.Text).ToList();
+                    tbNormalNormalRequiredByDepart1_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart1_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart2_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart2_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart3_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart3_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂必修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolRequired.Text).ToList();
+                    tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂選修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text
+                        && x.Cells[6].Value.ToString() != "團體活動時間"
+                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+
+                    foreach (string groupName in _CourseGroupSettingDic.Keys)
+                    {
+                        if (_CourseGroupSettingDic[groupName].Count > 0)
+                        {
+                            int credit = int.Parse(_CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit);
+                            DataGridViewCell cell = _CourseGroupSettingDic[groupName][0];
+                            XElement element = (XElement)cell.Tag;
+                            string requiredBy = element.Attribute("RequiredBy").Value == "部訂" ? "部定" : element.Attribute("RequiredBy").Value;
+                            string required = element.Attribute("Required").Value;
+                            string entry = element.Attribute("Entry").Value;
+
+                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalRequiredByDepart.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalRequiredByDepart1_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalRequiredByDepart1_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalRequiredByDepart2_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalRequiredByDepart2_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalRequiredByDepart3_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalRequiredByDepart3_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalSubjectRequiredBySchool.Text && required == tbNormalNormalSubjectRequiredBySchoolRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalSubjectRequiredBySchool.Text && required == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text)).ToString();
+                            }
+                        }
+                    }
+
+                    tbNormalNormalRequiredByDepartSummary.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart1_1.Text,
+                        tbNormalNormalRequiredByDepart1_2.Text,
+                        tbNormalNormalRequiredByDepart2_1.Text,
+                        tbNormalNormalRequiredByDepart2_2.Text,
+                        tbNormalNormalRequiredByDepart3_1.Text,
+                        tbNormalNormalRequiredByDepart3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text = (new List<string>() {
+                        tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text = (new List<string>() {
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+
+                    tbNormalSummary.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepartSummary.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                }
+                else
+                {
+                    tcSwitchCreditStatistics.SelectedTab = null;
+                    tbiCreditTechnical.Visible = false;
+                    tbiCreditNormal.Visible = false;
+                }
             }
             #endregion
 
@@ -1443,7 +1944,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             try
             {
-
                 btnUpdate.Enabled = false;
 
                 // 檢查使用這自訂科目資料
@@ -1466,7 +1966,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 SetIsDirtyDisplay(false);
                 MsgBox.Show("儲存完成");
                 advTree1_NodeClick(_SelectItem, null);
-                //       ApplicationLog.Log("課程規劃表(108適用)", logMsg);
+
+                ApplicationLog.Log("班級課程規劃表(108課綱適用)", "修改", $"修改 「{SelectInfo.RefGPName}」 課程規畫表資訊。");
             }
             catch (Exception ex)
             {
@@ -2055,6 +2556,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 cboMainSubjectAttribute.Items.Clear();
                 cboMainSubjectAttribute.Items.Add("全部");
                 cboMainSubjectAttribute.SelectedIndex = 0;
+                cboMainEntry.Items.Clear();
+                cboMainEntry.Items.Add("全部");
+                cboMainEntry.SelectedIndex = 0;
                 cboMainDomainName.Items.Clear();
                 cboMainDomainName.Items.Add("全部");
                 cboMainDomainName.SelectedIndex = 0;
@@ -2075,6 +2579,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (!cboMainSubjectAttribute.Items.Contains(courseInfo.SubjectAttribute))
                     {
                         cboMainSubjectAttribute.Items.Add(courseInfo.SubjectAttribute);
+                    }
+                    if (!cboMainEntry.Items.Contains(courseInfo.Entry))
+                    {
+                        cboMainEntry.Items.Add(courseInfo.Entry);
                     }
                     if (!cboMainDomainName.Items.Contains(courseInfo.DomainName))
                     {
@@ -2099,6 +2607,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (cboMainSpecialCategory.Text != "" && cboMainSpecialCategory.Text != "全部" && cboMainSpecialCategory.Text != courseInfo.SpecialCategory)
                         show = false;
                     if (cboMainSubjectAttribute.Text != "" && cboMainSubjectAttribute.Text != "全部" && cboMainSubjectAttribute.Text != courseInfo.SubjectAttribute)
+                        show = false;
+                    if (cboMainEntry.Text != "" && cboMainEntry.Text != "全部" && cboMainEntry.Text != courseInfo.Entry)
                         show = false;
                     if (cboMainDomainName.Text != "" && cboMainDomainName.Text != "全部" && cboMainDomainName.Text != courseInfo.DomainName)
                         show = false;
@@ -2138,6 +2648,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     cboMainSubjectAttribute.SelectedIndex = 0;
                 }
 
+                if (cboMainEntry.Text == "全部")
+                {
+                    cboMainEntry.Items.Clear();
+                    cboMainEntry.Items.Add("全部");
+                    cboMainEntry.Items.AddRange(filterList.Select(x => x.Entry).Distinct().ToArray());
+                    cboMainEntry.SelectedIndex = 0;
+                }
+
                 if (cboMainDomainName.Text == "全部")
                 {
                     cboMainDomainName.Items.Clear();
@@ -2172,7 +2690,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     show = false;
                 if (cboMainSubjectAttribute.Text != "" && cboMainSubjectAttribute.Text != "全部" && cboMainSubjectAttribute.Text != row.Cells[3].Value.ToString())
                     show = false;
-                if (cboMainDomainName.Text != "" && cboMainDomainName.Text != "全部" && cboMainDomainName.Text != row.Cells[4].Value.ToString())
+                if (cboMainEntry.Text != "" && cboMainEntry.Text != "全部" && cboMainEntry.Text != row.Cells[4].Value.ToString())
+                    show = false;
+                if (cboMainDomainName.Text != "" && cboMainDomainName.Text != "全部" && cboMainDomainName.Text != row.Cells[5].Value.ToString())
                     show = false;
                 if (show)
                     filterRowList.Add(row);
@@ -2204,26 +2724,40 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (_MainSelectedRow.Tag != null)
             {
                 GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
+
+                if (_CourseInfoList.Where(x => x.SubjectName == courseInfo.SubjectName).Count() > 1)
+                {
+                    MessageBox.Show("科目名稱不可重複");
+                    return;
+                }
+
                 int index = 0;
                 string rowIndex = courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex") == null ? "" : courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex").Value;
                 if (Int32.TryParse(rowIndex, out index))
                 {
                     index -= 1;
-                    _MainRowList[index].Cells[12].Value = tbMainStartLevel.Text;
-                    _MainRowList[index].Cells[13].Value = tbMainSubjectName.Text;
-                    _MainRowList[index].Cells[14].Value = tbMainSchoolYearGroupName.Text;
-                    courseInfo.StartLevel = tbMainStartLevel.Text;
-                    courseInfo.SubjectName = tbMainSubjectName.Text;
-                    courseInfo.SchoolYearGroupName = tbMainSchoolYearGroupName.Text;
-                    foreach (XElement element in courseInfo.CourseContentList)
+                    int startLevel = 0;
+                    if (Int32.TryParse(tbMainStartLevel.Text, out startLevel))
                     {
-                        element.Element("Grouping").SetAttributeValue("startLevel", tbMainStartLevel.Text);
-                        element.SetAttributeValue("SubjectName", tbMainSubjectName.Text);
-                        element.SetAttributeValue("指定學年科目名稱", tbMainSchoolYearGroupName.Text);
-                    }
+                        _MainRowList[index].Cells[13].Value = tbMainStartLevel.Text;
+                        _MainRowList[index].Cells[14].Value = tbMainSubjectName.Text;
+                        _MainRowList[index].Cells[15].Value = tbMainSchoolYearGroupName.Text;
+                        courseInfo.StartLevel = tbMainStartLevel.Text;
+                        courseInfo.SubjectName = tbMainSubjectName.Text;
+                        courseInfo.SchoolYearGroupName = tbMainSchoolYearGroupName.Text;
+                        int level = startLevel;
+                        foreach (XElement element in courseInfo.CourseContentList)
+                        {
+                            element.Element("Grouping").SetAttributeValue("startLevel", tbMainStartLevel.Text);
+                            element.SetAttributeValue("Level", level);
+                            element.SetAttributeValue("SubjectName", tbMainSubjectName.Text);
+                            element.SetAttributeValue("指定學年科目名稱", tbMainSchoolYearGroupName.Text);
+                            level++;
+                        }
 
-                    LoadMainDataGridViewData();
-                    SetIsDirtyDisplay(true);
+                        LoadMainDataGridViewData();
+                        SetIsDirtyDisplay(true);
+                    }
                 }
             }
         }
@@ -2263,6 +2797,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 cboCourseGroupSubjectAttribute.Items.Clear();
                 cboCourseGroupSubjectAttribute.Items.Add("全部");
                 cboCourseGroupSubjectAttribute.SelectedIndex = 0;
+                cboCourseGroupEntry.Items.Clear();
+                cboCourseGroupEntry.Items.Add("全部");
+                cboCourseGroupEntry.SelectedIndex = 0;
                 cboCourseGroupDomainName.Items.Clear();
                 cboCourseGroupDomainName.Items.Add("全部");
                 cboCourseGroupDomainName.SelectedIndex = 0;
@@ -2283,6 +2820,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (!cboCourseGroupSubjectAttribute.Items.Contains(courseInfo.SubjectAttribute))
                     {
                         cboCourseGroupSubjectAttribute.Items.Add(courseInfo.SubjectAttribute);
+                    }
+                    if (!cboCourseGroupEntry.Items.Contains(courseInfo.Entry))
+                    {
+                        cboCourseGroupEntry.Items.Add(courseInfo.Entry);
                     }
                     if (!cboCourseGroupDomainName.Items.Contains(courseInfo.DomainName))
                     {
@@ -2307,6 +2848,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (cboCourseGroupSpecialCategory.Text != "" && cboCourseGroupSpecialCategory.Text != "全部" && cboCourseGroupSpecialCategory.Text != courseInfo.SpecialCategory)
                         show = false;
                     if (cboCourseGroupSubjectAttribute.Text != "" && cboCourseGroupSubjectAttribute.Text != "全部" && cboCourseGroupSubjectAttribute.Text != courseInfo.SubjectAttribute)
+                        show = false;
+                    if (cboCourseGroupEntry.Text != "" && cboCourseGroupEntry.Text != "全部" && cboCourseGroupEntry.Text != courseInfo.Entry)
                         show = false;
                     if (cboCourseGroupDomainName.Text != "" && cboCourseGroupDomainName.Text != "全部" && cboCourseGroupDomainName.Text != courseInfo.DomainName)
                         show = false;
@@ -2346,6 +2889,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     cboCourseGroupSubjectAttribute.SelectedIndex = 0;
                 }
 
+                if (cboCourseGroupEntry.Text == "全部")
+                {
+                    cboCourseGroupEntry.Items.Clear();
+                    cboCourseGroupEntry.Items.Add("全部");
+                    cboCourseGroupEntry.Items.AddRange(filterList.Select(x => x.Entry).Distinct().ToArray());
+                    cboCourseGroupEntry.SelectedIndex = 0;
+                }
+
                 if (cboCourseGroupDomainName.Text == "全部")
                 {
                     cboCourseGroupDomainName.Items.Clear();
@@ -2380,7 +2931,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     show = false;
                 if (cboCourseGroupSubjectAttribute.Text != "" && cboCourseGroupSubjectAttribute.Text != "全部" && cboCourseGroupSubjectAttribute.Text != row.Cells[3].Value.ToString())
                     show = false;
-                if (cboCourseGroupDomainName.Text != "" && cboCourseGroupDomainName.Text != "全部" && cboCourseGroupDomainName.Text != row.Cells[4].Value.ToString())
+                if (cboCourseGroupEntry.Text != "" && cboCourseGroupEntry.Text != "全部" && cboCourseGroupEntry.Text != row.Cells[4].Value.ToString())
+                    show = false;
+                if (cboCourseGroupDomainName.Text != "" && cboCourseGroupDomainName.Text != "全部" && cboCourseGroupDomainName.Text != row.Cells[5].Value.ToString())
                     show = false;
                 if (show)
                     filterRowList.Add(row);
@@ -2416,6 +2969,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 row.Cells[0].Value = bitmap;
                 row.Cells[1].Value = setting.CourseGroupName;
                 row.Cells[2].Value = setting.CourseGroupCredit;
+                row.Cells[3].Value = setting.IsSchoolYearCourseGroup;
                 dgvCourseGroupManageGroup.Rows.Add(row);
             }
         }
@@ -2435,6 +2989,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         courseGroupSetting.CourseGroupName = element.Attribute("Name").Value;
                         courseGroupSetting.CourseGroupCredit = element.Attribute("Credit").Value;
                         courseGroupSetting.CourseGroupColor = Color.FromArgb(Int32.Parse(element.Attribute("Color").Value));
+                        courseGroupSetting.IsSchoolYearCourseGroup = element.Attribute("IsSchoolYearCourseGroup") == null ? false : bool.Parse(element.Attribute("IsSchoolYearCourseGroup").Value);
                         courseGroupSetting.CourseGroupElement = element;
                         _CourseGroupSettingList.Add(courseGroupSetting);
 
@@ -2447,7 +3002,110 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 LoadCourseGroupSettingDataGridView();
                 SetIsDirtyDisplay(true);
-            }            
+            }
+        }
+
+        private void dgvCourseGroupManageGroup_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // 結束編輯，一併修改已經群組的課程
+            DataGridViewRow row = dgvCourseGroupManageGroup.Rows[e.RowIndex];
+            CourseGroupSetting setting = (CourseGroupSetting)row.Tag;
+
+            switch (e.ColumnIndex)
+            {
+                case 1:
+                    // 先將舊的群組另外存起來
+                    string oldCourseGroupName = setting.CourseGroupName;
+                    string newCourseGroupName = row.Cells[e.ColumnIndex].Value.ToString();
+                    setting.CourseGroupName = newCourseGroupName;
+                    setting.CourseGroupElement.SetAttributeValue("Name", newCourseGroupName);
+                    List<DataGridViewCell> cellList = new List<DataGridViewCell>();
+
+                    if (newCourseGroupName == oldCourseGroupName)
+                    {
+                        return;
+                    }
+
+                    if (_CourseGroupSettingDic.ContainsKey(oldCourseGroupName))
+                    {
+                        cellList = _CourseGroupSettingDic[oldCourseGroupName];
+
+                        // 移除舊的
+                        _CourseGroupSettingDic.Remove(oldCourseGroupName);
+                    }
+
+                    // 依照新的名稱建立字典並加入原本的課程
+                    if (!_CourseGroupSettingDic.ContainsKey(newCourseGroupName))
+                    {
+                        _CourseGroupSettingDic.Add(newCourseGroupName, cellList);
+                    }
+                    else
+                    {
+                        _CourseGroupSettingDic[newCourseGroupName].Clear();
+                        _CourseGroupSettingDic[newCourseGroupName].AddRange(cellList);
+                    }
+
+                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[newCourseGroupName])
+                    {
+                        XElement element = (XElement)cell.Tag;
+                        element.SetAttributeValue("分組名稱", newCourseGroupName);
+                    }
+                    SetIsDirtyDisplay(true);
+                    break;
+
+                case 2:
+                    string credit = row.Cells[e.ColumnIndex].Value.ToString();
+                    string courseGroupName = setting.CourseGroupName;
+
+                    if (credit == setting.CourseGroupCredit)
+                    {
+                        return;
+                    }
+
+                    setting.CourseGroupCredit = credit;
+                    setting.CourseGroupElement.SetAttributeValue("Credit", credit);
+
+                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[courseGroupName])
+                    {
+                        XElement element = (XElement)cell.Tag;
+                        element.SetAttributeValue("分組修課學分數", credit);
+                    }
+
+                    SetIsDirtyDisplay(true);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void dgvCourseGroupManageGroup_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1 && e.ColumnIndex == 3)
+            {
+                dgvCourseGroupManageGroup.EndEdit();
+            }
+        }
+
+        private void dgvCourseGroupManageGroup_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1 && e.ColumnIndex == 3)
+            {
+                DataGridViewRow row = dgvCourseGroupManageGroup.Rows[e.RowIndex];
+                CourseGroupSetting setting = (CourseGroupSetting)row.Tag;
+                DataGridViewCheckBoxCell cell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
+                bool isSchoolYearCourseGroup = (bool)cell.Value;
+
+                if (isSchoolYearCourseGroup == setting.IsSchoolYearCourseGroup)
+                {
+                    return;
+                }
+
+                setting.IsSchoolYearCourseGroup = isSchoolYearCourseGroup;
+                setting.CourseGroupElement.SetAttributeValue("IsSchoolYearCourseGroup", isSchoolYearCourseGroup);
+
+                SetIsDirtyDisplay(true);
+            }
         }
 
         private void lbInsertCourseGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -2455,8 +3113,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
             frmInsertCourseGroup frm = new frmInsertCourseGroup(_CourseGroupSettingList);
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                LoadCourseGroupSettingDataGridView();
-
                 if (SelectInfo.RefGPContentXml.Element("CourseGroupSetting") == null)
                 {
                     XElement element = new XElement("CourseGroupSetting");
@@ -2473,6 +3129,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     element.SetAttributeValue("Name", setting.CourseGroupName);
                     element.SetAttributeValue("Credit", setting.CourseGroupCredit);
                     element.SetAttributeValue("Color", setting.CourseGroupColor.ToArgb());
+                    element.SetAttributeValue("IsSchoolYearCourseGroup", setting.IsSchoolYearCourseGroup);
                     courseGroupElement.Add(element);
 
                     if (!_CourseGroupSettingDic.ContainsKey(setting.CourseGroupName))
@@ -2507,7 +3164,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             // 編輯SelectInfo中的群組設定
             XElement courseGroupElement = SelectInfo.RefGPContentXml.Element("CourseGroupSetting");
-            courseGroupElement.Elements("CourseGroup").Remove(); // 刪除現有Elements中的資料，重新讀取從dataGridView並寫入資料
+            courseGroupElement.Elements("CourseGroup").Remove(); // 刪除現有Elements中的資料，重新讀取dataGridView並寫入資料
 
             foreach (CourseGroupSetting setting in _CourseGroupSettingList)
             {
@@ -2515,6 +3172,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 element.SetAttributeValue("Name", setting.CourseGroupName);
                 element.SetAttributeValue("Credit", setting.CourseGroupCredit);
                 element.SetAttributeValue("Color", setting.CourseGroupColor.ToArgb());
+                element.SetAttributeValue("IsSchoolYearCourseGroup", setting.IsSchoolYearCourseGroup);
                 courseGroupElement.Add(element);
 
                 if (!_CourseGroupSettingDic.ContainsKey(setting.CourseGroupName))
@@ -2527,73 +3185,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
             SetIsDirtyDisplay(true);
         }
 
-        private void dgvCourseGroupManageGroup_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            // 結束編輯，一併修改已經群組的課程
-            DataGridViewRow row = dgvCourseGroupManageGroup.Rows[e.RowIndex];
-            CourseGroupSetting setting = (CourseGroupSetting)row.Tag;
-            switch (e.ColumnIndex)
-            {
-                case 1:
-                    // 先將舊的群組另外存起來
-                    string oldCourseGroupName = setting.CourseGroupName;
-                    string newCourseGroupName = row.Cells[e.ColumnIndex].Value.ToString();
-                    setting.CourseGroupName = newCourseGroupName;
-                    setting.CourseGroupElement.SetAttributeValue("Name", newCourseGroupName);
-                    List<DataGridViewCell> cellList = new List<DataGridViewCell>();
-
-                    if (_CourseGroupSettingDic.ContainsKey(oldCourseGroupName))
-                    {
-                        cellList = _CourseGroupSettingDic[oldCourseGroupName];
-
-                        // 移除舊的
-                        _CourseGroupSettingDic.Remove(oldCourseGroupName);
-                    }
-
-                    // 依照新的名稱建立字典並加入原本的課程
-                    if (!_CourseGroupSettingDic.ContainsKey(newCourseGroupName))
-                    {
-                        _CourseGroupSettingDic.Add(newCourseGroupName, cellList);
-                    }
-                    else
-                    {
-                        _CourseGroupSettingDic[newCourseGroupName].Clear();
-                        _CourseGroupSettingDic[newCourseGroupName].AddRange(cellList);
-                    }
-
-                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[newCourseGroupName])
-                    {
-                        XElement element = (XElement)cell.Tag;
-                        element.SetAttributeValue("分組名稱", newCourseGroupName);
-                    }
-
-                    break;
-                case 2:
-                    string credit = row.Cells[e.ColumnIndex].Value.ToString();
-                    string courseGroupName = setting.CourseGroupName;
-                    setting.CourseGroupCredit = credit;
-                    setting.CourseGroupElement.SetAttributeValue("Credit", credit);
-
-                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[courseGroupName])
-                    {
-                        XElement element = (XElement)cell.Tag;
-                        element.SetAttributeValue("分組修課學分數", credit);
-                    }
-
-                    break;
-                default:
-                    break;
-            }
-
-            SetIsDirtyDisplay(true);
-        }
-
         //// 設定群組
         private void dgvCourseGroup_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvCourseGroupManageGroup.Rows.Count > 0 && e.RowIndex > -1)
             {
-                if (e.ColumnIndex > 5 && e.ColumnIndex < 12)
+                if (e.ColumnIndex > 6 && e.ColumnIndex < 13)
                 {
                     DataGridViewCell cell = dgvCourseGroup[e.ColumnIndex, e.RowIndex];
 
@@ -2619,7 +3216,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         {
                             if (_CourseGroupSettingDic[courseGroupName].Contains(cell))
                             {
-                                _CourseGroupSettingDic[courseGroupName].Remove(cell);  
+                                _CourseGroupSettingDic[courseGroupName].Remove(cell);
                             }
                         }
                     }
@@ -2630,7 +3227,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         element.SetAttributeValue("分組修課學分數", courseGroupCredit);
                         if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
                         {
-                            _CourseGroupSettingDic[courseGroupName].Add(cell); 
+                            _CourseGroupSettingDic[courseGroupName].Add(cell);
                         }
                     }
                     SetIsDirtyDisplay(true);
