@@ -41,6 +41,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         // 總表及課程群組通用
         List<GPlanCourseInfo108> _CourseInfoList = new List<GPlanCourseInfo108>();
+        TabItem _SelectedTab = null; // TreeView切換需回到null
 
         // 總表用
         bool _MainIsLoading = false;
@@ -629,6 +630,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     tabItem2.Visible = tabItem4.Visible = true;
                     tbiCourseGroupMain.Visible = false;
                     tbiSetCourseGroup.Visible = false;
+
                     tabControl1.SelectedTabIndex = 1;
 
                 }
@@ -639,9 +641,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     tbiSetCourseGroup.Visible = true;
                     tabItem2.Visible = tabItem4.Visible = true;
                     btnEditName.Enabled = btnDelete.Enabled = false;
-                    tabControl1.SelectedTab = tabItem4;
-                    tabControl1.SelectedTab = tabItem1;
-                    //tabControl1.SelectedTabIndex = 0;
+
+                    if (e != null)
+                    {
+                        _SelectedTab = null;
+                        tabControl1.SelectedTab = tabItem4;
+                        tabControl1.SelectedTab = tabItem1;
+                        //tabControl1.SelectedTabIndex = 0; 
+                    }
+                    else // e為null，代表是儲存後重新讀取
+                    {
+                        tabControl1.SelectedTab = _SelectedTab;
+                    }
+
                 }
             }
 
@@ -1153,501 +1165,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             #endregion
 
-            #region 學分統計
-            if (!string.IsNullOrEmpty(_CourseType))
-            {
-                if (_CourseType == "技術型高中")
-                {
-                    tcSwitchCreditStatistics.SelectedTab = tbiCreditTechnical;
-                    tbiCreditNormal.Visible = false;
-
-                    // 學業部定必修
-                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbyDepart.Text).ToList();
-                    tbNormalSubjectRequiredbyDepart1_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbyDepart1_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbyDepart2_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbyDepart2_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbyDepart3_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbyDepart3_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 學業校訂必修
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolRequired.Text).ToList();
-                    tbNormalSubjectRequiredbySchoolRequired1_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolRequired1_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolRequired2_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolRequired2_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolRequired3_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolRequired3_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 學業校訂選修
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolNonRequired.Text
-                        && x.Cells[6].Value.ToString() != "團體活動時間"
-                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
-                    tbNormalSubjectRequiredbySchoolNonRequired1_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequired1_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequired2_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequired2_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequired3_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequired3_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 部定專業科目
-                    List<DataGridViewRow> professionalSubjectRequiredByDepartProfessionalList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartProfessional.Text).ToList();
-                    tbProfessionalSubjectRequiredByDepartProfessional1_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessional1_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessional2_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessional2_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessional3_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessional3_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 部定實習科目
-                    List<DataGridViewRow> professionalSubjectRequiredByDepartPracticeList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartPractice.Text).ToList();
-                    tbProfessionalSubjectRequiredByDepartPractice1_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartPractice1_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartPractice2_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartPractice2_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartPractice3_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredByDepartPractice3_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 校訂專業科目必修
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text).ToList();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 校訂專業科目選修
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text).ToList();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 校訂實習科目必修
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text).ToList();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 校訂實習科目選修
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text).ToList();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    foreach (string groupName in _CourseGroupSettingDic.Keys)
-                    {
-                        if (_CourseGroupSettingDic[groupName].Count > 0)
-                        {
-                            int credit = int.Parse(_CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit);
-                            DataGridViewCell cell = _CourseGroupSettingDic[groupName][0];
-                            XElement element = (XElement)cell.Tag;
-                            string requiredBy = element.Attribute("RequiredBy").Value == "部訂" ? "部定" : element.Attribute("RequiredBy").Value;
-                            string required = element.Attribute("Required").Value;
-                            string entry = element.Attribute("Entry").Value;
-
-                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbyDepart.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbyDepart1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbyDepart1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbyDepart2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbyDepart2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbyDepart3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbyDepart3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart3_2.Text)).ToString();
-                            }
-
-                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbySchool.Text && required == tbNormalSubjectRequiredbySchoolRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbySchoolRequired1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbySchoolRequired1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbySchoolRequired2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbySchoolRequired2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbySchoolRequired3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbySchoolRequired3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired3_2.Text)).ToString();
-                            }
-
-                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbySchool.Text && required == tbNormalSubjectRequiredbySchoolNonRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbySchoolNonRequired1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbySchoolNonRequired1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbySchoolNonRequired2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbySchoolNonRequired2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbNormalSubjectRequiredbySchoolNonRequired3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbNormalSubjectRequiredbySchoolNonRequired3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired3_2.Text)).ToString();
-                            }
-
-                            if (requiredBy == tbProfessionalSubjectRequiredByDepart.Text && entry == tbProfessionalSubjectRequiredByDepartProfessional.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredByDepartProfessional1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredByDepartProfessional1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredByDepartProfessional2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredByDepartProfessional2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredByDepartProfessional3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredByDepartProfessional3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional3_2.Text)).ToString();
-                            }
-
-                            if (requiredBy == tbProfessionalSubjectRequiredByDepart.Text && entry == tbProfessionalSubjectRequiredByDepartPractice.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredByDepartPractice1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredByDepartPractice1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredByDepartPractice2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredByDepartPractice2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredByDepartPractice3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredByDepartPractice3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice3_2.Text)).ToString();
-                            }
-
-                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolProfession.Text && required == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text)).ToString();
-                            }
-
-                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolProfession.Text && required == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text)).ToString();
-                            }
-
-                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolPractice.Text && required == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text)).ToString();
-                            }
-
-                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolPractice.Text && required == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text)).ToString();
-                            }
-                        }
-                    }
-
-
-                    tbNormalSubjectRequiredbyDepartSummary.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart1_1.Text,
-                        tbNormalSubjectRequiredbyDepart1_2.Text,
-                        tbNormalSubjectRequiredbyDepart2_1.Text,
-                        tbNormalSubjectRequiredbyDepart2_2.Text,
-                        tbNormalSubjectRequiredbyDepart3_1.Text,
-                        tbNormalSubjectRequiredbyDepart3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSubjectRequiredbySchoolRequiredSummary.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbySchoolRequired1_1.Text,
-                        tbNormalSubjectRequiredbySchoolRequired1_2.Text,
-                        tbNormalSubjectRequiredbySchoolRequired2_1.Text,
-                        tbNormalSubjectRequiredbySchoolRequired2_2.Text,
-                        tbNormalSubjectRequiredbySchoolRequired3_1.Text,
-                        tbNormalSubjectRequiredbySchoolRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbySchoolNonRequired1_1.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired1_2.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired2_1.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired2_2.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired3_1.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text = (new List<string>() {
-                        tbProfessionalSubjectRequiredByDepartProfessional1_1.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional1_2.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional2_1.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional2_2.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional3_1.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbProfessionalSubjectRequiredByDepartPracticeSummary.Text = (new List<string>() {
-                        tbProfessionalSubjectRequiredByDepartPractice1_1.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice1_2.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice2_1.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice2_2.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice3_1.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text = (new List<string>() {
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text = (new List<string>() {
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text = (new List<string>() {
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text = (new List<string>() {
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-
-                    tbCreditSummary.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepartSummary.Text,
-                        tbNormalSubjectRequiredbySchoolRequiredSummary.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text,
-                        tbProfessionalSubjectRequiredByDepartPracticeSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text
-                    }).Sum(x => int.Parse(x)).ToString();
-                }
-                else if (_CourseType == "普通型高中")
-                {
-                    tcSwitchCreditStatistics.SelectedTab = tbiCreditNormal;
-                    tbiCreditTechnical.Visible = false;
-
-                    // 學業部定必修
-                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalNormalRequiredByDepart.Text).ToList();
-                    tbNormalNormalRequiredByDepart1_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbNormalNormalRequiredByDepart1_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbNormalNormalRequiredByDepart2_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbNormalNormalRequiredByDepart2_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbNormalNormalRequiredByDepart3_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbNormalNormalRequiredByDepart3_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 學業校訂必修
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolRequired.Text).ToList();
-                    tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-                    // 學業校訂選修
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text
-                        && x.Cells[6].Value.ToString() != "團體活動時間"
-                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
-
-
-                    foreach (string groupName in _CourseGroupSettingDic.Keys)
-                    {
-                        if (_CourseGroupSettingDic[groupName].Count > 0)
-                        {
-                            int credit = int.Parse(_CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit);
-                            DataGridViewCell cell = _CourseGroupSettingDic[groupName][0];
-                            XElement element = (XElement)cell.Tag;
-                            string requiredBy = element.Attribute("RequiredBy").Value == "部訂" ? "部定" : element.Attribute("RequiredBy").Value;
-                            string required = element.Attribute("Required").Value;
-                            string entry = element.Attribute("Entry").Value;
-
-                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalRequiredByDepart.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalRequiredByDepart1_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalRequiredByDepart1_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalRequiredByDepart2_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalRequiredByDepart2_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalRequiredByDepart3_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalRequiredByDepart3_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart3_2.Text)).ToString();
-                            }
-
-                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalSubjectRequiredBySchool.Text && required == tbNormalNormalSubjectRequiredBySchoolRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text)).ToString();
-                            }
-
-                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalSubjectRequiredBySchool.Text && required == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text)
-                            {
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
-                                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text)).ToString();
-                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
-                                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text)).ToString();
-                            }
-                        }
-                    }
-
-                    tbNormalNormalRequiredByDepartSummary.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart1_1.Text,
-                        tbNormalNormalRequiredByDepart1_2.Text,
-                        tbNormalNormalRequiredByDepart2_1.Text,
-                        tbNormalNormalRequiredByDepart2_2.Text,
-                        tbNormalNormalRequiredByDepart3_1.Text,
-                        tbNormalNormalRequiredByDepart3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text = (new List<string>() {
-                        tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text = (new List<string>() {
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
-
-                    tbNormalSummary.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepartSummary.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                }
-                else
-                {
-                    tcSwitchCreditStatistics.SelectedTab = null;
-                    tbiCreditTechnical.Visible = false;
-                    tbiCreditNormal.Visible = false;
-                }
-            }
-            #endregion
-
             _MainIsFirstLoad = true;
             LoadMainComboBoxData(null, null);
             _CourseGroupIsFirstLoad = true;
             LoadCourseGroupComboBoxData(null, null);
             LoadCourseGroupSettingDataGridView();
+
+            lbCacluateCredit_LinkClicked(null, null); // 計算學分
 
             btnUpdate.Enabled = false;
             isDgDataChange = false;
@@ -2530,6 +2054,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             return value;
         }
 
+        private void tabControl1_SelectedTabChanged(object sender, TabStripTabChangedEventArgs e)
+        {
+            _SelectedTab = tabControl1.SelectedTab;
+        }
+
         // 總表用事件
         private void LoadMainComboBoxData(object sender, EventArgs args)
         {
@@ -3183,6 +2712,597 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             LoadCourseGroupSettingDataGridView();
             SetIsDirtyDisplay(true);
+        }
+
+        //// 學分統計
+        private void lbCacluateCredit_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            #region 學分統計
+            if (!string.IsNullOrEmpty(_CourseType))
+            {
+                if (_CourseType == "技術型高中")
+                {
+                    tcSwitchCreditStatistics.SelectedTab = tbiCreditTechnical;
+                    tbiCreditNormal.Visible = false;
+
+                    // 學業部定必修
+                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbyDepart.Text).ToList();
+                    tbNormalSubjectRequiredbyDepart1_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart1_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart2_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart2_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart3_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbyDepart3_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂必修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolRequired.Text).ToList();
+                    tbNormalSubjectRequiredbySchoolRequired1_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired1_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired2_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired2_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired3_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolRequired3_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂選修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolNonRequired.Text
+                        && x.Cells[6].Value.ToString() != "團體活動時間"
+                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
+                    tbNormalSubjectRequiredbySchoolNonRequired1_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired1_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired2_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired2_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired3_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequired3_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 部定專業科目
+                    List<DataGridViewRow> professionalSubjectRequiredByDepartProfessionalList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartProfessional.Text).ToList();
+                    tbProfessionalSubjectRequiredByDepartProfessional1_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional1_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional2_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional2_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional3_1.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessional3_2.Text = professionalSubjectRequiredByDepartProfessionalList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 部定實習科目
+                    List<DataGridViewRow> professionalSubjectRequiredByDepartPracticeList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartPractice.Text).ToList();
+                    tbProfessionalSubjectRequiredByDepartPractice1_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice1_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice2_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice2_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice3_1.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredByDepartPractice3_2.Text = professionalSubjectRequiredByDepartPracticeList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂專業科目必修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text = professionalSubjectRequiredBySchoolProfessionRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂專業科目選修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text = professionalSubjectRequiredBySchoolProfessionNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂實習科目必修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text = professionalSubjectRequiredBySchoolPracticeRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 校訂實習科目選修
+                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
+                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
+                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text).ToList();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text = professionalSubjectRequiredBySchoolPracticeNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    foreach (string groupName in _CourseGroupSettingDic.Keys)
+                    {
+                        if (_CourseGroupSettingDic[groupName].Count > 0)
+                        {
+                            int credit = int.Parse(_CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit);
+                            DataGridViewCell cell = _CourseGroupSettingDic[groupName][0];
+                            XElement element = (XElement)cell.Tag;
+                            string requiredBy = element.Attribute("RequiredBy").Value == "部訂" ? "部定" : element.Attribute("RequiredBy").Value;
+                            string required = element.Attribute("Required").Value;
+                            string entry = element.Attribute("Entry").Value;
+
+                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbyDepart.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbyDepart1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbyDepart1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbyDepart2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbyDepart2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbyDepart3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbyDepart3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbyDepart3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbySchool.Text && required == tbNormalSubjectRequiredbySchoolRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolRequired1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolRequired1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolRequired2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolRequired2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolRequired3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolRequired3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolRequired3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalSubject.Text && requiredBy == tbNormalSubjectRequiredbySchool.Text && required == tbNormalSubjectRequiredbySchoolNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolNonRequired1_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolNonRequired1_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolNonRequired2_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolNonRequired2_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalSubjectRequiredbySchoolNonRequired3_1.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalSubjectRequiredbySchoolNonRequired3_2.Text = (credit + int.Parse(tbNormalSubjectRequiredbySchoolNonRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredByDepart.Text && entry == tbProfessionalSubjectRequiredByDepartProfessional.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartProfessional1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartProfessional1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartProfessional2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartProfessional2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartProfessional3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartProfessional3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartProfessional3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredByDepart.Text && entry == tbProfessionalSubjectRequiredByDepartPractice.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartPractice1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartPractice1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartPractice2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartPractice2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredByDepartPractice3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredByDepartPractice3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredByDepartPractice3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolProfession.Text && required == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolProfession.Text && required == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolPractice.Text && required == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text)).ToString();
+                            }
+
+                            if (requiredBy == tbProfessionalSubjectRequiredBySchool.Text && entry == tbProfessionalSubjectRequiredBySchoolPractice.Text && required == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text = (credit + int.Parse(tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text)).ToString();
+                            }
+                        }
+                    }
+
+
+                    tbNormalSubjectRequiredbyDepartSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart1_1.Text,
+                        tbNormalSubjectRequiredbyDepart1_2.Text,
+                        tbNormalSubjectRequiredbyDepart2_1.Text,
+                        tbNormalSubjectRequiredbyDepart2_2.Text,
+                        tbNormalSubjectRequiredbyDepart3_1.Text,
+                        tbNormalSubjectRequiredbyDepart3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSubjectRequiredbySchoolRequiredSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbySchoolRequired1_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired1_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired2_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired2_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired3_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbySchoolNonRequired1_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired1_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired2_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired2_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired3_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredByDepartProfessional1_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional1_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional2_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional2_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional3_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredByDepartPracticeSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredByDepartPractice1_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice1_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice2_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice2_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice3_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text = (new List<string>() {
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+
+
+                    tbCreditSummary1_1.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart1_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired1_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired1_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional1_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbCreditSummary1_2.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart1_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired1_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired1_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional1_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbCreditSummary2_1.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart2_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired2_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired2_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional2_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbCreditSummary2_2.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart2_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired2_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired2_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional2_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbCreditSummary3_1.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart3_1.Text,
+                        tbNormalSubjectRequiredbySchoolRequired3_1.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired3_1.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional3_1.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbCreditSummary3_2.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepart3_2.Text,
+                        tbNormalSubjectRequiredbySchoolRequired3_2.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequired3_2.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessional3_2.Text,
+                        tbProfessionalSubjectRequiredByDepartPractice3_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbCreditSummary.Text = (new List<string>() {
+                        tbNormalSubjectRequiredbyDepartSummary.Text,
+                        tbNormalSubjectRequiredbySchoolRequiredSummary.Text,
+                        tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text,
+                        tbProfessionalSubjectRequiredByDepartPracticeSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text,
+                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                }
+                else if (_CourseType == "普通型高中")
+                {
+                    tcSwitchCreditStatistics.SelectedTab = tbiCreditNormal;
+                    tbiCreditTechnical.Visible = false;
+
+                    // 學業部定必修
+                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalNormalRequiredByDepart.Text).ToList();
+                    tbNormalNormalRequiredByDepart1_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart1_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart2_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart2_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart3_1.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalNormalRequiredByDepart3_2.Text = normalSubjectRequiredbyDepartmentList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂必修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolRequired.Text).ToList();
+                    tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text = normalSubjectRequiredbySchoolRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+                    // 學業校訂選修
+                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
+                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
+                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
+                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text
+                        && x.Cells[6].Value.ToString() != "團體活動時間"
+                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[7].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[7].Value == null ? "0" : x.Cells[7].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[8].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[8].Value == null ? "0" : x.Cells[8].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[9].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[9].Value == null ? "0" : x.Cells[9].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[10].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[10].Value == null ? "0" : x.Cells[10].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[11].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[11].Value == null ? "0" : x.Cells[11].Value.ToString())).Sum().ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text = normalSubjectRequiredbySchoolNonRequiredList.Where(x => x.Cells[12].Style.BackColor == Color.White).Select(x => int.Parse(x.Cells[12].Value == null ? "0" : x.Cells[12].Value.ToString())).Sum().ToString();
+
+
+                    foreach (string groupName in _CourseGroupSettingDic.Keys)
+                    {
+                        if (_CourseGroupSettingDic[groupName].Count > 0)
+                        {
+                            int credit = int.Parse(_CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit);
+                            DataGridViewCell cell = _CourseGroupSettingDic[groupName][0];
+                            XElement element = (XElement)cell.Tag;
+                            string requiredBy = element.Attribute("RequiredBy").Value == "部訂" ? "部定" : element.Attribute("RequiredBy").Value;
+                            string required = element.Attribute("Required").Value;
+                            string entry = element.Attribute("Entry").Value;
+
+                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalRequiredByDepart.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalRequiredByDepart1_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalRequiredByDepart1_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalRequiredByDepart2_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalRequiredByDepart2_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalRequiredByDepart3_1.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalRequiredByDepart3_2.Text = (credit + int.Parse(tbNormalNormalRequiredByDepart3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalSubjectRequiredBySchool.Text && required == tbNormalNormalSubjectRequiredBySchoolRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text)).ToString();
+                            }
+
+                            if (entry == tbNormalNormalSubject.Text && requiredBy == tbNormalNormalSubjectRequiredBySchool.Text && required == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text)
+                            {
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text)).ToString();
+                                if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                                    tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text = (credit + int.Parse(tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text)).ToString();
+                            }
+                        }
+                    }
+
+                    tbNormalNormalRequiredByDepartSummary.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart1_1.Text,
+                        tbNormalNormalRequiredByDepart1_2.Text,
+                        tbNormalNormalRequiredByDepart2_1.Text,
+                        tbNormalNormalRequiredByDepart2_2.Text,
+                        tbNormalNormalRequiredByDepart3_1.Text,
+                        tbNormalNormalRequiredByDepart3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text = (new List<string>() {
+                        tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+                    tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text = (new List<string>() {
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text}).Sum(x => int.Parse(x)).ToString();
+
+                    tbNormalSummary1_1.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart1_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSummary1_2.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart1_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSummary2_1.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart2_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSummary2_2.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart2_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSummary3_1.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart3_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSummary3_2.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepart3_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                    tbNormalSummary.Text = (new List<string>() {
+                        tbNormalNormalRequiredByDepartSummary.Text,
+                        tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text,
+                        tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text,
+                    }).Sum(x => int.Parse(x)).ToString();
+                }
+                else
+                {
+                    tcSwitchCreditStatistics.SelectedTab = null;
+                    tbiCreditTechnical.Visible = false;
+                    tbiCreditNormal.Visible = false;
+                }
+            }
+            #endregion
         }
 
         //// 設定群組
