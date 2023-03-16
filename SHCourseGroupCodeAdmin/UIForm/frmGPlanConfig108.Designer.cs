@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.expandablePanel1 = new DevComponents.DotNetBar.ExpandablePanel();
             this.advTree1 = new DevComponents.AdvTree.AdvTree();
@@ -86,8 +86,15 @@
             this.labelX11 = new DevComponents.DotNetBar.LabelX();
             this.tlpCourseGroupSettingAndCredit = new System.Windows.Forms.TableLayoutPanel();
             this.gpCreditStatics = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.lbCacluateCredit = new System.Windows.Forms.LinkLabel();
             this.tcSwitchCreditStatistics = new DevComponents.DotNetBar.TabControl();
             this.tabControlPanel8 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tbCreditSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbCreditSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbCreditSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbCreditSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbCreditSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbCreditSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
@@ -179,6 +186,12 @@
             this.labelX19 = new DevComponents.DotNetBar.LabelX();
             this.tbiCreditTechnical = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel9 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tbNormalSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbNormalSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbNormalSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbNormalSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbNormalSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbNormalSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbNormalNormalRequiredByDepartSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
@@ -228,6 +241,14 @@
             this.lbDeleteCourseGroup = new System.Windows.Forms.LinkLabel();
             this.lbInsertCourseGroup = new System.Windows.Forms.LinkLabel();
             this.tbiSetCourseGroup = new DevComponents.DotNetBar.TabItem(this.components);
+            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblGroupName = new DevComponents.DotNetBar.LabelX();
+            this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabItem1 = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel5 = new DevComponents.DotNetBar.TabControlPanel();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.gpMainCourseFilter = new DevComponents.DotNetBar.Controls.GroupPanel();
@@ -272,14 +293,6 @@
             this.colMainSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMainSchoolYearGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbiCourseGroupMain = new DevComponents.DotNetBar.TabItem(this.components);
-            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblGroupName = new DevComponents.DotNetBar.LabelX();
-            this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabItem1 = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel4 = new DevComponents.DotNetBar.TabControlPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblUDGroupName = new DevComponents.DotNetBar.LabelX();
@@ -293,19 +306,6 @@
             this.btnSaveCreditSetup = new DevComponents.DotNetBar.ButtonX();
             this.tabItem3 = new DevComponents.DotNetBar.TabItem(this.components);
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
-            this.lbCacluateCredit = new System.Windows.Forms.LinkLabel();
-            this.tbCreditSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tableLayoutPanel1.SuspendLayout();
             this.expandablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advTree1)).BeginInit();
@@ -329,16 +329,16 @@
             this.tlpCourseGroupSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseGroupManageGroup)).BeginInit();
             this.plCourseGroupSettingOption.SuspendLayout();
+            this.tabControlPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabControlPanel5.SuspendLayout();
             this.tlpMain.SuspendLayout();
             this.gpMainCourseFilter.SuspendLayout();
             this.gpMainSetCourseData.SuspendLayout();
             this.gpMainData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
-            this.tabControlPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
             this.tabControlPanel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUDData)).BeginInit();
@@ -517,9 +517,9 @@
             // 
             this.tabControl1.BackColor = System.Drawing.Color.Transparent;
             this.tabControl1.CanReorderTabs = false;
+            this.tabControl1.Controls.Add(this.tabControlPanel1);
             this.tabControl1.Controls.Add(this.tabControlPanel6);
             this.tabControl1.Controls.Add(this.tabControlPanel5);
-            this.tabControl1.Controls.Add(this.tabControlPanel1);
             this.tabControl1.Controls.Add(this.tabControlPanel4);
             this.tabControl1.Controls.Add(this.tabControlPanel2);
             this.tabControl1.Controls.Add(this.tabControlPanel3);
@@ -667,14 +667,14 @@
             this.dgvCourseGroup.AllowUserToAddRows = false;
             this.dgvCourseGroup.AllowUserToOrderColumns = true;
             this.dgvCourseGroup.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCourseGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCourseGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvCourseGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCourseGroupRequiredBy,
@@ -690,14 +690,14 @@
             this.colCourseGroup2_2,
             this.colCourseGroup3_1,
             this.colCourseGroup3_2});
-            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle29.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCourseGroup.DefaultCellStyle = dataGridViewCellStyle29;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCourseGroup.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvCourseGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCourseGroup.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvCourseGroup.Location = new System.Drawing.Point(0, 0);
@@ -1113,6 +1113,17 @@
             this.gpCreditStatics.TabIndex = 2;
             this.gpCreditStatics.Text = "學分統計";
             // 
+            // lbCacluateCredit
+            // 
+            this.lbCacluateCredit.AutoSize = true;
+            this.lbCacluateCredit.Location = new System.Drawing.Point(446, -2);
+            this.lbCacluateCredit.Name = "lbCacluateCredit";
+            this.lbCacluateCredit.Size = new System.Drawing.Size(60, 17);
+            this.lbCacluateCredit.TabIndex = 3;
+            this.lbCacluateCredit.TabStop = true;
+            this.lbCacluateCredit.Text = "學分計算";
+            this.lbCacluateCredit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbCacluateCredit_LinkClicked);
+            // 
             // tcSwitchCreditStatistics
             // 
             this.tcSwitchCreditStatistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1120,8 +1131,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcSwitchCreditStatistics.BackColor = System.Drawing.Color.White;
             this.tcSwitchCreditStatistics.CanReorderTabs = true;
-            this.tcSwitchCreditStatistics.Controls.Add(this.tabControlPanel8);
             this.tcSwitchCreditStatistics.Controls.Add(this.tabControlPanel9);
+            this.tcSwitchCreditStatistics.Controls.Add(this.tabControlPanel8);
             this.tcSwitchCreditStatistics.Location = new System.Drawing.Point(0, 18);
             this.tcSwitchCreditStatistics.Name = "tcSwitchCreditStatistics";
             this.tcSwitchCreditStatistics.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1246,6 +1257,120 @@
             this.tabControlPanel8.Style.GradientAngle = 90;
             this.tabControlPanel8.TabIndex = 1;
             this.tabControlPanel8.TabItem = this.tbiCreditTechnical;
+            // 
+            // tbCreditSummary3_2
+            // 
+            // 
+            // 
+            // 
+            this.tbCreditSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_2.Border.Class = "TextBoxBorder";
+            this.tbCreditSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCreditSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbCreditSummary3_2.Location = new System.Drawing.Point(403, 237);
+            this.tbCreditSummary3_2.Name = "tbCreditSummary3_2";
+            this.tbCreditSummary3_2.ReadOnly = true;
+            this.tbCreditSummary3_2.Size = new System.Drawing.Size(51, 25);
+            this.tbCreditSummary3_2.TabIndex = 212;
+            this.tbCreditSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbCreditSummary3_1
+            // 
+            // 
+            // 
+            // 
+            this.tbCreditSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary3_1.Border.Class = "TextBoxBorder";
+            this.tbCreditSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCreditSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbCreditSummary3_1.Location = new System.Drawing.Point(353, 237);
+            this.tbCreditSummary3_1.Name = "tbCreditSummary3_1";
+            this.tbCreditSummary3_1.ReadOnly = true;
+            this.tbCreditSummary3_1.Size = new System.Drawing.Size(51, 25);
+            this.tbCreditSummary3_1.TabIndex = 211;
+            this.tbCreditSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbCreditSummary2_2
+            // 
+            // 
+            // 
+            // 
+            this.tbCreditSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_2.Border.Class = "TextBoxBorder";
+            this.tbCreditSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCreditSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbCreditSummary2_2.Location = new System.Drawing.Point(302, 237);
+            this.tbCreditSummary2_2.Name = "tbCreditSummary2_2";
+            this.tbCreditSummary2_2.ReadOnly = true;
+            this.tbCreditSummary2_2.Size = new System.Drawing.Size(58, 25);
+            this.tbCreditSummary2_2.TabIndex = 210;
+            this.tbCreditSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbCreditSummary2_1
+            // 
+            // 
+            // 
+            // 
+            this.tbCreditSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary2_1.Border.Class = "TextBoxBorder";
+            this.tbCreditSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCreditSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbCreditSummary2_1.Location = new System.Drawing.Point(251, 237);
+            this.tbCreditSummary2_1.Name = "tbCreditSummary2_1";
+            this.tbCreditSummary2_1.ReadOnly = true;
+            this.tbCreditSummary2_1.Size = new System.Drawing.Size(53, 25);
+            this.tbCreditSummary2_1.TabIndex = 209;
+            this.tbCreditSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbCreditSummary1_2
+            // 
+            // 
+            // 
+            // 
+            this.tbCreditSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_2.Border.Class = "TextBoxBorder";
+            this.tbCreditSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCreditSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbCreditSummary1_2.Location = new System.Drawing.Point(200, 237);
+            this.tbCreditSummary1_2.Name = "tbCreditSummary1_2";
+            this.tbCreditSummary1_2.ReadOnly = true;
+            this.tbCreditSummary1_2.Size = new System.Drawing.Size(52, 25);
+            this.tbCreditSummary1_2.TabIndex = 208;
+            this.tbCreditSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbCreditSummary1_1
+            // 
+            // 
+            // 
+            // 
+            this.tbCreditSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbCreditSummary1_1.Border.Class = "TextBoxBorder";
+            this.tbCreditSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCreditSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbCreditSummary1_1.Location = new System.Drawing.Point(150, 237);
+            this.tbCreditSummary1_1.Name = "tbCreditSummary1_1";
+            this.tbCreditSummary1_1.ReadOnly = true;
+            this.tbCreditSummary1_1.Size = new System.Drawing.Size(51, 25);
+            this.tbCreditSummary1_1.TabIndex = 207;
+            this.tbCreditSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary
             // 
@@ -3019,6 +3144,120 @@
             this.tabControlPanel9.TabIndex = 2;
             this.tabControlPanel9.TabItem = this.tbiCreditNormal;
             // 
+            // tbNormalSummary3_2
+            // 
+            // 
+            // 
+            // 
+            this.tbNormalSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_2.Border.Class = "TextBoxBorder";
+            this.tbNormalSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbNormalSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbNormalSummary3_2.Location = new System.Drawing.Point(388, 97);
+            this.tbNormalSummary3_2.Name = "tbNormalSummary3_2";
+            this.tbNormalSummary3_2.ReadOnly = true;
+            this.tbNormalSummary3_2.Size = new System.Drawing.Size(50, 25);
+            this.tbNormalSummary3_2.TabIndex = 211;
+            this.tbNormalSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbNormalSummary3_1
+            // 
+            // 
+            // 
+            // 
+            this.tbNormalSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary3_1.Border.Class = "TextBoxBorder";
+            this.tbNormalSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbNormalSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbNormalSummary3_1.Location = new System.Drawing.Point(338, 97);
+            this.tbNormalSummary3_1.Name = "tbNormalSummary3_1";
+            this.tbNormalSummary3_1.ReadOnly = true;
+            this.tbNormalSummary3_1.Size = new System.Drawing.Size(51, 25);
+            this.tbNormalSummary3_1.TabIndex = 210;
+            this.tbNormalSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbNormalSummary2_2
+            // 
+            // 
+            // 
+            // 
+            this.tbNormalSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_2.Border.Class = "TextBoxBorder";
+            this.tbNormalSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbNormalSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbNormalSummary2_2.Location = new System.Drawing.Point(288, 97);
+            this.tbNormalSummary2_2.Name = "tbNormalSummary2_2";
+            this.tbNormalSummary2_2.ReadOnly = true;
+            this.tbNormalSummary2_2.Size = new System.Drawing.Size(51, 25);
+            this.tbNormalSummary2_2.TabIndex = 209;
+            this.tbNormalSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbNormalSummary2_1
+            // 
+            // 
+            // 
+            // 
+            this.tbNormalSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary2_1.Border.Class = "TextBoxBorder";
+            this.tbNormalSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbNormalSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbNormalSummary2_1.Location = new System.Drawing.Point(238, 97);
+            this.tbNormalSummary2_1.Name = "tbNormalSummary2_1";
+            this.tbNormalSummary2_1.ReadOnly = true;
+            this.tbNormalSummary2_1.Size = new System.Drawing.Size(51, 25);
+            this.tbNormalSummary2_1.TabIndex = 208;
+            this.tbNormalSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbNormalSummary1_2
+            // 
+            // 
+            // 
+            // 
+            this.tbNormalSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_2.Border.Class = "TextBoxBorder";
+            this.tbNormalSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbNormalSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbNormalSummary1_2.Location = new System.Drawing.Point(188, 97);
+            this.tbNormalSummary1_2.Name = "tbNormalSummary1_2";
+            this.tbNormalSummary1_2.ReadOnly = true;
+            this.tbNormalSummary1_2.Size = new System.Drawing.Size(51, 25);
+            this.tbNormalSummary1_2.TabIndex = 207;
+            this.tbNormalSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbNormalSummary1_1
+            // 
+            // 
+            // 
+            // 
+            this.tbNormalSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbNormalSummary1_1.Border.Class = "TextBoxBorder";
+            this.tbNormalSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbNormalSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbNormalSummary1_1.Location = new System.Drawing.Point(138, 97);
+            this.tbNormalSummary1_1.Name = "tbNormalSummary1_1";
+            this.tbNormalSummary1_1.ReadOnly = true;
+            this.tbNormalSummary1_1.Size = new System.Drawing.Size(51, 25);
+            this.tbNormalSummary1_1.TabIndex = 206;
+            this.tbNormalSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary
             // 
             // 
@@ -3766,28 +4005,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCourseGroupManageGroup.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle30.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle30.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle30.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle30.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle30.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCourseGroupManageGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCourseGroupManageGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvCourseGroupManageGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseGroupManageGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCourseGroupColor,
             this.colCourseGroupName,
             this.colCourseGroupCredit,
             this.colSetSchoolYearCouse});
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCourseGroupManageGroup.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCourseGroupManageGroup.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvCourseGroupManageGroup.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvCourseGroupManageGroup.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dgvCourseGroupManageGroup.Location = new System.Drawing.Point(3, 23);
@@ -3810,22 +4049,22 @@
             // colCourseGroupName
             // 
             this.colCourseGroupName.HeaderText = "群組名稱";
-            this.colCourseGroupName.MinimumWidth = 40;
+            this.colCourseGroupName.MinimumWidth = 20;
             this.colCourseGroupName.Name = "colCourseGroupName";
             this.colCourseGroupName.Width = 200;
             // 
             // colCourseGroupCredit
             // 
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colCourseGroupCredit.DefaultCellStyle = dataGridViewCellStyle31;
-            this.colCourseGroupCredit.HeaderText = "群組修課學分數";
-            this.colCourseGroupCredit.MinimumWidth = 50;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colCourseGroupCredit.DefaultCellStyle = dataGridViewCellStyle5;
+            this.colCourseGroupCredit.HeaderText = "單一學期修課學分數";
+            this.colCourseGroupCredit.MinimumWidth = 20;
             this.colCourseGroupCredit.Name = "colCourseGroupCredit";
-            this.colCourseGroupCredit.Width = 125;
+            this.colCourseGroupCredit.Width = 97;
             // 
             // colSetSchoolYearCouse
             // 
-            this.colSetSchoolYearCouse.HeaderText = "設定學年課程";
+            this.colSetSchoolYearCouse.HeaderText = "學年課程";
             this.colSetSchoolYearCouse.Name = "colSetSchoolYearCouse";
             this.colSetSchoolYearCouse.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.colSetSchoolYearCouse.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -3885,6 +4124,112 @@
             this.tbiSetCourseGroup.Name = "tbiSetCourseGroup";
             this.tbiSetCourseGroup.Text = "設定課程群組";
             // 
+            // tabControlPanel1
+            // 
+            this.tabControlPanel1.Controls.Add(this.tableLayoutPanel3);
+            this.tabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel1.Name = "tabControlPanel1";
+            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel1.Size = new System.Drawing.Size(1341, 705);
+            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel1.Style.GradientAngle = 90;
+            this.tabControlPanel1.TabIndex = 1;
+            this.tabControlPanel1.TabItem = this.tabItem1;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.lblGroupName, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.dgData, 0, 1);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 1);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1339, 703);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // lblGroupName
+            // 
+            this.lblGroupName.BackColor = System.Drawing.Color.White;
+            // 
+            // 
+            // 
+            this.lblGroupName.BackgroundStyle.Class = "";
+            this.lblGroupName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblGroupName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblGroupName.Location = new System.Drawing.Point(3, 3);
+            this.lblGroupName.Name = "lblGroupName";
+            this.lblGroupName.Size = new System.Drawing.Size(791, 24);
+            this.lblGroupName.TabIndex = 0;
+            this.lblGroupName.Text = "群組名稱";
+            // 
+            // dgData
+            // 
+            this.dgData.AllowUserToAddRows = false;
+            this.dgData.AllowUserToDeleteRows = false;
+            this.dgData.AllowUserToResizeRows = false;
+            this.dgData.BackgroundColor = System.Drawing.Color.White;
+            this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgData.ContextMenuStrip = this.contextMenuStrip1;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgData.Location = new System.Drawing.Point(3, 33);
+            this.dgData.MultiSelect = false;
+            this.dgData.Name = "dgData";
+            this.dgData.RowTemplate.Height = 24;
+            this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgData.Size = new System.Drawing.Size(1333, 667);
+            this.dgData.TabIndex = 1;
+            this.dgData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgData_CellMouseClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(127, 48);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
+            this.toolStripMenuItem1.Text = "設定對開";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(126, 22);
+            this.toolStripMenuItem2.Text = "取消對開";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // tabItem1
+            // 
+            this.tabItem1.AttachedControl = this.tabControlPanel1;
+            this.tabItem1.Name = "tabItem1";
+            this.tabItem1.Text = "課程規劃表內容";
+            // 
             // tabControlPanel5
             // 
             this.tabControlPanel5.Controls.Add(this.tlpMain);
@@ -3892,7 +4237,7 @@
             this.tabControlPanel5.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel5.Name = "tabControlPanel5";
             this.tabControlPanel5.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel5.Size = new System.Drawing.Size(1372, 709);
+            this.tabControlPanel5.Size = new System.Drawing.Size(1341, 705);
             this.tabControlPanel5.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
             this.tabControlPanel5.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
             this.tabControlPanel5.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -3921,7 +4266,7 @@
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tlpMain.Size = new System.Drawing.Size(1370, 707);
+            this.tlpMain.Size = new System.Drawing.Size(1339, 703);
             this.tlpMain.TabIndex = 1;
             // 
             // gpMainCourseFilter
@@ -3944,7 +4289,7 @@
             this.gpMainCourseFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gpMainCourseFilter.Location = new System.Drawing.Point(3, 38);
             this.gpMainCourseFilter.Name = "gpMainCourseFilter";
-            this.gpMainCourseFilter.Size = new System.Drawing.Size(1364, 114);
+            this.gpMainCourseFilter.Size = new System.Drawing.Size(1333, 114);
             // 
             // 
             // 
@@ -4165,9 +4510,9 @@
             this.gpMainSetCourseData.Controls.Add(this.tbMainStartLevel);
             this.gpMainSetCourseData.Controls.Add(this.labelX5);
             this.gpMainSetCourseData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpMainSetCourseData.Location = new System.Drawing.Point(3, 635);
+            this.gpMainSetCourseData.Location = new System.Drawing.Point(3, 631);
             this.gpMainSetCourseData.Name = "gpMainSetCourseData";
-            this.gpMainSetCourseData.Size = new System.Drawing.Size(1364, 69);
+            this.gpMainSetCourseData.Size = new System.Drawing.Size(1333, 69);
             // 
             // 
             // 
@@ -4329,7 +4674,7 @@
             this.gpMainData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gpMainData.Location = new System.Drawing.Point(3, 158);
             this.gpMainData.Name = "gpMainData";
-            this.gpMainData.Size = new System.Drawing.Size(1364, 471);
+            this.gpMainData.Size = new System.Drawing.Size(1333, 467);
             // 
             // 
             // 
@@ -4369,14 +4714,14 @@
             this.dgvMain.AllowUserToDeleteRows = false;
             this.dgvMain.AllowUserToOrderColumns = true;
             this.dgvMain.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle33.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMain.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMain.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colMainRequiredBy,
@@ -4395,14 +4740,14 @@
             this.colMainStartLevel,
             this.colMainSubjectName,
             this.colMainSchoolYearGroupName});
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle34.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMain.DefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMain.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMain.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvMain.Location = new System.Drawing.Point(0, 0);
@@ -4411,7 +4756,7 @@
             this.dgvMain.ReadOnly = true;
             this.dgvMain.RowTemplate.Height = 24;
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(1358, 444);
+            this.dgvMain.Size = new System.Drawing.Size(1327, 440);
             this.dgvMain.TabIndex = 6;
             this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
             // 
@@ -4555,112 +4900,6 @@
             this.tbiCourseGroupMain.Name = "tbiCourseGroupMain";
             this.tbiCourseGroupMain.Text = "課程群組總表";
             // 
-            // tabControlPanel1
-            // 
-            this.tabControlPanel1.Controls.Add(this.tableLayoutPanel3);
-            this.tabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel1.Name = "tabControlPanel1";
-            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel1.Size = new System.Drawing.Size(1372, 709);
-            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel1.Style.GradientAngle = 90;
-            this.tabControlPanel1.TabIndex = 1;
-            this.tabControlPanel1.TabItem = this.tabItem1;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.lblGroupName, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.dgData, 0, 1);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 1);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1370, 707);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // lblGroupName
-            // 
-            this.lblGroupName.BackColor = System.Drawing.Color.White;
-            // 
-            // 
-            // 
-            this.lblGroupName.BackgroundStyle.Class = "";
-            this.lblGroupName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblGroupName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblGroupName.Location = new System.Drawing.Point(3, 3);
-            this.lblGroupName.Name = "lblGroupName";
-            this.lblGroupName.Size = new System.Drawing.Size(791, 24);
-            this.lblGroupName.TabIndex = 0;
-            this.lblGroupName.Text = "群組名稱";
-            // 
-            // dgData
-            // 
-            this.dgData.AllowUserToAddRows = false;
-            this.dgData.AllowUserToDeleteRows = false;
-            this.dgData.AllowUserToResizeRows = false;
-            this.dgData.BackgroundColor = System.Drawing.Color.White;
-            this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgData.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle35.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle35;
-            this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgData.Location = new System.Drawing.Point(3, 33);
-            this.dgData.MultiSelect = false;
-            this.dgData.Name = "dgData";
-            this.dgData.RowTemplate.Height = 24;
-            this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgData.Size = new System.Drawing.Size(1364, 671);
-            this.dgData.TabIndex = 1;
-            this.dgData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgData_CellMouseClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(127, 48);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
-            this.toolStripMenuItem1.Text = "設定對開";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(126, 22);
-            this.toolStripMenuItem2.Text = "取消對開";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // tabItem1
-            // 
-            this.tabItem1.AttachedControl = this.tabControlPanel1;
-            this.tabItem1.Name = "tabItem1";
-            this.tabItem1.Text = "課程規劃表內容";
-            // 
             // tabControlPanel4
             // 
             this.tabControlPanel4.Controls.Add(this.tableLayoutPanel4);
@@ -4717,14 +4956,14 @@
             this.dgUDData.BackgroundColor = System.Drawing.Color.White;
             this.dgUDData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgUDData.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgUDData.DefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgUDData.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgUDData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgUDData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgUDData.Location = new System.Drawing.Point(3, 33);
@@ -4813,14 +5052,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgCreditsSetUp.BackgroundColor = System.Drawing.Color.White;
             this.dgCreditsSetUp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgCreditsSetUp.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgCreditsSetUp.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgCreditsSetUp.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgCreditsSetUp.Location = new System.Drawing.Point(18, 52);
             this.dgCreditsSetUp.Name = "dgCreditsSetUp";
@@ -4862,245 +5101,6 @@
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // lbCacluateCredit
-            // 
-            this.lbCacluateCredit.AutoSize = true;
-            this.lbCacluateCredit.Location = new System.Drawing.Point(446, -2);
-            this.lbCacluateCredit.Name = "lbCacluateCredit";
-            this.lbCacluateCredit.Size = new System.Drawing.Size(60, 17);
-            this.lbCacluateCredit.TabIndex = 3;
-            this.lbCacluateCredit.TabStop = true;
-            this.lbCacluateCredit.Text = "學分計算";
-            this.lbCacluateCredit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbCacluateCredit_LinkClicked);
-            // 
-            // tbCreditSummary3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary3_2.Location = new System.Drawing.Point(403, 237);
-            this.tbCreditSummary3_2.Name = "tbCreditSummary3_2";
-            this.tbCreditSummary3_2.ReadOnly = true;
-            this.tbCreditSummary3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary3_2.TabIndex = 212;
-            this.tbCreditSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary3_1.Location = new System.Drawing.Point(353, 237);
-            this.tbCreditSummary3_1.Name = "tbCreditSummary3_1";
-            this.tbCreditSummary3_1.ReadOnly = true;
-            this.tbCreditSummary3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary3_1.TabIndex = 211;
-            this.tbCreditSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary2_2.Location = new System.Drawing.Point(302, 237);
-            this.tbCreditSummary2_2.Name = "tbCreditSummary2_2";
-            this.tbCreditSummary2_2.ReadOnly = true;
-            this.tbCreditSummary2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbCreditSummary2_2.TabIndex = 210;
-            this.tbCreditSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary2_1.Location = new System.Drawing.Point(251, 237);
-            this.tbCreditSummary2_1.Name = "tbCreditSummary2_1";
-            this.tbCreditSummary2_1.ReadOnly = true;
-            this.tbCreditSummary2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbCreditSummary2_1.TabIndex = 209;
-            this.tbCreditSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary1_2.Location = new System.Drawing.Point(200, 237);
-            this.tbCreditSummary1_2.Name = "tbCreditSummary1_2";
-            this.tbCreditSummary1_2.ReadOnly = true;
-            this.tbCreditSummary1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbCreditSummary1_2.TabIndex = 208;
-            this.tbCreditSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary1_1.Location = new System.Drawing.Point(150, 237);
-            this.tbCreditSummary1_1.Name = "tbCreditSummary1_1";
-            this.tbCreditSummary1_1.ReadOnly = true;
-            this.tbCreditSummary1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary1_1.TabIndex = 207;
-            this.tbCreditSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary3_2.Location = new System.Drawing.Point(388, 97);
-            this.tbNormalSummary3_2.Name = "tbNormalSummary3_2";
-            this.tbNormalSummary3_2.ReadOnly = true;
-            this.tbNormalSummary3_2.Size = new System.Drawing.Size(50, 25);
-            this.tbNormalSummary3_2.TabIndex = 211;
-            this.tbNormalSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary3_1.Location = new System.Drawing.Point(338, 97);
-            this.tbNormalSummary3_1.Name = "tbNormalSummary3_1";
-            this.tbNormalSummary3_1.ReadOnly = true;
-            this.tbNormalSummary3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary3_1.TabIndex = 210;
-            this.tbNormalSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary2_2.Location = new System.Drawing.Point(288, 97);
-            this.tbNormalSummary2_2.Name = "tbNormalSummary2_2";
-            this.tbNormalSummary2_2.ReadOnly = true;
-            this.tbNormalSummary2_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary2_2.TabIndex = 209;
-            this.tbNormalSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary2_1.Location = new System.Drawing.Point(238, 97);
-            this.tbNormalSummary2_1.Name = "tbNormalSummary2_1";
-            this.tbNormalSummary2_1.ReadOnly = true;
-            this.tbNormalSummary2_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary2_1.TabIndex = 208;
-            this.tbNormalSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary1_2.Location = new System.Drawing.Point(188, 97);
-            this.tbNormalSummary1_2.Name = "tbNormalSummary1_2";
-            this.tbNormalSummary1_2.ReadOnly = true;
-            this.tbNormalSummary1_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary1_2.TabIndex = 207;
-            this.tbNormalSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary1_1.Location = new System.Drawing.Point(138, 97);
-            this.tbNormalSummary1_1.Name = "tbNormalSummary1_1";
-            this.tbNormalSummary1_1.ReadOnly = true;
-            this.tbNormalSummary1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary1_1.TabIndex = 206;
-            this.tbNormalSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // frmGPlanConfig108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -5140,6 +5140,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseGroupManageGroup)).EndInit();
             this.plCourseGroupSettingOption.ResumeLayout(false);
             this.plCourseGroupSettingOption.PerformLayout();
+            this.tabControlPanel1.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabControlPanel5.ResumeLayout(false);
             this.tabControlPanel5.PerformLayout();
             this.tlpMain.ResumeLayout(false);
@@ -5149,10 +5153,6 @@
             this.gpMainSetCourseData.PerformLayout();
             this.gpMainData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
-            this.tabControlPanel1.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.tabControlPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgUDData)).EndInit();
@@ -5387,10 +5387,6 @@
         private DevComponents.DotNetBar.TabItem tbiCreditNormal;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX1;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX2;
-        private System.Windows.Forms.DataGridViewImageColumn colCourseGroupColor;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupCredit;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colSetSchoolYearCouse;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupRequiredBy;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupRequired;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupSpecialCategory;
@@ -5433,5 +5429,9 @@
         private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary2_1;
         private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary1_2;
         private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary1_1;
+        private System.Windows.Forms.DataGridViewImageColumn colCourseGroupColor;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupCredit;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colSetSchoolYearCouse;
     }
 }

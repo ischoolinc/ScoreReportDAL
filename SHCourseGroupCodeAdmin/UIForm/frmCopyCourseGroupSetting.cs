@@ -39,7 +39,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     // 有課程群組設定的課程規畫表才加進下拉式選單中
                     if (element.Element("CourseGroupSetting") != null)
                     {
-                        _HasSettingGraduationPlanList.Add(graduationPlan);
+                        if (element.Element("CourseGroupSetting").Elements("CourseGroup").Count() > 0)
+                        {
+                            _HasSettingGraduationPlanList.Add(graduationPlan); 
+                        }
                     } 
                 }
             }
