@@ -186,49 +186,54 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 取得領域對照
             Dictionary<string, string> domainMappingDict = Utility.GetDomainNameMapping();
 
+            // 取得特殊課程類別對照
+            Dictionary<string, string> courseTypeMappingDic = Utility.GetCourseTypeMapping();
+
+            // 取得科目屬性對照
+            Dictionary<string, string> subjectAttributeMappingDic = Utility.GetSubjectAttributeMapping();
+
 
             // 讀取群科班資料
             foreach (MOECourseCodeInfo data in MOECourseCodeInfoList)
             {
-                // 因為將來要將級別概念移除，開始級別都是1
 
                 // 判斷開始級別，解析 credit_period
                 char[] cp = data.credit_period.ToArray();
 
                 int idx = 1;
-                string strGearYear = "", strSemester = "";
+                string strGradeYear = "", strSemester = "";
                 foreach (char c in cp)
                 {
                     string credit = c + "";
 
                     if (idx == 1)
                     {
-                        strGearYear = "1";
+                        strGradeYear = "1";
                         strSemester = "1";
                     }
                     else if (idx == 2)
                     {
-                        strGearYear = "1";
+                        strGradeYear = "1";
                         strSemester = "2";
                     }
                     else if (idx == 3)
                     {
-                        strGearYear = "2";
+                        strGradeYear = "2";
                         strSemester = "1";
                     }
                     else if (idx == 4)
                     {
-                        strGearYear = "2";
+                        strGradeYear = "2";
                         strSemester = "2";
                     }
                     else if (idx == 5)
                     {
-                        strGearYear = "3";
+                        strGradeYear = "3";
                         strSemester = "1";
                     }
                     else if (idx == 6)
                     {
-                        strGearYear = "3";
+                        strGradeYear = "3";
                         strSemester = "2";
                     }
                     else
@@ -267,7 +272,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     }
 
                     subjElm.SetAttributeValue("Entry", "學業");
-                    subjElm.SetAttributeValue("GradeYear", strGearYear);
+                    subjElm.SetAttributeValue("GradeYear", strGradeYear);
                     subjElm.SetAttributeValue("Level", idx);
                     subjElm.SetAttributeValue("FullName", SubjFullName(data.subject_name, idx));
 
@@ -281,6 +286,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subjElm.SetAttributeValue("RequiredBy", data.require_by);
 
                     subjElm.SetAttributeValue("Semester", strSemester);
+                    subjElm.SetAttributeValue("報部科目名稱", data.subject_name);
                     subjElm.SetAttributeValue("SubjectName", data.subject_name);
                     subjElm.SetAttributeValue("課程代碼", data.course_code);
 
@@ -298,20 +304,20 @@ namespace SHCourseGroupCodeAdmin.DAO
                     {
                         char[] ot = data.open_type.ToArray();
                         int opIdx = 0;
-                        if (strGearYear == "1" && strSemester == "1")
+                        if (strGradeYear == "1" && strSemester == "1")
                             opIdx = 0;
 
-                        if (strGearYear == "1" && strSemester == "2")
+                        if (strGradeYear == "1" && strSemester == "2")
                             opIdx = 1;
 
-                        if (strGearYear == "2" && strSemester == "1")
+                        if (strGradeYear == "2" && strSemester == "1")
                             opIdx = 2;
-                        if (strGearYear == "2" && strSemester == "2")
+                        if (strGradeYear == "2" && strSemester == "2")
                             opIdx = 3;
 
-                        if (strGearYear == "3" && strSemester == "1")
+                        if (strGradeYear == "3" && strSemester == "1")
                             opIdx = 4;
-                        if (strGearYear == "3" && strSemester == "2")
+                        if (strGradeYear == "3" && strSemester == "2")
                             opIdx = 5;
 
                         if (ot[opIdx] == '0' || ot[opIdx] == 'A')
@@ -343,16 +349,19 @@ namespace SHCourseGroupCodeAdmin.DAO
                             // 部定必修
                             subjElm.SetAttributeValue("RequiredBy", "部訂");
                             subjElm.SetAttributeValue("Required", "必修");
+                            subjElm.SetAttributeValue("特殊類別", "");
                         }
                         else if (code1 == "2")
                         {
                             subjElm.SetAttributeValue("RequiredBy", "校訂");
                             subjElm.SetAttributeValue("Required", "必修");
+                            subjElm.SetAttributeValue("特殊類別", "");
                         }
                         else
                         {
                             subjElm.SetAttributeValue("RequiredBy", "校訂");
                             subjElm.SetAttributeValue("Required", "選修");
+                            subjElm.SetAttributeValue("特殊類別", courseTypeMappingDic[code1]); // Mapping CourseType
                         }
 
                         // 分項
@@ -360,14 +369,17 @@ namespace SHCourseGroupCodeAdmin.DAO
                         if (code2 == "2")
                         {
                             subjElm.SetAttributeValue("Entry", "專業科目");
+                            subjElm.SetAttributeValue("科目屬性", subjectAttributeMappingDic[code2]);// Mapping SubjectAttribute
                         }
                         else if (code2 == "3")
                         {
                             subjElm.SetAttributeValue("Entry", "實習科目");
+                            subjElm.SetAttributeValue("科目屬性", subjectAttributeMappingDic[code2]);// Mapping SubjectAttribute
                         }
                         else
                         {
                             subjElm.SetAttributeValue("Entry", "學業");
+                            subjElm.SetAttributeValue("科目屬性", subjectAttributeMappingDic[code2]);// Mapping SubjectAttribute
                         }
 
                         string code3 = data.course_attr.Substring(2, 2);
@@ -883,6 +895,26 @@ namespace SHCourseGroupCodeAdmin.DAO
                     {
                         if (GPlanDict.ContainsKey(mCo))
                         {
+                            // 複製原有課程規畫表群組設定
+                            int index = 0;
+                            foreach (XElement graduationPlanEle in GPlanDict[mCo])
+                            {
+                                if (graduationPlanEle.Attribute("分組名稱") != null)
+                                {
+                                    string courseGroupName = graduationPlanEle.Attribute("分組名稱").Value.ToString();
+                                    string courseGroupCredit = graduationPlanEle.Attribute("分組修課學分數").Value.ToString();
+
+                                    if (!string.IsNullOrEmpty(courseGroupName))
+                                    {
+                                        XElement moeEle = MOEDict[mCo][index];
+                                        moeEle.SetAttributeValue("分組名稱", courseGroupName);
+                                        moeEle.SetAttributeValue("分組修課學分數", courseGroupCredit);
+                                    }
+                                }
+
+                                index++;
+                            }
+
                             XElement elm = GPlanDict[mCo][0];
                             XElement elmMoe = MOEDict[mCo][0];
 
@@ -945,15 +977,18 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                     }
 
-                                    if (elmM.Attribute("SubjectName").Value != elmG.Attribute("SubjectName").Value)
+                                    if (elmM.Attribute("報部科目名稱") != null && elmG.Attribute("報部科目名稱") != null)
                                     {
-                                        if (!subj.DiffStatusList.Contains("科目不同"))
-                                            subj.DiffStatusList.Add("科目不同");
+                                        if (elmM.Attribute("報部科目名稱").Value != elmG.Attribute("報部科目名稱").Value)
+                                        {
+                                            if (!subj.DiffStatusList.Contains("報部科目名稱不同"))
+                                                subj.DiffStatusList.Add("報部科目名稱不同");
 
-                                        string msg = "科目名稱：課程代碼表「" + elmM.Attribute("SubjectName").Value + "」、課程規劃表「" + elmG.Attribute("SubjectName").Value + "」";
-                                        if (!subj.DiffMessageList.Contains(msg))
-                                            subj.DiffMessageList.Add(msg);
+                                            string msg = "報部科目名稱：課程代碼表「" + elmM.Attribute("報部科目名稱").Value + "」、課程規劃表「" + elmG.Attribute("報部科目名稱").Value + "」";
+                                            if (!subj.DiffMessageList.Contains(msg))
+                                                subj.DiffMessageList.Add(msg);
 
+                                        } 
                                     }
 
                                     if (elmM.Attribute("RequiredBy").Value != elmG.Attribute("RequiredBy").Value)

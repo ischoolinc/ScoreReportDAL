@@ -40,9 +40,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            int currentSchoolYear = int.Parse(K12.Data.School.DefaultSchoolYear);
+
             dgData.Rows.Clear();
             FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成。");
-            _GPlanInfo108List = (from data in _GPlanInfo108List orderby data.OrderByInt, data.EntrySchoolYear descending, data.GDCName select data).ToList();
+            _GPlanInfo108List = (from data in _GPlanInfo108List where int.Parse(data.EntrySchoolYear) > (currentSchoolYear - 3) orderby data.OrderByInt, data.EntrySchoolYear descending, data.GDCName select data).ToList();
 
             foreach (GPlanInfo108 data in _GPlanInfo108List)
             {
@@ -298,13 +300,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 GPlanXml.SetAttributeValue("SchoolYear", data.GDCCode.Substring(0, 3));
                             }
 
-                            // 檢查是否有自訂科目放在一起
+                            // 檢查是否有自訂科目及群組設定，找到後加找到的放進去
                             if (data.RefGPContentXml != null)
+                            {
                                 if (data.RefGPContentXml.Element("使用者自訂科目") != null)
                                 {
                                     XElement elmUD = new XElement(data.RefGPContentXml.Element("使用者自訂科目"));
                                     GPlanXml.Add(elmUD);
                                 }
+
+                                if (data.RefGPContentXml.Element("CourseGroupSetting") != null)
+                                {
+                                    XElement courseGroupSetting = new XElement(data.RefGPContentXml.Element("CourseGroupSetting"));
+                                    GPlanXml.Add(courseGroupSetting);
+                                }
+                            }
 
 
 

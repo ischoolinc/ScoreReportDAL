@@ -2393,8 +2393,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (_MainSelectedRow.Tag != null)
             {
                 GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
-
-                if (_CourseInfoList.Where(x => x.SubjectName == courseInfo.SubjectName).Count() > 1)
+                if (_CourseInfoList.Where(x => x.SubjectName == tbMainSubjectName.Text).Count() > 1)
                 {
                     MessageBox.Show("科目名稱不可重複");
                     return;
@@ -3270,7 +3269,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }).Sum(x => int.Parse(x)).ToString();
                     #endregion
                 }
-                else if (_CourseType == "普通型高中")
+                else if (_CourseType == "普通型高中" || _CourseType == "綜合型高中")
                 {
                     tcSwitchCreditStatistics.SelectedTab = tbiCreditNormal;
                     tbiCreditTechnical.Visible = false;

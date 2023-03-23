@@ -10,12 +10,19 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
 using System.Xml.Linq;
+using DevComponents.DotNetBar;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
+
     public partial class frmCreateGPlanItemSetup108 : BaseForm
     {
         GPlanInfo108 _GPlanInfo;
+        List<string> _ProcessList = new List<string>() { 
+            "新增"
+            , "更新"
+            , "略過"
+            , "刪除" };
         public frmCreateGPlanItemSetup108()
         {
             InitializeComponent();
@@ -34,6 +41,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void frmCreateGPlanItemSetup108_Load(object sender, EventArgs e)
         {
             dgData.Enabled = btnSave.Enabled = false;
+
+            foreach (string item in _ProcessList)
+            {
+                menuUpdateStatus.Items.Add(item);
+            }
+
             // 載入資料欄位
             LoadDataGridViewColumns();
 
@@ -165,10 +178,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dtPitems.Columns.Add("VALUE");
 
                 List<string> items = new List<string>();
-                items.Add("新增");
-                items.Add("更新");
-                items.Add("略過");
-                items.Add("刪除");
+                foreach (string item in _ProcessList)
+                {
+                    items.Add(item);
+                }
 
                 foreach (string str in items)
                 {
@@ -379,6 +392,22 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
 
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void btnBatchModify_Click(object sender, EventArgs e)
+        {
+            ButtonX btn = (ButtonX)sender;
+            menuUpdateStatus.Show(this, btn.Location.X, btn.Location.Y + btn.Height);
+        }
+
+        private void menuUpdateStatus_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string item = e.ClickedItem.Text;
+
+            foreach (DataGridViewRow row in dgData.SelectedRows)
+            {
+                row.Cells["處理方式"].Value = item;
+            }
         }
     }
 }

@@ -369,6 +369,64 @@ T	12學分
             return value;
         }
 
+
+        /// <summary>
+        /// 取得課程類別對照，課程代碼第17碼取1位
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetCourseTypeMapping()
+        {
+            Dictionary<string, string> courseTypeMappingDic = new Dictionary<string, string>()
+            {
+                { "1",  "部定必修" }
+                ,{ "2", "校訂必修" }
+                ,{ "3", "加深加廣選修" }
+                ,{ "4", "補強性選修" }
+                ,{ "5", "多元選修" }
+                ,{ "6", "其他" }
+                ,{ "7", "校訂選修" }
+                ,{ "8", "團體活動時間" }
+                ,{ "9", "彈性學習時間" }
+                ,{ "A", "大學預修課程" }
+                ,{ "B", "基礎訓練" }
+                ,{ "C", "職前訓練" }
+                ,{ "D", "寒暑假課程" }
+                ,{ "E", "返校課程" }
+                ,{ "F", "職業技能訓練" }
+            };
+
+            return courseTypeMappingDic;
+        }
+
+        /// <summary>
+        /// 取得課程類別對照，課程代碼第19碼取1位
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetSubjectAttributeMapping()
+        {
+            Dictionary<string, string> subjectAttributeMapping = new Dictionary<string, string>()
+            {
+                { "0", "不分屬性" }
+                ,{ "1", "一般科目" }
+                ,{ "2", "專業科目" }
+                ,{ "3", "實習科目" }
+                ,{ "4", "專精科目" }
+                ,{ "5", "專精科目(核心科目)" }
+                ,{ "6", "特殊需求領域" }
+                ,{ "A", "自主學習" }
+                ,{ "B", "選手培訓" }
+                ,{ "C", "充實(增廣)、補強性教學 [全學期、不授予學分]" }
+                ,{ "D", "充實(增廣)、補強性教學 [全學期、授予學分]" }
+                ,{ "E", "學校特色活動" }
+                ,{ "F", "專精(專業)科目" }
+                ,{ "G", "專精(實習)科目" }
+                ,{ "H", "專精(專業)科目(核心)" }
+                ,{ "I", "專精(實習)科目(核心)" }
+            };
+
+            return subjectAttributeMapping;
+        }
+
         public static Dictionary<string, string> GetSchoolNMapping()
         {
             // 進校轉日校學校代碼
