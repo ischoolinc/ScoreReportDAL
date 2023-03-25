@@ -27,12 +27,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             if (string.IsNullOrEmpty(tbCourseGroupName.Text))
             {
-                MessageBox.Show("群組名稱不可為空");
+                MessageBox.Show("課程群組名稱不可為空白");
                 return;
             }
             if (string.IsNullOrEmpty(tbCredit.Text))
             {
-                MessageBox.Show("群組修課學分數不可為空");
+                MessageBox.Show("群組修課學分數不可為空白");
                 return;
             }
 

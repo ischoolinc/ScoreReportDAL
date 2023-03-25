@@ -41,9 +41,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     {
                         if (element.Element("CourseGroupSetting").Elements("CourseGroup").Count() > 0)
                         {
-                            _HasSettingGraduationPlanList.Add(graduationPlan); 
+                            _HasSettingGraduationPlanList.Add(graduationPlan);
                         }
-                    } 
+                    }
                 }
             }
 
@@ -70,6 +70,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (selectedGradudationPlanElement.Element("CourseGroupSetting") == null)
             {
                 selectedGradudationPlanElement.Add(new XElement("CourseGroupSetting"));
+            }
+
+            bool hasDuplicate = false;
+            string errMessage = "";
+            List<XElement> selectedCourseGroupList = selectedGradudationPlanElement.Element("CourseGroupSetting").Elements("CourseGroup").ToList();
+            List<XElement> copiedCourseGroupList = copiedGraduationPlanElement.Element("CourseGroupSetting").Elements("CourseGroup").ToList();
+
+            foreach (XElement courseGroupSettingElement in copiedCourseGroupList)
+            {
+                if (selectedCourseGroupList.Where(x => x.Attribute("Name").Value == courseGroupSettingElement.Attribute("Name").Value).Count() > 0)
+                {
+                    errMessage = "欲複製的群組設定中包含重複的群組名稱";
+                    hasDuplicate = true;
+                    break;
+                }
+
+                if (selectedCourseGroupList.Where(x => x.Attribute("Color").Value == courseGroupSettingElement.Attribute("Color").Value).Count() > 0)
+                {
+                    errMessage = "欲複製的群組設定中包含重複的顯示顏色";
+                    hasDuplicate = true;
+                    break;
+                }
+            }
+
+            if (hasDuplicate)
+            {
+                MessageBox.Show(errMessage);
+                return;
             }
 
             foreach (XElement courseGroupSettingElement in copiedGraduationPlanElement.Element("CourseGroupSetting").Elements("CourseGroup"))
