@@ -2937,7 +2937,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             #region 學分統計
             if (!string.IsNullOrEmpty(_CourseType))
             {
-                if (_CourseType == "技術型高中")
+                if (_CourseType == "技術型高中" || _CourseType == "進修部" || _CourseType == "實用技能學程(日)" || _CourseType == "實用技能學程(夜)")
                 {
                     tcSwitchCreditStatistics.SelectedTab = tbiCreditTechnical;
                     tbiCreditNormal.Visible = false;
