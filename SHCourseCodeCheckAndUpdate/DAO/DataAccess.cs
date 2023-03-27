@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using FISCA.Data;
+using System.Web.Script.Serialization;
+using System.Xml.Linq;
+using FISCA.LogAgent;
 
 namespace SHCourseCodeCheckAndUpdate.DAO
 {
@@ -181,5 +184,80 @@ namespace SHCourseCodeCheckAndUpdate.DAO
 
             return value;
         }
+
+        public static List<int> UpdateSCAttendCourseCode(List<StudSCAttendInfo> dataList)
+        {
+            List<int> value = new List<int>();
+
+            List<UpdateSCAttendInfo> UpdateSCAttendInfoList = new List<UpdateSCAttendInfo>();
+
+            foreach (StudSCAttendInfo data in dataList)
+            {
+                UpdateSCAttendInfo ui = new UpdateSCAttendInfo();
+                ui.id = int.Parse(data.SCAttendID);
+                ui.course_code = data.GP_CourseCode;
+                UpdateSCAttendInfoList.Add(ui);
+            }
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            string JSonStr = js.Serialize(UpdateSCAttendInfoList);
+
+            string UpdateSQL = @"
+            WITH j_source AS (
+                SELECT
+                    so.json ->> 'id' AS id,
+                    so.json ->> 'course_code' AS course_code
+                FROM
+                    (
+                        select
+                            json_array_elements(
+                                '" + JSonStr + @"' :: JSON
+                            ) AS json
+                    ) AS so
+            ),
+            update_data AS(
+                UPDATE
+                    sc_attend 
+                SET
+                    subject_code = j_source.course_code
+                FROM
+                    j_source
+                WHERE
+                    sc_attend.id = j_source.id :: int RETURNING sc_attend.id
+            )
+            SELECT
+                *
+            FROM
+                update_data;
+            ";
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(UpdateSQL);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    value.Add(int.Parse(dr["id"] + ""));
+                }
+
+                // 寫入log
+                StringBuilder sbLog = new StringBuilder();
+                sbLog.AppendLine("== 學生修課課程代碼修改 ==");
+                foreach (StudSCAttendInfo ss in dataList)
+                {
+                    sbLog.AppendLine("學年度:" + ss.SchoolYear + "，學期:" + ss.Semester + "，課程名稱:" + ss.CourseName + "，修課系統編號：" + ss.SCAttendID + "，科目名稱：" + ss.SubjectName + "，課程代碼由「" + ss.SC_CourseCode + "」改成「" + ss.GP_CourseCode + "」。");
+                }
+                sbLog.AppendLine("共更新" + value.Count + "筆。");
+
+                FISCA.LogAgent.ApplicationLog.Log("課程代碼-資料檢查", "修改修課課程代碼", sbLog.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
     }
 }
