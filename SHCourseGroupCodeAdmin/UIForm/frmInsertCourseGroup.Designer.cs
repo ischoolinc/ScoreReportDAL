@@ -47,6 +47,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 
             this.tbCredit.Border.Class = "TextBoxBorder";
             this.tbCredit.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbCredit.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.tbCredit.Location = new System.Drawing.Point(132, 55);
             this.tbCredit.Name = "tbCredit";
             this.tbCredit.Size = new System.Drawing.Size(171, 25);
