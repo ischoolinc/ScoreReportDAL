@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\DataAccess.cs" />
+    <Compile Include="DAO\SemsScoreInfo.cs" />
     <Compile Include="DAO\StudSCAttendInfo.cs" />
     <Compile Include="DAO\StudSubjectScoreInfo.cs" />
     <Compile Include="DAO\UpdateSCAttendInfo.cs" />
@@ -135,6 +136,12 @@
     </Compile>
     <Compile Include="UIForm\frmSCAttendChkUpdate.Designer.cs">
       <DependentUpon>frmSCAttendChkUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmSemsScoreChkUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmSemsScoreChkUpdate.Designer.cs">
+      <DependentUpon>frmSemsScoreChkUpdate.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />
@@ -171,6 +178,9 @@
   <ItemGroup>
     <EmbeddedResource Include="UIForm\frmSCAttendChkUpdate.resx">
       <DependentUpon>frmSCAttendChkUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmSemsScoreChkUpdate.resx">
+      <DependentUpon>frmSemsScoreChkUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

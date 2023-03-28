@@ -35,7 +35,8 @@ namespace SHCourseCodeCheckAndUpdate
 
             MotherForm.RibbonBarItems["教務作業", "課程代碼"]["資料檢查"]["學期成績課程代碼檢查與更新"].Click += delegate
             {
-
+                frmSemsScoreChkUpdate fsc = new frmSemsScoreChkUpdate();
+                fsc.ShowDialog();
             };
 
 

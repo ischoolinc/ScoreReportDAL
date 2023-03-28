@@ -26,5 +26,7 @@ namespace SHCourseCodeCheckAndUpdate.DAO
         public string GP_CourseCode { get; set; } // 課程規劃課程代碼
         public string GPName { get; set; } // 使用課程規畫表
 
+        public string StudentNumber { get; set; } // 學號
+        public string status { get; set; } // 學生狀態
     }
 }

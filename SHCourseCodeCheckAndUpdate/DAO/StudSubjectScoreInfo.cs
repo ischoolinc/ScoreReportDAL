@@ -13,6 +13,7 @@ namespace SHCourseCodeCheckAndUpdate.DAO
         public string SchoolYear { get; set; } // 學年度
         public string Semester { get; set; } // 學期
         public string GradeYear { get; set; } // 成績年級
+        public string StudentNumber { get; set; } // 學號
         public string ClassName { get; set; } // 班級
         public string SeatNo { get; set; } // 座號
         public string Name { get; set; } // 姓名
@@ -25,5 +26,6 @@ namespace SHCourseCodeCheckAndUpdate.DAO
         public string GP_CourseCode { get; set; } // 課程規劃課程代碼
         public string GPName { get; set; } // 使用課程規畫表
 
+        public string Status { get; set; } // 學生狀態
     }
 }

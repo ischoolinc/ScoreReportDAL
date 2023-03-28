@@ -12,49 +12,50 @@ using SHCourseCodeCheckAndUpdate.DAO;
 
 namespace SHCourseCodeCheckAndUpdate.UIForm
 {
-    public partial class frmSCAttendChkUpdate : BaseForm
+    public partial class frmSemsScoreChkUpdate : BaseForm
     {
         BackgroundWorker bgWorkerLoad;
         BackgroundWorker bgWorkerUpdate;
-        List<StudSCAttendInfo> StudSCAttendList;
-
+        List<StudSubjectScoreInfo> StudSubjectScoreInfoList;
+        Dictionary<string, List<StudSubjectScoreInfo>> UpdateSemsScoreDict;
         string SchoolYear = "", Semester = "", GradeYear = "";
 
         int UpdateCount = 0;
 
-        public frmSCAttendChkUpdate()
+
+        public frmSemsScoreChkUpdate()
         {
             InitializeComponent();
             bgWorkerLoad = new BackgroundWorker();
-            bgWorkerUpdate = new BackgroundWorker();
             bgWorkerLoad.DoWork += BgWorkerLoad_DoWork;
             bgWorkerLoad.RunWorkerCompleted += BgWorkerLoad_RunWorkerCompleted;
             bgWorkerLoad.ProgressChanged += BgWorkerLoad_ProgressChanged;
             bgWorkerLoad.WorkerReportsProgress = true;
-            StudSCAttendList = new List<StudSCAttendInfo>();
-
+            bgWorkerUpdate = new BackgroundWorker();
             bgWorkerUpdate.DoWork += BgWorkerUpdate_DoWork;
             bgWorkerUpdate.RunWorkerCompleted += BgWorkerUpdate_RunWorkerCompleted;
             bgWorkerUpdate.ProgressChanged += BgWorkerUpdate_ProgressChanged;
             bgWorkerUpdate.WorkerReportsProgress = true;
+            StudSubjectScoreInfoList = new List<StudSubjectScoreInfo>();
+            UpdateSemsScoreDict = new Dictionary<string, List<StudSubjectScoreInfo>>();
         }
 
         private void BgWorkerUpdate_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("更新修課課程代碼中...", e.ProgressPercentage);
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("更新學期成績課程代碼中...", e.ProgressPercentage);
         }
 
         private void BgWorkerUpdate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             MsgBox.Show("更新" + UpdateCount + "筆");
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
-
             ClearTempData();
         }
 
         private void ClearTempData()
         {
-            StudSCAttendList.Clear();            
+            StudSubjectScoreInfoList.Clear();
+            UpdateSemsScoreDict.Clear();
             dgData.Rows.Clear();
             lblMsg.Text = "共0筆";
             btnUpdate.Enabled = false;
@@ -63,41 +64,43 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
         private void BgWorkerUpdate_DoWork(object sender, DoWorkEventArgs e)
         {
             bgWorkerUpdate.ReportProgress(5);
+
+            UpdateSemsScoreDict.Clear();
+            // 依學期成績系統編號，整理需要更新資料，因為成績是一包XML組成
+            foreach(StudSubjectScoreInfo ss in StudSubjectScoreInfoList)
+            {
+                if (!UpdateSemsScoreDict.ContainsKey(ss.SemsSubjID))
+                    UpdateSemsScoreDict.Add(ss.SemsSubjID, new List<StudSubjectScoreInfo>());
+
+                UpdateSemsScoreDict[ss.SemsSubjID].Add(ss);
+            }
+
             // 更新資料
-            UpdateCount = DataAccess.UpdateSCAttendCourseCode(StudSCAttendList).Count;
+            UpdateCount = DataAccess.UpdateSubjectScoreCourseCode(UpdateSemsScoreDict);
 
             bgWorkerUpdate.ReportProgress(100);
         }
 
         private void BgWorkerLoad_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("修課課程代碼檢查中...", e.ProgressPercentage);
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("學期成績課程代碼檢查中...", e.ProgressPercentage);
         }
 
         private void BgWorkerLoad_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
-            DataToDataGridView(StudSCAttendList);
+            DataToDataGridView(StudSubjectScoreInfoList);
 
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
 
             ControlEnable(true);
         }
 
-        private void BgWorkerLoad_DoWork(object sender, DoWorkEventArgs e)
-        {
-            bgWorkerLoad.ReportProgress(5);
-            StudSCAttendList = DataAccess.GetStudSCAttendBySchoolYearSems(SchoolYear, Semester, GradeYear);
-
-            bgWorkerLoad.ReportProgress(100);
-        }
-
-        private void DataToDataGridView(List<StudSCAttendInfo> dataList)
+        private void DataToDataGridView(List<StudSubjectScoreInfo> dataList)
         {
             // 填入資料
             dgData.Rows.Clear();
             int rowCount = 0;
-            foreach (StudSCAttendInfo stud in dataList)
+            foreach (StudSubjectScoreInfo stud in dataList)
             {
                 int rowIdx = dgData.Rows.Add();
                 dgData.Rows[rowIdx].Tag = stud;
@@ -108,7 +111,6 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
                 dgData.Rows[rowIdx].Cells["班級"].Value = stud.ClassName;
                 dgData.Rows[rowIdx].Cells["座號"].Value = stud.SeatNo;
                 dgData.Rows[rowIdx].Cells["姓名"].Value = stud.Name;
-                dgData.Rows[rowIdx].Cells["課程名稱"].Value = stud.CourseName;
                 dgData.Rows[rowIdx].Cells["科目"].Value = stud.SubjectName;
                 dgData.Rows[rowIdx].Cells["科目級別"].Value = stud.SubjectLevel;
 
@@ -118,26 +120,32 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
                     dgData.Rows[rowIdx].Cells["校部定"].Value = stud.RequiredBy;
                 dgData.Rows[rowIdx].Cells["必選修"].Value = stud.Required;
                 dgData.Rows[rowIdx].Cells["學分"].Value = stud.Credit;
-                dgData.Rows[rowIdx].Cells["修課課程代碼"].Value = stud.SC_CourseCode;
+                dgData.Rows[rowIdx].Cells["學期課程代碼"].Value = stud.SS_CourseCode;
                 dgData.Rows[rowIdx].Cells["課規課程代碼"].Value = stud.GP_CourseCode;
                 dgData.Rows[rowIdx].Cells["使用課規"].Value = stud.GPName;
-                dgData.Rows[rowIdx].Cells["學生狀態"].Value = stud.status;
-                
+                dgData.Rows[rowIdx].Cells["學生狀態"].Value = stud.Status;
                 rowCount++;
             }
 
             lblMsg.Text = "共" + rowCount + "筆";
         }
 
-        private void frmSCAttendChkUpdate_Load(object sender, EventArgs e)
+        private void BgWorkerLoad_DoWork(object sender, DoWorkEventArgs e)
         {
-            // 畫面設定
-            SetUIDefault();
+            bgWorkerLoad.ReportProgress(5);
+            // 取得學生學期成績與學生課程規劃比對後，有差異的資料。
+            StudSubjectScoreInfoList = DataAccess.GetSubjectScoreBySchoolYearSems(SchoolYear, Semester, GradeYear);
+            bgWorkerLoad.ReportProgress(100);
+        }
 
-            // 取得欄位
-            LoadDataGridViewColumns();
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
-            //讀取資料載入
+        private void btnQuery_Click(object sender, EventArgs e)
+        {
+            QueryData();
         }
 
         private void SetUIDefault()
@@ -185,24 +193,23 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
             bgWorkerLoad.RunWorkerAsync();
         }
 
-        private void UpdateData()
+        private void frmSemsScoreChkUpdate_Load(object sender, EventArgs e)
         {
-            if (dgData.Rows.Count == 0)
-            {
-                MsgBox.Show("沒有資料，無法更新。");
-                return;
-            }
+            // 畫面設定
+            SetUIDefault();
 
-            ControlEnable(false);
+            // 取得欄位
+            LoadDataGridViewColumns();
+        }
 
-            bgWorkerUpdate.RunWorkerAsync();
-
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateData();
         }
 
         private void LoadDataGridViewColumns()
         {
             dgData.Columns.Clear();
-
             DataGridViewTextBoxColumn tbSchoolYear = new DataGridViewTextBoxColumn();
             tbSchoolYear.Name = "學年度";
             tbSchoolYear.Width = 40;
@@ -252,14 +259,6 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
             tbStudentName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             tbStudentName.ReadOnly = true;
 
-
-            DataGridViewTextBoxColumn tbCourseName = new DataGridViewTextBoxColumn();
-            tbCourseName.Name = "課程名稱";
-            tbCourseName.Width = 110;
-            tbCourseName.HeaderText = "課程名稱";
-            tbCourseName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            tbCourseName.ReadOnly = true;
-
             DataGridViewTextBoxColumn tbSubjectName = new DataGridViewTextBoxColumn();
             tbSubjectName.Name = "科目";
             tbSubjectName.Width = 110;
@@ -297,17 +296,16 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
             tbCredit.ReadOnly = true;
 
             DataGridViewTextBoxColumn tbCoCourseCode = new DataGridViewTextBoxColumn();
-            tbCoCourseCode.Name = "修課課程代碼";
+            tbCoCourseCode.Name = "學期課程代碼";
             tbCoCourseCode.Width = 210;
- 
-            tbCoCourseCode.HeaderText = "修課課程代碼";
+            tbCoCourseCode.HeaderText = "學期課程代碼";
             tbCoCourseCode.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             tbCoCourseCode.ReadOnly = true;
 
             DataGridViewTextBoxColumn tbGpCourseCode = new DataGridViewTextBoxColumn();
             tbGpCourseCode.Name = "課規課程代碼";
             tbGpCourseCode.Width = 210;
-              tbGpCourseCode.HeaderText = "課規課程代碼";
+            tbGpCourseCode.HeaderText = "課規課程代碼";
             tbGpCourseCode.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             tbGpCourseCode.ReadOnly = true;
 
@@ -326,6 +324,7 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
             tbStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             tbStatus.ReadOnly = true;
 
+
             dgData.Columns.Add(tbSchoolYear);
             dgData.Columns.Add(tbSemester);
             dgData.Columns.Add(tbGradeYear);
@@ -333,7 +332,6 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
             dgData.Columns.Add(tbClassName);
             dgData.Columns.Add(tbSeatNo);
             dgData.Columns.Add(tbStudentName);
-            dgData.Columns.Add(tbCourseName);
             dgData.Columns.Add(tbSubjectName);
             dgData.Columns.Add(tbSubjectLevel);
             dgData.Columns.Add(tbRequiredBy);
@@ -343,27 +341,27 @@ namespace SHCourseCodeCheckAndUpdate.UIForm
             dgData.Columns.Add(tbGpCourseCode);
             dgData.Columns.Add(tbUseGpName);
             dgData.Columns.Add(tbStatus);
-        }
 
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {           
-            UpdateData();
-        }
-
-        private void btnQuery_Click(object sender, EventArgs e)
-        {
-            QueryData();
         }
 
         private void ControlEnable(bool value)
         {
             cbxSchoolYear.Enabled = cbxSemester.Enabled = cbxGradeYear.Enabled = btnQuery.Enabled = btnUpdate.Enabled = dgData.Enabled = value;
+        }
+
+        private void UpdateData()
+        {
+
+            if (dgData.Rows.Count == 0)
+            {
+                MsgBox.Show("沒有資料，無法更新。");
+                return;
+            }
+
+            ControlEnable(false);
+
+            bgWorkerUpdate.RunWorkerAsync();
+
         }
     }
 }
