@@ -36,6 +36,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 return;
             }
 
+            int credit = 0;
+            if (!int.TryParse(tbCredit.Text, out credit))
+            {
+                MessageBox.Show("群組修課學分數僅能輸入數字");
+                return;
+            }
+
             string courseGroupName = tbCourseGroupName.Text;
             string courseGroupCredit = tbCredit.Text;
             Color color = cpColorPicker.SelectedColor;
