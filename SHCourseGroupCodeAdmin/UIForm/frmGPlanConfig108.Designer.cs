@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.expandablePanel1 = new DevComponents.DotNetBar.ExpandablePanel();
             this.advTree1 = new DevComponents.AdvTree.AdvTree();
@@ -89,35 +89,35 @@
             this.lbCacluateCredit = new System.Windows.Forms.LinkLabel();
             this.tcSwitchCreditStatistics = new DevComponents.DotNetBar.TabControl();
             this.tabControlPanel9 = new DevComponents.DotNetBar.TabControlPanel();
-            this.tbNormalSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepartSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepartSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolNonRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredBySchoolRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX26 = new DevComponents.DotNetBar.LabelX();
             this.textBoxX65 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX27 = new DevComponents.DotNetBar.LabelX();
@@ -126,109 +126,11 @@
             this.labelX30 = new DevComponents.DotNetBar.LabelX();
             this.labelX31 = new DevComponents.DotNetBar.LabelX();
             this.labelX32 = new DevComponents.DotNetBar.LabelX();
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchoolRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubjectRequiredBySchool = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalRequiredByDepart = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalNormalSubject = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSubjectRequiredBySchoolNonRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSubjectRequiredBySchoolRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbSubjectRequiredBySchool = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tbRequiredByDepart = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.tbiCreditNormal = new DevComponents.DotNetBar.TabItem(this.components);
-            this.tabControlPanel8 = new DevComponents.DotNetBar.TabControlPanel();
-            this.tbCreditSummary3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepartSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart3_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart3_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart2_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart2_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart1_2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart1_1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbCreditSummary = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectSummation = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolPractice = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchoolProfession = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartPractice = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepartProfessional = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredBySchool = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubjectRequiredByDepart = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolNonRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchoolRequired = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbySchool = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubjectRequiredbyDepart = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbProfessionalSubject = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tbNormalSubject = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX25 = new DevComponents.DotNetBar.LabelX();
-            this.labelX23 = new DevComponents.DotNetBar.LabelX();
-            this.labelX24 = new DevComponents.DotNetBar.LabelX();
-            this.labelX21 = new DevComponents.DotNetBar.LabelX();
-            this.labelX22 = new DevComponents.DotNetBar.LabelX();
-            this.labelX20 = new DevComponents.DotNetBar.LabelX();
-            this.labelX19 = new DevComponents.DotNetBar.LabelX();
-            this.tbiCreditTechnical = new DevComponents.DotNetBar.TabItem(this.components);
             this.gpCourseGroupSetCourseGroupName = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.tlpCourseGroupSetting = new System.Windows.Forms.TableLayoutPanel();
             this.dgvCourseGroupManageGroup = new DevComponents.DotNetBar.Controls.DataGridViewX();
@@ -324,7 +226,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tcSwitchCreditStatistics)).BeginInit();
             this.tcSwitchCreditStatistics.SuspendLayout();
             this.tabControlPanel9.SuspendLayout();
-            this.tabControlPanel8.SuspendLayout();
             this.gpCourseGroupSetCourseGroupName.SuspendLayout();
             this.tlpCourseGroupSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseGroupManageGroup)).BeginInit();
@@ -518,8 +419,8 @@
             this.tabControl1.BackColor = System.Drawing.Color.Transparent;
             this.tabControl1.CanReorderTabs = false;
             this.tabControl1.Controls.Add(this.tabControlPanel6);
-            this.tabControl1.Controls.Add(this.tabControlPanel5);
             this.tabControl1.Controls.Add(this.tabControlPanel1);
+            this.tabControl1.Controls.Add(this.tabControlPanel5);
             this.tabControl1.Controls.Add(this.tabControlPanel4);
             this.tabControl1.Controls.Add(this.tabControlPanel2);
             this.tabControl1.Controls.Add(this.tabControlPanel3);
@@ -593,7 +494,7 @@
             // tlpCourseGroupData
             // 
             this.tlpCourseGroupData.ColumnCount = 2;
-            this.tlpCourseGroupData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 530F));
+            this.tlpCourseGroupData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 500F));
             this.tlpCourseGroupData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpCourseGroupData.Controls.Add(this.tlpCourseGroupCourse, 1, 0);
             this.tlpCourseGroupData.Controls.Add(this.tlpCourseGroupSettingAndCredit, 0, 0);
@@ -612,12 +513,12 @@
             this.tlpCourseGroupCourse.Controls.Add(this.gpCourseGroupSetCourseGroup, 0, 1);
             this.tlpCourseGroupCourse.Controls.Add(this.gpCourseGroupFilter, 0, 0);
             this.tlpCourseGroupCourse.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpCourseGroupCourse.Location = new System.Drawing.Point(533, 3);
+            this.tlpCourseGroupCourse.Location = new System.Drawing.Point(503, 3);
             this.tlpCourseGroupCourse.Name = "tlpCourseGroupCourse";
             this.tlpCourseGroupCourse.RowCount = 2;
             this.tlpCourseGroupCourse.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 135F));
             this.tlpCourseGroupCourse.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCourseGroupCourse.Size = new System.Drawing.Size(797, 656);
+            this.tlpCourseGroupCourse.Size = new System.Drawing.Size(827, 656);
             this.tlpCourseGroupCourse.TabIndex = 11;
             // 
             // gpCourseGroupSetCourseGroup
@@ -628,7 +529,7 @@
             this.gpCourseGroupSetCourseGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gpCourseGroupSetCourseGroup.Location = new System.Drawing.Point(3, 138);
             this.gpCourseGroupSetCourseGroup.Name = "gpCourseGroupSetCourseGroup";
-            this.gpCourseGroupSetCourseGroup.Size = new System.Drawing.Size(791, 515);
+            this.gpCourseGroupSetCourseGroup.Size = new System.Drawing.Size(821, 515);
             // 
             // 
             // 
@@ -667,14 +568,14 @@
             this.dgvCourseGroup.AllowUserToAddRows = false;
             this.dgvCourseGroup.AllowUserToOrderColumns = true;
             this.dgvCourseGroup.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCourseGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCourseGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle20;
             this.dgvCourseGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCourseGroupRequiredBy,
@@ -690,14 +591,14 @@
             this.colCourseGroup2_2,
             this.colCourseGroup3_1,
             this.colCourseGroup3_2});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCourseGroup.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCourseGroup.DefaultCellStyle = dataGridViewCellStyle21;
             this.dgvCourseGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCourseGroup.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvCourseGroup.Location = new System.Drawing.Point(0, 0);
@@ -706,7 +607,7 @@
             this.dgvCourseGroup.ReadOnly = true;
             this.dgvCourseGroup.RowTemplate.Height = 24;
             this.dgvCourseGroup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvCourseGroup.Size = new System.Drawing.Size(785, 488);
+            this.dgvCourseGroup.Size = new System.Drawing.Size(815, 488);
             this.dgvCourseGroup.TabIndex = 16;
             this.dgvCourseGroup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourseGroup_CellClick);
             // 
@@ -847,7 +748,7 @@
             this.gpCourseGroupFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gpCourseGroupFilter.Location = new System.Drawing.Point(3, 3);
             this.gpCourseGroupFilter.Name = "gpCourseGroupFilter";
-            this.gpCourseGroupFilter.Size = new System.Drawing.Size(791, 129);
+            this.gpCourseGroupFilter.Size = new System.Drawing.Size(821, 129);
             // 
             // 
             // 
@@ -1065,9 +966,9 @@
             this.tlpCourseGroupSettingAndCredit.Location = new System.Drawing.Point(3, 3);
             this.tlpCourseGroupSettingAndCredit.Name = "tlpCourseGroupSettingAndCredit";
             this.tlpCourseGroupSettingAndCredit.RowCount = 2;
-            this.tlpCourseGroupSettingAndCredit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpCourseGroupSettingAndCredit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCourseGroupSettingAndCredit.Size = new System.Drawing.Size(524, 656);
+            this.tlpCourseGroupSettingAndCredit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tlpCourseGroupSettingAndCredit.Size = new System.Drawing.Size(494, 656);
             this.tlpCourseGroupSettingAndCredit.TabIndex = 12;
             // 
             // gpCreditStatics
@@ -1077,9 +978,9 @@
             this.gpCreditStatics.Controls.Add(this.lbCacluateCredit);
             this.gpCreditStatics.Controls.Add(this.tcSwitchCreditStatistics);
             this.gpCreditStatics.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpCreditStatics.Location = new System.Drawing.Point(3, 303);
+            this.gpCreditStatics.Location = new System.Drawing.Point(3, 409);
             this.gpCreditStatics.Name = "gpCreditStatics";
-            this.gpCreditStatics.Size = new System.Drawing.Size(518, 350);
+            this.gpCreditStatics.Size = new System.Drawing.Size(488, 244);
             // 
             // 
             // 
@@ -1116,7 +1017,7 @@
             // lbCacluateCredit
             // 
             this.lbCacluateCredit.AutoSize = true;
-            this.lbCacluateCredit.Location = new System.Drawing.Point(446, -2);
+            this.lbCacluateCredit.Location = new System.Drawing.Point(422, -2);
             this.lbCacluateCredit.Name = "lbCacluateCredit";
             this.lbCacluateCredit.Size = new System.Drawing.Size(60, 17);
             this.lbCacluateCredit.TabIndex = 3;
@@ -1126,56 +1027,51 @@
             // 
             // tcSwitchCreditStatistics
             // 
-            this.tcSwitchCreditStatistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tcSwitchCreditStatistics.BackColor = System.Drawing.Color.White;
             this.tcSwitchCreditStatistics.CanReorderTabs = true;
-            this.tcSwitchCreditStatistics.Controls.Add(this.tabControlPanel8);
             this.tcSwitchCreditStatistics.Controls.Add(this.tabControlPanel9);
-            this.tcSwitchCreditStatistics.Location = new System.Drawing.Point(0, 18);
+            this.tcSwitchCreditStatistics.Location = new System.Drawing.Point(0, 16);
             this.tcSwitchCreditStatistics.Name = "tcSwitchCreditStatistics";
             this.tcSwitchCreditStatistics.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
             this.tcSwitchCreditStatistics.SelectedTabIndex = 0;
-            this.tcSwitchCreditStatistics.Size = new System.Drawing.Size(512, 305);
+            this.tcSwitchCreditStatistics.Size = new System.Drawing.Size(482, 201);
             this.tcSwitchCreditStatistics.TabIndex = 1;
             this.tcSwitchCreditStatistics.TabLayoutType = DevComponents.DotNetBar.eTabLayoutType.FixedWithNavigationBox;
             this.tcSwitchCreditStatistics.Tabs.Add(this.tbiCreditNormal);
-            this.tcSwitchCreditStatistics.Tabs.Add(this.tbiCreditTechnical);
             this.tcSwitchCreditStatistics.TabsVisible = false;
             this.tcSwitchCreditStatistics.Text = "tabControl2";
             // 
             // tabControlPanel9
             // 
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary3_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary3_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary2_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary2_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary1_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary1_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepartSummary);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired3_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired3_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired2_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired2_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired1_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired1_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart3_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart3_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart2_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart2_1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart1_2);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart1_1);
+            this.tabControlPanel9.Controls.Add(this.tbSummary3_2);
+            this.tabControlPanel9.Controls.Add(this.tbSummary3_1);
+            this.tabControlPanel9.Controls.Add(this.tbSummary2_2);
+            this.tabControlPanel9.Controls.Add(this.tbSummary2_1);
+            this.tabControlPanel9.Controls.Add(this.tbSummary1_2);
+            this.tabControlPanel9.Controls.Add(this.tbSummary1_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequiredSummary);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequiredSummary);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepartSummary);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequired3_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequired3_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequired2_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequired2_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequired1_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolNonRequired1_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequired3_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequired3_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequired2_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequired2_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequired1_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredBySchoolRequired1_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart3_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart3_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart2_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart2_1);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart1_2);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart1_1);
             this.tabControlPanel9.Controls.Add(this.textBoxX1);
-            this.tabControlPanel9.Controls.Add(this.tbNormalSummary);
+            this.tabControlPanel9.Controls.Add(this.tbSummary);
             this.tabControlPanel9.Controls.Add(this.labelX26);
             this.tabControlPanel9.Controls.Add(this.textBoxX65);
             this.tabControlPanel9.Controls.Add(this.labelX27);
@@ -1184,16 +1080,15 @@
             this.tabControlPanel9.Controls.Add(this.labelX30);
             this.tabControlPanel9.Controls.Add(this.labelX31);
             this.tabControlPanel9.Controls.Add(this.labelX32);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolNonRequired);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchoolRequired);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubjectRequiredBySchool);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalRequiredByDepart);
-            this.tabControlPanel9.Controls.Add(this.tbNormalNormalSubject);
+            this.tabControlPanel9.Controls.Add(this.tbSubjectRequiredBySchoolNonRequired);
+            this.tabControlPanel9.Controls.Add(this.tbSubjectRequiredBySchoolRequired);
+            this.tabControlPanel9.Controls.Add(this.tbSubjectRequiredBySchool);
+            this.tabControlPanel9.Controls.Add(this.tbRequiredByDepart);
             this.tabControlPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlPanel9.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel9.Name = "tabControlPanel9";
             this.tabControlPanel9.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel9.Size = new System.Drawing.Size(512, 276);
+            this.tabControlPanel9.Size = new System.Drawing.Size(482, 172);
             this.tabControlPanel9.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
             this.tabControlPanel9.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
             this.tabControlPanel9.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -1204,545 +1099,545 @@
             this.tabControlPanel9.TabIndex = 2;
             this.tabControlPanel9.TabItem = this.tbiCreditNormal;
             // 
-            // tbNormalSummary3_2
-            // 
+            // tbSummary3_2
+            // 
             // 
             // 
             // 
-            this.tbNormalSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary3_2.Location = new System.Drawing.Point(388, 97);
-            this.tbNormalSummary3_2.Name = "tbNormalSummary3_2";
-            this.tbNormalSummary3_2.ReadOnly = true;
-            this.tbNormalSummary3_2.Size = new System.Drawing.Size(50, 25);
-            this.tbNormalSummary3_2.TabIndex = 211;
-            this.tbNormalSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary3_1
-            // 
+            this.tbSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_2.Border.Class = "TextBoxBorder";
+            this.tbSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary3_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary3_2.Location = new System.Drawing.Point(370, 108);
+            this.tbSummary3_2.Name = "tbSummary3_2";
+            this.tbSummary3_2.ReadOnly = true;
+            this.tbSummary3_2.Size = new System.Drawing.Size(50, 25);
+            this.tbSummary3_2.TabIndex = 211;
+            this.tbSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbSummary3_1
+            // 
             // 
             // 
             // 
-            this.tbNormalSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary3_1.Location = new System.Drawing.Point(338, 97);
-            this.tbNormalSummary3_1.Name = "tbNormalSummary3_1";
-            this.tbNormalSummary3_1.ReadOnly = true;
-            this.tbNormalSummary3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary3_1.TabIndex = 210;
-            this.tbNormalSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary2_2
-            // 
+            this.tbSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary3_1.Border.Class = "TextBoxBorder";
+            this.tbSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary3_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary3_1.Location = new System.Drawing.Point(320, 108);
+            this.tbSummary3_1.Name = "tbSummary3_1";
+            this.tbSummary3_1.ReadOnly = true;
+            this.tbSummary3_1.Size = new System.Drawing.Size(51, 25);
+            this.tbSummary3_1.TabIndex = 210;
+            this.tbSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbSummary2_2
+            // 
             // 
             // 
             // 
-            this.tbNormalSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary2_2.Location = new System.Drawing.Point(288, 97);
-            this.tbNormalSummary2_2.Name = "tbNormalSummary2_2";
-            this.tbNormalSummary2_2.ReadOnly = true;
-            this.tbNormalSummary2_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary2_2.TabIndex = 209;
-            this.tbNormalSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary2_1
-            // 
+            this.tbSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_2.Border.Class = "TextBoxBorder";
+            this.tbSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary2_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary2_2.Location = new System.Drawing.Point(270, 108);
+            this.tbSummary2_2.Name = "tbSummary2_2";
+            this.tbSummary2_2.ReadOnly = true;
+            this.tbSummary2_2.Size = new System.Drawing.Size(51, 25);
+            this.tbSummary2_2.TabIndex = 209;
+            this.tbSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbSummary2_1
+            // 
             // 
             // 
             // 
-            this.tbNormalSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary2_1.Location = new System.Drawing.Point(238, 97);
-            this.tbNormalSummary2_1.Name = "tbNormalSummary2_1";
-            this.tbNormalSummary2_1.ReadOnly = true;
-            this.tbNormalSummary2_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary2_1.TabIndex = 208;
-            this.tbNormalSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary1_2
-            // 
+            this.tbSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary2_1.Border.Class = "TextBoxBorder";
+            this.tbSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary2_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary2_1.Location = new System.Drawing.Point(220, 108);
+            this.tbSummary2_1.Name = "tbSummary2_1";
+            this.tbSummary2_1.ReadOnly = true;
+            this.tbSummary2_1.Size = new System.Drawing.Size(51, 25);
+            this.tbSummary2_1.TabIndex = 208;
+            this.tbSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbSummary1_2
+            // 
             // 
             // 
             // 
-            this.tbNormalSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary1_2.Location = new System.Drawing.Point(188, 97);
-            this.tbNormalSummary1_2.Name = "tbNormalSummary1_2";
-            this.tbNormalSummary1_2.ReadOnly = true;
-            this.tbNormalSummary1_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary1_2.TabIndex = 207;
-            this.tbNormalSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSummary1_1
-            // 
+            this.tbSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_2.Border.Class = "TextBoxBorder";
+            this.tbSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary1_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary1_2.Location = new System.Drawing.Point(170, 108);
+            this.tbSummary1_2.Name = "tbSummary1_2";
+            this.tbSummary1_2.ReadOnly = true;
+            this.tbSummary1_2.Size = new System.Drawing.Size(51, 25);
+            this.tbSummary1_2.TabIndex = 207;
+            this.tbSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbSummary1_1
+            // 
             // 
             // 
             // 
-            this.tbNormalSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary1_1.Location = new System.Drawing.Point(138, 97);
-            this.tbNormalSummary1_1.Name = "tbNormalSummary1_1";
-            this.tbNormalSummary1_1.ReadOnly = true;
-            this.tbNormalSummary1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary1_1.TabIndex = 206;
-            this.tbNormalSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary
-            // 
+            this.tbSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary1_1.Border.Class = "TextBoxBorder";
+            this.tbSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary1_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary1_1.Location = new System.Drawing.Point(120, 108);
+            this.tbSummary1_1.Name = "tbSummary1_1";
+            this.tbSummary1_1.ReadOnly = true;
+            this.tbSummary1_1.Size = new System.Drawing.Size(51, 25);
+            this.tbSummary1_1.TabIndex = 206;
+            this.tbSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequiredSummary
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Location = new System.Drawing.Point(437, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.TabIndex = 197;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequiredSummary
-            // 
+            this.tbRequiredBySchoolNonRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequiredSummary.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequiredSummary.Location = new System.Drawing.Point(419, 84);
+            this.tbRequiredBySchoolNonRequiredSummary.Name = "tbRequiredBySchoolNonRequiredSummary";
+            this.tbRequiredBySchoolNonRequiredSummary.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequiredSummary.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolNonRequiredSummary.TabIndex = 197;
+            this.tbRequiredBySchoolNonRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequiredSummary
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Location = new System.Drawing.Point(437, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Name = "tbNormalNormalSubjectRequiredBySchoolRequiredSummary";
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.TabIndex = 196;
-            this.tbNormalNormalSubjectRequiredBySchoolRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepartSummary
-            // 
+            this.tbRequiredBySchoolRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequiredSummary.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequiredSummary.Location = new System.Drawing.Point(419, 60);
+            this.tbRequiredBySchoolRequiredSummary.Name = "tbRequiredBySchoolRequiredSummary";
+            this.tbRequiredBySchoolRequiredSummary.ReadOnly = true;
+            this.tbRequiredBySchoolRequiredSummary.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolRequiredSummary.TabIndex = 196;
+            this.tbRequiredBySchoolRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepartSummary
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalRequiredByDepartSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepartSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepartSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepartSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepartSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepartSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepartSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepartSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepartSummary.Location = new System.Drawing.Point(437, 28);
-            this.tbNormalNormalRequiredByDepartSummary.Name = "tbNormalNormalRequiredByDepartSummary";
-            this.tbNormalNormalRequiredByDepartSummary.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepartSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalRequiredByDepartSummary.TabIndex = 195;
-            this.tbNormalNormalRequiredByDepartSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired3_2
-            // 
+            this.tbRequiredByDepartSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepartSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepartSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepartSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepartSummary.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepartSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepartSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepartSummary.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepartSummary.Location = new System.Drawing.Point(419, 39);
+            this.tbRequiredByDepartSummary.Name = "tbRequiredByDepartSummary";
+            this.tbRequiredByDepartSummary.ReadOnly = true;
+            this.tbRequiredByDepartSummary.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredByDepartSummary.TabIndex = 195;
+            this.tbRequiredByDepartSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequired3_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Location = new System.Drawing.Point(388, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired3_2";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Size = new System.Drawing.Size(50, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.TabIndex = 157;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired3_1
-            // 
+            this.tbRequiredBySchoolNonRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequired3_2.Location = new System.Drawing.Point(370, 84);
+            this.tbRequiredBySchoolNonRequired3_2.Name = "tbRequiredBySchoolNonRequired3_2";
+            this.tbRequiredBySchoolNonRequired3_2.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequired3_2.Size = new System.Drawing.Size(50, 25);
+            this.tbRequiredBySchoolNonRequired3_2.TabIndex = 157;
+            this.tbRequiredBySchoolNonRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequired3_1
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Location = new System.Drawing.Point(338, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired3_1";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.TabIndex = 156;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired2_2
-            // 
+            this.tbRequiredBySchoolNonRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired3_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequired3_1.Location = new System.Drawing.Point(320, 84);
+            this.tbRequiredBySchoolNonRequired3_1.Name = "tbRequiredBySchoolNonRequired3_1";
+            this.tbRequiredBySchoolNonRequired3_1.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequired3_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolNonRequired3_1.TabIndex = 156;
+            this.tbRequiredBySchoolNonRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequired2_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Location = new System.Drawing.Point(288, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired2_2";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.TabIndex = 155;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired2_1
-            // 
+            this.tbRequiredBySchoolNonRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequired2_2.Location = new System.Drawing.Point(270, 84);
+            this.tbRequiredBySchoolNonRequired2_2.Name = "tbRequiredBySchoolNonRequired2_2";
+            this.tbRequiredBySchoolNonRequired2_2.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequired2_2.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolNonRequired2_2.TabIndex = 155;
+            this.tbRequiredBySchoolNonRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequired2_1
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Location = new System.Drawing.Point(238, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired2_1";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.TabIndex = 154;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired1_2
-            // 
+            this.tbRequiredBySchoolNonRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired2_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequired2_1.Location = new System.Drawing.Point(220, 84);
+            this.tbRequiredBySchoolNonRequired2_1.Name = "tbRequiredBySchoolNonRequired2_1";
+            this.tbRequiredBySchoolNonRequired2_1.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequired2_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolNonRequired2_1.TabIndex = 154;
+            this.tbRequiredBySchoolNonRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequired1_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Location = new System.Drawing.Point(188, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired1_2";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.TabIndex = 153;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired1_1
-            // 
+            this.tbRequiredBySchoolNonRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequired1_2.Location = new System.Drawing.Point(170, 84);
+            this.tbRequiredBySchoolNonRequired1_2.Name = "tbRequiredBySchoolNonRequired1_2";
+            this.tbRequiredBySchoolNonRequired1_2.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequired1_2.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolNonRequired1_2.TabIndex = 153;
+            this.tbRequiredBySchoolNonRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolNonRequired1_1
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Location = new System.Drawing.Point(138, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired1_1";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.TabIndex = 152;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired3_2
-            // 
+            this.tbRequiredBySchoolNonRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolNonRequired1_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolNonRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolNonRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolNonRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolNonRequired1_1.Location = new System.Drawing.Point(120, 84);
+            this.tbRequiredBySchoolNonRequired1_1.Name = "tbRequiredBySchoolNonRequired1_1";
+            this.tbRequiredBySchoolNonRequired1_1.ReadOnly = true;
+            this.tbRequiredBySchoolNonRequired1_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolNonRequired1_1.TabIndex = 152;
+            this.tbRequiredBySchoolNonRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequired3_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Location = new System.Drawing.Point(388, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Name = "tbNormalNormalSubjectRequiredBySchoolRequired3_2";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.Size = new System.Drawing.Size(50, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.TabIndex = 151;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired3_1
-            // 
+            this.tbRequiredBySchoolRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequired3_2.Location = new System.Drawing.Point(370, 60);
+            this.tbRequiredBySchoolRequired3_2.Name = "tbRequiredBySchoolRequired3_2";
+            this.tbRequiredBySchoolRequired3_2.ReadOnly = true;
+            this.tbRequiredBySchoolRequired3_2.Size = new System.Drawing.Size(50, 25);
+            this.tbRequiredBySchoolRequired3_2.TabIndex = 151;
+            this.tbRequiredBySchoolRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequired3_1
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Location = new System.Drawing.Point(338, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Name = "tbNormalNormalSubjectRequiredBySchoolRequired3_1";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.TabIndex = 150;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired2_2
-            // 
+            this.tbRequiredBySchoolRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired3_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequired3_1.Location = new System.Drawing.Point(320, 60);
+            this.tbRequiredBySchoolRequired3_1.Name = "tbRequiredBySchoolRequired3_1";
+            this.tbRequiredBySchoolRequired3_1.ReadOnly = true;
+            this.tbRequiredBySchoolRequired3_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolRequired3_1.TabIndex = 150;
+            this.tbRequiredBySchoolRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequired2_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Location = new System.Drawing.Point(288, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Name = "tbNormalNormalSubjectRequiredBySchoolRequired2_2";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.TabIndex = 149;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired2_1
-            // 
+            this.tbRequiredBySchoolRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequired2_2.Location = new System.Drawing.Point(270, 60);
+            this.tbRequiredBySchoolRequired2_2.Name = "tbRequiredBySchoolRequired2_2";
+            this.tbRequiredBySchoolRequired2_2.ReadOnly = true;
+            this.tbRequiredBySchoolRequired2_2.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolRequired2_2.TabIndex = 149;
+            this.tbRequiredBySchoolRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequired2_1
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Location = new System.Drawing.Point(238, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Name = "tbNormalNormalSubjectRequiredBySchoolRequired2_1";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.TabIndex = 148;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired1_2
-            // 
+            this.tbRequiredBySchoolRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired2_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequired2_1.Location = new System.Drawing.Point(220, 60);
+            this.tbRequiredBySchoolRequired2_1.Name = "tbRequiredBySchoolRequired2_1";
+            this.tbRequiredBySchoolRequired2_1.ReadOnly = true;
+            this.tbRequiredBySchoolRequired2_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolRequired2_1.TabIndex = 148;
+            this.tbRequiredBySchoolRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequired1_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Location = new System.Drawing.Point(188, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Name = "tbNormalNormalSubjectRequiredBySchoolRequired1_2";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.TabIndex = 147;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired1_1
-            // 
+            this.tbRequiredBySchoolRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequired1_2.Location = new System.Drawing.Point(170, 60);
+            this.tbRequiredBySchoolRequired1_2.Name = "tbRequiredBySchoolRequired1_2";
+            this.tbRequiredBySchoolRequired1_2.ReadOnly = true;
+            this.tbRequiredBySchoolRequired1_2.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolRequired1_2.TabIndex = 147;
+            this.tbRequiredBySchoolRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredBySchoolRequired1_1
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Location = new System.Drawing.Point(138, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Name = "tbNormalNormalSubjectRequiredBySchoolRequired1_1";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.TabIndex = 146;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepart3_2
-            // 
+            this.tbRequiredBySchoolRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredBySchoolRequired1_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredBySchoolRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredBySchoolRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredBySchoolRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredBySchoolRequired1_1.Location = new System.Drawing.Point(120, 60);
+            this.tbRequiredBySchoolRequired1_1.Name = "tbRequiredBySchoolRequired1_1";
+            this.tbRequiredBySchoolRequired1_1.ReadOnly = true;
+            this.tbRequiredBySchoolRequired1_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredBySchoolRequired1_1.TabIndex = 146;
+            this.tbRequiredBySchoolRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart3_2
+            // 
             // 
             // 
             // 
-            this.tbNormalNormalRequiredByDepart3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart3_2.Location = new System.Drawing.Point(388, 28);
-            this.tbNormalNormalRequiredByDepart3_2.Name = "tbNormalNormalRequiredByDepart3_2";
-            this.tbNormalNormalRequiredByDepart3_2.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart3_2.Size = new System.Drawing.Size(50, 25);
-            this.tbNormalNormalRequiredByDepart3_2.TabIndex = 145;
-            this.tbNormalNormalRequiredByDepart3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepart3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalRequiredByDepart3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart3_1.Location = new System.Drawing.Point(338, 28);
-            this.tbNormalNormalRequiredByDepart3_1.Name = "tbNormalNormalRequiredByDepart3_1";
-            this.tbNormalNormalRequiredByDepart3_1.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalRequiredByDepart3_1.TabIndex = 144;
-            this.tbNormalNormalRequiredByDepart3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepart2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalRequiredByDepart2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart2_2.Location = new System.Drawing.Point(288, 28);
-            this.tbNormalNormalRequiredByDepart2_2.Name = "tbNormalNormalRequiredByDepart2_2";
-            this.tbNormalNormalRequiredByDepart2_2.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart2_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalRequiredByDepart2_2.TabIndex = 143;
-            this.tbNormalNormalRequiredByDepart2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepart2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalRequiredByDepart2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart2_1.Location = new System.Drawing.Point(238, 28);
-            this.tbNormalNormalRequiredByDepart2_1.Name = "tbNormalNormalRequiredByDepart2_1";
-            this.tbNormalNormalRequiredByDepart2_1.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart2_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalRequiredByDepart2_1.TabIndex = 142;
-            this.tbNormalNormalRequiredByDepart2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepart1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalRequiredByDepart1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart1_2.Location = new System.Drawing.Point(188, 28);
-            this.tbNormalNormalRequiredByDepart1_2.Name = "tbNormalNormalRequiredByDepart1_2";
-            this.tbNormalNormalRequiredByDepart1_2.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart1_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalRequiredByDepart1_2.TabIndex = 141;
-            this.tbNormalNormalRequiredByDepart1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalRequiredByDepart1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalRequiredByDepart1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart1_1.Location = new System.Drawing.Point(138, 28);
-            this.tbNormalNormalRequiredByDepart1_1.Name = "tbNormalNormalRequiredByDepart1_1";
-            this.tbNormalNormalRequiredByDepart1_1.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalNormalRequiredByDepart1_1.TabIndex = 140;
-            this.tbNormalNormalRequiredByDepart1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbRequiredByDepart3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart3_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart3_2.Location = new System.Drawing.Point(370, 39);
+            this.tbRequiredByDepart3_2.Name = "tbRequiredByDepart3_2";
+            this.tbRequiredByDepart3_2.ReadOnly = true;
+            this.tbRequiredByDepart3_2.Size = new System.Drawing.Size(50, 25);
+            this.tbRequiredByDepart3_2.TabIndex = 145;
+            this.tbRequiredByDepart3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart3_1
+            // 
+            // 
+            // 
+            // 
+            this.tbRequiredByDepart3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart3_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart3_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart3_1.Location = new System.Drawing.Point(320, 39);
+            this.tbRequiredByDepart3_1.Name = "tbRequiredByDepart3_1";
+            this.tbRequiredByDepart3_1.ReadOnly = true;
+            this.tbRequiredByDepart3_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredByDepart3_1.TabIndex = 144;
+            this.tbRequiredByDepart3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart2_2
+            // 
+            // 
+            // 
+            // 
+            this.tbRequiredByDepart2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart2_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart2_2.Location = new System.Drawing.Point(270, 39);
+            this.tbRequiredByDepart2_2.Name = "tbRequiredByDepart2_2";
+            this.tbRequiredByDepart2_2.ReadOnly = true;
+            this.tbRequiredByDepart2_2.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredByDepart2_2.TabIndex = 143;
+            this.tbRequiredByDepart2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart2_1
+            // 
+            // 
+            // 
+            // 
+            this.tbRequiredByDepart2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart2_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart2_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart2_1.Location = new System.Drawing.Point(220, 39);
+            this.tbRequiredByDepart2_1.Name = "tbRequiredByDepart2_1";
+            this.tbRequiredByDepart2_1.ReadOnly = true;
+            this.tbRequiredByDepart2_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredByDepart2_1.TabIndex = 142;
+            this.tbRequiredByDepart2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart1_2
+            // 
+            // 
+            // 
+            // 
+            this.tbRequiredByDepart1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_2.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart1_2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart1_2.Location = new System.Drawing.Point(170, 39);
+            this.tbRequiredByDepart1_2.Name = "tbRequiredByDepart1_2";
+            this.tbRequiredByDepart1_2.ReadOnly = true;
+            this.tbRequiredByDepart1_2.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredByDepart1_2.TabIndex = 141;
+            this.tbRequiredByDepart1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart1_1
+            // 
+            // 
+            // 
+            // 
+            this.tbRequiredByDepart1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart1_1.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart1_1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart1_1.Location = new System.Drawing.Point(120, 39);
+            this.tbRequiredByDepart1_1.Name = "tbRequiredByDepart1_1";
+            this.tbRequiredByDepart1_1.ReadOnly = true;
+            this.tbRequiredByDepart1_1.Size = new System.Drawing.Size(51, 25);
+            this.tbRequiredByDepart1_1.TabIndex = 140;
+            this.tbRequiredByDepart1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBoxX1
             // 
@@ -1757,33 +1652,33 @@
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBoxX1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.textBoxX1.Location = new System.Drawing.Point(6, 4);
+            this.textBoxX1.Location = new System.Drawing.Point(16, 15);
             this.textBoxX1.Multiline = true;
             this.textBoxX1.Name = "textBoxX1";
             this.textBoxX1.ReadOnly = true;
-            this.textBoxX1.Size = new System.Drawing.Size(133, 25);
+            this.textBoxX1.Size = new System.Drawing.Size(105, 25);
             this.textBoxX1.TabIndex = 205;
             this.textBoxX1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tbNormalSummary
+            // tbSummary
             // 
             // 
             // 
             // 
-            this.tbNormalSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSummary.Location = new System.Drawing.Point(437, 97);
-            this.tbNormalSummary.Name = "tbNormalSummary";
-            this.tbNormalSummary.ReadOnly = true;
-            this.tbNormalSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSummary.TabIndex = 204;
-            this.tbNormalSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSummary.Border.Class = "TextBoxBorder";
+            this.tbSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSummary.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSummary.Location = new System.Drawing.Point(419, 108);
+            this.tbSummary.Name = "tbSummary";
+            this.tbSummary.ReadOnly = true;
+            this.tbSummary.Size = new System.Drawing.Size(51, 25);
+            this.tbSummary.TabIndex = 204;
+            this.tbSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelX26
             // 
@@ -1795,7 +1690,7 @@
             this.labelX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX26.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX26.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX26.Location = new System.Drawing.Point(438, 5);
+            this.labelX26.Location = new System.Drawing.Point(420, 16);
             this.labelX26.Name = "labelX26";
             this.labelX26.Size = new System.Drawing.Size(49, 25);
             this.labelX26.TabIndex = 194;
@@ -1815,11 +1710,11 @@
             this.textBoxX65.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX65.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBoxX65.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.textBoxX65.Location = new System.Drawing.Point(5, 97);
+            this.textBoxX65.Location = new System.Drawing.Point(16, 108);
             this.textBoxX65.Multiline = true;
             this.textBoxX65.Name = "textBoxX65";
             this.textBoxX65.ReadOnly = true;
-            this.textBoxX65.Size = new System.Drawing.Size(134, 25);
+            this.textBoxX65.Size = new System.Drawing.Size(105, 25);
             this.textBoxX65.TabIndex = 139;
             this.textBoxX65.Text = "合計";
             this.textBoxX65.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1834,7 +1729,7 @@
             this.labelX27.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX27.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX27.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX27.Location = new System.Drawing.Point(387, 5);
+            this.labelX27.Location = new System.Drawing.Point(369, 16);
             this.labelX27.Name = "labelX27";
             this.labelX27.Size = new System.Drawing.Size(50, 25);
             this.labelX27.TabIndex = 138;
@@ -1851,7 +1746,7 @@
             this.labelX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX28.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX28.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX28.Location = new System.Drawing.Point(339, 5);
+            this.labelX28.Location = new System.Drawing.Point(321, 16);
             this.labelX28.Name = "labelX28";
             this.labelX28.Size = new System.Drawing.Size(50, 25);
             this.labelX28.TabIndex = 137;
@@ -1868,7 +1763,7 @@
             this.labelX29.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX29.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX29.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX29.Location = new System.Drawing.Point(288, 5);
+            this.labelX29.Location = new System.Drawing.Point(270, 16);
             this.labelX29.Name = "labelX29";
             this.labelX29.Size = new System.Drawing.Size(50, 25);
             this.labelX29.TabIndex = 136;
@@ -1885,7 +1780,7 @@
             this.labelX30.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX30.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX30.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX30.Location = new System.Drawing.Point(239, 5);
+            this.labelX30.Location = new System.Drawing.Point(221, 16);
             this.labelX30.Name = "labelX30";
             this.labelX30.Size = new System.Drawing.Size(50, 25);
             this.labelX30.TabIndex = 135;
@@ -1902,7 +1797,7 @@
             this.labelX31.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX31.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX31.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX31.Location = new System.Drawing.Point(188, 5);
+            this.labelX31.Location = new System.Drawing.Point(170, 16);
             this.labelX31.Name = "labelX31";
             this.labelX31.Size = new System.Drawing.Size(50, 25);
             this.labelX31.TabIndex = 134;
@@ -1919,2163 +1814,106 @@
             this.labelX32.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX32.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX32.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX32.Location = new System.Drawing.Point(138, 5);
+            this.labelX32.Location = new System.Drawing.Point(120, 16);
             this.labelX32.Name = "labelX32";
             this.labelX32.Size = new System.Drawing.Size(50, 25);
             this.labelX32.TabIndex = 133;
             this.labelX32.Text = "一上";
             this.labelX32.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
-            // tbNormalNormalSubjectRequiredBySchoolNonRequired
+            // tbSubjectRequiredBySchoolNonRequired
             // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Location = new System.Drawing.Point(81, 73);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Multiline = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Name = "tbNormalNormalSubjectRequiredBySchoolNonRequired";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Size = new System.Drawing.Size(58, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.TabIndex = 119;
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.Text = "選修";
-            this.tbNormalNormalSubjectRequiredBySchoolNonRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbSubjectRequiredBySchoolNonRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolNonRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolNonRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolNonRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolNonRequired.Border.Class = "TextBoxBorder";
+            this.tbSubjectRequiredBySchoolNonRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSubjectRequiredBySchoolNonRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSubjectRequiredBySchoolNonRequired.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSubjectRequiredBySchoolNonRequired.Location = new System.Drawing.Point(63, 84);
+            this.tbSubjectRequiredBySchoolNonRequired.Multiline = true;
+            this.tbSubjectRequiredBySchoolNonRequired.Name = "tbSubjectRequiredBySchoolNonRequired";
+            this.tbSubjectRequiredBySchoolNonRequired.ReadOnly = true;
+            this.tbSubjectRequiredBySchoolNonRequired.Size = new System.Drawing.Size(58, 25);
+            this.tbSubjectRequiredBySchoolNonRequired.TabIndex = 119;
+            this.tbSubjectRequiredBySchoolNonRequired.Text = "選修";
+            this.tbSubjectRequiredBySchoolNonRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tbNormalNormalSubjectRequiredBySchoolRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Location = new System.Drawing.Point(81, 49);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Multiline = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Name = "tbNormalNormalSubjectRequiredBySchoolRequired";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Size = new System.Drawing.Size(58, 25);
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.TabIndex = 118;
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.Text = "必修";
-            this.tbNormalNormalSubjectRequiredBySchoolRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubjectRequiredBySchool
+            // tbSubjectRequiredBySchoolRequired
             // 
             // 
             // 
             // 
-            this.tbNormalNormalSubjectRequiredBySchool.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchool.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchool.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchool.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubjectRequiredBySchool.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubjectRequiredBySchool.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubjectRequiredBySchool.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubjectRequiredBySchool.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubjectRequiredBySchool.Location = new System.Drawing.Point(34, 49);
-            this.tbNormalNormalSubjectRequiredBySchool.Multiline = true;
-            this.tbNormalNormalSubjectRequiredBySchool.Name = "tbNormalNormalSubjectRequiredBySchool";
-            this.tbNormalNormalSubjectRequiredBySchool.ReadOnly = true;
-            this.tbNormalNormalSubjectRequiredBySchool.Size = new System.Drawing.Size(48, 49);
-            this.tbNormalNormalSubjectRequiredBySchool.TabIndex = 117;
-            this.tbNormalNormalSubjectRequiredBySchool.Text = "校訂";
-            this.tbNormalNormalSubjectRequiredBySchool.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbSubjectRequiredBySchoolRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchoolRequired.Border.Class = "TextBoxBorder";
+            this.tbSubjectRequiredBySchoolRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSubjectRequiredBySchoolRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSubjectRequiredBySchoolRequired.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSubjectRequiredBySchoolRequired.Location = new System.Drawing.Point(63, 60);
+            this.tbSubjectRequiredBySchoolRequired.Multiline = true;
+            this.tbSubjectRequiredBySchoolRequired.Name = "tbSubjectRequiredBySchoolRequired";
+            this.tbSubjectRequiredBySchoolRequired.ReadOnly = true;
+            this.tbSubjectRequiredBySchoolRequired.Size = new System.Drawing.Size(58, 25);
+            this.tbSubjectRequiredBySchoolRequired.TabIndex = 118;
+            this.tbSubjectRequiredBySchoolRequired.Text = "必修";
+            this.tbSubjectRequiredBySchoolRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tbNormalNormalRequiredByDepart
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalNormalRequiredByDepart.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalRequiredByDepart.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalRequiredByDepart.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalRequiredByDepart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalRequiredByDepart.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalRequiredByDepart.Location = new System.Drawing.Point(34, 28);
-            this.tbNormalNormalRequiredByDepart.Multiline = true;
-            this.tbNormalNormalRequiredByDepart.Name = "tbNormalNormalRequiredByDepart";
-            this.tbNormalNormalRequiredByDepart.ReadOnly = true;
-            this.tbNormalNormalRequiredByDepart.Size = new System.Drawing.Size(105, 25);
-            this.tbNormalNormalRequiredByDepart.TabIndex = 116;
-            this.tbNormalNormalRequiredByDepart.Text = "部定";
-            this.tbNormalNormalRequiredByDepart.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalNormalSubject
+            // tbSubjectRequiredBySchool
             // 
             // 
             // 
             // 
-            this.tbNormalNormalSubject.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubject.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubject.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubject.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalNormalSubject.Border.Class = "TextBoxBorder";
-            this.tbNormalNormalSubject.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalNormalSubject.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalNormalSubject.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalNormalSubject.Location = new System.Drawing.Point(6, 25);
-            this.tbNormalNormalSubject.Multiline = true;
-            this.tbNormalNormalSubject.Name = "tbNormalNormalSubject";
-            this.tbNormalNormalSubject.ReadOnly = true;
-            this.tbNormalNormalSubject.Size = new System.Drawing.Size(29, 73);
-            this.tbNormalNormalSubject.TabIndex = 114;
-            this.tbNormalNormalSubject.Text = "學業";
-            this.tbNormalNormalSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbSubjectRequiredBySchool.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchool.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchool.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchool.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbSubjectRequiredBySchool.Border.Class = "TextBoxBorder";
+            this.tbSubjectRequiredBySchool.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbSubjectRequiredBySchool.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbSubjectRequiredBySchool.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbSubjectRequiredBySchool.Location = new System.Drawing.Point(16, 60);
+            this.tbSubjectRequiredBySchool.Multiline = true;
+            this.tbSubjectRequiredBySchool.Name = "tbSubjectRequiredBySchool";
+            this.tbSubjectRequiredBySchool.ReadOnly = true;
+            this.tbSubjectRequiredBySchool.Size = new System.Drawing.Size(48, 49);
+            this.tbSubjectRequiredBySchool.TabIndex = 117;
+            this.tbSubjectRequiredBySchool.Text = "校訂";
+            this.tbSubjectRequiredBySchool.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRequiredByDepart
+            // 
+            // 
+            // 
+            // 
+            this.tbRequiredByDepart.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.tbRequiredByDepart.Border.Class = "TextBoxBorder";
+            this.tbRequiredByDepart.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbRequiredByDepart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbRequiredByDepart.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.tbRequiredByDepart.Location = new System.Drawing.Point(16, 39);
+            this.tbRequiredByDepart.Multiline = true;
+            this.tbRequiredByDepart.Name = "tbRequiredByDepart";
+            this.tbRequiredByDepart.ReadOnly = true;
+            this.tbRequiredByDepart.Size = new System.Drawing.Size(105, 25);
+            this.tbRequiredByDepart.TabIndex = 116;
+            this.tbRequiredByDepart.Text = "部定";
+            this.tbRequiredByDepart.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbiCreditNormal
             // 
             this.tbiCreditNormal.AttachedControl = this.tabControlPanel9;
             this.tbiCreditNormal.Name = "tbiCreditNormal";
             this.tbiCreditNormal.Text = "普通型高中";
-            // 
-            // tabControlPanel8
-            // 
-            this.tabControlPanel8.AutoScroll = true;
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary3_2);
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary3_1);
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary2_2);
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary2_1);
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary1_2);
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary1_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPracticeSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessionalSummary);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequiredSummary);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequiredSummary);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepartSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice3_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice3_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice2_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice2_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice1_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice1_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional3_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional3_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional2_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional2_1);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional1_2);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional1_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired3_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired3_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired2_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired2_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired1_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired1_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired3_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired3_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired2_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired2_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired1_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired1_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart3_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart3_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart2_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart2_1);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart1_2);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart1_1);
-            this.tabControlPanel8.Controls.Add(this.tbCreditSummary);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectSummation);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPracticeRequired);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfessionRequired);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolPractice);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchoolProfession);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartPractice);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepartProfessional);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredBySchool);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubjectRequiredByDepart);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolNonRequired);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchoolRequired);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbySchool);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubjectRequiredbyDepart);
-            this.tabControlPanel8.Controls.Add(this.tbProfessionalSubject);
-            this.tabControlPanel8.Controls.Add(this.tbNormalSubject);
-            this.tabControlPanel8.Controls.Add(this.textBoxX2);
-            this.tabControlPanel8.Controls.Add(this.labelX25);
-            this.tabControlPanel8.Controls.Add(this.labelX23);
-            this.tabControlPanel8.Controls.Add(this.labelX24);
-            this.tabControlPanel8.Controls.Add(this.labelX21);
-            this.tabControlPanel8.Controls.Add(this.labelX22);
-            this.tabControlPanel8.Controls.Add(this.labelX20);
-            this.tabControlPanel8.Controls.Add(this.labelX19);
-            this.tabControlPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel8.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel8.Name = "tabControlPanel8";
-            this.tabControlPanel8.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel8.Size = new System.Drawing.Size(512, 276);
-            this.tabControlPanel8.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel8.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel8.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel8.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel8.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel8.Style.GradientAngle = 90;
-            this.tabControlPanel8.TabIndex = 1;
-            this.tabControlPanel8.TabItem = this.tbiCreditTechnical;
-            // 
-            // tbCreditSummary3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_2.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary3_2.Location = new System.Drawing.Point(403, 237);
-            this.tbCreditSummary3_2.Name = "tbCreditSummary3_2";
-            this.tbCreditSummary3_2.ReadOnly = true;
-            this.tbCreditSummary3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary3_2.TabIndex = 212;
-            this.tbCreditSummary3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary3_1.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary3_1.Location = new System.Drawing.Point(353, 237);
-            this.tbCreditSummary3_1.Name = "tbCreditSummary3_1";
-            this.tbCreditSummary3_1.ReadOnly = true;
-            this.tbCreditSummary3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary3_1.TabIndex = 211;
-            this.tbCreditSummary3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_2.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary2_2.Location = new System.Drawing.Point(302, 237);
-            this.tbCreditSummary2_2.Name = "tbCreditSummary2_2";
-            this.tbCreditSummary2_2.ReadOnly = true;
-            this.tbCreditSummary2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbCreditSummary2_2.TabIndex = 210;
-            this.tbCreditSummary2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary2_1.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary2_1.Location = new System.Drawing.Point(251, 237);
-            this.tbCreditSummary2_1.Name = "tbCreditSummary2_1";
-            this.tbCreditSummary2_1.ReadOnly = true;
-            this.tbCreditSummary2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbCreditSummary2_1.TabIndex = 209;
-            this.tbCreditSummary2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_2.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary1_2.Location = new System.Drawing.Point(200, 237);
-            this.tbCreditSummary1_2.Name = "tbCreditSummary1_2";
-            this.tbCreditSummary1_2.ReadOnly = true;
-            this.tbCreditSummary1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbCreditSummary1_2.TabIndex = 208;
-            this.tbCreditSummary1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary1_1.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary1_1.Location = new System.Drawing.Point(150, 237);
-            this.tbCreditSummary1_1.Name = "tbCreditSummary1_1";
-            this.tbCreditSummary1_1.ReadOnly = true;
-            this.tbCreditSummary1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary1_1.TabIndex = 207;
-            this.tbCreditSummary1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Location = new System.Drawing.Point(453, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.TabIndex = 112;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Location = new System.Drawing.Point(453, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.TabIndex = 111;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Location = new System.Drawing.Point(453, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.TabIndex = 110;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Location = new System.Drawing.Point(453, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.TabIndex = 109;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPracticeSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Location = new System.Drawing.Point(453, 117);
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Name = "tbProfessionalSubjectRequiredByDepartPracticeSummary";
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.TabIndex = 107;
-            this.tbProfessionalSubjectRequiredByDepartPracticeSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessionalSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Location = new System.Drawing.Point(453, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Name = "tbProfessionalSubjectRequiredByDepartProfessionalSummary";
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.TabIndex = 106;
-            this.tbProfessionalSubjectRequiredByDepartProfessionalSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequiredSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Location = new System.Drawing.Point(453, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Name = "tbNormalSubjectRequiredbySchoolNonRequiredSummary";
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.TabIndex = 104;
-            this.tbNormalSubjectRequiredbySchoolNonRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequiredSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Location = new System.Drawing.Point(453, 45);
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Name = "tbNormalSubjectRequiredbySchoolRequiredSummary";
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.TabIndex = 103;
-            this.tbNormalSubjectRequiredbySchoolRequiredSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepartSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepartSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepartSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepartSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepartSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepartSummary.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepartSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepartSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepartSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepartSummary.Location = new System.Drawing.Point(453, 21);
-            this.tbNormalSubjectRequiredbyDepartSummary.Name = "tbNormalSubjectRequiredbyDepartSummary";
-            this.tbNormalSubjectRequiredbyDepartSummary.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepartSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbyDepartSummary.TabIndex = 102;
-            this.tbNormalSubjectRequiredbyDepartSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Location = new System.Drawing.Point(403, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.TabIndex = 94;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Location = new System.Drawing.Point(353, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.TabIndex = 93;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Location = new System.Drawing.Point(302, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.TabIndex = 92;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Location = new System.Drawing.Point(251, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.TabIndex = 91;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Location = new System.Drawing.Point(200, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.TabIndex = 90;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Location = new System.Drawing.Point(150, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.TabIndex = 89;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Location = new System.Drawing.Point(403, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.TabIndex = 88;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Location = new System.Drawing.Point(353, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.TabIndex = 87;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Location = new System.Drawing.Point(302, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.TabIndex = 86;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Location = new System.Drawing.Point(251, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.TabIndex = 85;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Location = new System.Drawing.Point(200, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.TabIndex = 84;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Location = new System.Drawing.Point(150, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.TabIndex = 83;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Location = new System.Drawing.Point(403, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.TabIndex = 82;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Location = new System.Drawing.Point(353, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.TabIndex = 81;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Location = new System.Drawing.Point(302, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.TabIndex = 80;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Location = new System.Drawing.Point(251, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.TabIndex = 79;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Location = new System.Drawing.Point(200, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.TabIndex = 78;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Location = new System.Drawing.Point(150, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.TabIndex = 77;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Location = new System.Drawing.Point(403, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.TabIndex = 76;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Location = new System.Drawing.Point(353, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.TabIndex = 75;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Location = new System.Drawing.Point(302, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.TabIndex = 74;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Location = new System.Drawing.Point(251, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.TabIndex = 73;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Location = new System.Drawing.Point(200, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.TabIndex = 72;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Location = new System.Drawing.Point(150, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.TabIndex = 71;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Location = new System.Drawing.Point(403, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Name = "tbProfessionalSubjectRequiredByDepartPractice3_2";
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.TabIndex = 64;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Location = new System.Drawing.Point(353, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Name = "tbProfessionalSubjectRequiredByDepartPractice3_1";
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.TabIndex = 63;
-            this.tbProfessionalSubjectRequiredByDepartPractice3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Location = new System.Drawing.Point(302, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Name = "tbProfessionalSubjectRequiredByDepartPractice2_2";
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.TabIndex = 62;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Location = new System.Drawing.Point(251, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Name = "tbProfessionalSubjectRequiredByDepartPractice2_1";
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.TabIndex = 61;
-            this.tbProfessionalSubjectRequiredByDepartPractice2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Location = new System.Drawing.Point(200, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Name = "tbProfessionalSubjectRequiredByDepartPractice1_2";
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.TabIndex = 60;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Location = new System.Drawing.Point(150, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Name = "tbProfessionalSubjectRequiredByDepartPractice1_1";
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.TabIndex = 59;
-            this.tbProfessionalSubjectRequiredByDepartPractice1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Location = new System.Drawing.Point(403, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Name = "tbProfessionalSubjectRequiredByDepartProfessional3_2";
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.TabIndex = 58;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Location = new System.Drawing.Point(353, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Name = "tbProfessionalSubjectRequiredByDepartProfessional3_1";
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.TabIndex = 57;
-            this.tbProfessionalSubjectRequiredByDepartProfessional3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Location = new System.Drawing.Point(302, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Name = "tbProfessionalSubjectRequiredByDepartProfessional2_2";
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.TabIndex = 56;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Location = new System.Drawing.Point(251, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Name = "tbProfessionalSubjectRequiredByDepartProfessional2_1";
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.TabIndex = 55;
-            this.tbProfessionalSubjectRequiredByDepartProfessional2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Location = new System.Drawing.Point(200, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Name = "tbProfessionalSubjectRequiredByDepartProfessional1_2";
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.TabIndex = 54;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Location = new System.Drawing.Point(150, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Name = "tbProfessionalSubjectRequiredByDepartProfessional1_1";
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.TabIndex = 53;
-            this.tbProfessionalSubjectRequiredByDepartProfessional1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Location = new System.Drawing.Point(403, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Name = "tbNormalSubjectRequiredbySchoolNonRequired3_2";
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.TabIndex = 46;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Location = new System.Drawing.Point(353, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Name = "tbNormalSubjectRequiredbySchoolNonRequired3_1";
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.TabIndex = 45;
-            this.tbNormalSubjectRequiredbySchoolNonRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Location = new System.Drawing.Point(302, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Name = "tbNormalSubjectRequiredbySchoolNonRequired2_2";
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.TabIndex = 44;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Location = new System.Drawing.Point(251, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Name = "tbNormalSubjectRequiredbySchoolNonRequired2_1";
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.TabIndex = 43;
-            this.tbNormalSubjectRequiredbySchoolNonRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Location = new System.Drawing.Point(200, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Name = "tbNormalSubjectRequiredbySchoolNonRequired1_2";
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.TabIndex = 42;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Location = new System.Drawing.Point(150, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Name = "tbNormalSubjectRequiredbySchoolNonRequired1_1";
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.TabIndex = 41;
-            this.tbNormalSubjectRequiredbySchoolNonRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Location = new System.Drawing.Point(403, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Name = "tbNormalSubjectRequiredbySchoolRequired3_2";
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.TabIndex = 40;
-            this.tbNormalSubjectRequiredbySchoolRequired3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Location = new System.Drawing.Point(353, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Name = "tbNormalSubjectRequiredbySchoolRequired3_1";
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.TabIndex = 39;
-            this.tbNormalSubjectRequiredbySchoolRequired3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Location = new System.Drawing.Point(302, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Name = "tbNormalSubjectRequiredbySchoolRequired2_2";
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.TabIndex = 38;
-            this.tbNormalSubjectRequiredbySchoolRequired2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Location = new System.Drawing.Point(251, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Name = "tbNormalSubjectRequiredbySchoolRequired2_1";
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.TabIndex = 37;
-            this.tbNormalSubjectRequiredbySchoolRequired2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Location = new System.Drawing.Point(200, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Name = "tbNormalSubjectRequiredbySchoolRequired1_2";
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.TabIndex = 36;
-            this.tbNormalSubjectRequiredbySchoolRequired1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Location = new System.Drawing.Point(150, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Name = "tbNormalSubjectRequiredbySchoolRequired1_1";
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.TabIndex = 35;
-            this.tbNormalSubjectRequiredbySchoolRequired1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart3_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart3_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart3_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart3_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart3_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart3_2.Location = new System.Drawing.Point(403, 21);
-            this.tbNormalSubjectRequiredbyDepart3_2.Name = "tbNormalSubjectRequiredbyDepart3_2";
-            this.tbNormalSubjectRequiredbyDepart3_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart3_2.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbyDepart3_2.TabIndex = 34;
-            this.tbNormalSubjectRequiredbyDepart3_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart3_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart3_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart3_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart3_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart3_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart3_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart3_1.Location = new System.Drawing.Point(353, 21);
-            this.tbNormalSubjectRequiredbyDepart3_1.Name = "tbNormalSubjectRequiredbyDepart3_1";
-            this.tbNormalSubjectRequiredbyDepart3_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart3_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbyDepart3_1.TabIndex = 33;
-            this.tbNormalSubjectRequiredbyDepart3_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart2_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart2_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart2_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart2_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart2_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart2_2.Location = new System.Drawing.Point(302, 21);
-            this.tbNormalSubjectRequiredbyDepart2_2.Name = "tbNormalSubjectRequiredbyDepart2_2";
-            this.tbNormalSubjectRequiredbyDepart2_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart2_2.Size = new System.Drawing.Size(58, 25);
-            this.tbNormalSubjectRequiredbyDepart2_2.TabIndex = 32;
-            this.tbNormalSubjectRequiredbyDepart2_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart2_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart2_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart2_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart2_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart2_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart2_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart2_1.Location = new System.Drawing.Point(251, 21);
-            this.tbNormalSubjectRequiredbyDepart2_1.Name = "tbNormalSubjectRequiredbyDepart2_1";
-            this.tbNormalSubjectRequiredbyDepart2_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart2_1.Size = new System.Drawing.Size(53, 25);
-            this.tbNormalSubjectRequiredbyDepart2_1.TabIndex = 31;
-            this.tbNormalSubjectRequiredbyDepart2_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart1_2
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart1_2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_2.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart1_2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart1_2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart1_2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart1_2.Location = new System.Drawing.Point(200, 21);
-            this.tbNormalSubjectRequiredbyDepart1_2.Name = "tbNormalSubjectRequiredbyDepart1_2";
-            this.tbNormalSubjectRequiredbyDepart1_2.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart1_2.Size = new System.Drawing.Size(52, 25);
-            this.tbNormalSubjectRequiredbyDepart1_2.TabIndex = 30;
-            this.tbNormalSubjectRequiredbyDepart1_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart1_1
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart1_1.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_1.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_1.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_1.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart1_1.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart1_1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart1_1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart1_1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart1_1.Location = new System.Drawing.Point(150, 21);
-            this.tbNormalSubjectRequiredbyDepart1_1.Name = "tbNormalSubjectRequiredbyDepart1_1";
-            this.tbNormalSubjectRequiredbyDepart1_1.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart1_1.Size = new System.Drawing.Size(51, 25);
-            this.tbNormalSubjectRequiredbyDepart1_1.TabIndex = 29;
-            this.tbNormalSubjectRequiredbyDepart1_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbCreditSummary
-            // 
-            // 
-            // 
-            // 
-            this.tbCreditSummary.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbCreditSummary.Border.Class = "TextBoxBorder";
-            this.tbCreditSummary.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCreditSummary.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbCreditSummary.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbCreditSummary.Location = new System.Drawing.Point(453, 237);
-            this.tbCreditSummary.Name = "tbCreditSummary";
-            this.tbCreditSummary.ReadOnly = true;
-            this.tbCreditSummary.Size = new System.Drawing.Size(51, 25);
-            this.tbCreditSummary.TabIndex = 113;
-            this.tbCreditSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectSummation
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectSummation.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectSummation.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectSummation.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectSummation.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectSummation.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectSummation.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectSummation.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectSummation.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectSummation.Location = new System.Drawing.Point(3, 237);
-            this.tbProfessionalSubjectSummation.Multiline = true;
-            this.tbProfessionalSubjectSummation.Name = "tbProfessionalSubjectSummation";
-            this.tbProfessionalSubjectSummation.ReadOnly = true;
-            this.tbProfessionalSubjectSummation.Size = new System.Drawing.Size(148, 25);
-            this.tbProfessionalSubjectSummation.TabIndex = 28;
-            this.tbProfessionalSubjectSummation.Text = "合計";
-            this.tbProfessionalSubjectSummation.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeNonRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Location = new System.Drawing.Point(98, 213);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Name = "tbProfessionalSubjectRequiredBySchoolPracticeNonRequired";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.TabIndex = 17;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text = "選修";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPracticeRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Location = new System.Drawing.Point(98, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Name = "tbProfessionalSubjectRequiredBySchoolPracticeRequired";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.TabIndex = 16;
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text = "必修";
-            this.tbProfessionalSubjectRequiredBySchoolPracticeRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionNonRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Location = new System.Drawing.Point(98, 165);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Name = "tbProfessionalSubjectRequiredBySchoolProfessionNonRequired";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.TabIndex = 15;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text = "選修";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfessionRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Location = new System.Drawing.Point(98, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Name = "tbProfessionalSubjectRequiredBySchoolProfessionRequired";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Size = new System.Drawing.Size(53, 25);
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.TabIndex = 14;
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text = "必修";
-            this.tbProfessionalSubjectRequiredBySchoolProfessionRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolPractice
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Border.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolPractice.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Location = new System.Drawing.Point(53, 189);
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Name = "tbProfessionalSubjectRequiredBySchoolPractice";
-            this.tbProfessionalSubjectRequiredBySchoolPractice.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Size = new System.Drawing.Size(46, 49);
-            this.tbProfessionalSubjectRequiredBySchoolPractice.TabIndex = 13;
-            this.tbProfessionalSubjectRequiredBySchoolPractice.Text = "實習科目";
-            this.tbProfessionalSubjectRequiredBySchoolPractice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchoolProfession
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Border.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchoolProfession.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Location = new System.Drawing.Point(53, 141);
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Name = "tbProfessionalSubjectRequiredBySchoolProfession";
-            this.tbProfessionalSubjectRequiredBySchoolProfession.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Size = new System.Drawing.Size(46, 49);
-            this.tbProfessionalSubjectRequiredBySchoolProfession.TabIndex = 12;
-            this.tbProfessionalSubjectRequiredBySchoolProfession.Text = "專業科目";
-            this.tbProfessionalSubjectRequiredBySchoolProfession.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartPractice
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartPractice.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartPractice.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartPractice.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Location = new System.Drawing.Point(53, 117);
-            this.tbProfessionalSubjectRequiredByDepartPractice.Multiline = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Name = "tbProfessionalSubjectRequiredByDepartPractice";
-            this.tbProfessionalSubjectRequiredByDepartPractice.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Size = new System.Drawing.Size(98, 25);
-            this.tbProfessionalSubjectRequiredByDepartPractice.TabIndex = 10;
-            this.tbProfessionalSubjectRequiredByDepartPractice.Text = "實習科目";
-            this.tbProfessionalSubjectRequiredByDepartPractice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepartProfessional
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepartProfessional.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Location = new System.Drawing.Point(53, 93);
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Multiline = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Name = "tbProfessionalSubjectRequiredByDepartProfessional";
-            this.tbProfessionalSubjectRequiredByDepartProfessional.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Size = new System.Drawing.Size(98, 25);
-            this.tbProfessionalSubjectRequiredByDepartProfessional.TabIndex = 9;
-            this.tbProfessionalSubjectRequiredByDepartProfessional.Text = "專業科目";
-            this.tbProfessionalSubjectRequiredByDepartProfessional.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredBySchool
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredBySchool.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchool.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchool.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchool.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredBySchool.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredBySchool.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredBySchool.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredBySchool.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredBySchool.Location = new System.Drawing.Point(28, 141);
-            this.tbProfessionalSubjectRequiredBySchool.Multiline = true;
-            this.tbProfessionalSubjectRequiredBySchool.Name = "tbProfessionalSubjectRequiredBySchool";
-            this.tbProfessionalSubjectRequiredBySchool.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredBySchool.Size = new System.Drawing.Size(26, 97);
-            this.tbProfessionalSubjectRequiredBySchool.TabIndex = 8;
-            this.tbProfessionalSubjectRequiredBySchool.Text = "校訂";
-            this.tbProfessionalSubjectRequiredBySchool.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubjectRequiredByDepart
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubjectRequiredByDepart.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepart.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepart.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepart.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubjectRequiredByDepart.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubjectRequiredByDepart.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubjectRequiredByDepart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubjectRequiredByDepart.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubjectRequiredByDepart.Location = new System.Drawing.Point(28, 93);
-            this.tbProfessionalSubjectRequiredByDepart.Multiline = true;
-            this.tbProfessionalSubjectRequiredByDepart.Name = "tbProfessionalSubjectRequiredByDepart";
-            this.tbProfessionalSubjectRequiredByDepart.ReadOnly = true;
-            this.tbProfessionalSubjectRequiredByDepart.Size = new System.Drawing.Size(26, 49);
-            this.tbProfessionalSubjectRequiredByDepart.TabIndex = 7;
-            this.tbProfessionalSubjectRequiredByDepart.Text = "部定";
-            this.tbProfessionalSubjectRequiredByDepart.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolNonRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolNonRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Location = new System.Drawing.Point(53, 69);
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Multiline = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Name = "tbNormalSubjectRequiredbySchoolNonRequired";
-            this.tbNormalSubjectRequiredbySchoolNonRequired.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Size = new System.Drawing.Size(98, 25);
-            this.tbNormalSubjectRequiredbySchoolNonRequired.TabIndex = 5;
-            this.tbNormalSubjectRequiredbySchoolNonRequired.Text = "選修";
-            this.tbNormalSubjectRequiredbySchoolNonRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchoolRequired
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchoolRequired.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchoolRequired.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchoolRequired.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchoolRequired.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchoolRequired.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchoolRequired.Location = new System.Drawing.Point(53, 45);
-            this.tbNormalSubjectRequiredbySchoolRequired.Multiline = true;
-            this.tbNormalSubjectRequiredbySchoolRequired.Name = "tbNormalSubjectRequiredbySchoolRequired";
-            this.tbNormalSubjectRequiredbySchoolRequired.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchoolRequired.Size = new System.Drawing.Size(98, 25);
-            this.tbNormalSubjectRequiredbySchoolRequired.TabIndex = 4;
-            this.tbNormalSubjectRequiredbySchoolRequired.Text = "必修";
-            this.tbNormalSubjectRequiredbySchoolRequired.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbySchool
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbySchool.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchool.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchool.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchool.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbySchool.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbySchool.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbySchool.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbySchool.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbySchool.Location = new System.Drawing.Point(28, 45);
-            this.tbNormalSubjectRequiredbySchool.Multiline = true;
-            this.tbNormalSubjectRequiredbySchool.Name = "tbNormalSubjectRequiredbySchool";
-            this.tbNormalSubjectRequiredbySchool.ReadOnly = true;
-            this.tbNormalSubjectRequiredbySchool.Size = new System.Drawing.Size(26, 49);
-            this.tbNormalSubjectRequiredbySchool.TabIndex = 3;
-            this.tbNormalSubjectRequiredbySchool.Text = "校訂";
-            this.tbNormalSubjectRequiredbySchool.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubjectRequiredbyDepart
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubjectRequiredbyDepart.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubjectRequiredbyDepart.Border.Class = "TextBoxBorder";
-            this.tbNormalSubjectRequiredbyDepart.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubjectRequiredbyDepart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubjectRequiredbyDepart.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubjectRequiredbyDepart.Location = new System.Drawing.Point(28, 21);
-            this.tbNormalSubjectRequiredbyDepart.Multiline = true;
-            this.tbNormalSubjectRequiredbyDepart.Name = "tbNormalSubjectRequiredbyDepart";
-            this.tbNormalSubjectRequiredbyDepart.ReadOnly = true;
-            this.tbNormalSubjectRequiredbyDepart.Size = new System.Drawing.Size(123, 25);
-            this.tbNormalSubjectRequiredbyDepart.TabIndex = 2;
-            this.tbNormalSubjectRequiredbyDepart.Text = "部定";
-            this.tbNormalSubjectRequiredbyDepart.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbProfessionalSubject
-            // 
-            // 
-            // 
-            // 
-            this.tbProfessionalSubject.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubject.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubject.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubject.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbProfessionalSubject.Border.Class = "TextBoxBorder";
-            this.tbProfessionalSubject.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbProfessionalSubject.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbProfessionalSubject.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbProfessionalSubject.Location = new System.Drawing.Point(3, 93);
-            this.tbProfessionalSubject.Multiline = true;
-            this.tbProfessionalSubject.Name = "tbProfessionalSubject";
-            this.tbProfessionalSubject.ReadOnly = true;
-            this.tbProfessionalSubject.Size = new System.Drawing.Size(26, 145);
-            this.tbProfessionalSubject.TabIndex = 1;
-            this.tbProfessionalSubject.Text = "專業及\r\n實習科目";
-            this.tbProfessionalSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbNormalSubject
-            // 
-            // 
-            // 
-            // 
-            this.tbNormalSubject.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubject.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubject.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubject.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.tbNormalSubject.Border.Class = "TextBoxBorder";
-            this.tbNormalSubject.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbNormalSubject.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbNormalSubject.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbNormalSubject.Location = new System.Drawing.Point(3, 21);
-            this.tbNormalSubject.Multiline = true;
-            this.tbNormalSubject.Name = "tbNormalSubject";
-            this.tbNormalSubject.ReadOnly = true;
-            this.tbNormalSubject.Size = new System.Drawing.Size(26, 73);
-            this.tbNormalSubject.TabIndex = 0;
-            this.tbNormalSubject.Text = "學業";
-            this.tbNormalSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBoxX2
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX2.Border.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.textBoxX2.Border.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.textBoxX2.Border.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.textBoxX2.Border.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.textBoxX2.Border.Class = "TextBoxBorder";
-            this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBoxX2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.textBoxX2.Location = new System.Drawing.Point(3, 0);
-            this.textBoxX2.Multiline = true;
-            this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.ReadOnly = true;
-            this.textBoxX2.Size = new System.Drawing.Size(148, 22);
-            this.textBoxX2.TabIndex = 206;
-            this.textBoxX2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // labelX25
-            // 
-            // 
-            // 
-            // 
-            this.labelX25.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX25.BackgroundStyle.Class = "";
-            this.labelX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX25.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX25.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX25.Location = new System.Drawing.Point(454, 1);
-            this.labelX25.Name = "labelX25";
-            this.labelX25.Size = new System.Drawing.Size(49, 22);
-            this.labelX25.TabIndex = 101;
-            this.labelX25.Text = "總計";
-            this.labelX25.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // labelX23
-            // 
-            // 
-            // 
-            // 
-            this.labelX23.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX23.BackgroundStyle.Class = "";
-            this.labelX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX23.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX23.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX23.Location = new System.Drawing.Point(403, 1);
-            this.labelX23.Name = "labelX23";
-            this.labelX23.Size = new System.Drawing.Size(50, 22);
-            this.labelX23.TabIndex = 26;
-            this.labelX23.Text = "三下";
-            this.labelX23.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // labelX24
-            // 
-            // 
-            // 
-            // 
-            this.labelX24.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX24.BackgroundStyle.Class = "";
-            this.labelX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX24.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX24.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX24.Location = new System.Drawing.Point(354, 1);
-            this.labelX24.Name = "labelX24";
-            this.labelX24.Size = new System.Drawing.Size(50, 22);
-            this.labelX24.TabIndex = 25;
-            this.labelX24.Text = "三上";
-            this.labelX24.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // labelX21
-            // 
-            // 
-            // 
-            // 
-            this.labelX21.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX21.BackgroundStyle.Class = "";
-            this.labelX21.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX21.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX21.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX21.Location = new System.Drawing.Point(302, 1);
-            this.labelX21.Name = "labelX21";
-            this.labelX21.Size = new System.Drawing.Size(51, 22);
-            this.labelX21.TabIndex = 24;
-            this.labelX21.Text = "二下";
-            this.labelX21.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // labelX22
-            // 
-            // 
-            // 
-            // 
-            this.labelX22.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX22.BackgroundStyle.Class = "";
-            this.labelX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX22.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX22.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX22.Location = new System.Drawing.Point(252, 1);
-            this.labelX22.Name = "labelX22";
-            this.labelX22.Size = new System.Drawing.Size(51, 22);
-            this.labelX22.TabIndex = 23;
-            this.labelX22.Text = "二上";
-            this.labelX22.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // labelX20
-            // 
-            // 
-            // 
-            // 
-            this.labelX20.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX20.BackgroundStyle.Class = "";
-            this.labelX20.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX20.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX20.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX20.Location = new System.Drawing.Point(200, 1);
-            this.labelX20.Name = "labelX20";
-            this.labelX20.Size = new System.Drawing.Size(51, 22);
-            this.labelX20.TabIndex = 22;
-            this.labelX20.Text = "一下";
-            this.labelX20.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // labelX19
-            // 
-            // 
-            // 
-            // 
-            this.labelX19.BackgroundStyle.BorderColor = System.Drawing.Color.Black;
-            this.labelX19.BackgroundStyle.Class = "";
-            this.labelX19.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX19.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelX19.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.labelX19.Location = new System.Drawing.Point(151, 1);
-            this.labelX19.Name = "labelX19";
-            this.labelX19.Size = new System.Drawing.Size(50, 22);
-            this.labelX19.TabIndex = 21;
-            this.labelX19.Text = "一上";
-            this.labelX19.TextAlignment = System.Drawing.StringAlignment.Center;
-            // 
-            // tbiCreditTechnical
-            // 
-            this.tbiCreditTechnical.AttachedControl = this.tabControlPanel8;
-            this.tbiCreditTechnical.Name = "tbiCreditTechnical";
-            this.tbiCreditTechnical.Text = "技術型高中";
             // 
             // gpCourseGroupSetCourseGroupName
             // 
@@ -4085,7 +1923,7 @@
             this.gpCourseGroupSetCourseGroupName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gpCourseGroupSetCourseGroupName.Location = new System.Drawing.Point(3, 3);
             this.gpCourseGroupSetCourseGroupName.Name = "gpCourseGroupSetCourseGroupName";
-            this.gpCourseGroupSetCourseGroupName.Size = new System.Drawing.Size(518, 294);
+            this.gpCourseGroupSetCourseGroupName.Size = new System.Drawing.Size(488, 400);
             // 
             // 
             // 
@@ -4132,7 +1970,7 @@
             this.tlpCourseGroupSetting.RowCount = 2;
             this.tlpCourseGroupSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpCourseGroupSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCourseGroupSetting.Size = new System.Drawing.Size(512, 267);
+            this.tlpCourseGroupSetting.Size = new System.Drawing.Size(482, 373);
             this.tlpCourseGroupSetting.TabIndex = 22;
             // 
             // dgvCourseGroupManageGroup
@@ -4142,35 +1980,35 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCourseGroupManageGroup.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCourseGroupManageGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCourseGroupManageGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
             this.dgvCourseGroupManageGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseGroupManageGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCourseGroupColor,
             this.colCourseGroupName,
             this.colCourseGroupCredit,
             this.colSetSchoolYearCouse});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCourseGroupManageGroup.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCourseGroupManageGroup.DefaultCellStyle = dataGridViewCellStyle24;
             this.dgvCourseGroupManageGroup.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvCourseGroupManageGroup.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dgvCourseGroupManageGroup.Location = new System.Drawing.Point(3, 23);
             this.dgvCourseGroupManageGroup.Name = "dgvCourseGroupManageGroup";
             this.dgvCourseGroupManageGroup.RowTemplate.Height = 24;
             this.dgvCourseGroupManageGroup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCourseGroupManageGroup.Size = new System.Drawing.Size(506, 241);
+            this.dgvCourseGroupManageGroup.Size = new System.Drawing.Size(476, 347);
             this.dgvCourseGroupManageGroup.TabIndex = 21;
             this.dgvCourseGroupManageGroup.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourseGroupManageGroup_CellEndEdit);
             this.dgvCourseGroupManageGroup.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCourseGroupManageGroup_CellMouseUp);
@@ -4193,8 +2031,8 @@
             // 
             // colCourseGroupCredit
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colCourseGroupCredit.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colCourseGroupCredit.DefaultCellStyle = dataGridViewCellStyle23;
             this.colCourseGroupCredit.HeaderText = "單一學期修課學分數";
             this.colCourseGroupCredit.MinimumWidth = 20;
             this.colCourseGroupCredit.Name = "colCourseGroupCredit";
@@ -4217,14 +2055,14 @@
             this.plCourseGroupSettingOption.Location = new System.Drawing.Point(0, 0);
             this.plCourseGroupSettingOption.Margin = new System.Windows.Forms.Padding(0);
             this.plCourseGroupSettingOption.Name = "plCourseGroupSettingOption";
-            this.plCourseGroupSettingOption.Size = new System.Drawing.Size(512, 20);
+            this.plCourseGroupSettingOption.Size = new System.Drawing.Size(482, 20);
             this.plCourseGroupSettingOption.TabIndex = 22;
             // 
             // lbCopyCourseGroupSetting
             // 
             this.lbCopyCourseGroupSetting.AutoSize = true;
             this.lbCopyCourseGroupSetting.BackColor = System.Drawing.Color.Transparent;
-            this.lbCopyCourseGroupSetting.Location = new System.Drawing.Point(336, 3);
+            this.lbCopyCourseGroupSetting.Location = new System.Drawing.Point(311, 3);
             this.lbCopyCourseGroupSetting.Name = "lbCopyCourseGroupSetting";
             this.lbCopyCourseGroupSetting.Size = new System.Drawing.Size(86, 17);
             this.lbCopyCourseGroupSetting.TabIndex = 18;
@@ -4236,7 +2074,7 @@
             // 
             this.lbDeleteCourseGroup.AutoSize = true;
             this.lbDeleteCourseGroup.BackColor = System.Drawing.Color.Transparent;
-            this.lbDeleteCourseGroup.Location = new System.Drawing.Point(470, 3);
+            this.lbDeleteCourseGroup.Location = new System.Drawing.Point(445, 3);
             this.lbDeleteCourseGroup.Name = "lbDeleteCourseGroup";
             this.lbDeleteCourseGroup.Size = new System.Drawing.Size(34, 17);
             this.lbDeleteCourseGroup.TabIndex = 20;
@@ -4248,7 +2086,7 @@
             // 
             this.lbInsertCourseGroup.AutoSize = true;
             this.lbInsertCourseGroup.BackColor = System.Drawing.Color.Transparent;
-            this.lbInsertCourseGroup.Location = new System.Drawing.Point(429, 3);
+            this.lbInsertCourseGroup.Location = new System.Drawing.Point(404, 3);
             this.lbInsertCourseGroup.Name = "lbInsertCourseGroup";
             this.lbInsertCourseGroup.Size = new System.Drawing.Size(34, 17);
             this.lbInsertCourseGroup.TabIndex = 19;
@@ -4320,14 +2158,14 @@
             this.dgData.BackgroundColor = System.Drawing.Color.White;
             this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgData.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle25;
             this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgData.Location = new System.Drawing.Point(3, 33);
@@ -4852,14 +2690,14 @@
             this.dgvMain.AllowUserToDeleteRows = false;
             this.dgvMain.AllowUserToOrderColumns = true;
             this.dgvMain.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMain.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMain.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colMainRequiredBy,
@@ -4878,14 +2716,14 @@
             this.colMainStartLevel,
             this.colMainSubjectName,
             this.colMainSchoolYearGroupName});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMain.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMain.DefaultCellStyle = dataGridViewCellStyle26;
             this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMain.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvMain.Location = new System.Drawing.Point(0, 0);
@@ -5094,14 +2932,14 @@
             this.dgUDData.BackgroundColor = System.Drawing.Color.White;
             this.dgUDData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgUDData.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgUDData.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgUDData.DefaultCellStyle = dataGridViewCellStyle27;
             this.dgUDData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgUDData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgUDData.Location = new System.Drawing.Point(3, 33);
@@ -5190,14 +3028,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgCreditsSetUp.BackgroundColor = System.Drawing.Color.White;
             this.dgCreditsSetUp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgCreditsSetUp.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgCreditsSetUp.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgCreditsSetUp.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgCreditsSetUp.Location = new System.Drawing.Point(18, 52);
             this.dgCreditsSetUp.Name = "dgCreditsSetUp";
@@ -5272,7 +3110,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tcSwitchCreditStatistics)).EndInit();
             this.tcSwitchCreditStatistics.ResumeLayout(false);
             this.tabControlPanel9.ResumeLayout(false);
-            this.tabControlPanel8.ResumeLayout(false);
             this.gpCourseGroupSetCourseGroupName.ResumeLayout(false);
             this.tlpCourseGroupSetting.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseGroupManageGroup)).EndInit();
@@ -5396,120 +3233,30 @@
         private System.Windows.Forms.TableLayoutPanel tlpCourseGroupSettingAndCredit;
         private DevComponents.DotNetBar.Controls.GroupPanel gpCreditStatics;
         private DevComponents.DotNetBar.TabControl tcSwitchCreditStatistics;
-        private DevComponents.DotNetBar.TabControlPanel tabControlPanel8;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPracticeSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessionalSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepartSummary;
-        private DevComponents.DotNetBar.LabelX labelX25;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectSummation;
-        private DevComponents.DotNetBar.LabelX labelX23;
-        private DevComponents.DotNetBar.LabelX labelX24;
-        private DevComponents.DotNetBar.LabelX labelX21;
-        private DevComponents.DotNetBar.LabelX labelX22;
-        private DevComponents.DotNetBar.LabelX labelX20;
-        private DevComponents.DotNetBar.LabelX labelX19;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeNonRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPracticeRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionNonRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfessionRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolPractice;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchoolProfession;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartPractice;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepartProfessional;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredBySchool;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubjectRequiredByDepart;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolNonRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchoolRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbySchool;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubjectRequiredbyDepart;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbProfessionalSubject;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSubject;
-        private DevComponents.DotNetBar.TabItem tbiCreditTechnical;
         private DevComponents.DotNetBar.TabControlPanel tabControlPanel9;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequiredSummary;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepartSummary;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequiredSummary;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequiredSummary;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepartSummary;
         private DevComponents.DotNetBar.LabelX labelX26;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart1_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequired3_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequired3_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequired2_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequired2_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequired1_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolNonRequired1_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequired3_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequired3_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequired2_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequired2_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequired1_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredBySchoolRequired1_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart3_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart3_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart2_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart2_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart1_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart1_1;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX65;
         private DevComponents.DotNetBar.LabelX labelX27;
         private DevComponents.DotNetBar.LabelX labelX28;
@@ -5517,14 +3264,12 @@
         private DevComponents.DotNetBar.LabelX labelX30;
         private DevComponents.DotNetBar.LabelX labelX31;
         private DevComponents.DotNetBar.LabelX labelX32;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolNonRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchoolRequired;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubjectRequiredBySchool;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalRequiredByDepart;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalNormalSubject;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSubjectRequiredBySchoolNonRequired;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSubjectRequiredBySchoolRequired;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSubjectRequiredBySchool;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbRequiredByDepart;
         private DevComponents.DotNetBar.TabItem tbiCreditNormal;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX1;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX2;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupRequiredBy;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupRequired;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupSpecialCategory;
@@ -5555,18 +3300,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainSubjectName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainSchoolYearGroupName;
         private System.Windows.Forms.LinkLabel lbCacluateCredit;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbNormalSummary1_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary3_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary3_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary2_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary2_1;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary1_2;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbCreditSummary1_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary3_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary3_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary2_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary2_1;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary1_2;
+        private DevComponents.DotNetBar.Controls.TextBoxX tbSummary1_1;
         private System.Windows.Forms.DataGridViewImageColumn colCourseGroupColor;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseGroupCredit;
