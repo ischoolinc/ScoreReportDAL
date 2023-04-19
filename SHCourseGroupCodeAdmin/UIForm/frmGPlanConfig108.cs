@@ -62,28 +62,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         // 學分統計
         string _CourseType = ""; // 用來判斷學制的變數
-        List<DataGridViewCell> _One1CourseList = new List<DataGridViewCell>(); // 一上
-        List<DataGridViewCell> _One2CourseList = new List<DataGridViewCell>(); // 一下
-        List<DataGridViewCell> _Two1CourseList = new List<DataGridViewCell>(); // 二上
-        List<DataGridViewCell> _Two2CourseList = new List<DataGridViewCell>(); // 二下
-        List<DataGridViewCell> _Three1CourseList = new List<DataGridViewCell>(); // 三上
-        List<DataGridViewCell> _Three2CourseList = new List<DataGridViewCell>(); // 三下
 
-        //// 技術型高中學分統計TextBox清單
-        List<TextBoxX> _TechNormalSubjectRequiredbyDepartList;
-        List<TextBoxX> _TechNormalSubjectRequiredbySchoolRequiredList;
-        List<TextBoxX> _TechNormalSubjectRequiredbySchoolNonRequiredList;
-        List<TextBoxX> _TechProfessionalSubjectRequiredByDepartProfessionalList;
-        List<TextBoxX> _TechProfessionalSubjectRequiredByDepartPracticeList;
-        List<TextBoxX> _TechProfessionalSubjectRequiredBySchoolProfessionRequiredList;
-        List<TextBoxX> _TechProfessionalSubjectRequiredBySchoolProfessionNonRequiredList;
-        List<TextBoxX> _TechProfessionalSubjectRequiredBySchoolPracticeRequiredList;
-        List<TextBoxX> _TechProfessionalSubjectRequiredBySchoolPracticeNonRequiredList;
-
-        //// 普通型高中學分統計TextBox清單
-        List<TextBoxX> _NormalNormalRequiredByDepartList;
-        List<TextBoxX> _NormalNormalSubjectRequiredBySchoolRequiredList;
-        List<TextBoxX> _NormalNormalSubjectRequiredBySchoolNonRequiredList;
+        //// 學分統計TextBox清單
+        List<TextBoxX> _RequiredByDepartTextBoxList;
+        List<TextBoxX> _RequiredBySchoolRequiredTextBoxList;
+        List<TextBoxX> _RequiredBySchoolNonRequiredTextBoxList;
+        List<TextBoxX> _CourseGroupTextBoxList;
+        List<TextBoxX> _SpecialCategoryTextBoxList;
 
         public frmGPlanConfig108()
         {
@@ -101,123 +86,54 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _bgWorker.RunWorkerCompleted += _bgWorker_RunWorkerCompleted;
             _bgWorker.WorkerReportsProgress = true;
 
-            #region 學分統計
-
-            #region 技術型高中學分統計TextBox清單
-            _TechNormalSubjectRequiredbyDepartList = new List<TextBoxX>()
+            #region 學分統計TextBox清單
+            _RequiredByDepartTextBoxList = new List<TextBoxX>()
             {
-                tbNormalSubjectRequiredbyDepart1_1
-                , tbNormalSubjectRequiredbyDepart1_2
-                , tbNormalSubjectRequiredbyDepart2_1
-                , tbNormalSubjectRequiredbyDepart2_2
-                , tbNormalSubjectRequiredbyDepart3_1
-                , tbNormalSubjectRequiredbyDepart3_2
+                tbRequiredByDepart1_1
+                , tbRequiredByDepart1_2
+                , tbRequiredByDepart2_1
+                , tbRequiredByDepart2_2
+                , tbRequiredByDepart3_1
+                , tbRequiredByDepart3_2
             };
-            _TechNormalSubjectRequiredbySchoolRequiredList = new List<TextBoxX>()
+            _RequiredBySchoolRequiredTextBoxList = new List<TextBoxX>()
             {
-                tbNormalSubjectRequiredbySchoolRequired1_1
-                , tbNormalSubjectRequiredbySchoolRequired1_2
-                , tbNormalSubjectRequiredbySchoolRequired2_1
-                , tbNormalSubjectRequiredbySchoolRequired2_2
-                , tbNormalSubjectRequiredbySchoolRequired3_1
-                , tbNormalSubjectRequiredbySchoolRequired3_2
+                tbRequiredBySchoolRequired1_1
+                , tbRequiredBySchoolRequired1_2
+                , tbRequiredBySchoolRequired2_1
+                , tbRequiredBySchoolRequired2_2
+                , tbRequiredBySchoolRequired3_1
+                , tbRequiredBySchoolRequired3_2
             };
-            _TechNormalSubjectRequiredbySchoolNonRequiredList = new List<TextBoxX>()
+            _RequiredBySchoolNonRequiredTextBoxList = new List<TextBoxX>()
             {
-                tbNormalSubjectRequiredbySchoolNonRequired1_1
-                , tbNormalSubjectRequiredbySchoolNonRequired1_2
-                , tbNormalSubjectRequiredbySchoolNonRequired2_1
-                , tbNormalSubjectRequiredbySchoolNonRequired2_2
-                , tbNormalSubjectRequiredbySchoolNonRequired3_1
-                , tbNormalSubjectRequiredbySchoolNonRequired3_2
+                tbRequiredBySchoolNonRequired1_1
+                , tbRequiredBySchoolNonRequired1_2
+                , tbRequiredBySchoolNonRequired2_1
+                , tbRequiredBySchoolNonRequired2_2
+                , tbRequiredBySchoolNonRequired3_1
+                , tbRequiredBySchoolNonRequired3_2
             };
-            _TechProfessionalSubjectRequiredByDepartProfessionalList = new List<TextBoxX>()
+            _CourseGroupTextBoxList = new List<TextBoxX>()
             {
-                tbProfessionalSubjectRequiredByDepartProfessional1_1
-                , tbProfessionalSubjectRequiredByDepartProfessional1_2
-                , tbProfessionalSubjectRequiredByDepartProfessional2_1
-                , tbProfessionalSubjectRequiredByDepartProfessional2_2
-                , tbProfessionalSubjectRequiredByDepartProfessional3_1
-                , tbProfessionalSubjectRequiredByDepartProfessional3_2
+                tbCourseGroupSummary1_1
+                , tbCourseGroupSummary1_2
+                , tbCourseGroupSummary2_1
+                , tbCourseGroupSummary2_2
+                , tbCourseGroupSummary3_1
+                , tbCourseGroupSummary3_2
             };
-            _TechProfessionalSubjectRequiredByDepartPracticeList = new List<TextBoxX>()
+            _SpecialCategoryTextBoxList = new List<TextBoxX>()
             {
-                tbProfessionalSubjectRequiredByDepartPractice1_1
-                , tbProfessionalSubjectRequiredByDepartPractice1_2
-                , tbProfessionalSubjectRequiredByDepartPractice2_1
-                , tbProfessionalSubjectRequiredByDepartPractice2_2
-                , tbProfessionalSubjectRequiredByDepartPractice3_1
-                , tbProfessionalSubjectRequiredByDepartPractice3_2
-            };
-            _TechProfessionalSubjectRequiredBySchoolProfessionRequiredList = new List<TextBoxX>()
-            {
-                tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1
-                , tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2
-                , tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1
-                , tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2
-                , tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1
-                , tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2
-            };
-            _TechProfessionalSubjectRequiredBySchoolProfessionNonRequiredList = new List<TextBoxX>()
-            {
-                tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1
-                , tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2
-                , tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1
-                , tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2
-                , tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1
-                , tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2
-            };
-            _TechProfessionalSubjectRequiredBySchoolPracticeRequiredList = new List<TextBoxX>()
-            {
-                tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1
-                , tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2
-                , tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1
-                , tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2
-                , tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1
-                , tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2
-            };
-            _TechProfessionalSubjectRequiredBySchoolPracticeNonRequiredList = new List<TextBoxX>()
-            {
-                tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1
-                , tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2
-                , tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1
-                , tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2
-                , tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1
-                , tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2
+                tbSpecialCatory1_1
+                , tbSpecialCatory1_2
+                , tbSpecialCatory2_1
+                , tbSpecialCatory2_2
+                , tbSpecialCatory3_1
+                , tbSpecialCatory3_2
             };
             #endregion
 
-            #region 普通型高中學分統計TextBox清單
-            _NormalNormalRequiredByDepartList = new List<TextBoxX>()
-            {
-                tbNormalNormalRequiredByDepart1_1
-                , tbNormalNormalRequiredByDepart1_2
-                , tbNormalNormalRequiredByDepart2_1
-                , tbNormalNormalRequiredByDepart2_2
-                , tbNormalNormalRequiredByDepart3_1
-                , tbNormalNormalRequiredByDepart3_2
-            };
-            _NormalNormalSubjectRequiredBySchoolRequiredList = new List<TextBoxX>()
-            {
-                tbNormalNormalSubjectRequiredBySchoolRequired1_1
-                , tbNormalNormalSubjectRequiredBySchoolRequired1_2
-                , tbNormalNormalSubjectRequiredBySchoolRequired2_1
-                , tbNormalNormalSubjectRequiredBySchoolRequired2_2
-                , tbNormalNormalSubjectRequiredBySchoolRequired3_1
-                , tbNormalNormalSubjectRequiredBySchoolRequired3_2
-            };
-            _NormalNormalSubjectRequiredBySchoolNonRequiredList = new List<TextBoxX>()
-            {
-                tbNormalNormalSubjectRequiredBySchoolNonRequired1_1
-                , tbNormalNormalSubjectRequiredBySchoolNonRequired1_2
-                , tbNormalNormalSubjectRequiredBySchoolNonRequired2_1
-                , tbNormalNormalSubjectRequiredBySchoolNonRequired2_2
-                , tbNormalNormalSubjectRequiredBySchoolNonRequired3_1
-                , tbNormalNormalSubjectRequiredBySchoolNonRequired3_2
-            };
-            #endregion
-
-            #endregion
         }
 
         private void _bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -2651,36 +2567,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 row.Cells[3].Value = setting.IsSchoolYearCourseGroup;
                 dgvCourseGroupManageGroup.Rows.Add(row);
             }
+
+            dgvCourseGroupManageGroup.ClearSelection();
         }
 
-        private void lbCopyCourseGroupSetting_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void SetCellFocusStatus(DataGridViewCell cell, bool isFocus)
         {
-            frmCopyCourseGroupSetting frm = new frmCopyCourseGroupSetting(GP108List, SelectInfo);
-            if (frm.ShowDialog() == DialogResult.OK)
+            if (isFocus)
             {
-                // 讀取課程群組設定
-                _CourseGroupSettingList.Clear();
-                if (SelectInfo.RefGPContentXml.Element("CourseGroupSetting") != null)
-                {
-                    foreach (XElement element in SelectInfo.RefGPContentXml.Element("CourseGroupSetting").Elements("CourseGroup"))
-                    {
-                        CourseGroupSetting courseGroupSetting = new CourseGroupSetting();
-                        courseGroupSetting.CourseGroupName = element.Attribute("Name").Value;
-                        courseGroupSetting.CourseGroupCredit = element.Attribute("Credit").Value;
-                        courseGroupSetting.CourseGroupColor = Color.FromArgb(Int32.Parse(element.Attribute("Color").Value));
-                        courseGroupSetting.IsSchoolYearCourseGroup = element.Attribute("IsSchoolYearCourseGroup") == null ? false : bool.Parse(element.Attribute("IsSchoolYearCourseGroup").Value);
-                        courseGroupSetting.CourseGroupElement = element;
-                        _CourseGroupSettingList.Add(courseGroupSetting);
-
-                        if (!_CourseGroupSettingDic.ContainsKey(courseGroupSetting.CourseGroupName))
-                        {
-                            _CourseGroupSettingDic.Add(courseGroupSetting.CourseGroupName, new List<DataGridViewCell>());
-                        }
-                    }
-                }
-
-                LoadCourseGroupSettingDataGridView();
-                SetIsDirtyDisplay(true);
+                cell.Style.Font = new Font("Microsoft JhengHei", 10, FontStyle.Bold);
+                cell.Style.ForeColor = Color.Red;
+            }
+            else
+            {
+                cell.Style.Font = new Font("Microsoft JhengHei", 10, FontStyle.Regular);
+                cell.Style.ForeColor = Color.Black;
             }
         }
 
@@ -2816,6 +2717,66 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
+        private void dgvCourseGroupManageGroup_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvCourseGroupManageGroup.Rows.Count > 0)
+            {
+                this.SuspendLayout();
+
+                foreach (DataGridViewCell cell in _CourseGroupFocusCellList)
+                {
+                    SetCellFocusStatus(cell, false);
+                }
+                _CourseGroupFocusCellList.Clear();
+
+                foreach (DataGridViewRow row in dgvCourseGroupManageGroup.SelectedRows)
+                {
+                    string courseGroupName = row.Cells[1].Value.ToString();
+                    if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                    {
+                        foreach (DataGridViewCell cell in _CourseGroupSettingDic[courseGroupName])
+                        {
+                            SetCellFocusStatus(cell, true);
+                            _CourseGroupFocusCellList.Add(cell);
+                        }
+                    }
+                }
+
+                this.ResumeLayout();
+            }
+        }
+
+        private void lbCopyCourseGroupSetting_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmCopyCourseGroupSetting frm = new frmCopyCourseGroupSetting(GP108List, SelectInfo);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                // 讀取課程群組設定
+                _CourseGroupSettingList.Clear();
+                if (SelectInfo.RefGPContentXml.Element("CourseGroupSetting") != null)
+                {
+                    foreach (XElement element in SelectInfo.RefGPContentXml.Element("CourseGroupSetting").Elements("CourseGroup"))
+                    {
+                        CourseGroupSetting courseGroupSetting = new CourseGroupSetting();
+                        courseGroupSetting.CourseGroupName = element.Attribute("Name").Value;
+                        courseGroupSetting.CourseGroupCredit = element.Attribute("Credit").Value;
+                        courseGroupSetting.CourseGroupColor = Color.FromArgb(Int32.Parse(element.Attribute("Color").Value));
+                        courseGroupSetting.IsSchoolYearCourseGroup = element.Attribute("IsSchoolYearCourseGroup") == null ? false : bool.Parse(element.Attribute("IsSchoolYearCourseGroup").Value);
+                        courseGroupSetting.CourseGroupElement = element;
+                        _CourseGroupSettingList.Add(courseGroupSetting);
+
+                        if (!_CourseGroupSettingDic.ContainsKey(courseGroupSetting.CourseGroupName))
+                        {
+                            _CourseGroupSettingDic.Add(courseGroupSetting.CourseGroupName, new List<DataGridViewCell>());
+                        }
+                    }
+                }
+
+                LoadCourseGroupSettingDataGridView();
+                SetIsDirtyDisplay(true);
+            }
+        }
+
         private void lbInsertCourseGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             frmInsertCourseGroup frm = new frmInsertCourseGroup(_CourseGroupSettingList);
@@ -2848,87 +2809,62 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 LoadCourseGroupSettingDataGridView();
 
                 // 選取最新一筆
-                foreach (DataGridViewRow row in dgvCourseGroupManageGroup.SelectedRows)
-                {
-                    row.Selected = false;
-                }
                 dgvCourseGroupManageGroup.Rows[dgvCourseGroupManageGroup.Rows.Count - 1].Selected = true;
 
                 SetIsDirtyDisplay(true);
             }
         }
 
-        private void dgvCourseGroupManageGroup_SelectionChanged(object sender, EventArgs e)
+        private void lbDeleteCourseGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (dgvCourseGroupManageGroup.Rows.Count > 0)
+            if (dgvCourseGroupManageGroup.SelectedRows.Count > 0)
             {
                 foreach (DataGridViewRow row in dgvCourseGroupManageGroup.SelectedRows)
                 {
-                    this.SuspendLayout();
+                    CourseGroupSetting setting = _CourseGroupSettingList[row.Index];
 
-                    foreach (DataGridViewCell cell in _CourseGroupFocusCellList)
+                    // 刪除設定時，一併清除已經設定的群組
+                    foreach (DataGridViewCell cell in _CourseGroupSettingDic[setting.CourseGroupName])
                     {
-                        cell.Style.Font = new Font("Microsoft JhengHei", 10, FontStyle.Regular);
-                        cell.Style.ForeColor = Color.Black;
+                        XElement element = (XElement)cell.Tag;
+                        element.SetAttributeValue("分組名稱", "");
+                        element.SetAttributeValue("分組修課學分數", "");
+                        cell.Style.BackColor = Color.White;
                     }
-                    _CourseGroupFocusCellList.Clear();
+                    _CourseGroupSettingDic.Remove(setting.CourseGroupName);
 
-                    string courseGroupName = row.Cells[1].Value.ToString();
-                    if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                    _CourseGroupSettingList.Remove(setting);
+                }
+
+                // 清空課程Focus清單並取消課程的Focus狀態
+                foreach (DataGridViewCell cell in _CourseGroupFocusCellList)
+                {
+                    SetCellFocusStatus(cell, false);
+                }
+                _CourseGroupFocusCellList.Clear();
+
+                // 編輯SelectInfo中的群組設定
+                XElement courseGroupElement = SelectInfo.RefGPContentXml.Element("CourseGroupSetting");
+                courseGroupElement.Elements("CourseGroup").Remove(); // 刪除現有Elements中的資料，重新讀取dataGridView並寫入資料
+
+                foreach (CourseGroupSetting setting in _CourseGroupSettingList)
+                {
+                    XElement element = new XElement("CourseGroup");
+                    element.SetAttributeValue("Name", setting.CourseGroupName);
+                    element.SetAttributeValue("Credit", setting.CourseGroupCredit);
+                    element.SetAttributeValue("Color", setting.CourseGroupColor.ToArgb());
+                    element.SetAttributeValue("IsSchoolYearCourseGroup", setting.IsSchoolYearCourseGroup);
+                    courseGroupElement.Add(element);
+
+                    if (!_CourseGroupSettingDic.ContainsKey(setting.CourseGroupName))
                     {
-                        foreach (DataGridViewCell cell in _CourseGroupSettingDic[courseGroupName])
-                        {
-                            cell.Style.Font = new Font("Microsoft JhengHei", 10, FontStyle.Bold);
-                            cell.Style.ForeColor = Color.Red;
-                            _CourseGroupFocusCellList.Add(cell);
-                        }
+                        _CourseGroupSettingDic.Add(setting.CourseGroupName, new List<DataGridViewCell>());
                     }
-
-                    this.ResumeLayout();
                 }
+
+                LoadCourseGroupSettingDataGridView();
+                SetIsDirtyDisplay(true); 
             }
-        }
-
-        private void lbDeleteCourseGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            foreach (DataGridViewRow row in dgvCourseGroupManageGroup.SelectedRows)
-            {
-                CourseGroupSetting setting = _CourseGroupSettingList[row.Index];
-
-                // 刪除設定時，一併清除已經設定的群組
-                foreach (DataGridViewCell cell in _CourseGroupSettingDic[setting.CourseGroupName])
-                {
-                    XElement element = (XElement)cell.Tag;
-                    element.SetAttributeValue("分組名稱", "");
-                    element.SetAttributeValue("分組修課學分數", "");
-                    cell.Style.BackColor = Color.White;
-                }
-                _CourseGroupSettingDic.Remove(setting.CourseGroupName);
-
-                _CourseGroupSettingList.Remove(setting);
-            }
-
-            // 編輯SelectInfo中的群組設定
-            XElement courseGroupElement = SelectInfo.RefGPContentXml.Element("CourseGroupSetting");
-            courseGroupElement.Elements("CourseGroup").Remove(); // 刪除現有Elements中的資料，重新讀取dataGridView並寫入資料
-
-            foreach (CourseGroupSetting setting in _CourseGroupSettingList)
-            {
-                XElement element = new XElement("CourseGroup");
-                element.SetAttributeValue("Name", setting.CourseGroupName);
-                element.SetAttributeValue("Credit", setting.CourseGroupCredit);
-                element.SetAttributeValue("Color", setting.CourseGroupColor.ToArgb());
-                element.SetAttributeValue("IsSchoolYearCourseGroup", setting.IsSchoolYearCourseGroup);
-                courseGroupElement.Add(element);
-
-                if (!_CourseGroupSettingDic.ContainsKey(setting.CourseGroupName))
-                {
-                    _CourseGroupSettingDic.Add(setting.CourseGroupName, new List<DataGridViewCell>());
-                }
-            }
-
-            LoadCourseGroupSettingDataGridView();
-            SetIsDirtyDisplay(true);
         }
 
         //// 學分統計
@@ -2937,576 +2873,166 @@ namespace SHCourseGroupCodeAdmin.UIForm
             #region 學分統計
             if (!string.IsNullOrEmpty(_CourseType))
             {
-                if (_CourseType == "技術型高中" || _CourseType == "進修部" || _CourseType == "實用技能學程(日)" || _CourseType == "實用技能學程(夜)")
+                // 學業部定必修
+                int index = 7; // 一上從第7欄開始
+                List<DataGridViewRow> requiredbyDepartmentList = _CourseGroupRowList.Where(
+                    x => x.Cells[0].Value.ToString() == tbRequiredByDepart.Text
+                    && !x.Cells[5].Value.ToString().Contains("特殊需求領域")).ToList();
+                foreach (TextBoxX tb in _RequiredByDepartTextBoxList)
                 {
-                    tcSwitchCreditStatistics.SelectedTab = tbiCreditTechnical;
-                    tbiCreditNormal.Visible = false;
+                    int credit = requiredbyDepartmentList
+                        .Where(x => x.Cells[index].Style.BackColor == Color.White)
+                        .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
+                        .Sum();
 
-                    // 學業部定必修
-                    int index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbyDepart.Text).ToList();
-                    foreach (TextBoxX tb in _TechNormalSubjectRequiredbyDepartList)
-                    {
-                        int credit = normalSubjectRequiredbyDepartmentList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = normalSubjectRequiredbyDepartmentList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 學業校訂必修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolRequired.Text).ToList();
-                    foreach (TextBoxX tb in _TechNormalSubjectRequiredbySchoolRequiredList)
-                    {
-                        int credit = normalSubjectRequiredbySchoolRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = normalSubjectRequiredbySchoolRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 學業校訂選修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalSubjectRequiredbySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalSubjectRequiredbySchoolNonRequired.Text
-                        && x.Cells[6].Value.ToString() != "團體活動時間"
-                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
-                    foreach (TextBoxX tb in _TechNormalSubjectRequiredbySchoolNonRequiredList)
-                    {
-                        int credit = normalSubjectRequiredbySchoolNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = normalSubjectRequiredbySchoolNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 部定專業科目
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> professionalSubjectRequiredByDepartProfessionalList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartProfessional.Text).ToList();
-                    foreach (TextBoxX tb in _TechProfessionalSubjectRequiredByDepartProfessionalList)
-                    {
-                        int credit = professionalSubjectRequiredByDepartProfessionalList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = professionalSubjectRequiredByDepartProfessionalList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 部定實習科目
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> professionalSubjectRequiredByDepartPracticeList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredByDepart.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredByDepartPractice.Text).ToList();
-                    foreach (TextBoxX tb in _TechProfessionalSubjectRequiredByDepartPracticeList)
-                    {
-                        int credit = professionalSubjectRequiredByDepartPracticeList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = professionalSubjectRequiredByDepartPracticeList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 校訂專業科目必修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionRequired.Text).ToList();
-                    foreach (TextBoxX tb in _TechProfessionalSubjectRequiredBySchoolProfessionRequiredList)
-                    {
-                        int credit = professionalSubjectRequiredBySchoolProfessionRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = professionalSubjectRequiredBySchoolProfessionRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 校訂專業科目選修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolProfessionNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfession.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolProfessionNonRequired.Text).ToList();
-                    foreach (TextBoxX tb in _TechProfessionalSubjectRequiredBySchoolProfessionNonRequiredList)
-                    {
-                        int credit = professionalSubjectRequiredBySchoolProfessionNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = professionalSubjectRequiredBySchoolProfessionNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 校訂實習科目必修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeRequired.Text).ToList();
-                    foreach (TextBoxX tb in _TechProfessionalSubjectRequiredBySchoolPracticeRequiredList)
-                    {
-                        int credit = professionalSubjectRequiredBySchoolPracticeRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = professionalSubjectRequiredBySchoolPracticeRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 校訂實習科目選修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> professionalSubjectRequiredBySchoolPracticeNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[0].Value.ToString() == tbProfessionalSubjectRequiredBySchool.Text
-                        && x.Cells[4].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPractice.Text
-                        && x.Cells[1].Value.ToString() == tbProfessionalSubjectRequiredBySchoolPracticeNonRequired.Text).ToList();
-                    foreach (TextBoxX tb in _TechProfessionalSubjectRequiredBySchoolPracticeNonRequiredList)
-                    {
-                        int credit = professionalSubjectRequiredBySchoolPracticeNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = professionalSubjectRequiredBySchoolPracticeNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    #region 合計
-                    tbNormalSubjectRequiredbyDepartSummary.Text = _TechNormalSubjectRequiredbyDepartList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbNormalSubjectRequiredbySchoolRequiredSummary.Text = _TechNormalSubjectRequiredbySchoolRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text = _TechNormalSubjectRequiredbySchoolNonRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text = _TechProfessionalSubjectRequiredByDepartProfessionalList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbProfessionalSubjectRequiredByDepartPracticeSummary.Text = _TechProfessionalSubjectRequiredByDepartPracticeList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text = _TechProfessionalSubjectRequiredBySchoolProfessionRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text = _TechProfessionalSubjectRequiredBySchoolProfessionNonRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text = _TechProfessionalSubjectRequiredBySchoolPracticeRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text = _TechProfessionalSubjectRequiredBySchoolPracticeNonRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-
-
-                    tbCreditSummary1_1.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart1_1.Text,
-                        tbNormalSubjectRequiredbySchoolRequired1_1.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired1_1.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional1_1.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_1.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbCreditSummary1_2.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart1_2.Text,
-                        tbNormalSubjectRequiredbySchoolRequired1_2.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired1_2.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional1_2.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired1_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired1_2.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbCreditSummary2_1.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart2_1.Text,
-                        tbNormalSubjectRequiredbySchoolRequired2_1.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired2_1.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional2_1.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_1.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbCreditSummary2_2.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart2_2.Text,
-                        tbNormalSubjectRequiredbySchoolRequired2_2.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired2_2.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional2_2.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired2_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired2_2.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbCreditSummary3_1.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart3_1.Text,
-                        tbNormalSubjectRequiredbySchoolRequired3_1.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired3_1.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional3_1.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_1.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_1.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbCreditSummary3_2.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepart3_2.Text,
-                        tbNormalSubjectRequiredbySchoolRequired3_2.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequired3_2.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessional3_2.Text,
-                        tbProfessionalSubjectRequiredByDepartPractice3_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequired3_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequired3_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequired3_2.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequired3_2.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbCreditSummary.Text = (new List<string>() {
-                        tbNormalSubjectRequiredbyDepartSummary.Text,
-                        tbNormalSubjectRequiredbySchoolRequiredSummary.Text,
-                        tbNormalSubjectRequiredbySchoolNonRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredByDepartProfessionalSummary.Text,
-                        tbProfessionalSubjectRequiredByDepartPracticeSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolProfessionNonRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeRequiredSummary.Text,
-                        tbProfessionalSubjectRequiredBySchoolPracticeNonRequiredSummary.Text
-                    }).Sum(x => int.Parse(x)).ToString();
-                    #endregion
+                    tb.Text = credit.ToString();
+                    index++;
                 }
-                else if (_CourseType == "普通型高中" || _CourseType == "綜合型高中")
+
+                // 學業校訂必修
+                index = 7; // 一上從第7欄開始
+                List<DataGridViewRow> requiredbySchoolRequiredList = _CourseGroupRowList.Where(
+                    x => x.Cells[0].Value.ToString() == tbSubjectRequiredBySchool.Text
+                    && x.Cells[1].Value.ToString() == tbSubjectRequiredBySchoolRequired.Text
+                    && !x.Cells[5].Value.ToString().Contains("特殊需求領域")).ToList();
+                foreach (TextBoxX tb in _RequiredBySchoolRequiredTextBoxList)
                 {
-                    tcSwitchCreditStatistics.SelectedTab = tbiCreditNormal;
-                    tbiCreditTechnical.Visible = false;
+                    int credit = requiredbySchoolRequiredList
+                        .Where(x => x.Cells[index].Style.BackColor == Color.White)
+                        .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
+                        .Sum();
 
-                    // 學業部定必修
-                    int index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> normalSubjectRequiredbyDepartmentList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalNormalRequiredByDepart.Text).ToList();
-                    foreach (TextBoxX tb in _NormalNormalRequiredByDepartList)
-                    {
-                        int credit = normalSubjectRequiredbyDepartmentList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = normalSubjectRequiredbyDepartmentList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 學業校訂必修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolRequired.Text).ToList();
-                    foreach (TextBoxX tb in _NormalNormalSubjectRequiredBySchoolRequiredList)
-                    {
-                        int credit = normalSubjectRequiredbySchoolRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = normalSubjectRequiredbySchoolRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    // 學業校訂選修
-                    index = 7; // 一上從第7欄開始
-                    List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
-                        x => x.Cells[4].Value.ToString() == tbNormalNormalSubject.Text
-                        && x.Cells[0].Value.ToString() == tbNormalNormalSubjectRequiredBySchool.Text
-                        && x.Cells[1].Value.ToString() == tbNormalNormalSubjectRequiredBySchoolNonRequired.Text
-                        && x.Cells[6].Value.ToString() != "團體活動時間"
-                        && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
-                    foreach (TextBoxX tb in _NormalNormalSubjectRequiredBySchoolNonRequiredList)
-                    {
-                        int credit = normalSubjectRequiredbySchoolNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor == Color.White)
-                            .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
-                            .Sum();
-                        tb.Text = credit.ToString();
-
-                        int groupCredit = 0;
-                        List<string> courseGroupNameList = normalSubjectRequiredbySchoolNonRequiredList
-                            .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
-                            .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
-                            .Distinct().ToList();
-                        foreach (string groupName in courseGroupNameList)
-                        {
-                            if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
-                            {
-                                string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
-                                if (int.TryParse(creditString, out groupCredit))
-                                {
-                                    credit += groupCredit;
-                                }
-                            }
-                        }
-
-                        tb.Text = credit.ToString();
-                        index++;
-                    }
-
-                    #region 合計
-                    tbNormalNormalRequiredByDepartSummary.Text = _NormalNormalRequiredByDepartList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text = _NormalNormalSubjectRequiredBySchoolRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-                    tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text = _NormalNormalSubjectRequiredBySchoolNonRequiredList
-                        .Sum(x => int.Parse(x.Text)).ToString();
-
-                    tbNormalSummary1_1.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart1_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired1_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_1.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSummary1_2.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart1_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired1_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired1_2.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSummary2_1.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart2_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired2_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_1.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSummary2_2.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart2_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired2_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired2_2.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSummary3_1.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart3_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired3_1.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_1.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSummary3_2.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepart3_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequired3_2.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequired3_2.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    tbNormalSummary.Text = (new List<string>() {
-                        tbNormalNormalRequiredByDepartSummary.Text,
-                        tbNormalNormalSubjectRequiredBySchoolRequiredSummary.Text,
-                        tbNormalNormalSubjectRequiredBySchoolNonRequiredSummary.Text,
-                    }).Sum(x => int.Parse(x)).ToString();
-                    #endregion
+                    tb.Text = credit.ToString();
+                    index++;
                 }
-                else
+
+                // 學業校訂選修
+                index = 7; // 一上從第7欄開始
+                List<DataGridViewRow> normalSubjectRequiredbySchoolNonRequiredList = _CourseGroupRowList.Where(
+                    x => x.Cells[0].Value.ToString() == tbSubjectRequiredBySchool.Text
+                    && !x.Cells[5].Value.ToString().Contains("特殊需求領域")
+                    && x.Cells[1].Value.ToString() == tbSubjectRequiredBySchoolNonRequired.Text
+                    && x.Cells[6].Value.ToString() != "團體活動時間"
+                    && x.Cells[6].Value.ToString() != "彈性學習時間").ToList();
+                foreach (TextBoxX tb in _RequiredBySchoolNonRequiredTextBoxList)
                 {
-                    tcSwitchCreditStatistics.SelectedTab = null;
-                    tbiCreditTechnical.Visible = false;
-                    tbiCreditNormal.Visible = false;
+                    int credit = normalSubjectRequiredbySchoolNonRequiredList
+                        .Where(x => x.Cells[index].Style.BackColor == Color.White)
+                        .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
+                        .Sum();
+
+                    tb.Text = credit.ToString();
+                    index++;
                 }
+
+                // 課程群組小計
+                index = 7; // 一上從第7欄開始
+                foreach (TextBoxX tb in _CourseGroupTextBoxList)
+                {
+                    int credit = 0;
+                    foreach (CourseGroupSetting setting in _CourseGroupSettingList)
+                    {
+                        if (_CourseGroupSettingDic[setting.CourseGroupName].Where(x => x.ColumnIndex == index).Count() > 0)
+                        {
+                            int courseGroupCredit = 0;
+                            if (int.TryParse(setting.CourseGroupCredit, out courseGroupCredit))
+                            {
+                                credit += courseGroupCredit; 
+                            }
+                        }
+                    }
+
+                    tb.Text = credit.ToString();
+                    index++;
+                }
+
+                // 特殊需求領域小計
+                index = 7; // 一上從第7欄開始
+                List<DataGridViewRow> specialCategoryList = _CourseGroupRowList.Where(
+                    x => x.Cells[5].Value.ToString().Contains("特殊需求領域")).ToList();
+                foreach (TextBoxX tb in _SpecialCategoryTextBoxList)
+                {
+                    int credit = specialCategoryList
+                        .Where(x => x.Cells[index].Style.BackColor == Color.White)
+                        .Select(x => int.Parse(x.Cells[index].Value == null ? "0" : x.Cells[index].Value.ToString()))
+                        .Sum();
+
+                    int groupCredit = 0;
+                    List<string> courseGroupNameList = specialCategoryList
+                        .Where(x => x.Cells[index].Style.BackColor != Color.White && x.Cells[index].Tag != null)
+                        .Select(x => ((XElement)x.Cells[index].Tag).Attribute("分組名稱") == null ? "" : ((XElement)x.Cells[index].Tag).Attribute("分組名稱").Value.ToString())
+                        .Distinct().ToList();
+                    foreach (string groupName in courseGroupNameList)
+                    {
+                        if (_CourseGroupSettingList.Where(x => x.CourseGroupName == groupName).Count() > 0)
+                        {
+                            string creditString = _CourseGroupSettingList.First(x => x.CourseGroupName == groupName).CourseGroupCredit;
+                            if (int.TryParse(creditString, out groupCredit))
+                            {
+                                credit += groupCredit;
+                            }
+                        }
+                    }
+
+                    tb.Text = credit.ToString();
+                    index++;
+                }
+
+                #region 合計
+                tbRequiredByDepartSummary.Text = _RequiredByDepartTextBoxList
+                    .Sum(x => int.Parse(x.Text)).ToString();
+                tbRequiredBySchoolRequiredSummary.Text = _RequiredBySchoolRequiredTextBoxList
+                    .Sum(x => int.Parse(x.Text)).ToString();
+                tbRequiredBySchoolNonRequiredSummary.Text = _RequiredBySchoolNonRequiredTextBoxList
+                    .Sum(x => int.Parse(x.Text)).ToString();
+                tbCourseGroupSummary.Text = _CourseGroupTextBoxList
+                    .Sum(x => int.Parse(x.Text)).ToString();
+                tbSpecialCatorySummary.Text = _SpecialCategoryTextBoxList
+                    .Sum(x => int.Parse(x.Text)).ToString();
+
+                tbSummary1_1.Text = (new List<string>() {
+                        tbRequiredByDepart1_1.Text,
+                        tbRequiredBySchoolRequired1_1.Text,
+                        tbRequiredBySchoolNonRequired1_1.Text,
+                        tbCourseGroupSummary1_1.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                tbSummary1_2.Text = (new List<string>() {
+                        tbRequiredByDepart1_2.Text,
+                        tbRequiredBySchoolRequired1_2.Text,
+                        tbRequiredBySchoolNonRequired1_2.Text,
+                        tbCourseGroupSummary1_2.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                tbSummary2_1.Text = (new List<string>() {
+                        tbRequiredByDepart2_1.Text,
+                        tbRequiredBySchoolRequired2_1.Text,
+                        tbRequiredBySchoolNonRequired2_1.Text,
+                        tbCourseGroupSummary2_1.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                tbSummary2_2.Text = (new List<string>() {
+                        tbRequiredByDepart2_2.Text,
+                        tbRequiredBySchoolRequired2_2.Text,
+                        tbRequiredBySchoolNonRequired2_2.Text,
+                        tbCourseGroupSummary2_2.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                tbSummary3_1.Text = (new List<string>() {
+                        tbRequiredByDepart3_1.Text,
+                        tbRequiredBySchoolRequired3_1.Text,
+                        tbRequiredBySchoolNonRequired3_1.Text,
+                        tbCourseGroupSummary3_1.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                tbSummary3_2.Text = (new List<string>() {
+                        tbRequiredByDepart3_2.Text,
+                        tbRequiredBySchoolRequired3_2.Text,
+                        tbRequiredBySchoolNonRequired3_2.Text,
+                        tbCourseGroupSummary3_2.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                tbSummary.Text = (new List<string>() {
+                        tbRequiredByDepartSummary.Text,
+                        tbRequiredBySchoolRequiredSummary.Text,
+                        tbRequiredBySchoolNonRequiredSummary.Text,
+                        tbCourseGroupSummary.Text
+                    }).Sum(x => int.Parse(x)).ToString();
+                #endregion
             }
             #endregion
         }
@@ -3514,50 +3040,64 @@ namespace SHCourseGroupCodeAdmin.UIForm
         //// 設定群組
         private void dgvCourseGroup_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvCourseGroupManageGroup.Rows.Count > 0 && e.RowIndex > -1)
+            if (dgvCourseGroupManageGroup.SelectedRows.Count > 0)
             {
-                if (e.ColumnIndex > 6 && e.ColumnIndex < 13)
+                if (dgvCourseGroupManageGroup.Rows.Count > 0 && e.RowIndex > -1)
                 {
-                    DataGridViewCell cell = dgvCourseGroup[e.ColumnIndex, e.RowIndex];
-
-                    if (cell.Value == null)
+                    if (e.ColumnIndex > 6 && e.ColumnIndex < 13)
                     {
-                        return;
-                    }
+                        DataGridViewCell cell = dgvCourseGroup[e.ColumnIndex, e.RowIndex];
 
-                    int groupIndex = dgvCourseGroupManageGroup.SelectedRows[0].Index;
-                    string courseGroupName = _CourseGroupSettingList[groupIndex].CourseGroupName;
-                    string courseGroupCredit = _CourseGroupSettingList[groupIndex].CourseGroupCredit;
-                    Color color = _CourseGroupSettingList[groupIndex].CourseGroupColor;
-
-                    XElement element = (XElement)cell.Tag;
-
-                    // 格子按下時，如果顏色與原本的相同，會取消群組
-                    if (cell.Style.BackColor == color)
-                    {
-                        cell.Style.BackColor = Color.White;
-                        element.SetAttributeValue("分組名稱", "");
-                        element.SetAttributeValue("分組修課學分數", "");
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        if (cell.Value == null)
                         {
-                            if (_CourseGroupSettingDic[courseGroupName].Contains(cell))
+                            return;
+                        }
+
+                        int groupIndex = dgvCourseGroupManageGroup.SelectedRows[0].Index;
+                        string courseGroupName = _CourseGroupSettingList[groupIndex].CourseGroupName;
+                        string courseGroupCredit = _CourseGroupSettingList[groupIndex].CourseGroupCredit;
+                        Color color = _CourseGroupSettingList[groupIndex].CourseGroupColor;
+
+                        XElement element = (XElement)cell.Tag;
+
+                        // 格子按下時，如果顏色與原本的相同，會取消群組
+                        if (cell.Style.BackColor == color)
+                        {
+                            cell.Style.BackColor = Color.White;
+                            element.SetAttributeValue("分組名稱", "");
+                            element.SetAttributeValue("分組修課學分數", "");
+                            if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
                             {
-                                _CourseGroupSettingDic[courseGroupName].Remove(cell);
+                                if (_CourseGroupSettingDic[courseGroupName].Contains(cell))
+                                {
+                                    _CourseGroupSettingDic[courseGroupName].Remove(cell);
+                                }
+                            }
+
+                            // 取消Focus並從Focus清單中移除
+                            SetCellFocusStatus(cell, false);
+                            if (_CourseGroupFocusCellList.Contains(cell))
+                            {
+                                _CourseGroupFocusCellList.Remove(cell);
                             }
                         }
-                    }
-                    else
-                    {
-                        cell.Style.BackColor = color;
-                        element.SetAttributeValue("分組名稱", courseGroupName);
-                        element.SetAttributeValue("分組修課學分數", courseGroupCredit);
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                        else
                         {
-                            _CourseGroupSettingDic[courseGroupName].Add(cell);
+                            cell.Style.BackColor = color;
+                            element.SetAttributeValue("分組名稱", courseGroupName);
+                            element.SetAttributeValue("分組修課學分數", courseGroupCredit);
+                            if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
+                            {
+                                _CourseGroupSettingDic[courseGroupName].Add(cell);
+                            }
+
+                            // 設定Focus並加入Focus清單中
+                            SetCellFocusStatus(cell, true);
+                            _CourseGroupFocusCellList.Add(cell);
                         }
+                        SetIsDirtyDisplay(true);
                     }
-                    SetIsDirtyDisplay(true);
-                }
+                } 
             }
         }
     }
