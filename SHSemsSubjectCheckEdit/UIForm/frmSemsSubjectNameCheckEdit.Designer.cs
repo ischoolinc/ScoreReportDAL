@@ -71,7 +71,7 @@
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(837, 428);
+            this.btnExit.Location = new System.Drawing.Point(904, 428);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -85,7 +85,7 @@
             this.btnQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuery.BackColor = System.Drawing.Color.Transparent;
             this.btnQuery.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnQuery.Location = new System.Drawing.Point(571, 428);
+            this.btnQuery.Location = new System.Drawing.Point(638, 428);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(75, 23);
             this.btnQuery.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -115,7 +115,7 @@
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
             this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgData.Size = new System.Drawing.Size(894, 275);
+            this.dgData.Size = new System.Drawing.Size(961, 275);
             this.dgData.TabIndex = 42;
             this.dgData.SelectionChanged += new System.EventHandler(this.dgData_SelectionChanged);
             // 
@@ -130,6 +130,7 @@
             this.cboSchoolYear.Size = new System.Drawing.Size(77, 25);
             this.cboSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboSchoolYear.TabIndex = 37;
+            this.cboSchoolYear.SelectedIndexChanged += new System.EventHandler(this.cboSchoolYear_SelectedIndexChanged);
             // 
             // labelX1
             // 
@@ -151,12 +152,12 @@
             this.btnUpdateFromGPlan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdateFromGPlan.BackColor = System.Drawing.Color.Transparent;
             this.btnUpdateFromGPlan.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnUpdateFromGPlan.Location = new System.Drawing.Point(657, 428);
+            this.btnUpdateFromGPlan.Location = new System.Drawing.Point(724, 428);
             this.btnUpdateFromGPlan.Name = "btnUpdateFromGPlan";
             this.btnUpdateFromGPlan.Size = new System.Drawing.Size(84, 23);
             this.btnUpdateFromGPlan.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnUpdateFromGPlan.TabIndex = 45;
-            this.btnUpdateFromGPlan.Text = "同步(課規)";
+            this.btnUpdateFromGPlan.Text = "同步課規";
             this.btnUpdateFromGPlan.Click += new System.EventHandler(this.btnUpdateFromGPlan_Click);
             // 
             // btnDel
@@ -165,7 +166,7 @@
             this.btnDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDel.BackColor = System.Drawing.Color.Transparent;
             this.btnDel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnDel.Location = new System.Drawing.Point(752, 428);
+            this.btnDel.Location = new System.Drawing.Point(819, 428);
             this.btnDel.Name = "btnDel";
             this.btnDel.Size = new System.Drawing.Size(75, 23);
             this.btnDel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -182,7 +183,7 @@
             // 
             this.checkAll.BackgroundStyle.Class = "";
             this.checkAll.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkAll.Location = new System.Drawing.Point(849, 101);
+            this.checkAll.Location = new System.Drawing.Point(916, 101);
             this.checkAll.Name = "checkAll";
             this.checkAll.Size = new System.Drawing.Size(61, 23);
             this.checkAll.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -350,7 +351,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(927, 468);
+            this.ClientSize = new System.Drawing.Size(994, 468);
             this.Controls.Add(this.groupPanel2);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.groupPanel1);

@@ -16,8 +16,14 @@ namespace SHSemsSubjectCheckEdit.UIForm
     {
         BackgroundWorker bgWorker;
         string SchoolYear = "";
-        List<StudSubjectInfo> StudSubjectInfoList;
+        // 依學年度取得所有學生學期科目成績
+        List<StudSubjectInfo> StudSubjectInfoList;        
+
+        // 整理有問題資料使用
         Dictionary<string, StudCheckDataInfo> StudCheckDataDict;
+
+        // 課程規劃表對照
+        Dictionary<string, GPlanInfo> GPlanDict;
 
         List<string> ClassNameItems;
         List<string> SubjectNameItmes;
@@ -28,6 +34,12 @@ namespace SHSemsSubjectCheckEdit.UIForm
         //List<StudSubjectInfo> hasErrorSubjectInfoList;
         Dictionary<string, StudSubjectInfo> hasErrorSubjectInfoDict;
 
+        // 刪除資料
+        List<StudSubjectInfo> DelStudSubjectList;
+
+        // 更新資料
+        List<StudSubjectInfo> UpdateStudSubjectList;
+
         public frmSemsSubjectNameCheckEdit()
         {
             InitializeComponent();
@@ -36,8 +48,12 @@ namespace SHSemsSubjectCheckEdit.UIForm
             StudCheckDataDict = new Dictionary<string, StudCheckDataInfo>();
             //hasErrorSubjectInfoList = new List<StudSubjectInfo>();
             hasErrorSubjectInfoDict = new Dictionary<string, StudSubjectInfo>();
+            GPlanDict = new Dictionary<string, GPlanInfo>();
             ClassNameItems = new List<string>();
             SubjectNameItmes = new List<string>();
+            DelStudSubjectList = new List<StudSubjectInfo>();
+            UpdateStudSubjectList = new List<StudSubjectInfo>();
+
             bgWorker.DoWork += BgWorker_DoWork;
             bgWorker.RunWorkerCompleted += BgWorker_RunWorkerCompleted;
             bgWorker.ProgressChanged += BgWorker_ProgressChanged;
@@ -73,6 +89,7 @@ namespace SHSemsSubjectCheckEdit.UIForm
             ClassNameItems.Clear();
             SubjectNameItmes.Clear();
             StudSubjectInfoList.Clear();
+            GPlanDict.Clear();
 
             bgWorker.ReportProgress(rpInt);
             // 依畫面選學年度取得資料
@@ -194,12 +211,37 @@ namespace SHSemsSubjectCheckEdit.UIForm
                     }
                 }
             }
+            rpInt = 70;
+            bgWorker.ReportProgress(rpInt);
+
+            List<string> gpids = new List<string>();
+            // 取得使用課程規畫表對照
+            foreach (StudSubjectInfo ssi in hasErrorSubjectInfoDict.Values)
+            {
+                if (!gpids.Contains(ssi.GPID))
+                    gpids.Add(ssi.GPID);
+            }
+            GPlanDict = DataAccess.GetGPlanDictByIDs(gpids);
 
             rpInt = 90;
-
+            bgWorker.ReportProgress(rpInt);
             // 填入資料
             foreach (StudSubjectInfo ssi in hasErrorSubjectInfoDict.Values)
             {
+                // 填入課規資料
+                if (GPlanDict.ContainsKey(ssi.GPID))
+                {
+                    string subjKey = ssi.SubjectName + "_" + ssi.SubjectLevel;
+                    if (GPlanDict[ssi.GPID].SubjectsDict.ContainsKey(subjKey))
+                    {
+                        ssi.GPRequired = GPlanDict[ssi.GPID].SubjectsDict[subjKey].Required;
+                        ssi.GPRequiredBy = GPlanDict[ssi.GPID].SubjectsDict[subjKey].RequiredBy;
+                        ssi.GPCredit = GPlanDict[ssi.GPID].SubjectsDict[subjKey].Credit;
+                        ssi.GPSYSubjectName = GPlanDict[ssi.GPID].SubjectsDict[subjKey].SubjectNameByYear;
+
+                    }                    
+                }
+
                 if (!ClassNameItems.Contains(ssi.ClassName))
                     ClassNameItems.Add(ssi.ClassName);
 
@@ -223,11 +265,6 @@ namespace SHSemsSubjectCheckEdit.UIForm
             this.Close();
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnQuery_Click(object sender, EventArgs e)
         {
             ControlEnable(false);
@@ -248,16 +285,16 @@ namespace SHSemsSubjectCheckEdit.UIForm
 
         private void frmSemsSubjectNameCheckEdit_Load(object sender, EventArgs e)
         {
-            btnUpdateFromGPlan.Enabled = btnDel.Enabled = false;
+            // 載入欄位名稱
+            LoadDataGridViewColumns();
 
             // 載入學期成績學年度
             LoadSemsScoreSchoolYear();
             cboSchoolYear.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            comboClass.Enabled = comboSubject.Enabled = checkAll.Enabled = false;
+            // 載入預設值
+            SetFormDefaultLoadValue();
 
-            // 載入欄位名稱
-            LoadDataGridViewColumns();
         }
 
         // 載入學期成績學年度
@@ -265,6 +302,19 @@ namespace SHSemsSubjectCheckEdit.UIForm
         {
             cboSchoolYear.Items.Clear();
             cboSchoolYear.Items.AddRange(DataAccess.GetSemsScoreSchoolYear().ToArray());
+        }
+
+        private void SetFormDefaultLoadValue()
+        {
+            btnUpdateFromGPlan.Enabled = btnDel.Enabled = comboClass.Enabled = comboSubject.Enabled = checkAll.Enabled = false;
+
+            comboClass.Items.Clear();
+            comboClass.Text = "";
+            comboSubject.Items.Clear();
+            comboSubject.Text = "";
+            dgData.Rows.Clear();
+            lblMsg.Text = "共0筆";
+            checkAll.Checked = false;
         }
 
         // 載入欄位名稱
@@ -363,6 +413,34 @@ namespace SHSemsSubjectCheckEdit.UIForm
             tbSYSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             tbSYSubjectName.ReadOnly = true;
 
+            DataGridViewTextBoxColumn tbRequiredBy1 = new DataGridViewTextBoxColumn();
+            tbRequiredBy1.Name = "課規校部定";
+            tbRequiredBy1.Width = 40;
+            tbRequiredBy1.HeaderText = "課規校部定";
+            tbRequiredBy1.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tbRequiredBy1.ReadOnly = true;
+
+            DataGridViewTextBoxColumn tbRequired1 = new DataGridViewTextBoxColumn();
+            tbRequired1.Name = "課規必選修";
+            tbRequired1.Width = 40;
+            tbRequired1.HeaderText = "課規必選修";
+            tbRequired1.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tbRequired1.ReadOnly = true;
+
+            DataGridViewTextBoxColumn tbCredit1 = new DataGridViewTextBoxColumn();
+            tbCredit1.Name = "課規學分";
+            tbCredit1.Width = 30;
+            tbCredit1.HeaderText = "課規學分";
+            tbCredit1.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tbCredit1.ReadOnly = true;
+
+            DataGridViewTextBoxColumn tbSYSubjectName1 = new DataGridViewTextBoxColumn();
+            tbSYSubjectName1.Name = "課規指定學年科目名稱";
+            tbSYSubjectName1.Width = 150;
+            tbSYSubjectName1.HeaderText = "課規指定學年科目名稱";
+            tbSYSubjectName1.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tbSYSubjectName1.ReadOnly = true;
+
             dgData.Columns.Add(tbSchoolYear);
             dgData.Columns.Add(tbSemester);
             dgData.Columns.Add(tbGradeYear);
@@ -372,20 +450,46 @@ namespace SHSemsSubjectCheckEdit.UIForm
             dgData.Columns.Add(tbStudentName);
             dgData.Columns.Add(tbSubjectName);
             dgData.Columns.Add(tbSubjectLevel);
+            
             dgData.Columns.Add(tbRequiredBy);
+            dgData.Columns.Add(tbRequiredBy1);
+            
             dgData.Columns.Add(tbRequired);
+            dgData.Columns.Add(tbRequired1);
+            
             dgData.Columns.Add(tbCredit);
-            dgData.Columns.Add(tbSYSubjectName);
+            dgData.Columns.Add(tbCredit1);
+            
+            dgData.Columns.Add(tbSYSubjectName);            
+            dgData.Columns.Add(tbSYSubjectName1);
+            
         }
 
         private void btnDel_Click(object sender, EventArgs e)
         {
+            DelStudSubjectList.Clear();
+            if (dgData.SelectedRows.Count < 1)
+            {
+                MsgBox.Show("沒有資料");
+                return;
+            }
 
+            // 取得需要刪除資料
+            foreach(DataGridViewRow drv in dgData.SelectedRows)
+            {
+                StudSubjectInfo ssi = drv.Tag as StudSubjectInfo;
+                if (ssi != null)
+                    DelStudSubjectList.Add(ssi);
+            }
         }
 
         private void btnUpdateFromGPlan_Click(object sender, EventArgs e)
         {
-
+            if (dgData.SelectedRows.Count < 1)
+            {
+                MsgBox.Show("沒有資料");
+                return;
+            }
         }
 
         private void DataToDataGridView()
@@ -442,9 +546,29 @@ namespace SHSemsSubjectCheckEdit.UIForm
                         dgData.Rows[rowIdx].Cells["校部定"].Value = "部定";
                     else
                         dgData.Rows[rowIdx].Cells["校部定"].Value = stud.RequiredBy;
+
+                    if (stud.RequiredBy != stud.GPRequiredBy)
+                        dgData.Rows[rowIdx].Cells["校部定"].Style.BackColor = Color.Yellow;
+
                     dgData.Rows[rowIdx].Cells["必選修"].Value = stud.Required;
+                    if (stud.Required != stud.GPRequired)
+                        dgData.Rows[rowIdx].Cells["必選修"].Style.BackColor = Color.Yellow;
+
                     dgData.Rows[rowIdx].Cells["學分"].Value = stud.Credit;
+                    if (stud.Credit != stud.GPCredit)
+                        dgData.Rows[rowIdx].Cells["學分"].Style.BackColor = Color.Yellow;
+
                     dgData.Rows[rowIdx].Cells["指定學年科目名稱"].Value = stud.SYSubjectName;
+                    if (stud.SYSubjectName != stud.GPSYSubjectName)
+                        dgData.Rows[rowIdx].Cells["指定學年科目名稱"].Style.BackColor = Color.Yellow;
+
+                    if (stud.GPRequiredBy == "部訂")
+                        dgData.Rows[rowIdx].Cells["課規校部定"].Value = "部定";
+                    else
+                        dgData.Rows[rowIdx].Cells["課規校部定"].Value = stud.GPRequiredBy;
+                    dgData.Rows[rowIdx].Cells["課規必選修"].Value = stud.GPRequired;
+                    dgData.Rows[rowIdx].Cells["課規學分"].Value = stud.GPCredit;
+                    dgData.Rows[rowIdx].Cells["課規指定學年科目名稱"].Value = stud.GPSYSubjectName;
 
                     rowCount++;
                 }
@@ -500,7 +624,15 @@ namespace SHSemsSubjectCheckEdit.UIForm
 
         private void dgData_SelectionChanged(object sender, EventArgs e)
         {
+            lblMsg.Text = "共" + dgData.Rows.Count + "筆，已選" + dgData.SelectedRows.Count + "筆。";
+        }
 
+        private void cboSchoolYear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SchoolYear != cboSchoolYear.Text)
+                SetFormDefaultLoadValue();
+
+            SchoolYear = cboSchoolYear.Text;
         }
     }
 }

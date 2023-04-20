@@ -25,5 +25,12 @@ namespace SHSemsSubjectCheckEdit.DAO
         public string SYSubjectName { get; set; } // 指定學年度科目名稱
 
         public string status { get; set; } // 學生狀態
+
+        public string GPID { get; set; } // 課程規劃表系統編號
+
+        public string GPRequiredBy { get; set; } // 課規校部定
+        public string GPRequired { get; set; } // 課規必選修
+        public string GPCredit { get; set; } // 課規學分
+        public string GPSYSubjectName { get; set; } // 課規指定學年度科目名稱
     }
 }

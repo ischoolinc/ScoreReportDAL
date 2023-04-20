@@ -124,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\DataAccess.cs" />
+    <Compile Include="DAO\GPlanInfo.cs" />
+    <Compile Include="DAO\GPlanSubjectInfo.cs" />
+    <Compile Include="DAO\SemsScoreInfo.cs" />
     <Compile Include="DAO\StudCheckDataInfo.cs" />
     <Compile Include="DAO\StudSubjectInfo.cs" />
     <Compile Include="Program.cs" />
