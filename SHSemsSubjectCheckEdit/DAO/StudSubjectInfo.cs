@@ -13,6 +13,7 @@ namespace SHSemsSubjectCheckEdit.DAO
         public string SchoolYear { get; set; } // 學年度
         public string Semester { get; set; } // 學期
         public string GradeYear { get; set; } // 成績年級
+        public string ClassGradeYear { get; set; } // 班級年級
         public string StudentNumber { get; set; } // 學號
         public string ClassName { get; set; } // 班級
         public string SeatNo { get; set; } // 座號
@@ -32,5 +33,9 @@ namespace SHSemsSubjectCheckEdit.DAO
         public string GPRequired { get; set; } // 課規必選修
         public string GPCredit { get; set; } // 課規學分
         public string GPSYSubjectName { get; set; } // 課規指定學年度科目名稱
+
+        public string SubjectLevelNew { get; set; } // 新科目級別
+
+        public bool IsSubjectLevelChanged = false; // 科目級別是否有變更
     }
 }

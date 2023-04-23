@@ -28,6 +28,20 @@ namespace SHSemsSubjectCheckEdit
                 fss.ShowDialog();
             };
 
+
+            // 教務作業>批次作業/檢視>排名作業>學期成績科目級別重複檢查與調整
+            Catalog ribbon2 = RoleAclSource.Instance["教務作業"]["功能按鈕"];
+            ribbon2.Add(new RibbonFeature("5A1544EE-EC7B-4316-9B6C-C6C6B5022E35", "學期成績科目級別重複檢查與調整"));
+
+            MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["學期成績科目級別重複檢查與調整"].Enable = UserAcl.Current["5A1544EE-EC7B-4316-9B6C-C6C6B5022E35"].Executable;
+
+            MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["學期成績科目級別重複檢查與調整"].Click += delegate
+            {
+                // 學期成績科目級別重複檢查與調整
+                frmSemsSubjectLevelDuplicate fss = new frmSemsSubjectLevelDuplicate();
+                fss.ShowDialog();
+            };
+
         }
     }
 }
