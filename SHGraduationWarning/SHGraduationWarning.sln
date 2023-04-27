@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHGraduationWarning", "SHGraduationWarning.csproj", "{5B9022B8-6617-4624-BE80-96589781EABB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B9022B8-6617-4624-BE80-96589781EABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9022B8-6617-4624-BE80-96589781EABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9022B8-6617-4624-BE80-96589781EABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9022B8-6617-4624-BE80-96589781EABB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E290125-3009-48F7-8C67-F516D329C949}
+	EndGlobalSection
+EndGlobal
