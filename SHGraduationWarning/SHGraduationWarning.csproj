@@ -127,6 +127,9 @@
     <Compile Include="DAO\ClassDeptInfo.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\DataGridViewTextBoxColumnInfo.cs" />
+    <Compile Include="DAO\GPlanInfo.cs" />
+    <Compile Include="DAO\GPlanSubjectInfo.cs" />
+    <Compile Include="DAO\StudSubjectInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIForm\frmMain.cs">
