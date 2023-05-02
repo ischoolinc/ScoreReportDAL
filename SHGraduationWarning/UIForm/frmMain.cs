@@ -47,11 +47,19 @@ namespace SHGraduationWarning.UIForm
         // 班級名稱與編號對照
         Dictionary<string, string> ClassNameIDDic;
 
+        // 更新科目
+        List<StudSubjectInfo> UpdateSubjectInfoList;
+
+        // 刪除科目
+        List<StudSubjectInfo> DeleteSubjectInfoList;
+
         string SelectedTextName = "";
 
         public frmMain()
         {
             GPlanDict = new Dictionary<string, GPlanInfo>();
+            UpdateSubjectInfoList = new List<StudSubjectInfo>();
+            DeleteSubjectInfoList = new List<StudSubjectInfo>();
             hasErrorSubjectInfoDict = new Dictionary<string, StudSubjectInfo>();
             DeptNameIDDic = new Dictionary<string, string>();
             ClassNameIDDic = new Dictionary<string, string>();
@@ -92,10 +100,10 @@ namespace SHGraduationWarning.UIForm
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
 
-            if (StudSubjectInfoList.Count > 0)
+            if (hasErrorSubjectInfoDict.Count > 0)
             {
                 dgDataChkEdit.Rows.Clear();
-                foreach (StudSubjectInfo ss in StudSubjectInfoList)
+                foreach (StudSubjectInfo ss in hasErrorSubjectInfoDict.Values)
                 {
                     int rowIdx = dgDataChkEdit.Rows.Add();
                     dgDataChkEdit.Rows[rowIdx].Tag = ss;
@@ -122,7 +130,7 @@ namespace SHGraduationWarning.UIForm
                     dgDataChkEdit.Rows[rowIdx].Cells["使用課規"].Value = ss.GPName;
                     dgDataChkEdit.Rows[rowIdx].Cells["指定學年科目名稱"].Value = ss.SchoolYearSubjectName;
                     dgDataChkEdit.Rows[rowIdx].Cells["問題說明"].Value = string.Join(",", ss.ErrorMsgList.ToArray());
-
+                    dgDataChkEdit.Rows[rowIdx].Cells["勾選"].Value = true;
                 }
             }
 
@@ -147,28 +155,31 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
-            // 取得科目級別重複
-            StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelDuplicate(DeptID, ClassID, SelectedTextName));
+            //// 取得科目級別重複
+            //StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelDuplicate(DeptID, ClassID, SelectedTextName));
 
-            foreach (StudSubjectInfo ss in StudSubjectInfoList)
-            {
-                AddErrorSubjectInfoDict(ss);
-            }
+            //foreach (StudSubjectInfo ss in StudSubjectInfoList)
+            //{
+            //    AddErrorSubjectInfoDict(ss);
+            //}
 
-            rpInt = 70;
-            bgwDataChkEditLoad.ReportProgress(rpInt);
+            StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
 
             List<string> gpids = new List<string>();
             // 取得使用課程規畫表對照
-            foreach (StudSubjectInfo ssi in hasErrorSubjectInfoDict.Values)
+            foreach (StudSubjectInfo ssi in StudSubjectInfoList)
             {
                 if (!gpids.Contains(ssi.CoursePlanID))
                     gpids.Add(ssi.CoursePlanID);
             }
             GPlanDict = DataAccess.GetGPlanDictByIDs(gpids);
 
+
+            rpInt = 30;
+            bgwDataChkEditLoad.ReportProgress(rpInt);
+
             // 填入資料
-            foreach (StudSubjectInfo ssi in hasErrorSubjectInfoDict.Values)
+            foreach (StudSubjectInfo ssi in StudSubjectInfoList)
             {
                 ssi.IsSubjectLevelChanged = true;
                 // 填入課規資料
@@ -195,6 +206,17 @@ namespace SHGraduationWarning.UIForm
 
             }
 
+            rpInt = 70;
+            bgwDataChkEditLoad.ReportProgress(rpInt);
+            // 填入科目級別不同
+            foreach (StudSubjectInfo ss in StudSubjectInfoList)
+            {
+                if (ss.IsSubjectLevelChanged)
+                {
+                    ss.ErrorMsgList.Add("科目級別與課規不同");
+                    AddErrorSubjectInfoDict(ss);
+                }
+            }
 
             rpInt = 100;
             bgwDataChkEditLoad.ReportProgress(rpInt);
@@ -310,6 +332,9 @@ namespace SHGraduationWarning.UIForm
 
             // 載入資料合理性檢查欄位
             LoadDgDataChkColumns();
+
+            tabControl1.SelectedTabIndex = 1;
+            tabControlPanel1.Enabled = false;
 
             // 讀取班級科別資訊
             bgWorkerLoadDefault.RunWorkerAsync();
@@ -563,7 +588,7 @@ namespace SHGraduationWarning.UIForm
                 {
                     ""HeaderText"": ""學期"",
                     ""Name"": ""學期"",
-                    ""Width"": 40,
+                    ""Width"": 30,
                     ""ReadOnly"": true
                 },
                 {
@@ -605,13 +630,13 @@ namespace SHGraduationWarning.UIForm
                 {
                     ""HeaderText"": ""校部定"",
                     ""Name"": ""校部定"",
-                    ""Width"": 60,
+                    ""Width"": 30,
                     ""ReadOnly"": true
                 },
                 {
                     ""HeaderText"": ""必選修"",
                     ""Name"": ""必選修"",
-                    ""Width"": 60,
+                    ""Width"": 30,
                     ""ReadOnly"": true
                 },
                 {
@@ -623,19 +648,19 @@ namespace SHGraduationWarning.UIForm
                 {
                     ""HeaderText"": ""指定學年科目名稱"",
                     ""Name"": ""指定學年科目名稱"",
-                    ""Width"": 100,
+                    ""Width"": 60,
                     ""ReadOnly"": false
                 },
                 {
                     ""HeaderText"": ""使用課規"",
                     ""Name"": ""使用課規"",
-                    ""Width"": 100,
+                    ""Width"": 80,
                     ""ReadOnly"": true
                 },
                 {
                     ""HeaderText"": ""問題說明"",
                     ""Name"": ""問題說明"",
-                    ""Width"": 120,
+                    ""Width"": 100,
                     ""ReadOnly"": true
                 }
                 ]           
@@ -657,9 +682,9 @@ namespace SHGraduationWarning.UIForm
 
                 // 加入刪除勾選
                 DataGridViewCheckBoxColumn chkCol1 = new DataGridViewCheckBoxColumn();
-                chkCol1.Name = "刪除";
-                chkCol1.HeaderText = "刪除";
-                chkCol1.Width = 50;
+                chkCol1.Name = "勾選";
+                chkCol1.HeaderText = "勾選";
+                chkCol1.Width = 30;
                 chkCol1.TrueValue = "是";
                 chkCol1.FalseValue = "否";
                 chkCol1.IndeterminateValue = "否";
@@ -692,25 +717,30 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查
             if (TabControlSelectedIndex == 1)
             {
-                List<StudSubjectInfo> DelList = new List<StudSubjectInfo>();
+                DeleteSubjectInfoList.Clear();
                 foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
                 {
-                    if (drv.Cells["刪除"].Value != null)
-                        if (drv.Cells["刪除"].Value.ToString() == "是")
+                    if (drv.Cells["勾選"].Value != null)
+                        if (drv.Cells["勾選"].Value.ToString() == "是")
                         {
                             // MsgBox.Show("刪除");
                             StudSubjectInfo ssi = drv.Tag as StudSubjectInfo;
                             if (ssi != null)
-                                DelList.Add(ssi);
+                                DeleteSubjectInfoList.Add(ssi);
                         }
                 }
-                if (DelList.Count > 0)
+                if (DeleteSubjectInfoList.Count > 0)
                 {
-                    int delCount = DataAccess.DelSemsScoreSubject(DelList);
-                    MsgBox.Show("刪除" + delCount + "筆資料");
-                    dgDataChkEdit.Rows.Clear();
-                    lblMsg.Text = "共0筆";
-                    btnUpdate.Enabled = btnDel.Enabled = false;
+
+                    if (FISCA.Presentation.Controls.MsgBox.Show("選「是」將刪除勾選" + DeleteSubjectInfoList.Count + "筆學期科目資料，請確認? ", "刪除學期科目", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        int delCount = DataAccess.DelSemsScoreSubject(DeleteSubjectInfoList);
+                        MsgBox.Show("已刪除" + delCount + "筆資料。");
+
+                        dgDataChkEdit.Rows.Clear();
+                        lblMsg.Text = "共0筆";
+                        btnUpdate.Enabled = btnDel.Enabled = false;
+                    }
                 }
             }
         }
@@ -720,24 +750,34 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查
             if (TabControlSelectedIndex == 1)
             {
-                List<StudSubjectInfo> UpdateList = new List<StudSubjectInfo>();
+                UpdateSubjectInfoList.Clear();
                 foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
                 {
                     StudSubjectInfo ssi = drv.Tag as StudSubjectInfo;
                     if (ssi != null)
                     {
                         if (ssi.IsSubjectLevelChanged)
-                            UpdateList.Add(ssi);
-                    }
+                        {
+                            if (drv.Cells["勾選"].Value != null)
+                                if (drv.Cells["勾選"].Value.ToString() == "是")
+                                {
+                                    UpdateSubjectInfoList.Add(ssi);
+                                }
+                        }
 
+                    }
                 }
-                if (UpdateList.Count > 0)
+                if (UpdateSubjectInfoList.Count > 0)
                 {
-                    int UpdateCount = DataAccess.UpdateSemsScoreSubjectInfo(UpdateList);
-                    MsgBox.Show("更新" + UpdateCount + "筆資料");
-                    dgDataChkEdit.Rows.Clear();
-                    lblMsg.Text = "共0筆";
-                    btnUpdate.Enabled = btnDel.Enabled = false;
+                    if (FISCA.Presentation.Controls.MsgBox.Show("選「是」將更新勾選" + UpdateSubjectInfoList.Count + "筆學期科目資料，請確認? ", "更新學期科目", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        int UpdateCount = DataAccess.UpdateSemsScoreSubjectInfo(UpdateSubjectInfoList);
+                        MsgBox.Show("已更新" + UpdateCount + "筆資料。");
+
+                        dgDataChkEdit.Rows.Clear();
+                        lblMsg.Text = "共0筆";
+                        btnUpdate.Enabled = btnDel.Enabled = false;
+                    }
                 }
             }
         }
@@ -772,11 +812,44 @@ namespace SHGraduationWarning.UIForm
             string key = ssi.SchoolYear + "_" + ssi.Semester + "_" + ssi.StudentID + "_" + ssi.SubjectName + "_" + ssi.SubjectLevel;
             if (!hasErrorSubjectInfoDict.ContainsKey(key))
                 hasErrorSubjectInfoDict.Add(key, ssi);
+            else
+            {
+                if (ssi.ErrorMsgList.Count > 0)
+                {
+                    foreach (string str in ssi.ErrorMsgList)
+                    {
+                        hasErrorSubjectInfoDict[key].ErrorMsgList.Add(str);
+                    }
+                }
+            }
         }
 
         private void comboClass_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedClassName = comboClass.Text;
+        }
+
+        private void chkItemAll_CheckedChanged(object sender, EventArgs e)
+        {
+            // 資料合理檢查
+            if (tabControl1.SelectedTabIndex == 1)
+            {
+                foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
+                {
+                    if (drv.Cells["勾選"].Value != null)
+                        drv.Cells["勾選"].Value = chkItemAll.Checked ? "是" : "否";
+                }
+            }
+        }
+
+        private void tbItemGW_Click(object sender, EventArgs e)
+        {
+            btnQuery.Enabled = false;
+        }
+
+        private void tbItemChkEdit_Click(object sender, EventArgs e)
+        {
+            btnQuery.Enabled = true;
         }
     }
 }
