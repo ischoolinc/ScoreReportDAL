@@ -41,10 +41,21 @@ namespace SHGraduationWarning.UIForm
         // 檢查有問題資料        
         Dictionary<string, StudSubjectInfo> hasErrorSubjectInfoDict;
 
+        // 科別名稱與編號對照
+        Dictionary<string, string> DeptNameIDDic;
+
+        // 班級名稱與編號對照
+        Dictionary<string, string> ClassNameIDDic;
+
+        string SelectedTextName = "";
+
         public frmMain()
         {
             GPlanDict = new Dictionary<string, GPlanInfo>();
             hasErrorSubjectInfoDict = new Dictionary<string, StudSubjectInfo>();
+            DeptNameIDDic = new Dictionary<string, string>();
+            ClassNameIDDic = new Dictionary<string, string>();
+
             bgWorkerLoadDefault = new BackgroundWorker();
             bgWorkerLoadDefault.DoWork += BgWorkerLoadDefault_DoWork;
             bgWorkerLoadDefault.RunWorkerCompleted += BgWorkerLoadDefault_RunWorkerCompleted;
@@ -124,10 +135,20 @@ namespace SHGraduationWarning.UIForm
             int rpInt = 1;
             StudSubjectInfoList.Clear();
             GPlanDict.Clear();
-
+            hasErrorSubjectInfoDict.Clear();
             bgwDataChkEditLoad.ReportProgress(rpInt);
-            for (int i = 1; i <= 3; i++)
-                StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelDuplicateByGradeYear(i));
+
+            string DeptID = "";
+            string ClassID = "";
+
+            if (DeptNameIDDic.ContainsKey(SelectedDeptName))
+                DeptID = DeptNameIDDic[SelectedDeptName];
+
+            if (ClassNameIDDic.ContainsKey(SelectedClassName))
+                ClassID = ClassNameIDDic[SelectedClassName];
+
+            // 取得科目級別重複
+            StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelDuplicate(DeptID, ClassID, SelectedTextName));
 
             foreach (StudSubjectInfo ss in StudSubjectInfoList)
             {
@@ -157,7 +178,7 @@ namespace SHGraduationWarning.UIForm
                     // 使用年級+學期+科目+級別當key
                     string subjKey = ssi.GradeYear + "_" + ssi.Semester + "_" + ssi.SubjectName;
                     if (GPlanDict[ssi.CoursePlanID].SubjectsDict.ContainsKey(subjKey))
-                    {                        
+                    {
                         ssi.GPRequired = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Required;
                         ssi.GPRequiredBy = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].RequiredBy;
                         ssi.GPCredit = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Credit;
@@ -206,12 +227,16 @@ namespace SHGraduationWarning.UIForm
             // 載入班級科別資訊
             LoadClassDeptToForm();
             ControlEnable(true);
+            btnDel.Enabled = btnUpdate.Enabled = false;
         }
 
         private void BgWorkerLoadDefault_DoWork(object sender, DoWorkEventArgs e)
         {
             int rpInt = 1;
             bgWorkerLoadDefault.ReportProgress(rpInt);
+
+            DeptNameIDDic.Clear();
+            ClassNameIDDic.Clear();
 
             // 讀取班級科別資訊            
             ClassDeptInfoList = DataAccess.GetClassDeptList();
@@ -222,6 +247,12 @@ namespace SHGraduationWarning.UIForm
                     DeptNameDict.Add(cd.DeptName, new List<string>());
 
                 DeptNameDict[cd.DeptName].Add(cd.ClassName);
+
+                if (!ClassNameIDDic.ContainsKey(cd.ClassName))
+                    ClassNameIDDic.Add(cd.ClassName, cd.ClassID);
+
+                if (!DeptNameIDDic.ContainsKey(cd.DeptName))
+                    DeptNameIDDic.Add(cd.DeptName, cd.DeptID);
             }
 
             rpInt = 10;
@@ -287,13 +318,14 @@ namespace SHGraduationWarning.UIForm
 
         private void ControlEnable(bool value)
         {
-            btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnDel.Enabled = btnUpdate.Enabled = value;
+            btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnDel.Enabled = btnUpdate.Enabled = textName.Enabled = value;
         }
 
         private void comboDept_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 清除班級，填入相對值
             comboClass.Text = "";
+            SelectedClassName = "";
             SelectedDeptName = comboDept.Text;
 
             if (comboClass.Text != AllStr)
@@ -657,21 +689,58 @@ namespace SHGraduationWarning.UIForm
 
         private void btnDel_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
+            // 資料合理檢查
+            if (TabControlSelectedIndex == 1)
             {
-                if (drv.Cells["刪除"].Value != null)
-                    if (drv.Cells["刪除"].Value.ToString() == "是")
-                    {
-                        MsgBox.Show("刪除");
-                    }
+                List<StudSubjectInfo> DelList = new List<StudSubjectInfo>();
+                foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
+                {
+                    if (drv.Cells["刪除"].Value != null)
+                        if (drv.Cells["刪除"].Value.ToString() == "是")
+                        {
+                            // MsgBox.Show("刪除");
+                            StudSubjectInfo ssi = drv.Tag as StudSubjectInfo;
+                            if (ssi != null)
+                                DelList.Add(ssi);
+                        }
+                }
+                if (DelList.Count > 0)
+                {
+                    int delCount = DataAccess.DelSemsScoreSubject(DelList);
+                    MsgBox.Show("刪除" + delCount + "筆資料");
+                    dgDataChkEdit.Rows.Clear();
+                    lblMsg.Text = "共0筆";
+                    btnUpdate.Enabled = btnDel.Enabled = false;
+                }
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            // 資料合理檢查
+            if (TabControlSelectedIndex == 1)
+            {
+                List<StudSubjectInfo> UpdateList = new List<StudSubjectInfo>();
+                foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
+                {
+                    StudSubjectInfo ssi = drv.Tag as StudSubjectInfo;
+                    if (ssi != null)
+                    {
+                        if (ssi.IsSubjectLevelChanged)
+                            UpdateList.Add(ssi);
+                    }
 
+                }
+                if (UpdateList.Count > 0)
+                {
+                    int UpdateCount = DataAccess.UpdateSemsScoreSubjectInfo(UpdateList);
+                    MsgBox.Show("更新" + UpdateCount + "筆資料");
+                    dgDataChkEdit.Rows.Clear();
+                    lblMsg.Text = "共0筆";
+                    btnUpdate.Enabled = btnDel.Enabled = false;
+                }
+            }
         }
-
         private void btnQuery_Click(object sender, EventArgs e)
         {
             // 畢業預警
@@ -683,6 +752,9 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查
             if (TabControlSelectedIndex == 1)
             {
+
+                SelectedTextName = textName.Text;
+
                 ControlEnable(false);
                 bgwDataChkEditLoad.RunWorkerAsync();
             }
@@ -700,6 +772,11 @@ namespace SHGraduationWarning.UIForm
             string key = ssi.SchoolYear + "_" + ssi.Semester + "_" + ssi.StudentID + "_" + ssi.SubjectName + "_" + ssi.SubjectLevel;
             if (!hasErrorSubjectInfoDict.ContainsKey(key))
                 hasErrorSubjectInfoDict.Add(key, ssi);
+        }
+
+        private void comboClass_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedClassName = comboClass.Text;
         }
     }
 }

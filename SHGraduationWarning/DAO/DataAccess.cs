@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using FISCA.Data;
+using FISCA.LogAgent;
 
 namespace SHGraduationWarning.DAO
 {
@@ -19,7 +22,7 @@ namespace SHGraduationWarning.DAO
             {
                 string strSQL = @"
             SELECT
-                DISTINCT dept.id AS dept_id,
+                dept.id AS dept_id,
                 dept.name AS dept_name,
                 class_name,
                 class.id AS class_id
@@ -29,8 +32,14 @@ namespace SHGraduationWarning.DAO
                 INNER JOIN student ON class.id = student.ref_class_id
             WHERE
                 student.status IN(1, 2)
+            GROUP BY
+                dept_id,
+                dept_name,
+                class_name,
+                class_id
             ORDER BY
-                dept.name,
+                class.grade_year DESC,
+                class.display_order,
                 class_name
             ";
 
@@ -90,18 +99,32 @@ namespace SHGraduationWarning.DAO
 
         }
 
-        // 依班級年級取得學期科目級別重複  
-        public static List<StudSubjectInfo> GetSemsSubjectLevelDuplicateByGradeYear(int GradeYear)
+        // 依取得學期科目級別重複  
+        public static List<StudSubjectInfo> GetSemsSubjectLevelDuplicate(string DeptID, string ClassID, string textName)
         {
+
+
             List<StudSubjectInfo> value = new List<StudSubjectInfo>();
             try
             {
                 // 取得科別對照
                 Dictionary<string, string> deptDict = GetDeptIDNameDict();
 
+                string condition = " grade_year IN(1,2,3) ";
+
+                if (!string.IsNullOrEmpty(DeptID))
+                    condition = " dept_id = " + DeptID + "";
+
+                if (!string.IsNullOrEmpty(ClassID))
+                    condition = " class_id = " + ClassID + "";
+
+                if (!string.IsNullOrEmpty(textName))
+                    condition += " AND student_name LIKE '" + textName + "%'";
+
+
                 QueryHelper qh = new QueryHelper();
                 string strSQL = string.Format(@"
-                WITH student_base AS(
+                WITH student_base_source AS(
                     SELECT
                         student.id AS student_id,
                         student_number,
@@ -130,8 +153,13 @@ namespace SHGraduationWarning.DAO
                         student
                         LEFT JOIN class ON student.ref_class_id = class.id                         
                     WHERE
-                        student.status <> 256
-                        AND class.grade_year = {0} 
+                        student.status <> 256  
+                ),student_base AS (
+                    SELECT 
+                        * 
+                    FROM 
+                        student_base_source 
+                    WHERE {0} 
                 ),
                 sems_subj_score AS (
                     SELECT
@@ -217,7 +245,7 @@ namespace SHGraduationWarning.DAO
                     sems_subj_score.科目級別,
                     sems_subj_score.school_year,
                     sems_subj_score.semester
-", GradeYear);
+", condition);
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -343,7 +371,7 @@ namespace SHGraduationWarning.DAO
                     //// -- 使用科目名稱與級別當key
                     // string gsKey = gs.SubjectName + "_" + gs.SubjectLevel;
                     // 使用年級+學期+科目名稱當key
-                    string gsKey = gs.GradeYear + "_" + gs.Semester + "_" + gs.SubjectName ;
+                    string gsKey = gs.GradeYear + "_" + gs.Semester + "_" + gs.SubjectName;
                     if (!value[gpID].SubjectsDict.ContainsKey(gsKey))
                         value[gpID].SubjectsDict.Add(gsKey, gs);
                 }
@@ -356,5 +384,232 @@ namespace SHGraduationWarning.DAO
 
             return value;
         }
+
+        // 刪除學期科目
+        public static int DelSemsScoreSubject(List<StudSubjectInfo> dataList)
+        {
+            int value = 0;
+            try
+            {
+                if (dataList.Count > 0)
+                {
+                    // 取得需要刪除學期成績系統編號
+                    List<string> SemsScoreIDs = new List<string>();
+
+                    foreach (StudSubjectInfo ss in dataList)
+                    {
+                        if (!SemsScoreIDs.Contains(ss.SemsSubjID))
+                            SemsScoreIDs.Add(ss.SemsSubjID);
+                    }
+                    XElement dataXML = null;
+
+                    string strSQL = "SELECT id,score_info FROM sems_subj_score WHERE id IN(" + string.Join(",", SemsScoreIDs.ToArray()) + ");";
+
+                    Dictionary<string, SemsScoreInfo> SemsScoreInfoDict = new Dictionary<string, SemsScoreInfo>();
+
+                    int count = 0;
+                    QueryHelper qh = new QueryHelper();
+                    DataTable dt = qh.Select(strSQL);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string id = dr["id"] + "";
+                        string score_info = dr["score_info"] + "";
+                        try
+                        {
+                            if (!SemsScoreInfoDict.ContainsKey(id))
+                            {
+                                SemsScoreInfo sems = new SemsScoreInfo();
+                                sems.id = id;
+                                sems.ScoreInfo = XElement.Parse(score_info);
+                                SemsScoreInfoDict.Add(id, sems);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+
+                    StringBuilder sbLog = new StringBuilder();
+                    sbLog.AppendLine("== 刪除學生學期科目資料 ==");
+
+                    // 移除相對科目Element
+                    foreach (StudSubjectInfo ss in dataList)
+                    {
+                        if (SemsScoreInfoDict.ContainsKey(ss.SemsSubjID))
+                        {
+                            XElement elmRoot = SemsScoreInfoDict[ss.SemsSubjID].ScoreInfo;
+
+                            foreach (XElement elm in elmRoot.Elements("Subject"))
+                            {
+                                if (elm.Attribute("科目").Value == ss.SubjectName && elm.Attribute("科目級別").Value == ss.SubjectLevel)
+                                {
+                                    elm.Remove();
+                                    sbLog.AppendLine("學年度:" + ss.SchoolYear + "，學期:" + ss.Semester + "，學號:" + ss.StudentNumber + "，班級：" + ss.ClassName + "，座號：" + ss.SeatNo + "，姓名:" + ss.Name + "，科目名稱：" + ss.SubjectName + "，級別：" + ss.SubjectLevel);
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    sbLog.AppendLine("共刪除" + count + "筆。");
+
+                    try
+                    {
+                        // 更新資料
+                        string UpdateStrSQL = @"WITH update_data AS(";
+                        int cot = 1;
+                        foreach (SemsScoreInfo ssi in SemsScoreInfoDict.Values)
+                        {
+                            UpdateStrSQL += "SELECT " + ssi.id + " AS id,'" + ssi.ScoreInfo.ToString() + "' AS score_info";
+                            if (cot < SemsScoreInfoDict.Count)
+                                UpdateStrSQL += " UNION ALL ";
+                            cot++;
+                        }
+
+                        UpdateStrSQL += @") ,update_sems_data AS (
+                    UPDATE 
+                        sems_subj_score 
+                            SET score_info = update_data.score_info 
+                    FROM update_data                    
+                        WHERE sems_subj_score.id = update_data.id RETURNING sems_subj_score.id
+                    )
+                    SELECT * FROM 
+                        update_sems_data";
+
+                        DataTable dtUpdate = qh.Select(UpdateStrSQL);
+
+                        FISCA.LogAgent.ApplicationLog.Log("成績系統.畢業預警與資料合理檢查", "刪除學生學期科目資料", sbLog.ToString());
+                        value = count;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+        // 更新學期科目內容
+        public static int UpdateSemsScoreSubjectInfo(List<StudSubjectInfo> dataList)
+        {
+            int value = 0;
+            try
+            {
+                if (dataList.Count > 0)
+                {
+                    // 取得需要刪除學期成績系統編號
+                    List<string> SemsScoreIDs = new List<string>();
+
+                    foreach (StudSubjectInfo ss in dataList)
+                    {
+                        if (!SemsScoreIDs.Contains(ss.SemsSubjID))
+                            SemsScoreIDs.Add(ss.SemsSubjID);
+                    }
+                    XElement dataXML = null;
+
+                    string strSQL = "SELECT id,score_info FROM sems_subj_score WHERE id IN(" + string.Join(",", SemsScoreIDs.ToArray()) + ");";
+
+                    Dictionary<string, SemsScoreInfo> SemsScoreInfoDict = new Dictionary<string, SemsScoreInfo>();
+
+                    int count = 0;
+                    QueryHelper qh = new QueryHelper();
+                    DataTable dt = qh.Select(strSQL);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string id = dr["id"] + "";
+                        string score_info = dr["score_info"] + "";
+                        try
+                        {
+                            if (!SemsScoreInfoDict.ContainsKey(id))
+                            {
+                                SemsScoreInfo sems = new SemsScoreInfo();
+                                sems.id = id;
+                                sems.ScoreInfo = XElement.Parse(score_info);
+                                SemsScoreInfoDict.Add(id, sems);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+
+                    StringBuilder sbLog = new StringBuilder();
+                    sbLog.AppendLine("== 更新學生學期科目資料 ==");
+
+                    // 更新相對科目Element
+                    foreach (StudSubjectInfo ss in dataList)
+                    {
+                        if (SemsScoreInfoDict.ContainsKey(ss.SemsSubjID))
+                        {
+                            XElement elmRoot = SemsScoreInfoDict[ss.SemsSubjID].ScoreInfo;
+
+                            foreach (XElement elm in elmRoot.Elements("Subject"))
+                            {
+                                if (ss.IsSubjectLevelChanged)
+                                {
+                                    if (ss.SubjectName == elm.Attribute("科目").Value && ss.SubjectLevel == elm.Attribute("科目級別").Value)
+                                    {
+                                        elm.SetAttributeValue("科目級別", ss.SubjectLevelNew);
+
+                                        sbLog.AppendLine("學年度:" + ss.SchoolYear + "，學期:" + ss.Semester + "，學號:" + ss.StudentNumber + "，班級：" + ss.ClassName + "，座號：" + ss.SeatNo + "，姓名:" + ss.Name + "，科目名稱：" + ss.SubjectName + "，級別：由「" + ss.SubjectLevel + "」改成「" + ss.SubjectLevelNew + "」。");
+                                        count++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // 回寫資料
+                    sbLog.AppendLine("共更新" + count + "筆。");
+
+                    try
+                    {
+                        // 更新資料
+                        string UpdateStrSQL = @"WITH update_data AS(";
+                        int cot = 1;
+                        foreach (SemsScoreInfo ssi in SemsScoreInfoDict.Values)
+                        {
+                            UpdateStrSQL += "SELECT " + ssi.id + " AS id,'" + ssi.ScoreInfo.ToString() + "' AS score_info";
+                            if (cot < SemsScoreInfoDict.Count)
+                                UpdateStrSQL += " UNION ALL ";
+                            cot++;
+                        }
+
+                        UpdateStrSQL += @") ,update_sems_data AS (
+                    UPDATE 
+                        sems_subj_score 
+                            SET score_info = update_data.score_info 
+                    FROM update_data                    
+                        WHERE sems_subj_score.id = update_data.id RETURNING sems_subj_score.id
+                    )
+                    SELECT * FROM 
+                        update_sems_data";
+
+                        DataTable dtUpdate = qh.Select(UpdateStrSQL);
+
+                        FISCA.LogAgent.ApplicationLog.Log("成績系統.畢業預警與資料合理檢查", "更新學生學期科目資料", sbLog.ToString());
+                        value = count;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
     }
 }
