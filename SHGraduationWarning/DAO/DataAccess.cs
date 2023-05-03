@@ -451,8 +451,7 @@ namespace SHGraduationWarning.DAO
                     sc.SemsSubjID = dr["學期成績系統編號"] + "";
                     sc.SchoolYearSubjectName = dr["指定學年科目名稱"] + "";
                     sc.ClassID = dr["class_id"] + "";
-                    sc.DeptID = dr["dept_id"] + "";
-                    sc.ErrorMsgList.Add("科目級別重複");
+                    sc.DeptID = dr["dept_id"] + "";                    
                     // 科別名稱
                     if (deptDict.ContainsKey(sc.DeptID))
                         sc.DeptName = deptDict[sc.DeptID];

@@ -130,7 +130,8 @@ namespace SHGraduationWarning.UIForm
                     dgDataChkEdit.Rows[rowIdx].Cells["使用課規"].Value = ss.GPName;
                     dgDataChkEdit.Rows[rowIdx].Cells["指定學年科目名稱"].Value = ss.SchoolYearSubjectName;
                     dgDataChkEdit.Rows[rowIdx].Cells["問題說明"].Value = string.Join(",", ss.ErrorMsgList.ToArray());
-                    dgDataChkEdit.Rows[rowIdx].Cells["勾選"].Value = true;
+                    if (ss.IsSubjectLevelChanged && ss.SubjectLevelNew != "")
+                        dgDataChkEdit.Rows[rowIdx].Cells["勾選"].Value = "是";
                 }
             }
 
@@ -367,6 +368,7 @@ namespace SHGraduationWarning.UIForm
             {
                 if (DeptNameDict.ContainsKey(SelectedDeptName))
                 {
+                    comboClass.Items.Add(AllStr);
                     foreach (string name in DeptNameDict[SelectedDeptName])
                     {
                         comboClass.Items.Add(name);
@@ -836,8 +838,7 @@ namespace SHGraduationWarning.UIForm
             {
                 foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
                 {
-                    if (drv.Cells["勾選"].Value != null)
-                        drv.Cells["勾選"].Value = chkItemAll.Checked ? "是" : "否";
+                    drv.Cells["勾選"].Value = chkItemAll.Checked ? "是" : "否";
                 }
             }
         }
