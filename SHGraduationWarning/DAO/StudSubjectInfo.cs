@@ -61,5 +61,10 @@ namespace SHGraduationWarning.DAO
         public string GPSYSubjectName { get; set; } // 課規指定學年度科目名稱
 
         public bool IsSubjectLevelChanged = false; // 科目級別是否有變更 
+
+        // 不計學分
+        public string NotIncludedInCredit { get; set; }
+        // 是否取得學分
+        public string Pass { get; set; }
     }
 }

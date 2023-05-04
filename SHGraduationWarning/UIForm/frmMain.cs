@@ -19,27 +19,37 @@ namespace SHGraduationWarning.UIForm
     public partial class frmMain : BaseForm
     {
         string AllStr = "全部";
+        // 選擇Tab名稱
+        string SelectedTabName = "";
+
+        string GWTabName = "畢業預警";
+        string ChkEditTabName = "資料合理檢查_科目級別";
+        string ChkEditTabName2 = "資料合理檢查_科目屬性";
+
         // 載入預設資料
         BackgroundWorker bgWorkerLoadDefault;
         // 載入畢業資格檢查資料
         BackgroundWorker bgwDataGWLoad;
-        // 載入資料合理
+        // 載入資料合理-科目級別
         BackgroundWorker bgwDataChkEditLoad;
+        // 載入資料合理-科目屬性
+        BackgroundWorker bgwDataChkEditLoad2;
 
         List<ClassDeptInfo> ClassDeptInfoList;
         string SelectedDeptName = "";
         string SelectedClassName = "";
         Dictionary<string, List<string>> DeptNameDict;
 
-        int TabControlSelectedIndex = 0;
-
         List<StudSubjectInfo> StudSubjectInfoList;
 
         // 課程規劃表對照
         Dictionary<string, GPlanInfo> GPlanDict;
 
-        // 檢查有問題資料        
+        // 檢查有問題資料 -- 科目級別        
         Dictionary<string, StudSubjectInfo> hasErrorSubjectInfoDict;
+
+        // 檢查有問題資料 -- 科目屬性
+        Dictionary<string, StudSubjectInfo> hasErrorYearSubjectNameInfoDict;
 
         // 科別名稱與編號對照
         Dictionary<string, string> DeptNameIDDic;
@@ -82,6 +92,13 @@ namespace SHGraduationWarning.UIForm
             bgwDataChkEditLoad.ProgressChanged += BgwDataChkEditLoad_ProgressChanged;
             bgwDataChkEditLoad.WorkerReportsProgress = true;
 
+            bgwDataChkEditLoad2 = new BackgroundWorker();
+            bgwDataChkEditLoad2.DoWork += BgwDataChkEditLoad2_DoWork;
+            bgwDataChkEditLoad2.RunWorkerCompleted += BgwDataChkEditLoad2_RunWorkerCompleted;
+            bgwDataChkEditLoad2.ProgressChanged += BgwDataChkEditLoad2_ProgressChanged;
+            bgwDataChkEditLoad2.WorkerReportsProgress = true;
+
+
             StudSubjectInfoList = new List<StudSubjectInfo>();
 
             DeptNameDict = new Dictionary<string, List<string>>();
@@ -89,6 +106,25 @@ namespace SHGraduationWarning.UIForm
             SelectedDeptName = SelectedClassName = AllStr;
 
             InitializeComponent();
+        }
+
+        private void BgwDataChkEditLoad2_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("資料合理檢查中...", e.ProgressPercentage);
+        }
+
+        private void BgwDataChkEditLoad2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+
+            lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
+            ControlEnable(true);
+            btnDel.Enabled = false;
+        }
+
+        private void BgwDataChkEditLoad2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            
         }
 
         private void BgwDataChkEditLoad_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -156,13 +192,6 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
-            //// 取得科目級別重複
-            //StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelDuplicate(DeptID, ClassID, SelectedTextName));
-
-            //foreach (StudSubjectInfo ss in StudSubjectInfoList)
-            //{
-            //    AddErrorSubjectInfoDict(ss);
-            //}
 
             StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
 
@@ -209,6 +238,7 @@ namespace SHGraduationWarning.UIForm
 
             rpInt = 70;
             bgwDataChkEditLoad.ReportProgress(rpInt);
+
             // 填入科目級別不同
             foreach (StudSubjectInfo ss in StudSubjectInfoList)
             {
@@ -236,7 +266,13 @@ namespace SHGraduationWarning.UIForm
 
         private void BgwDataGWLoad_DoWork(object sender, DoWorkEventArgs e)
         {
-            throw new NotImplementedException();
+            int rpInt = 1;
+            bgwDataGWLoad.ReportProgress(rpInt);
+
+
+
+            rpInt = 100;
+            bgwDataGWLoad.ReportProgress(rpInt);
         }
 
         private void BgWorkerLoadDefault_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -325,17 +361,24 @@ namespace SHGraduationWarning.UIForm
 
             ControlEnable(false);
             ClearClassDept();
+            lblDesc.Text = "";
+            SelectedTabName = ChkEditTabName;
+            LoadTabDesc();
+            chkItemAll.Enabled = true;
+
             comboDept.DropDownStyle = ComboBoxStyle.DropDownList;
             comboClass.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // 載入畢業預警欄位
             LoadDgGWColumns();
 
-            // 載入資料合理性檢查欄位
+            // 載入資料合理性檢查欄位--科目級別
             LoadDgDataChkColumns();
 
+            // 載入資料合理性檢查欄位--科目屬性
+            LoadDgData2ChkColumns();
+
             tabControl1.SelectedTabIndex = 1;
-            tabControlPanel1.Enabled = false;
 
             // 讀取班級科別資訊
             bgWorkerLoadDefault.RunWorkerAsync();
@@ -354,8 +397,7 @@ namespace SHGraduationWarning.UIForm
             SelectedClassName = "";
             SelectedDeptName = comboDept.Text;
 
-            if (comboClass.Text != AllStr)
-                comboClass.Items.Clear();
+            comboClass.Items.Clear();
 
             if (SelectedDeptName == AllStr)
             {
@@ -543,7 +585,7 @@ namespace SHGraduationWarning.UIForm
 
         }
 
-        // 載入資料合理檢查欄位
+        // 載入資料合理檢查欄位--科目級別
         private void LoadDgDataChkColumns()
         {
             try
@@ -632,13 +674,13 @@ namespace SHGraduationWarning.UIForm
                 {
                     ""HeaderText"": ""校部定"",
                     ""Name"": ""校部定"",
-                    ""Width"": 30,
+                    ""Width"": 40,
                     ""ReadOnly"": true
                 },
                 {
                     ""HeaderText"": ""必選修"",
                     ""Name"": ""必選修"",
-                    ""Width"": 30,
+                    ""Width"": 40,
                     ""ReadOnly"": true
                 },
                 {
@@ -651,7 +693,7 @@ namespace SHGraduationWarning.UIForm
                     ""HeaderText"": ""指定學年科目名稱"",
                     ""Name"": ""指定學年科目名稱"",
                     ""Width"": 60,
-                    ""ReadOnly"": false
+                    ""ReadOnly"": true
                 },
                 {
                     ""HeaderText"": ""使用課規"",
@@ -699,6 +741,114 @@ namespace SHGraduationWarning.UIForm
             }
         }
 
+        // 載入資料合理檢查欄位--科目屬性
+        private void LoadDgData2ChkColumns()
+        {
+            try
+            {
+                string textColumnStrig = @"
+                [                
+                {
+                    ""HeaderText"": ""使用課規"",
+                    ""Name"": ""使用課規"",
+                    ""Width"": 120,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""科目名稱"",
+                    ""Name"": ""科目名稱"",
+                    ""Width"": 120,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""科目級別"",
+                    ""Name"": ""科目級別"",
+                    ""Width"": 30,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""領域"",
+                    ""Name"": ""領域"",
+                    ""Width"": 80,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""分項"",
+                    ""Name"": ""分項"",
+                    ""Width"": 80,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""校部定"",
+                    ""Name"": ""校部定"",
+                    ""Width"": 40,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""必選修"",
+                    ""Name"": ""必選修"",
+                    ""Width"": 40,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""學分"",
+                    ""Name"": ""學分"",
+                    ""Width"": 30,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""指定學年科目名稱"",
+                    ""Name"": ""指定學年科目名稱"",
+                    ""Width"": 120,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""建議指定學年科目名稱"",
+                    ""Name"": ""建議指定學年科目名稱"",
+                    ""Width"": 120,
+                    ""ReadOnly"": false
+                },
+                {
+                    ""HeaderText"": ""問題說明"",
+                    ""Name"": ""問題說明"",
+                    ""Width"": 100,
+                    ""ReadOnly"": true
+                }
+                ]           
+                
+";
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                List<DataGridViewTextBoxColumnInfo> jsonObjArray = serializer.Deserialize<List<DataGridViewTextBoxColumnInfo>>(textColumnStrig);
+                foreach (DataGridViewTextBoxColumnInfo jObj in jsonObjArray)
+                {
+                    DataGridViewTextBoxColumn dgt = new DataGridViewTextBoxColumn();
+                    dgt.Name = jObj.Name;
+                    dgt.Width = jObj.Width;
+                    dgt.HeaderText = jObj.HeaderText;
+                    dgt.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgt.ReadOnly = jObj.ReadOnly;
+                    dgData2ChkEdit.Columns.Add(dgt);
+                }
+
+
+                // 加入刪除勾選
+                DataGridViewCheckBoxColumn chkCol1 = new DataGridViewCheckBoxColumn();
+                chkCol1.Name = "勾選";
+                chkCol1.HeaderText = "勾選";
+                chkCol1.Width = 30;
+                chkCol1.TrueValue = "是";
+                chkCol1.FalseValue = "否";
+                chkCol1.IndeterminateValue = "否";
+
+                dgData2ChkEdit.Columns.Add(chkCol1);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         private void BtnCol3_Click(object sender, EventArgs e)
         {
             MsgBox.Show("學生待處理");
@@ -716,8 +866,8 @@ namespace SHGraduationWarning.UIForm
 
         private void btnDel_Click(object sender, EventArgs e)
         {
-            // 資料合理檢查
-            if (TabControlSelectedIndex == 1)
+            // 資料合理檢查 -- 科目級別
+            if (SelectedTabName == ChkEditTabName)
             {
                 DeleteSubjectInfoList.Clear();
                 foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
@@ -749,8 +899,8 @@ namespace SHGraduationWarning.UIForm
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            // 資料合理檢查
-            if (TabControlSelectedIndex == 1)
+            // 資料合理檢查 -- 科目級別
+            if (SelectedTabName == ChkEditTabName)
             {
                 UpdateSubjectInfoList.Clear();
                 foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
@@ -786,13 +936,16 @@ namespace SHGraduationWarning.UIForm
         private void btnQuery_Click(object sender, EventArgs e)
         {
             // 畢業預警
-            if (TabControlSelectedIndex == 0)
+            if (SelectedTextName == GWTabName)
             {
+                SelectedTextName = textName.Text;
 
+                ControlEnable(false);
+                bgwDataGWLoad.RunWorkerAsync();
             }
 
             // 資料合理檢查
-            if (TabControlSelectedIndex == 1)
+            if (SelectedTextName == ChkEditTabName)
             {
 
                 SelectedTextName = textName.Text;
@@ -801,11 +954,18 @@ namespace SHGraduationWarning.UIForm
                 bgwDataChkEditLoad.RunWorkerAsync();
             }
 
+            // 資料合理檢查-科目屬性
+            if (SelectedTextName == ChkEditTabName2)
+            {
+                SelectedTextName = textName.Text;
+                ControlEnable(false);
+                bgwDataChkEditLoad2.RunWorkerAsync();
+            }
+
         }
 
         private void tabControl1_SelectedTabChanged(object sender, DevComponents.DotNetBar.TabStripTabChangedEventArgs e)
-        {
-            TabControlSelectedIndex = tabControl1.SelectedTabIndex;
+        {           
 
         }
 
@@ -820,7 +980,27 @@ namespace SHGraduationWarning.UIForm
                 {
                     foreach (string str in ssi.ErrorMsgList)
                     {
-                        hasErrorSubjectInfoDict[key].ErrorMsgList.Add(str);
+                        if (!hasErrorSubjectInfoDict[key].ErrorMsgList.Contains(str))
+                            hasErrorSubjectInfoDict[key].ErrorMsgList.Add(str);
+                    }
+                }
+            }
+        }
+
+        
+        private void AddErrorYearSubjectNameInfoDict(StudSubjectInfo ssi)
+        {
+            string key = ssi.SchoolYear + "_" + ssi.Semester + "_" + ssi.StudentID + "_" + ssi.SubjectName + "_" + ssi.SubjectLevel;
+            if (!hasErrorYearSubjectNameInfoDict.ContainsKey(key))
+                hasErrorYearSubjectNameInfoDict.Add(key, ssi);
+            else
+            {
+                if (ssi.ErrorMsgList.Count > 0)
+                {
+                    foreach (string str in ssi.ErrorMsgList)
+                    {
+                        if (!hasErrorYearSubjectNameInfoDict[key].ErrorMsgList.Contains(str))
+                            hasErrorYearSubjectNameInfoDict[key].ErrorMsgList.Add(str);
                     }
                 }
             }
@@ -833,8 +1013,8 @@ namespace SHGraduationWarning.UIForm
 
         private void chkItemAll_CheckedChanged(object sender, EventArgs e)
         {
-            // 資料合理檢查
-            if (tabControl1.SelectedTabIndex == 1)
+            // 資料合理檢查 -- 科目級別
+            if (SelectedTabName == ChkEditTabName)
             {
                 foreach (DataGridViewRow drv in dgDataChkEdit.Rows)
                 {
@@ -845,12 +1025,69 @@ namespace SHGraduationWarning.UIForm
 
         private void tbItemGW_Click(object sender, EventArgs e)
         {
+            // 畢業預警
+            SelectedTabName = GWTabName;
             btnQuery.Enabled = false;
+            LoadTabDesc();
+            chkItemAll.Enabled = false;
         }
 
         private void tbItemChkEdit_Click(object sender, EventArgs e)
         {
+            // 資料合理檢查 -- 科目級別
+            SelectedTabName = ChkEditTabName;
             btnQuery.Enabled = true;
+            LoadTabDesc();
+            chkItemAll.Enabled = true;
+        }
+
+
+
+        // 載入說明資訊
+        private void LoadTabDesc()
+        {
+            string msg = "";
+            // 畢業預警
+            if (SelectedTabName == GWTabName)
+            {
+                msg = @"
+";
+            }
+
+
+            else if (SelectedTabName == ChkEditTabName)
+            {
+                // 資料合理檢查_科目級別
+                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修+休學)
+1. 檢查學生學期成績的科目級別與學生使用課程規劃的科目級別差異，並可更新級別或刪除科目。
+2. 建議級別空白表示學期成績有這科目，在學生課程規畫表內沒有。
+";
+                lblDesc.Text = msg;
+            }
+            else if (SelectedTabName == ChkEditTabName2)
+            {
+                // 資料合理檢查_科目屬性
+                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修+休學)
+1. 檢查學期成績同學年，科目名稱相同，科目屬性不同(領域+分項+校部定+必選修+學分)，列出差異，請指定學年科目名稱。
+2. 設定指定學年科目名稱，會回寫 學期成績、課程規劃、課程，內指定學年科目名稱。
+";
+            }
+
+            lblDesc.Text = msg;
+        }
+
+        private void tabControl1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbItem2ChkEdit_Click(object sender, EventArgs e)
+        {
+            // 資料合理檢查 -- 科目屬性
+            SelectedTabName = ChkEditTabName2;
+            btnQuery.Enabled = true;
+            LoadTabDesc();
+            chkItemAll.Enabled = false;
         }
     }
 }

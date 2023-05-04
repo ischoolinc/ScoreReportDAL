@@ -130,6 +130,7 @@
     <Compile Include="DAO\GPlanInfo.cs" />
     <Compile Include="DAO\GPlanSubjectInfo.cs" />
     <Compile Include="DAO\SemsScoreInfo.cs" />
+    <Compile Include="DAO\StudGraduationCheckInfo.cs" />
     <Compile Include="DAO\StudSubjectInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

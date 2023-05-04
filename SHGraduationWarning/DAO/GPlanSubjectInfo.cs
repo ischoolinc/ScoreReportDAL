@@ -40,5 +40,14 @@ namespace SHGraduationWarning.DAO
 
         // 課程代碼
         public string CourseCode { get; set; }
+
+        // 分組名稱
+        public string Group { get; set; }
+
+        // 分組修課學分數
+        public string GroupCredit { get; set; }
+
+        // 設定對開
+        public string RequiredPair { get; set; }
     }
 }
