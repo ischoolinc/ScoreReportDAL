@@ -131,6 +131,7 @@
     <Compile Include="DAO\GPlanSubjectInfo.cs" />
     <Compile Include="DAO\SemsScoreInfo.cs" />
     <Compile Include="DAO\StudGraduationCheckInfo.cs" />
+    <Compile Include="DAO\StudSchoolYearSubjectNameInfo.cs" />
     <Compile Include="DAO\StudSubjectInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="UIForm\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells_201402.dll" />

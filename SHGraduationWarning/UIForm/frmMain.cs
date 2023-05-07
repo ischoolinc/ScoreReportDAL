@@ -13,6 +13,9 @@ using FISCA.Presentation.Controls;
 using SHGraduationWarning.DAO;
 using System.Web.Script.Serialization;
 using System.Net.NetworkInformation;
+using System.Xml.Linq;
+using Aspose.Cells;
+using System.IO;
 
 namespace SHGraduationWarning.UIForm
 {
@@ -25,6 +28,8 @@ namespace SHGraduationWarning.UIForm
         string GWTabName = "畢業預警";
         string ChkEditTabName = "資料合理檢查_科目級別";
         string ChkEditTabName2 = "資料合理檢查_科目屬性";
+        Workbook wb;
+
 
         // 載入預設資料
         BackgroundWorker bgWorkerLoadDefault;
@@ -35,17 +40,26 @@ namespace SHGraduationWarning.UIForm
         // 載入資料合理-科目屬性
         BackgroundWorker bgwDataChkEditLoad2;
 
+        // 資料合理檢查報告
+        BackgroundWorker bgwDataChkEditReport;
+
         List<ClassDeptInfo> ClassDeptInfoList;
         string SelectedDeptName = "";
         string SelectedClassName = "";
         Dictionary<string, List<string>> DeptNameDict;
 
+        // 檢查有問題資料 -- 科目級別
         List<StudSubjectInfo> StudSubjectInfoList;
+
+        // 檢查有問題資料 -- 科目屬性
+        List<StudSubjectInfo> StudSubjectInfoListY;
+        // 檢查有問題資料 -- 科目屬性(依課規分類)
+        Dictionary<string, StudSchoolYearSubjectNameInfo> StudSchoolYearSubjectNameDict;
 
         // 課程規劃表對照
         Dictionary<string, GPlanInfo> GPlanDict;
 
-        // 檢查有問題資料 -- 科目級別        
+        // 檢查有問題資料 -- 科目級別
         Dictionary<string, StudSubjectInfo> hasErrorSubjectInfoDict;
 
         // 檢查有問題資料 -- 科目屬性
@@ -71,8 +85,10 @@ namespace SHGraduationWarning.UIForm
             UpdateSubjectInfoList = new List<StudSubjectInfo>();
             DeleteSubjectInfoList = new List<StudSubjectInfo>();
             hasErrorSubjectInfoDict = new Dictionary<string, StudSubjectInfo>();
+            hasErrorYearSubjectNameInfoDict = new Dictionary<string, StudSubjectInfo>();
             DeptNameIDDic = new Dictionary<string, string>();
             ClassNameIDDic = new Dictionary<string, string>();
+            wb = new Workbook();
 
             bgWorkerLoadDefault = new BackgroundWorker();
             bgWorkerLoadDefault.DoWork += BgWorkerLoadDefault_DoWork;
@@ -100,12 +116,40 @@ namespace SHGraduationWarning.UIForm
 
 
             StudSubjectInfoList = new List<StudSubjectInfo>();
+            StudSubjectInfoListY = new List<StudSubjectInfo>();
+            StudSchoolYearSubjectNameDict = new Dictionary<string, StudSchoolYearSubjectNameInfo>();
 
             DeptNameDict = new Dictionary<string, List<string>>();
             ClassDeptInfoList = new List<ClassDeptInfo>(); ;
             SelectedDeptName = SelectedClassName = AllStr;
 
+            bgwDataChkEditReport = new BackgroundWorker();
+            bgwDataChkEditReport.DoWork += BgwDataChkEditReport_DoWork;
+            bgwDataChkEditReport.ProgressChanged += BgwDataChkEditReport_ProgressChanged;
+            bgwDataChkEditReport.RunWorkerCompleted += BgwDataChkEditReport_RunWorkerCompleted;
+            bgwDataChkEditReport.WorkerReportsProgress = true;
             InitializeComponent();
+        }
+
+        private void BgwDataChkEditReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            if (wb != null)
+            {
+                Utility.ExportXls("課程規劃表檢查", wb);
+            }
+            btnReport.Enabled = true;
+        }
+
+        private void BgwDataChkEditReport_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("報表產生中...", e.ProgressPercentage);
+        }
+
+        private void BgwDataChkEditReport_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // 產生報表
+
         }
 
         private void BgwDataChkEditLoad2_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -117,6 +161,27 @@ namespace SHGraduationWarning.UIForm
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
 
+            // 科目屬性不同需要指定學年科目名稱
+            if (StudSchoolYearSubjectNameDict.Count > 0)
+            {
+                dgData2ChkEdit.Rows.Clear();
+                foreach (StudSchoolYearSubjectNameInfo ss in StudSchoolYearSubjectNameDict.Values)
+                {
+                    int rowIdx = dgData2ChkEdit.Rows.Add();
+                    dgData2ChkEdit.Rows[rowIdx].Tag = ss;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["使用課規"].Value = ss.CoursePlanName;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["科目名稱"].Value = ss.SubjectName;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["領域"].Value = ss.Domain;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["分項"].Value = ss.Entry;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["校部定"].Value = ss.RequiredBy;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["必選修"].Value = ss.Required;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["學分"].Value = ss.Credit;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["指定學年科目名稱"].Value = ss.SchoolYearSubjectName;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["課規指定學年科目名稱"].Value = ss.CoursePlanSchoolYearSubjectName;
+                    dgData2ChkEdit.Rows[rowIdx].Cells["問題說明"].Value = ss.ProblemDescription;
+                }
+            }
+
             lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
             ControlEnable(true);
             btnDel.Enabled = false;
@@ -124,7 +189,120 @@ namespace SHGraduationWarning.UIForm
 
         private void BgwDataChkEditLoad2_DoWork(object sender, DoWorkEventArgs e)
         {
-            
+            int rpInt = 1;
+            StudSubjectInfoListY.Clear();
+            GPlanDict.Clear();
+            hasErrorYearSubjectNameInfoDict.Clear();
+            bgwDataChkEditLoad2.ReportProgress(rpInt);
+
+            string DeptID = "";
+            string ClassID = "";
+
+            if (DeptNameIDDic.ContainsKey(SelectedDeptName))
+                DeptID = DeptNameIDDic[SelectedDeptName];
+
+            if (ClassNameIDDic.ContainsKey(SelectedClassName))
+                ClassID = ClassNameIDDic[SelectedClassName];
+
+            StudSubjectInfoListY.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
+
+            List<string> gpids = new List<string>();
+            // 取得使用課程規畫表對照
+            foreach (StudSubjectInfo ssi in StudSubjectInfoList)
+            {
+                if (!gpids.Contains(ssi.CoursePlanID))
+                    gpids.Add(ssi.CoursePlanID);
+            }
+            GPlanDict = DataAccess.GetGPlanDictByIDs(gpids);
+
+
+            rpInt = 30;
+            bgwDataChkEditLoad2.ReportProgress(rpInt);
+
+            // 填入資料
+            foreach (StudSubjectInfo ssi in StudSubjectInfoListY)
+            {
+                ssi.IsSubjectLevelChanged = true;
+                // 填入課規資料
+                if (GPlanDict.ContainsKey(ssi.CoursePlanID))
+                {
+                    ssi.GPName = GPlanDict[ssi.CoursePlanID].Name;
+                    // 使用年級+學期+科目+級別當key
+                    string subjKey = ssi.GradeYear + "_" + ssi.Semester + "_" + ssi.SubjectName;
+                    if (GPlanDict[ssi.CoursePlanID].SubjectsDict.ContainsKey(subjKey))
+                    {
+                        ssi.GPRequired = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Required;
+                        ssi.GPRequiredBy = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].RequiredBy;
+                        ssi.GPCredit = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Credit;
+                        ssi.SubjectLevelNew = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].SubjectLevel;
+                        ssi.GPSYSubjectName = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].SubjectNameByYear;
+                        ssi.GPDomain = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Domain;
+                        ssi.GPEntry = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Entry;
+                        ssi.GPCourseCode = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].CourseCode;
+
+                        if (ssi.SubjectLevel == ssi.SubjectLevelNew)
+                            ssi.IsSubjectLevelChanged = false;
+                    }
+                }
+
+            }
+
+            rpInt = 70;
+            bgwDataChkEditLoad2.ReportProgress(rpInt);
+
+            // 檢查同一學年科目屬性不同
+            Dictionary<string, Dictionary<string, StudSubjectInfo>> chkStudSchoolYearSubjectDDict = new Dictionary<string, Dictionary<string, StudSubjectInfo>>();
+            foreach (StudSubjectInfo ss in StudSubjectInfoList)
+            {
+                string key1 = ss.StudentID + "_" + ss.SchoolYear + "_" + ss.SubjectName;
+                string key2 = ss.StudentID + "_" + ss.SchoolYear + "_" + ss.SubjectName + "_" + ss.Domain + "_" + ss.Entry + "_" + ss.Required + "_" + ss.RequiredBy + "_" + ss.Credit;
+
+                if (!chkStudSchoolYearSubjectDDict.ContainsKey(key1))
+                    chkStudSchoolYearSubjectDDict.Add(key1, new Dictionary<string, StudSubjectInfo>());
+                if (!chkStudSchoolYearSubjectDDict[key1].ContainsKey(key2))
+                    chkStudSchoolYearSubjectDDict[key1].Add(key2, ss);
+            }
+
+            foreach (string key1 in chkStudSchoolYearSubjectDDict.Keys)
+            {
+                if (chkStudSchoolYearSubjectDDict[key1].Count > 1)
+                {
+                    foreach (string key2 in chkStudSchoolYearSubjectDDict[key1].Keys)
+                    {
+                        chkStudSchoolYearSubjectDDict[key1][key2].ErrorMsgList.Add("同一學年科目屬性不同");
+                        AddErrorYearSubjectNameInfoDict(chkStudSchoolYearSubjectDDict[key1][key2]);
+                    }
+                }
+            }
+
+            // 資料整理
+            StudSchoolYearSubjectNameDict.Clear();
+
+            foreach (StudSubjectInfo ss in hasErrorYearSubjectNameInfoDict.Values)
+            {
+                StudSchoolYearSubjectNameInfo ssi = new StudSchoolYearSubjectNameInfo();
+                string key = ss.GPName + "_" + ss.SubjectName + "_" + ss.Domain + "_" + ss.Entry + "_" + ss.RequiredBy + "_" + ss.Required + "_" + ss.Credit;
+                if (!StudSchoolYearSubjectNameDict.ContainsKey(key))
+                {
+                    ssi.CoursePlanName = ss.GPName;
+                    ssi.CoursePlanID = ss.CoursePlanID;
+                    ssi.SubjectName = ss.SubjectName;
+                    ssi.Domain = ss.Domain;
+                    ssi.Entry = ss.Entry;
+                    ssi.RequiredBy = ss.RequiredBy;
+                    ssi.Required = ss.Required;
+                    ssi.Credit = ss.Credit;
+                    ssi.SchoolYearSubjectName = ss.SchoolYearSubjectName;
+                    ssi.CoursePlanSchoolYearSubjectName = ss.GPSYSubjectName;
+
+                    ssi.ProblemDescription = string.Join(",", ss.ErrorMsgList.ToArray());
+                    StudSchoolYearSubjectNameDict.Add(key, ssi);
+                }
+            }
+
+            rpInt = 100;
+            bgwDataChkEditLoad2.ReportProgress(rpInt);
+
         }
 
         private void BgwDataChkEditLoad_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -761,12 +939,6 @@ namespace SHGraduationWarning.UIForm
                     ""ReadOnly"": true
                 },
                 {
-                    ""HeaderText"": ""科目級別"",
-                    ""Name"": ""科目級別"",
-                    ""Width"": 30,
-                    ""ReadOnly"": true
-                },
-                {
                     ""HeaderText"": ""領域"",
                     ""Name"": ""領域"",
                     ""Width"": 80,
@@ -803,8 +975,8 @@ namespace SHGraduationWarning.UIForm
                     ""ReadOnly"": true
                 },
                 {
-                    ""HeaderText"": ""建議指定學年科目名稱"",
-                    ""Name"": ""建議指定學年科目名稱"",
+                    ""HeaderText"": ""課規指定學年科目名稱"",
+                    ""Name"": ""課規指定學年科目名稱"",
                     ""Width"": 120,
                     ""ReadOnly"": false
                 },
@@ -936,7 +1108,7 @@ namespace SHGraduationWarning.UIForm
         private void btnQuery_Click(object sender, EventArgs e)
         {
             // 畢業預警
-            if (SelectedTextName == GWTabName)
+            if (SelectedTabName == GWTabName)
             {
                 SelectedTextName = textName.Text;
 
@@ -945,7 +1117,7 @@ namespace SHGraduationWarning.UIForm
             }
 
             // 資料合理檢查
-            if (SelectedTextName == ChkEditTabName)
+            if (SelectedTabName == ChkEditTabName)
             {
 
                 SelectedTextName = textName.Text;
@@ -955,7 +1127,7 @@ namespace SHGraduationWarning.UIForm
             }
 
             // 資料合理檢查-科目屬性
-            if (SelectedTextName == ChkEditTabName2)
+            if (SelectedTabName == ChkEditTabName2)
             {
                 SelectedTextName = textName.Text;
                 ControlEnable(false);
@@ -965,7 +1137,7 @@ namespace SHGraduationWarning.UIForm
         }
 
         private void tabControl1_SelectedTabChanged(object sender, DevComponents.DotNetBar.TabStripTabChangedEventArgs e)
-        {           
+        {
 
         }
 
@@ -987,7 +1159,7 @@ namespace SHGraduationWarning.UIForm
             }
         }
 
-        
+
         private void AddErrorYearSubjectNameInfoDict(StudSubjectInfo ssi)
         {
             string key = ssi.SchoolYear + "_" + ssi.Semester + "_" + ssi.StudentID + "_" + ssi.SubjectName + "_" + ssi.SubjectLevel;
@@ -1088,6 +1260,15 @@ namespace SHGraduationWarning.UIForm
             btnQuery.Enabled = true;
             LoadTabDesc();
             chkItemAll.Enabled = false;
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            if (SelectedTabName == ChkEditTabName)
+            {
+                btnReport.Enabled = false;
+                bgwDataChkEditReport.RunWorkerAsync();
+            }
         }
     }
 }
