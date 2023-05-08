@@ -29,7 +29,7 @@ namespace SHGraduationWarning.UIForm
         string ChkEditTabName = "資料合理檢查_科目級別";
         string ChkEditTabName2 = "資料合理檢查_科目屬性";
         Workbook wb;
-
+        Dictionary<string, int> _ColIdxDict;
 
         // 載入預設資料
         BackgroundWorker bgWorkerLoadDefault;
@@ -77,10 +77,11 @@ namespace SHGraduationWarning.UIForm
         // 刪除科目
         List<StudSubjectInfo> DeleteSubjectInfoList;
 
-        string SelectedTextName = "";
+        //        string SelectedTextName = "";
 
         public frmMain()
         {
+            _ColIdxDict = new Dictionary<string, int>();
             GPlanDict = new Dictionary<string, GPlanInfo>();
             UpdateSubjectInfoList = new List<StudSubjectInfo>();
             DeleteSubjectInfoList = new List<StudSubjectInfo>();
@@ -136,7 +137,7 @@ namespace SHGraduationWarning.UIForm
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
             if (wb != null)
             {
-                Utility.ExportXls("課程規劃表檢查", wb);
+                Utility.ExportXls("學期成績與課規比對", wb);
             }
             btnReport.Enabled = true;
         }
@@ -149,6 +150,50 @@ namespace SHGraduationWarning.UIForm
         private void BgwDataChkEditReport_DoWork(object sender, DoWorkEventArgs e)
         {
             // 產生報表
+            try
+            {
+                bgwDataChkEditReport.ReportProgress(1);
+                // 填值到 Excel
+                wb = new Workbook(new MemoryStream(Properties.Resources.學期成績與課規比對樣板));
+                Worksheet wstSC = wb.Worksheets["依學期成績為主比對課規沒有"];
+                wstSC.Name = "依學期成績為主比對課規沒有";
+
+                int rowIdx = 1;
+                _ColIdxDict.Clear();
+                // 讀取欄位與索引            
+                for (int co = 0; co <= wstSC.Cells.MaxDataColumn; co++)
+                {
+                    _ColIdxDict.Add(wstSC.Cells[0, co].StringValue, co);
+                }
+
+
+                if (hasErrorSubjectInfoDict.Count > 0)
+                {
+                    foreach (StudSubjectInfo ss in hasErrorSubjectInfoDict.Values)
+                    {
+                        wstSC.Cells[rowIdx, GetColIndex("學號")].PutValue(ss.StudentNumber);
+
+                        wstSC.Cells[rowIdx, GetColIndex("班級")].PutValue(ss.ClassName);
+                        wstSC.Cells[rowIdx, GetColIndex("座號")].PutValue(ss.SeatNo);
+                        wstSC.Cells[rowIdx, GetColIndex("科別")].PutValue(ss.DeptName);
+                        wstSC.Cells[rowIdx, GetColIndex("姓名")].PutValue(ss.Name);
+                        wstSC.Cells[rowIdx, GetColIndex("學年度")].PutValue(ss.SchoolYear);
+                        wstSC.Cells[rowIdx, GetColIndex("學期")].PutValue(ss.Semester);
+                        wstSC.Cells[rowIdx, GetColIndex("成績年級")].PutValue(ss.GradeYear);
+                        wstSC.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(ss.SubjectName);
+                        wstSC.Cells[rowIdx, GetColIndex("科目級別")].PutValue(ss.SubjectLevel);
+                        wstSC.Cells[rowIdx, GetColIndex("使用課規")].PutValue(ss.GPName);
+                        wstSC.Cells[rowIdx, GetColIndex("問題說明")].PutValue(string.Join(",", ss.ErrorMsgList.ToArray()));
+                        rowIdx++;
+                    }
+                    wstSC.AutoFitColumns();
+                }
+                bgwDataChkEditReport.ReportProgress(100);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
         }
 
@@ -204,7 +249,7 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
-            StudSubjectInfoListY.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
+            //StudSubjectInfoListY.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
 
             List<string> gpids = new List<string>();
             // 取得使用課程規畫表對照
@@ -314,40 +359,49 @@ namespace SHGraduationWarning.UIForm
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
 
-            if (hasErrorSubjectInfoDict.Count > 0)
+            try
             {
-                dgDataChkEdit.Rows.Clear();
-                foreach (StudSubjectInfo ss in hasErrorSubjectInfoDict.Values)
+                if (hasErrorSubjectInfoDict.Count > 0)
                 {
-                    int rowIdx = dgDataChkEdit.Rows.Add();
-                    dgDataChkEdit.Rows[rowIdx].Tag = ss;
-                    dgDataChkEdit.Rows[rowIdx].Cells["學號"].Value = ss.StudentNumber;
-                    dgDataChkEdit.Rows[rowIdx].Cells["班級"].Value = ss.ClassName;
-                    dgDataChkEdit.Rows[rowIdx].Cells["座號"].Value = ss.SeatNo;
-                    dgDataChkEdit.Rows[rowIdx].Cells["科別"].Value = ss.DeptName;
-                    dgDataChkEdit.Rows[rowIdx].Cells["姓名"].Value = ss.Name;
-                    dgDataChkEdit.Rows[rowIdx].Cells["學年度"].Value = ss.SchoolYear;
-                    dgDataChkEdit.Rows[rowIdx].Cells["學期"].Value = ss.Semester;
-                    dgDataChkEdit.Rows[rowIdx].Cells["成績年級"].Value = ss.GradeYear;
-                    dgDataChkEdit.Rows[rowIdx].Cells["科目名稱"].Value = ss.SubjectName;
-                    dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Value = ss.SubjectLevel;
-                    if (ss.IsSubjectLevelChanged)
-                        dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.Yellow;
-                    else
-                        dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.White;
-                    dgDataChkEdit.Rows[rowIdx].Cells["建議級別"].Value = ss.SubjectLevelNew;
-                    dgDataChkEdit.Rows[rowIdx].Cells["分項"].Value = ss.Entry;
-                    dgDataChkEdit.Rows[rowIdx].Cells["領域"].Value = ss.Domain;
-                    dgDataChkEdit.Rows[rowIdx].Cells["學分"].Value = ss.Credit;
-                    dgDataChkEdit.Rows[rowIdx].Cells["必選修"].Value = ss.Required;
-                    dgDataChkEdit.Rows[rowIdx].Cells["校部定"].Value = ss.RequiredBy;
-                    dgDataChkEdit.Rows[rowIdx].Cells["使用課規"].Value = ss.GPName;
-                    dgDataChkEdit.Rows[rowIdx].Cells["指定學年科目名稱"].Value = ss.SchoolYearSubjectName;
-                    dgDataChkEdit.Rows[rowIdx].Cells["問題說明"].Value = string.Join(",", ss.ErrorMsgList.ToArray());
-                    if (ss.IsSubjectLevelChanged && ss.SubjectLevelNew != "")
-                        dgDataChkEdit.Rows[rowIdx].Cells["勾選"].Value = "是";
+                    dgDataChkEdit.Rows.Clear();
+                    foreach (StudSubjectInfo ss in hasErrorSubjectInfoDict.Values)
+                    {
+                        int rowIdx = dgDataChkEdit.Rows.Add();
+                        dgDataChkEdit.Rows[rowIdx].Tag = ss;
+                        dgDataChkEdit.Rows[rowIdx].Cells["學號"].Value = ss.StudentNumber;
+                        dgDataChkEdit.Rows[rowIdx].Cells["班級"].Value = ss.ClassName;
+                        dgDataChkEdit.Rows[rowIdx].Cells["座號"].Value = ss.SeatNo;
+                        dgDataChkEdit.Rows[rowIdx].Cells["科別"].Value = ss.DeptName;
+                        dgDataChkEdit.Rows[rowIdx].Cells["姓名"].Value = ss.Name;
+                        dgDataChkEdit.Rows[rowIdx].Cells["學年度"].Value = ss.SchoolYear;
+                        dgDataChkEdit.Rows[rowIdx].Cells["學期"].Value = ss.Semester;
+                        dgDataChkEdit.Rows[rowIdx].Cells["成績年級"].Value = ss.GradeYear;
+                        dgDataChkEdit.Rows[rowIdx].Cells["科目名稱"].Value = ss.SubjectName;
+                        dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Value = ss.SubjectLevel;
+                        if (ss.IsSubjectLevelChanged)
+                            dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.Yellow;
+                        else
+                            dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.White;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["建議級別"].Value = ss.SubjectLevelNew;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["分項"].Value = ss.Entry;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["領域"].Value = ss.Domain;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["學分"].Value = ss.Credit;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["必選修"].Value = ss.Required;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["校部定"].Value = ss.RequiredBy;
+                        dgDataChkEdit.Rows[rowIdx].Cells["使用課規"].Value = ss.GPName;
+                        //dgDataChkEdit.Rows[rowIdx].Cells["指定學年科目名稱"].Value = ss.SchoolYearSubjectName;
+                        dgDataChkEdit.Rows[rowIdx].Cells["問題說明"].Value = string.Join(",", ss.ErrorMsgList.ToArray());
+                        //if (ss.IsSubjectLevelChanged && ss.SubjectLevelNew != "")
+                        //    dgDataChkEdit.Rows[rowIdx].Cells["勾選"].Value = "是";
+                    }
                 }
+
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
 
             lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
             ControlEnable(true);
@@ -371,7 +425,8 @@ namespace SHGraduationWarning.UIForm
                 ClassID = ClassNameIDDic[SelectedClassName];
 
 
-            StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
+            // StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectInfo(DeptID, ClassID, SelectedTextName));
+            StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan(DeptID, ClassID));
 
             List<string> gpids = new List<string>();
             // 取得使用課程規畫表對照
@@ -464,7 +519,7 @@ namespace SHGraduationWarning.UIForm
             // 載入班級科別資訊
             LoadClassDeptToForm();
             ControlEnable(true);
-            btnDel.Enabled = btnUpdate.Enabled = false;
+            btnReport.Enabled = btnDel.Enabled = btnUpdate.Enabled = false;
         }
 
         private void BgWorkerLoadDefault_DoWork(object sender, DoWorkEventArgs e)
@@ -565,7 +620,9 @@ namespace SHGraduationWarning.UIForm
 
         private void ControlEnable(bool value)
         {
-            btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnDel.Enabled = btnUpdate.Enabled = textName.Enabled = value;
+            btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnReport.Enabled = value;
+
+            btnDel.Enabled = btnUpdate.Enabled = false;
         }
 
         private void comboDept_SelectedIndexChanged(object sender, EventArgs e)
@@ -830,64 +887,64 @@ namespace SHGraduationWarning.UIForm
                     ""Name"": ""科目級別"",
                     ""Width"": 30,
                     ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""建議級別"",
-                    ""Name"": ""建議級別"",
-                    ""Width"": 30,
-                    ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""領域"",
-                    ""Name"": ""領域"",
-                    ""Width"": 80,
-                    ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""分項"",
-                    ""Name"": ""分項"",
-                    ""Width"": 80,
-                    ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""校部定"",
-                    ""Name"": ""校部定"",
-                    ""Width"": 40,
-                    ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""必選修"",
-                    ""Name"": ""必選修"",
-                    ""Width"": 40,
-                    ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""學分"",
-                    ""Name"": ""學分"",
-                    ""Width"": 30,
-                    ""ReadOnly"": true
-                },
-                {
-                    ""HeaderText"": ""指定學年科目名稱"",
-                    ""Name"": ""指定學年科目名稱"",
-                    ""Width"": 60,
-                    ""ReadOnly"": true
-                },
+                },                
                 {
                     ""HeaderText"": ""使用課規"",
                     ""Name"": ""使用課規"",
-                    ""Width"": 80,
+                    ""Width"": 120,
                     ""ReadOnly"": true
                 },
                 {
                     ""HeaderText"": ""問題說明"",
                     ""Name"": ""問題說明"",
-                    ""Width"": 100,
+                    ""Width"": 120,
                     ""ReadOnly"": true
                 }
-                ]           
-                
+                ]   
 ";
+
+                //{
+                //    ""HeaderText"": ""建議級別"",
+                //    ""Name"": ""建議級別"",
+                //    ""Width"": 30,
+                //    ""ReadOnly"": true
+                //},
+                //{
+                //    ""HeaderText"": ""領域"",
+                //    ""Name"": ""領域"",
+                //    ""Width"": 80,
+                //    ""ReadOnly"": true
+                //},
+                //{
+                //    ""HeaderText"": ""分項"",
+                //    ""Name"": ""分項"",
+                //    ""Width"": 80,
+                //    ""ReadOnly"": true
+                //},
+                //{
+                //    ""HeaderText"": ""校部定"",
+                //    ""Name"": ""校部定"",
+                //    ""Width"": 40,
+                //    ""ReadOnly"": true
+                //},
+                //{
+                //    ""HeaderText"": ""必選修"",
+                //    ""Name"": ""必選修"",
+                //    ""Width"": 40,
+                //    ""ReadOnly"": true
+                //},
+                //{
+                //    ""HeaderText"": ""學分"",
+                //    ""Name"": ""學分"",
+                //    ""Width"": 30,
+                //    ""ReadOnly"": true
+                //},
+                //{
+                //    ""HeaderText"": ""指定學年科目名稱"",
+                //    ""Name"": ""指定學年科目名稱"",
+                //    ""Width"": 60,
+                //    ""ReadOnly"": true
+                //},
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 List<DataGridViewTextBoxColumnInfo> jsonObjArray = serializer.Deserialize<List<DataGridViewTextBoxColumnInfo>>(textColumnStrig);
                 foreach (DataGridViewTextBoxColumnInfo jObj in jsonObjArray)
@@ -902,15 +959,15 @@ namespace SHGraduationWarning.UIForm
                 }
 
 
-                // 加入刪除勾選
-                DataGridViewCheckBoxColumn chkCol1 = new DataGridViewCheckBoxColumn();
-                chkCol1.Name = "勾選";
-                chkCol1.HeaderText = "勾選";
-                chkCol1.Width = 30;
-                chkCol1.TrueValue = "是";
-                chkCol1.FalseValue = "否";
-                chkCol1.IndeterminateValue = "否";
-                dgDataChkEdit.Columns.Add(chkCol1);
+                //// 加入刪除勾選
+                //DataGridViewCheckBoxColumn chkCol1 = new DataGridViewCheckBoxColumn();
+                //chkCol1.Name = "勾選";
+                //chkCol1.HeaderText = "勾選";
+                //chkCol1.Width = 30;
+                //chkCol1.TrueValue = "是";
+                //chkCol1.FalseValue = "否";
+                //chkCol1.IndeterminateValue = "否";
+                //dgDataChkEdit.Columns.Add(chkCol1);
 
             }
             catch (Exception ex)
@@ -1110,8 +1167,6 @@ namespace SHGraduationWarning.UIForm
             // 畢業預警
             if (SelectedTabName == GWTabName)
             {
-                SelectedTextName = textName.Text;
-
                 ControlEnable(false);
                 bgwDataGWLoad.RunWorkerAsync();
             }
@@ -1119,9 +1174,6 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查
             if (SelectedTabName == ChkEditTabName)
             {
-
-                SelectedTextName = textName.Text;
-
                 ControlEnable(false);
                 bgwDataChkEditLoad.RunWorkerAsync();
             }
@@ -1129,7 +1181,6 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查-科目屬性
             if (SelectedTabName == ChkEditTabName2)
             {
-                SelectedTextName = textName.Text;
                 ControlEnable(false);
                 bgwDataChkEditLoad2.RunWorkerAsync();
             }
@@ -1210,7 +1261,7 @@ namespace SHGraduationWarning.UIForm
             SelectedTabName = ChkEditTabName;
             btnQuery.Enabled = true;
             LoadTabDesc();
-            chkItemAll.Enabled = true;
+            chkItemAll.Enabled = false;
         }
 
 
@@ -1230,16 +1281,16 @@ namespace SHGraduationWarning.UIForm
             else if (SelectedTabName == ChkEditTabName)
             {
                 // 資料合理檢查_科目級別
-                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修+休學)
-1. 檢查學生學期成績的科目級別與學生使用課程規劃的科目級別差異，並可更新級別或刪除科目。
-2. 建議級別空白表示學期成績有這科目，在學生課程規畫表內沒有。
-";
+                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)";
+                //1. 檢查學生學期成績的科目級別與學生使用課程規劃的科目級別差異，並可更新級別或刪除科目。
+                //2. 建議級別空白表示學期成績有這科目，在學生課程規畫表內沒有。
+                //";
                 lblDesc.Text = msg;
             }
             else if (SelectedTabName == ChkEditTabName2)
             {
                 // 資料合理檢查_科目屬性
-                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修+休學)
+                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)
 1. 檢查學期成績同學年，科目名稱相同，科目屬性不同(領域+分項+校部定+必選修+學分)，列出差異，請指定學年科目名稱。
 2. 設定指定學年科目名稱，會回寫 學期成績、課程規劃、課程，內指定學年科目名稱。
 ";
@@ -1270,5 +1321,15 @@ namespace SHGraduationWarning.UIForm
                 bgwDataChkEditReport.RunWorkerAsync();
             }
         }
+
+        private int GetColIndex(string name)
+        {
+            int value = 0;
+            if (_ColIdxDict.ContainsKey(name))
+                value = _ColIdxDict[name];
+
+            return value;
+        }
+
     }
 }
