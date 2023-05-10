@@ -192,6 +192,11 @@ namespace SHGraduationWarning
         /// </summary>
         public static Dictionary<string, string> _AllStudentNumberStatusIDTemp = new Dictionary<string, string>();
 
+        /// <summary>
+        /// 學生學期成績科目與級別，比對資料使用
+        /// </summary>
+        public static Dictionary<string, int> _StudentSemesScoreSubjectLevelTemp = new Dictionary<string, int>();
+
 
         /// <summary>
         /// 取得所有學生學號_狀態對應 StudentNumber_Status,id
@@ -213,14 +218,65 @@ namespace SHGraduationWarning
             DataTable dt = qh.Select(strSQL);
             foreach (DataRow dr in dt.Rows)
             {
-                string key = dr["student_number"] +"" + "_" + dr["status"] +"";
-                
+                string key = dr["student_number"] + "" + "_" + dr["status"] + "";
+
                 if (!retVal.ContainsKey(key))
-                    retVal.Add(key, dr["id"] +"");
+                    retVal.Add(key, dr["id"] + "");
             }
 
             return retVal;
         }
 
+
+        /// <summary>
+        /// 取有學生學期成績科目與級別，比對資料使用
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, int> GetStudentSemsScoreSubjectLevelDict()
+        {
+            Dictionary<string, int> retVal = new Dictionary<string, int>();
+            QueryHelper qh = new QueryHelper();
+            string strSQL = @"
+            SELECT
+	            sems_subj_score_ext.ref_student_id 
+	            ||'_'||sems_subj_score_ext.school_year
+	            ||'_'||sems_subj_score_ext.semester
+	            ||'_'||sems_subj_score_ext.grade_year
+	            ||'_'||array_to_string(xpath('//Subject/@科目', subj_score_ele), '') :: text 
+	            ||'_'||array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '') :: text AS key
+            FROM
+            (
+	            SELECT
+		            sems_subj_score.*,
+		            unnest(
+			            xpath(
+				            '//SemesterSubjectScoreInfo/Subject',
+				            xmlparse(content score_info)
+			            )
+		            ) as subj_score_ele
+	            FROM
+		            sems_subj_score 
+		            WHERE ref_student_id IN(
+			            SELECT 
+			            id 
+			            FROM 
+				            student
+			            WHERE status IN(1,2) 	
+		            )
+            ) as sems_subj_score_ext
+                ";
+            DataTable dt = qh.Select(strSQL);
+            foreach (DataRow dr in dt.Rows)
+            {
+                string key = dr["key"] + "";
+
+                if (!retVal.ContainsKey(key))
+                    retVal.Add(key, 0);
+                
+                retVal[key] += 1;
+            }
+
+            return retVal;
+        }
     }
 }

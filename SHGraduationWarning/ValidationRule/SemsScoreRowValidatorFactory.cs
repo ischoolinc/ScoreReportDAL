@@ -18,6 +18,14 @@ namespace SHGraduationWarning.ValidationRule
                 case "SEMSSCORECHECKSTUDENTNUMBERSTATUSVAL":
                     return new RowValidator.SemsScoreCheckStudentNumberStatusVal();
 
+                    // 科目名稱+級別，與原成績比對
+                case "SEMSSCORECHECKSUBJECTSUBJECTLEVELVAL":
+                    return new RowValidator.SemsScoreCheckSubjectSubjectLevelVal();
+
+                // 新科目名稱+新級別，與原成績比對
+                case "SEMSSCORECHECKSUBJECTSUBJECTLEVELVALNEW":
+                    return new RowValidator.SemsScoreCheckSubjectSubjectLevelValNew();
+
                 default:
                     return null;
             }

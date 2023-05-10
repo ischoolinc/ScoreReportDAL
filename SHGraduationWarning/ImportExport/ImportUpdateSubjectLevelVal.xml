@@ -3,25 +3,17 @@
 <ValidateRule Name="更新學期科目級別資訊">
 	<DuplicateDetection>
 		<Detector Name="更新學期科目級別資訊唯一值">
-			<Field Name="學號" />
-			<Field Name="狀態" />
+			<Field Name="學生系統編號" />
 			<Field Name="學年度" />
 			<Field Name="學期" />
 			<Field Name="成績年級" />
 			<Field Name="科目名稱" />
 			<Field Name="科目級別" />
-			<Field Name="新科目名稱" />
-			<Field Name="新科目級別" />
 		</Detector>
 	</DuplicateDetection>
 	<FieldList>
 
-		<Field Required="True" Name="學號">
-			<Validate AutoCorrect="False" Description="「學號」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
-		</Field>
-
-		<Field Required="True" Name="狀態">
-			<Validate AutoCorrect="False" Description="「狀態」請填入「一般、延修、休學、輟學、畢業或離校」。" ErrorType="Error" Validator="不可空白" When="" />
+		<Field Required="True" Name="學生系統編號">
 		</Field>
 
 		<Field Required="True" Name="學年度">
@@ -39,7 +31,6 @@
 		</Field>
 		<Field Required="True" Name="新科目級別">
 		</Field	>
-
 	</FieldList>
 
 	<ValidatorList>
@@ -51,7 +42,9 @@
 			<Item Value=""/>
 		</FieldValidator>
 
-		<RowValidator Name="學號是否存在" Type="SEMSSCORECHECKSTUDENTNUMBERSTATUSVAL"/>
+		<RowValidator Name="科目名稱與級別重複" Type="SEMSSCORECHECKSUBJECTSUBJECTLEVELVAL"/>
+		<RowValidator Name="新科目名稱與新級別已存在" Type="SEMSSCORECHECKSUBJECTSUBJECTLEVELVALNEW"/>
+
 		<FieldValidator Name="合法日期" Type="MixDate">
 			<!-- Gregorian | Taiwan-->
 			<!-- Pattern 中需要 Year,Month,Day 三個 Group。-->
@@ -75,9 +68,9 @@
 			</Matchs>
 		</FieldValidator>
 	</ValidatorList>
-
 	<RowValidate>
-		<Validate AutoCorrect="False" Description="「學號+狀態」不存在系統內。" ErrorType="Error" Validator="學號是否存在" When=""/>
+		<Validate AutoCorrect="False" Description="「科目名稱+科目級別」在同學期已存有重複。" ErrorType="Error" Validator="科目名稱與級別重複" When=""/>
+		<Validate AutoCorrect="False" Description="「新科目名稱+新科目級別」在同學期已存在。" ErrorType="Error" Validator="新科目名稱與新級別已存在" When=""/>
 	</RowValidate>
 	<ConditionList/>
 </ValidateRule>

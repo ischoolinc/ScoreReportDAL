@@ -152,6 +152,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmLoadUpdateSubjectVal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmLoadUpdateSubjectVal.Designer.cs">
+      <DependentUpon>frmLoadUpdateSubjectVal.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +166,8 @@
     </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="ValidationRule\RowValidator\SemsScoreCheckStudentNumberStatusVal.cs" />
+    <Compile Include="ValidationRule\RowValidator\SemsScoreCheckSubjectSubjectLevelVal.cs" />
+    <Compile Include="ValidationRule\RowValidator\SemsScoreCheckSubjectSubjectLevelValNew.cs" />
     <Compile Include="ValidationRule\SemsScoreRowValidatorFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +211,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmLoadUpdateSubjectVal.resx">
+      <DependentUpon>frmLoadUpdateSubjectVal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>

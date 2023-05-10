@@ -23,6 +23,8 @@ namespace SHGraduationWarning.DAO
         public string Name { get; set; } // 姓名
         public string SubjectName { get; set; } // 科目名稱
         public string SubjectLevel { get; set; } // 科目級別
+
+        public string SubjectNameNew { get; set; } // 新科目級別
         public string SubjectLevelNew { get; set; } // 新科目級別
 
         public string Domain { get; set; } // 領域
@@ -64,6 +66,8 @@ namespace SHGraduationWarning.DAO
 
         // 不計學分
         public string NotIncludedInCredit { get; set; }
+        // 不需評分
+        public string NotIncludedInCalc { get; set; }
         // 是否取得學分
         public string Pass { get; set; }
     }

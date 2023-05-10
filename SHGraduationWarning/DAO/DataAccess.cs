@@ -323,16 +323,15 @@ namespace SHGraduationWarning.DAO
             target_student AS(
 	            SELECT
                     student.id AS student_id,
-                    COALESCE(
-                        class.ref_graduation_plan_id,
-                        student.ref_graduation_plan_id
-                    ) AS graduation_plan_id,
+                    graduation_plan.id AS graduation_plan_id,
+                    graduation_plan.name AS graduation_plan_name,
 		            class.id AS class_id,
 		            class.class_name,
 		            dept.id AS dept_id,
 		            student.student_number,
 		            student.seat_no,
-		            student.name AS student_name
+		            student.name AS student_name,
+                    dept.name AS dept_name
 	            FROM
 		            row
 		            INNER JOIN class
@@ -348,9 +347,14 @@ namespace SHGraduationWarning.DAO
 			            AND (
 				            row.dept_id IS NULL
 				            OR dept.id = row.dept_id
-			            )
-            ),
-            target_student_with_sems_history AS(
+			            ) 
+                     INNER JOIN graduation_plan 
+                                ON graduation_plan.id = COALESCE(
+                                    class.ref_graduation_plan_id,
+                                    student.ref_graduation_plan_id
+                                )
+           ),
+           target_student_with_sems_history AS(
                 SELECT
                     ref_student_id AS student_id,
                     graduation_plan_id,
@@ -399,12 +403,12 @@ namespace SHGraduationWarning.DAO
 								            DISTINCT
 								            graduation_plan_id
 							            FROM
-								            target_student_with_sems_history
+								            target_student
 						            ) AS target_graduation
                                     INNER JOIN graduation_plan 
 							            ON graduation_plan.id = target_graduation.graduation_plan_id
                             ) AS graduation_plan_expand
-                    ) graduation_plan_subject_list
+                    ) AS graduation_plan_subject_list
                     INNER JOIN target_student_with_sems_history 
 			            ON target_student_with_sems_history.graduation_plan_id = graduation_plan_subject_list.graduation_plan_id
 			            AND target_student_with_sems_history.grade_year :: TEXT = graduation_plan_subject_list.grade_year
@@ -420,7 +424,9 @@ namespace SHGraduationWarning.DAO
                     array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '') :: text AS subject_level,
                     (
                         '0' || array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')
-                    ) :: INTEGER AS credit
+                    ) :: INTEGER AS credit,
+                    array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '')::text AS 不計學分,
+                    array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '')::text AS 不需評分
                 FROM
                     (
                         SELECT
@@ -475,7 +481,10 @@ namespace SHGraduationWarning.DAO
                     target_data.semester,
                     target_data.school_year,
                     target_data.subject_name,
-                    target_data.subject_level
+                    target_data.subject_level,
+                    target_data.credit,
+                    target_data.不計學分,
+                    target_data.不需評分
                 FROM
                     target_data
                     LEFT OUTER JOIN graduation_plan_expand 
@@ -549,41 +558,84 @@ namespace SHGraduationWarning.DAO
                     SUM(target_data.credit) <> graduation_plan_expand.分組修課學分數
             )
                 SELECT
-                    target_mismatch.*,
-                    target_student.graduation_plan_id,
-                    target_student.class_id,
-                    target_student.dept_id,
-                    target_student.student_number,
-                    target_student.seat_no,
-                    target_student.student_name,
-                    target_student.class_name
+                    target_mismatch.student_id AS 學生系統編號,
+                    target_student.student_number AS 學號,
+                    target_student.dept_name AS 科別名稱,
+                    target_student.class_name AS 班級,
+                    target_student.seat_no AS 座號,
+                    target_student.student_name AS 姓名,
+                    target_student.graduation_plan_name AS 使用課程規劃表,
+                    target_mismatch.school_year AS 學年度,
+                    target_mismatch.semester AS 學期,
+                    target_mismatch.grade_year AS 成績年級,
+                    target_mismatch.subject_name AS 科目名稱,
+                    target_mismatch.subject_level AS 科目級別,
+                    target_mismatch.credit AS 學分數,
+                    target_mismatch.不計學分,
+                    target_mismatch.不需評分,
+	                graduation_plan_mismatch.subject_name AS 新科目名稱,
+                    graduation_plan_mismatch.subject_level AS 新科目級別
                 FROM
-                    target_mismatch INNER JOIN target_student ON target_mismatch.student_id = target_student.student_id 
+                    target_mismatch
+                    INNER JOIN target_student
+		                ON target_mismatch.student_id = target_student.student_id
+	                LEFT OUTER JOIN (
+                        --學生的課程規劃表有，卻沒有比對到的成績年級、學期、科目、級別，不管分組名稱
+                        SELECT
+                            graduation_plan_expand.student_id,
+                            graduation_plan_expand.graduation_plan_id,
+                            graduation_plan_expand.grade_year,
+                            graduation_plan_expand.semester,
+                            graduation_plan_expand.subject_name,
+                            graduation_plan_expand.subject_level
+                        FROM
+                            graduation_plan_expand
+                            LEFT OUTER JOIN target_data 
+                                ON target_data.student_id = graduation_plan_expand.student_id
+                                AND target_data.grade_year :: TEXT = graduation_plan_expand.grade_year
+                                AND target_data.semester :: TEXT = graduation_plan_expand.semester
+                                AND target_data.subject_name = graduation_plan_expand.subject_name
+                                AND COALESCE(target_data.subject_level, '') = COALESCE(graduation_plan_expand.subject_level, '')
+                        WHERE
+                            target_data.student_id IS NULL
+                    ) AS graduation_plan_mismatch
+		                ON graduation_plan_mismatch.student_id = target_student.student_id
+		                AND graduation_plan_mismatch.grade_year = target_mismatch.grade_year :: TEXT
+		                AND graduation_plan_mismatch.semester = target_mismatch.semester :: TEXT
+		                AND graduation_plan_mismatch.subject_name = target_mismatch.subject_name
                 ORDER BY
-                    class_name,
-                    seat_no,
-                    subject_name,
-                    school_year,
-                    semester
+                    班級,
+                    座號,
+                    學號,
+                    學年度,
+                    學期,
+                    科目名稱
 ", condition);
 
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)
                 {
                     StudSubjectInfo sc = new StudSubjectInfo();
-                    sc.StudentID = dr["student_id"] + "";
-                    sc.SchoolYear = dr["school_year"] + "";
-                    sc.Semester = dr["semester"] + "";
-                    sc.GradeYear = dr["grade_year"] + "";
+                    sc.StudentID = dr["學生系統編號"] + "";
+                    sc.SchoolYear = dr["學年度"] + "";
+                    sc.Semester = dr["學期"] + "";
+                    sc.GradeYear = dr["成績年級"] + "";
                     //sc.ClassGradeYear = dr["年級"] + "";
-                    sc.StudentNumber = dr["student_number"] + "";
-                    sc.ClassName = dr["class_name"] + "";
-                    sc.SeatNo = dr["seat_no"] + "";
-                    sc.Name = dr["student_name"] + "";
+                    sc.StudentNumber = dr["學號"] + "";
+                    sc.ClassName = dr["班級"] + "";
+                    sc.SeatNo = dr["座號"] + "";
+                    sc.Name = dr["姓名"] + "";
                     //sc.Domain = dr["領域"] + "";
                     //sc.Entry = dr["分項"] + "";
-                    sc.SubjectName = dr["subject_name"] + "";
-                    sc.SubjectLevel = dr["subject_level"] + "";
+                    sc.SubjectName = dr["科目名稱"] + "";
+                    sc.SubjectLevel = dr["科目級別"] + "";
+                    sc.GPName = dr["使用課程規劃表"] + "";
+                    sc.SubjectNameNew = dr["新科目名稱"] + "";
+                    sc.SubjectLevelNew = dr["新科目級別"] + "";
+                    sc.DeptName = dr["科別名稱"] + "";
+                    sc.Credit = dr["學分數"] + "";
+                    sc.NotIncludedInCredit = dr["不計學分"] + "";
+                    sc.NotIncludedInCalc = dr["不需評分"] + "";
                     //sc.SubjectLevelNew = "";
                     //sc.RequiredBy = dr["校部訂"] + "";
                     //sc.Required = dr["必選修"] + "";
@@ -591,13 +643,13 @@ namespace SHGraduationWarning.DAO
                     //sc.Status = dr["學生狀態"] + "";
                     //sc.SemsSubjID = dr["學期成績系統編號"] + "";
                     //sc.SchoolYearSubjectName = dr["指定學年科目名稱"] + "";
-                    sc.ClassID = dr["class_id"] + "";
-                    sc.DeptID = dr["dept_id"] + "";
-                    // 科別名稱
-                    if (deptDict.ContainsKey(sc.DeptID))
-                        sc.DeptName = deptDict[sc.DeptID];
+                    //sc.ClassID = dr["class_id"] + "";
+                    //sc.DeptID = dr["dept_id"] + "";
+                    //// 科別名稱
+                    //if (deptDict.ContainsKey(sc.DeptID))
+                    //    sc.DeptName = deptDict[sc.DeptID];
 
-                    sc.CoursePlanID = dr["graduation_plan_id"] + "";
+                    //sc.CoursePlanID = dr["graduation_plan_id"] + "";
                     value.Add(sc);
                 }
 

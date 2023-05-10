@@ -183,6 +183,7 @@ namespace SHGraduationWarning.UIForm
                 {
                     foreach (StudSubjectInfo ss in hasErrorSubjectInfoDict.Values)
                     {
+                        wstSC.Cells[rowIdx, GetColIndex("學生系統編號")].PutValue(ss.StudentID);
                         wstSC.Cells[rowIdx, GetColIndex("學號")].PutValue(ss.StudentNumber);
 
                         wstSC.Cells[rowIdx, GetColIndex("班級")].PutValue(ss.ClassName);
@@ -194,7 +195,12 @@ namespace SHGraduationWarning.UIForm
                         wstSC.Cells[rowIdx, GetColIndex("成績年級")].PutValue(ss.GradeYear);
                         wstSC.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(ss.SubjectName);
                         wstSC.Cells[rowIdx, GetColIndex("科目級別")].PutValue(ss.SubjectLevel);
+                        wstSC.Cells[rowIdx, GetColIndex("新科目名稱")].PutValue(ss.SubjectNameNew);
+                        wstSC.Cells[rowIdx, GetColIndex("新科目級別")].PutValue(ss.SubjectLevelNew);
                         wstSC.Cells[rowIdx, GetColIndex("使用課規")].PutValue(ss.GPName);
+                        wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(ss.Credit);
+                        wstSC.Cells[rowIdx, GetColIndex("不計學分")].PutValue(ss.NotIncludedInCredit);
+                        wstSC.Cells[rowIdx, GetColIndex("不需評分")].PutValue(ss.NotIncludedInCalc);
                         //wstSC.Cells[rowIdx, GetColIndex("問題說明")].PutValue(string.Join(",", ss.ErrorMsgList.ToArray()));
                         rowIdx++;
                     }
@@ -451,7 +457,8 @@ namespace SHGraduationWarning.UIForm
                             dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.Yellow;
                         else
                             dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.White;
-                        //dgDataChkEdit.Rows[rowIdx].Cells["建議級別"].Value = ss.SubjectLevelNew;
+                        dgDataChkEdit.Rows[rowIdx].Cells["新科目名稱"].Value = ss.SubjectNameNew;
+                        dgDataChkEdit.Rows[rowIdx].Cells["新科目級別"].Value = ss.SubjectLevelNew;
                         //dgDataChkEdit.Rows[rowIdx].Cells["分項"].Value = ss.Entry;
                         //dgDataChkEdit.Rows[rowIdx].Cells["領域"].Value = ss.Domain;
                         //dgDataChkEdit.Rows[rowIdx].Cells["學分"].Value = ss.Credit;
@@ -505,58 +512,28 @@ namespace SHGraduationWarning.UIForm
             // 檢查課規課程群組學分總數不符合
             chkDataReport3 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan3(DeptID, ClassID);
 
-            List<string> gpids = new List<string>();
-            // 取得使用課程規畫表對照
-            foreach (StudSubjectInfo ssi in StudSubjectInfoList)
-            {
-                if (!gpids.Contains(ssi.CoursePlanID))
-                    gpids.Add(ssi.CoursePlanID);
-            }
-            GPlanDict = DataAccess.GetGPlanDictByIDs(gpids);
+            //List<string> gpids = new List<string>();
+            //// 取得使用課程規畫表對照
+            //foreach (StudSubjectInfo ssi in StudSubjectInfoList)
+            //{
+            //    if (!gpids.Contains(ssi.CoursePlanID))
+            //        gpids.Add(ssi.CoursePlanID);
+            //}
+            //GPlanDict = DataAccess.GetGPlanDictByIDs(gpids);
 
 
             rpInt = 30;
             bgwDataChkEditLoad.ReportProgress(rpInt);
 
-            // 填入資料
-            foreach (StudSubjectInfo ssi in StudSubjectInfoList)
-            {
-                ssi.IsSubjectLevelChanged = true;
-                // 填入課規資料
-                if (GPlanDict.ContainsKey(ssi.CoursePlanID))
-                {
-                    ssi.GPName = GPlanDict[ssi.CoursePlanID].Name;
-                    // 使用年級+學期+科目+級別當key
-                    string subjKey = ssi.GradeYear + "_" + ssi.Semester + "_" + ssi.SubjectName;
-                    if (GPlanDict[ssi.CoursePlanID].SubjectsDict.ContainsKey(subjKey))
-                    {
-                        ssi.GPRequired = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Required;
-                        ssi.GPRequiredBy = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].RequiredBy;
-                        ssi.GPCredit = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Credit;
-                        ssi.SubjectLevelNew = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].SubjectLevel;
-                        ssi.GPSYSubjectName = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].SubjectNameByYear;
-                        ssi.GPDomain = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Domain;
-                        ssi.GPEntry = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].Entry;
-                        ssi.GPCourseCode = GPlanDict[ssi.CoursePlanID].SubjectsDict[subjKey].CourseCode;
-
-                        if (ssi.SubjectLevel == ssi.SubjectLevelNew)
-                            ssi.IsSubjectLevelChanged = false;
-                    }
-                }
-
-            }
 
             rpInt = 70;
             bgwDataChkEditLoad.ReportProgress(rpInt);
 
             // 填入科目級別不同
             foreach (StudSubjectInfo ss in StudSubjectInfoList)
-            {
-                if (ss.IsSubjectLevelChanged)
-                {
+            {             
                     ss.ErrorMsgList.Add("科目級別與課規不同");
-                    AddErrorSubjectInfoDict(ss);
-                }
+                    AddErrorSubjectInfoDict(ss);            
             }
 
             rpInt = 100;
@@ -962,6 +939,18 @@ namespace SHGraduationWarning.UIForm
                 {
                     ""HeaderText"": ""科目級別"",
                     ""Name"": ""科目級別"",
+                    ""Width"": 30,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""新科目名稱"",
+                    ""Name"": ""新科目名稱"",
+                    ""Width"": 120,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""新科目級別"",
+                    ""Name"": ""新科目級別"",
                     ""Width"": 30,
                     ""ReadOnly"": true
                 },                
