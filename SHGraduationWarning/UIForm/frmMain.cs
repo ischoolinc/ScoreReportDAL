@@ -226,10 +226,11 @@ namespace SHGraduationWarning.UIForm
                         wstSC2.Cells[rowIdx, GetColIndex("班級")].PutValue(dr["班級"] + "");
                         wstSC2.Cells[rowIdx, GetColIndex("座號")].PutValue(dr["座號"] + "");
                         wstSC2.Cells[rowIdx, GetColIndex("姓名")].PutValue(dr["姓名"] + "");
-                        wstSC2.Cells[rowIdx, GetColIndex("課規年級")].PutValue(dr["課規年級"] + "");
-                        wstSC2.Cells[rowIdx, GetColIndex("課規學期")].PutValue(dr["課規學期"] + "");
-                        wstSC2.Cells[rowIdx, GetColIndex("課規科目名稱")].PutValue(dr["課規科目名稱"] + "");
-                        wstSC2.Cells[rowIdx, GetColIndex("課規科目級別")].PutValue(dr["課規科目級別"] + "");
+                        wstSC2.Cells[rowIdx, GetColIndex("使用課程規劃表")].PutValue(dr["使用課程規劃表"] + "");
+                        wstSC2.Cells[rowIdx, GetColIndex("學期")].PutValue(dr["學期"] + "");
+                        wstSC2.Cells[rowIdx, GetColIndex("領域")].PutValue(dr["領域"] + "");
+                        wstSC2.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(dr["科目名稱"] + "");
+                        wstSC2.Cells[rowIdx, GetColIndex("科目級別")].PutValue(dr["科目級別"] + "");
                         rowIdx++;
                     }
                 }
@@ -254,11 +255,12 @@ namespace SHGraduationWarning.UIForm
                         wstSC3.Cells[rowIdx, GetColIndex("班級")].PutValue(dr["班級"] + "");
                         wstSC3.Cells[rowIdx, GetColIndex("座號")].PutValue(dr["座號"] + "");
                         wstSC3.Cells[rowIdx, GetColIndex("姓名")].PutValue(dr["姓名"] + "");
-                        wstSC3.Cells[rowIdx, GetColIndex("課規年級")].PutValue(dr["課規年級"] + "");
-                        wstSC3.Cells[rowIdx, GetColIndex("課規學期")].PutValue(dr["課規學期"] + "");
+                        wstSC3.Cells[rowIdx, GetColIndex("使用課程規劃表")].PutValue(dr["使用課程規劃表"] + "");
+                        wstSC3.Cells[rowIdx, GetColIndex("成績年級")].PutValue(dr["成績年級"] + "");
+                        wstSC3.Cells[rowIdx, GetColIndex("學期")].PutValue(dr["學期"] + "");
                         wstSC3.Cells[rowIdx, GetColIndex("分組名稱")].PutValue(dr["分組名稱"] + "");
                         wstSC3.Cells[rowIdx, GetColIndex("分組修課學分數")].PutValue(dr["分組修課學分數"] + "");
-                        wstSC3.Cells[rowIdx, GetColIndex("學分加總")].PutValue(dr["學分加總"] + "");
+                        wstSC3.Cells[rowIdx, GetColIndex("成績累計學分數")].PutValue(dr["成績累計學分數"] + "");
                         rowIdx++;
                     }
                 }
@@ -505,29 +507,18 @@ namespace SHGraduationWarning.UIForm
 
             // 檢查學期成績與課規比對
             StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan1(DeptID, ClassID));
-
-            // 檢查課規與學期成績比對
-            chkDataReport2 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan2(DeptID, ClassID);
-
-            // 檢查課規課程群組學分總數不符合
-            chkDataReport3 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan3(DeptID, ClassID);
-
-            //List<string> gpids = new List<string>();
-            //// 取得使用課程規畫表對照
-            //foreach (StudSubjectInfo ssi in StudSubjectInfoList)
-            //{
-            //    if (!gpids.Contains(ssi.CoursePlanID))
-            //        gpids.Add(ssi.CoursePlanID);
-            //}
-            //GPlanDict = DataAccess.GetGPlanDictByIDs(gpids);
-
-
             rpInt = 30;
             bgwDataChkEditLoad.ReportProgress(rpInt);
+            
+            // 檢查課規與學期成績比對
+            chkDataReport2 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan2(DeptID, ClassID);
 
 
             rpInt = 70;
             bgwDataChkEditLoad.ReportProgress(rpInt);
+            
+            // 檢查課規課程群組學分總數不符合
+            chkDataReport3 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan3(DeptID, ClassID);
 
             // 填入科目級別不同
             foreach (StudSubjectInfo ss in StudSubjectInfoList)
