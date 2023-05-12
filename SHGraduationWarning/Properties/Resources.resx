@@ -121,6 +121,9 @@
   <data name="ImportUpdateSubjectLevelVal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\importexport\importupdatesubjectlevelval.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="學期成績匯入檔樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\學期成績匯入檔樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="學期成績與課規比對樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\學期成績與課規比對樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

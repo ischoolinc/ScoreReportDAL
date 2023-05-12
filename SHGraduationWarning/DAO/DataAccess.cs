@@ -1511,7 +1511,7 @@ namespace SHGraduationWarning.DAO
 			                                    AND graduation_plan_expand.grade_year = target_data.grade_year :: TEXT
 			                                    AND graduation_plan_expand.semester = target_data.semester :: TEXT
 			                                    AND graduation_plan_expand.subject_name = target_data.subject_name
-			                                    AND COALESCE(graduation_plan_expand.subject_level, '') = COALESCE(target_data.subject_level, '')
+			                                    AND graduation_plan_expand.subject_level = target_data.subject_level 
                                         ORDER BY
                                             student_id,
                                             grade_year,
@@ -1538,7 +1538,7 @@ namespace SHGraduationWarning.DAO
 			                                    AND graduation_plan_expand.grade_year = target_data.grade_year :: TEXT
 			                                    AND graduation_plan_expand.semester = target_data.semester :: TEXT
 			                                    AND graduation_plan_expand.subject_name = target_data.subject_name
-			                                    AND COALESCE(graduation_plan_expand.subject_level, '') = COALESCE(target_data.subject_level, '')
+			                                    AND graduation_plan_expand.subject_level = target_data.subject_level 
                                         WHERE
                                             graduation_plan_expand.student_id IS NULL
                                         ORDER BY
@@ -1564,7 +1564,7 @@ namespace SHGraduationWarning.DAO
 			                                    AND target_data.grade_year :: TEXT = graduation_plan_expand.grade_year
 			                                    AND target_data.semester :: TEXT = graduation_plan_expand.semester
 			                                    AND target_data.subject_name = graduation_plan_expand.subject_name
-			                                    AND COALESCE(target_data.subject_level, '') = COALESCE(graduation_plan_expand.subject_level, '')
+			                                    AND target_data.subject_level = graduation_plan_expand.subject_level 
                                         WHERE
                                             target_data.student_id IS NULL
                                             AND graduation_plan_expand.分組名稱 = ''
@@ -1590,7 +1590,7 @@ namespace SHGraduationWarning.DAO
 			                                    AND target_data.grade_year :: TEXT = graduation_plan_expand.grade_year
 			                                    AND target_data.semester :: TEXT = graduation_plan_expand.semester
 			                                    AND target_data.subject_name = graduation_plan_expand.subject_name
-			                                    AND COALESCE(target_data.subject_level, '') = COALESCE(graduation_plan_expand.subject_level, '')
+			                                    AND target_data.subject_level = graduation_plan_expand.subject_level 
                                         WHERE
                                             graduation_plan_expand.分組名稱 <> ''
                                         GROUP BY
@@ -1638,6 +1638,8 @@ namespace SHGraduationWarning.DAO
                                             學期,
                                             科目名稱
                                     ", condition);
+                
+                //Utility.ExportText("sql", strSQL);
 
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)
