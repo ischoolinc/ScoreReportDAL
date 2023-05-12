@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblMsg = new DevComponents.DotNetBar.LabelX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.btnQuery = new DevComponents.DotNetBar.ButtonX();
@@ -52,9 +52,10 @@
             this.tbItem2ChkEdit = new DevComponents.DotNetBar.TabItem(this.components);
             this.btnUpdate = new DevComponents.DotNetBar.ButtonX();
             this.btnDel = new DevComponents.DotNetBar.ButtonX();
-            this.chkItemAll = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.lblDesc = new DevComponents.DotNetBar.LabelX();
             this.btnReport = new DevComponents.DotNetBar.ButtonX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.comboGradeYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             ((System.ComponentModel.ISupportInitialize)(this.dgDataGW)).BeginInit();
             this.groupPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
@@ -115,14 +116,14 @@
             this.dgDataGW.AllowUserToDeleteRows = false;
             this.dgDataGW.BackgroundColor = System.Drawing.Color.White;
             this.dgDataGW.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgDataGW.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDataGW.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgDataGW.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgDataGW.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgDataGW.Location = new System.Drawing.Point(1, 1);
@@ -140,7 +141,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(193, 19);
+            this.labelX2.Location = new System.Drawing.Point(320, 19);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(33, 23);
             this.labelX2.TabIndex = 48;
@@ -152,7 +153,7 @@
             this.comboClass.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboClass.FormattingEnabled = true;
             this.comboClass.ItemHeight = 19;
-            this.comboClass.Location = new System.Drawing.Point(232, 18);
+            this.comboClass.Location = new System.Drawing.Point(359, 18);
             this.comboClass.Name = "comboClass";
             this.comboClass.Size = new System.Drawing.Size(121, 25);
             this.comboClass.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -164,13 +165,15 @@
             this.groupPanel1.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel1.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel1.Controls.Add(this.labelX1);
+            this.groupPanel1.Controls.Add(this.comboGradeYear);
             this.groupPanel1.Controls.Add(this.labelX5);
             this.groupPanel1.Controls.Add(this.comboDept);
             this.groupPanel1.Controls.Add(this.labelX2);
             this.groupPanel1.Controls.Add(this.comboClass);
             this.groupPanel1.Location = new System.Drawing.Point(17, 19);
             this.groupPanel1.Name = "groupPanel1";
-            this.groupPanel1.Size = new System.Drawing.Size(393, 87);
+            this.groupPanel1.Size = new System.Drawing.Size(503, 87);
             // 
             // 
             // 
@@ -212,7 +215,7 @@
             // 
             this.labelX5.BackgroundStyle.Class = "";
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX5.Location = new System.Drawing.Point(10, 19);
+            this.labelX5.Location = new System.Drawing.Point(137, 19);
             this.labelX5.Name = "labelX5";
             this.labelX5.Size = new System.Drawing.Size(33, 23);
             this.labelX5.TabIndex = 52;
@@ -224,7 +227,7 @@
             this.comboDept.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboDept.FormattingEnabled = true;
             this.comboDept.ItemHeight = 19;
-            this.comboDept.Location = new System.Drawing.Point(49, 18);
+            this.comboDept.Location = new System.Drawing.Point(176, 18);
             this.comboDept.Name = "comboDept";
             this.comboDept.Size = new System.Drawing.Size(125, 25);
             this.comboDept.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -304,14 +307,14 @@
             this.dgDataChkEdit.AllowUserToDeleteRows = false;
             this.dgDataChkEdit.BackgroundColor = System.Drawing.Color.White;
             this.dgDataChkEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgDataChkEdit.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDataChkEdit.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgDataChkEdit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgDataChkEdit.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgDataChkEdit.Location = new System.Drawing.Point(1, 1);
@@ -352,14 +355,14 @@
             this.dgData2ChkEdit.AllowUserToDeleteRows = false;
             this.dgData2ChkEdit.BackgroundColor = System.Drawing.Color.White;
             this.dgData2ChkEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData2ChkEdit.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData2ChkEdit.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgData2ChkEdit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgData2ChkEdit.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgData2ChkEdit.Location = new System.Drawing.Point(1, 1);
@@ -404,24 +407,6 @@
             this.btnDel.Text = "刪除";
             this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
             // 
-            // chkItemAll
-            // 
-            this.chkItemAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkItemAll.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.chkItemAll.BackgroundStyle.Class = "";
-            this.chkItemAll.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkItemAll.Location = new System.Drawing.Point(962, 93);
-            this.chkItemAll.Name = "chkItemAll";
-            this.chkItemAll.Size = new System.Drawing.Size(84, 23);
-            this.chkItemAll.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.chkItemAll.TabIndex = 66;
-            this.chkItemAll.Text = "勾選全選";
-            this.chkItemAll.Visible = false;
-            this.chkItemAll.CheckedChanged += new System.EventHandler(this.chkItemAll_CheckedChanged);
-            // 
             // lblDesc
             // 
             this.lblDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -432,9 +417,9 @@
             // 
             this.lblDesc.BackgroundStyle.Class = "";
             this.lblDesc.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblDesc.Location = new System.Drawing.Point(474, 19);
+            this.lblDesc.Location = new System.Drawing.Point(538, 19);
             this.lblDesc.Name = "lblDesc";
-            this.lblDesc.Size = new System.Drawing.Size(445, 87);
+            this.lblDesc.Size = new System.Drawing.Size(508, 87);
             this.lblDesc.TabIndex = 67;
             this.lblDesc.Text = "資料合理檢查：(學生範圍：學生狀態：一般+延修)\r\n1. 檢查學生學期成績的科目級別與學生使用課程規劃的科目級別差異，並可更新級別或刪除科目。\r\n2. 建議級別空" +
     "白表示學期成績有這科目，在學生課程規畫表內沒有。\r\n\r\n";
@@ -455,6 +440,33 @@
             this.btnReport.Text = "產生報表";
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
+            // labelX1
+            // 
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(13, 19);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(33, 23);
+            this.labelX1.TabIndex = 54;
+            this.labelX1.Text = "年級";
+            // 
+            // comboGradeYear
+            // 
+            this.comboGradeYear.DisplayMember = "Text";
+            this.comboGradeYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboGradeYear.FormattingEnabled = true;
+            this.comboGradeYear.ItemHeight = 19;
+            this.comboGradeYear.Location = new System.Drawing.Point(52, 18);
+            this.comboGradeYear.Name = "comboGradeYear";
+            this.comboGradeYear.Size = new System.Drawing.Size(75, 25);
+            this.comboGradeYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.comboGradeYear.TabIndex = 55;
+            this.comboGradeYear.SelectedIndexChanged += new System.EventHandler(this.comboGradeYear_SelectedIndexChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -462,7 +474,6 @@
             this.ClientSize = new System.Drawing.Size(1061, 743);
             this.Controls.Add(this.btnReport);
             this.Controls.Add(this.lblDesc);
-            this.Controls.Add(this.chkItemAll);
             this.Controls.Add(this.btnDel);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.tabControl1);
@@ -507,11 +518,12 @@
         private DevComponents.DotNetBar.Controls.DataGridViewX dgDataChkEdit;
         private DevComponents.DotNetBar.ButtonX btnUpdate;
         private DevComponents.DotNetBar.ButtonX btnDel;
-        private DevComponents.DotNetBar.Controls.CheckBoxX chkItemAll;
         private DevComponents.DotNetBar.LabelX lblDesc;
         private DevComponents.DotNetBar.TabControlPanel tabControlPanel3;
         private DevComponents.DotNetBar.Controls.DataGridViewX dgData2ChkEdit;
         private DevComponents.DotNetBar.TabItem tbItem2ChkEdit;
         private DevComponents.DotNetBar.ButtonX btnReport;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx comboGradeYear;
     }
 }

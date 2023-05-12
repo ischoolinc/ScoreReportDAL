@@ -13,5 +13,7 @@ namespace SHGraduationWarning.DAO
         public string ClassName { get; set; }
         public string DeptID { get; set; }
         public string DeptName { get; set; }
+
+        public string GradeYear { get; set; }
     }
 }

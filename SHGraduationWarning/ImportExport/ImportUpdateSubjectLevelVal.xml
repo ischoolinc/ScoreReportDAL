@@ -28,8 +28,7 @@
 		<Field Required="True" Name="科目名稱">
 			<Validate AutoCorrect="False" Description="「科目名稱」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
 		</Field>
-		<Field Required="True" Name="科目級別">
-			<Validate AutoCorrect="False" Description="「科目級別」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+		<Field Required="True" Name="科目級別">		
 		</Field	>
 		<Field Required="True" Name="新科目名稱">
 			<Validate AutoCorrect="False" Description="「新科目名稱」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
