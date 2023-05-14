@@ -622,6 +622,8 @@ namespace SHGraduationWarning.DAO
                     科目名稱
 ", condition);
 
+             //   Utility.ExportText("sql1", strSQL);
+                
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -1603,7 +1605,7 @@ namespace SHGraduationWarning.DAO
                                         HAVING
                                             SUM(target_data.credit) <> graduation_plan_expand.分組修課學分數
                                     )
-                                    SELECT
+                                    SELECT DISTINCT 
                                         target_match.student_id AS 學生系統編號,
                                         target_student.student_number AS 學號,
                                         target_student.dept_name AS 科別名稱,
@@ -1639,7 +1641,7 @@ namespace SHGraduationWarning.DAO
                                             科目名稱
                                     ", condition);
                 
-                //Utility.ExportText("sql", strSQL);
+             //   Utility.ExportText("sql4", strSQL);
 
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)

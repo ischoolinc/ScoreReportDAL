@@ -152,15 +152,16 @@ namespace SHGraduationWarning.UIForm
                     Utility.ExportXls("學期成績與課規比對", wb);
                 }
             }
-            
+
             if (SelectedTabName == ChkEditTabName2)
             {
                 if (wb != null)
                 {
-                    Utility.ExportXls("學期成績匯入檔", wb);
+                    // 因為匯入學期科目成績目前只支援2003格式
+                    Utility.ExportXls2003("學期科目成績匯入檔", wb);
                 }
             }
-            
+
             btnReport.Enabled = true;
         }
 
@@ -299,8 +300,8 @@ namespace SHGraduationWarning.UIForm
                     bgwDataChkEditReport.ReportProgress(10);
                     // 填值到 Excel
                     wb = new Workbook(new MemoryStream(Properties.Resources.學期成績匯入檔樣板));
-                    Worksheet wstSC = wb.Worksheets["學期成績匯入檔"];
-                    wstSC.Name = "學期成績匯入檔";
+                    Worksheet wstSC = wb.Worksheets["學期科目成績匯入檔"];
+                    wstSC.Name = "學期科目成績匯入檔";
 
                     int rowIdx = 1;
                     _ColIdxDict.Clear();
@@ -425,9 +426,9 @@ namespace SHGraduationWarning.UIForm
 
             try
             {
+                dgDataChkEdit.Rows.Clear();
                 if (hasErrorSubjectInfoDict.Count > 0)
                 {
-                    dgDataChkEdit.Rows.Clear();
                     foreach (StudSubjectInfo ss in hasErrorSubjectInfoDict.Values)
                     {
                         int rowIdx = dgDataChkEdit.Rows.Add();
@@ -662,7 +663,7 @@ namespace SHGraduationWarning.UIForm
             // 載入資料合理性檢查欄位--科目屬性
             LoadDgData2ChkColumns();
 
-            tabControl1.SelectedTabIndex = 1;
+            tabControl1.SelectedTabIndex = 0;
 
             // 讀取班級科別資訊
             bgWorkerLoadDefault.RunWorkerAsync();
@@ -1327,17 +1328,19 @@ namespace SHGraduationWarning.UIForm
             else if (SelectedTabName == ChkEditTabName)
             {
                 // 資料合理檢查_科目級別
-                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)";
-                //1. 檢查學生學期成績的科目級別與學生使用課程規劃的科目級別差異，並可更新級別或刪除科目。
-                //2. 建議級別空白表示學期成績有這科目，在學生課程規畫表內沒有。
-                //";
+                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)
+依年級、科別、班級，檢查學生學期成績科目科目+級別與學生使用課程規畫表科目+級別差異，產生新科目名稱與新科目級別，並產生3個工作表：
+1.依學期成績為主比對課規沒有。(產生畫面資料與符合匯入更新學期科目級別格式)
+2.依課規為主比對學期成績沒有。
+3.依課規比對課程群組學分總數不符合。
+";
                 lblDesc.Text = msg;
             }
             else if (SelectedTabName == ChkEditTabName2)
             {
                 // 資料合理檢查_科目屬性
                 msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)
-1. 檢查學期成績與課程規劃，以科目名稱+科目級別比對，找出領域、指定學年科目名稱、課程代碼 有差異資料。
+1. 檢查學期成績與課程規劃，以科目名稱+科目級別比對相同，找出領域、指定學年科目名稱、課程代碼 有差異資料。
 2. 產生報表:產生可匯入學期成績檔案。
 ";
             }
