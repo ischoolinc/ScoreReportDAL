@@ -617,8 +617,8 @@ namespace SHGraduationWarning.DAO
                     target_data.credit AS 學分數,
                     target_data.不計學分,
                     target_data.不需評分,
-	                target_data.subject_name AS 新科目名稱,
-                    target_data.subject_level AS 新科目級別
+	                target_data.suggest_subject_name AS 新科目名稱,
+                    target_data.suggest_subject_level AS 新科目級別
                 FROM
                     target_data
                     INNER JOIN target_student
@@ -1500,7 +1500,10 @@ namespace SHGraduationWarning.DAO
                             '0' || array_to_string(xpath('//Subject/@分組修課學分數', subject_ele), '')
                         ) :: INTEGER AS 分組修課學分數,
                         array_to_string(xpath('//Subject/@指定學年科目名稱', subject_ele), '') :: TEXT AS 指定學年科目名稱,
-				                        array_to_string(xpath('//Subject/@課程代碼', subject_ele), '') :: TEXT AS 課程代碼
+				                        array_to_string(xpath('//Subject/@課程代碼', subject_ele), '') :: TEXT AS 課程代碼,
+                        array_to_string(xpath('//Subject/@Entry', subject_ele), '') :: TEXT AS 分項類別,
+                        array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '') :: TEXT AS 校部訂,
+                        array_to_string(xpath('//Subject/@Required', subject_ele), '') :: TEXT AS 必選修
                     FROM
                         (
                             SELECT
@@ -1552,7 +1555,10 @@ namespace SHGraduationWarning.DAO
                         array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '')::text AS 不需評分,
 	                    array_to_string(xpath('//Subject/@領域', subj_score_ele), '')::text AS 領域,
 			                    array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '')::text AS 課程代碼,
-			                    array_to_string(xpath('//Subject/@指定學年科目名稱', subj_score_ele), '')::text AS 指定學年科目名稱
+			            array_to_string(xpath('//Subject/@指定學年科目名稱', subj_score_ele), '')::text AS 指定學年科目名稱,
+                        array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別,
+                        array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂,
+                        array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修
                     FROM
                         (
                             SELECT
@@ -1599,7 +1605,13 @@ namespace SHGraduationWarning.DAO
                         subject_expand.課程代碼,
                         subject_expand.指定學年科目名稱,
                         graduation_plan_expand_with_student.指定學年科目名稱 AS 新指定學年科目名稱,
-                        graduation_plan_expand_with_student.課程代碼 AS 新課程代碼
+                        graduation_plan_expand_with_student.課程代碼 AS 新課程代碼,
+                        subject_expand.分項類別,
+                        subject_expand.必選修,
+                        subject_expand.校部訂,
+                        graduation_plan_expand_with_student.分項類別 AS 新分項類別,
+                        graduation_plan_expand_with_student.必選修 AS 新必選修,
+                        graduation_plan_expand_with_student.校部訂 AS 新校部訂
                     FROM
                         subject_expand
                     FULL OUTER JOIN graduation_plan_expand_with_student
@@ -1742,7 +1754,13 @@ namespace SHGraduationWarning.DAO
 		                target_data.指定學年科目名稱,
 		                target_data.新指定學年科目名稱,
 		                target_data.課程代碼,
-		                target_data.新課程代碼
+		                target_data.新課程代碼,
+                        target_data.分項類別,
+                        target_data.新分項類別,
+                        target_data.校部訂,
+                        target_data.新校部訂,
+                        target_data.必選修,
+                        target_data.新必選修
 	                FROM
 		                target_data 
 			                INNER JOIN target_student
@@ -1750,7 +1768,11 @@ namespace SHGraduationWarning.DAO
 		                WHERE 
 			                (領域 <> domain) 
 			                OR (指定學年科目名稱 <> 新指定學年科目名稱)
-			                OR (課程代碼 <> 新課程代碼)
+			                OR (課程代碼 <> 新課程代碼) 
+                            OR (分項類別 <> 新分項類別) 
+                            OR (校部訂 <> 新校部訂)
+                            OR (必選修 <> 新必選修)
+
 	                ORDER BY
 			                班級,
 			                座號,
@@ -1760,7 +1782,7 @@ namespace SHGraduationWarning.DAO
 			                科目名稱 
 ", condition);
                 
-       //         Utility.ExportText("sql4", strSQL);
+               // Utility.ExportText("sql4", strSQL);
 
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)

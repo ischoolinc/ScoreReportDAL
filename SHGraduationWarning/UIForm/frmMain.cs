@@ -180,11 +180,11 @@ namespace SHGraduationWarning.UIForm
                     bgwDataChkEditReport.ReportProgress(1);
                     // 填值到 Excel
                     wb = new Workbook(new MemoryStream(Properties.Resources.學期成績與課規比對樣板));
-                    Worksheet wstSC = wb.Worksheets["依學期成績為主比對課規沒有"];
-                    wstSC.Name = "依學期成績為主比對課規沒有";
+                    Worksheet wstSC = wb.Worksheets["依學期成績為主比對課規不符合"];
+                    wstSC.Name = "依學期成績為主比對課規不符合";
 
-                    Worksheet wstSC2 = wb.Worksheets["依課規為主比對學期成績沒有"];
-                    wstSC2.Name = "依課規為主比對學期成績沒有";
+                    Worksheet wstSC2 = wb.Worksheets["依課規為主比對學期成績不符合"];
+                    wstSC2.Name = "依課規為主比對學期成績不符合";
 
                     Worksheet wstSC3 = wb.Worksheets["依課規比對課程群組學分總數不符合"];
                     wstSC3.Name = "依課規比對課程群組學分總數不符合";
@@ -315,7 +315,7 @@ namespace SHGraduationWarning.UIForm
                     if (chkDataReport4.Count > 0)
                     {
                         foreach (DataRow dr in chkDataReport4)
-                        {
+                        {                            
                             wstSC.Cells[rowIdx, GetColIndex("學生系統編號")].PutValue(dr["學生系統編號"] + "");
                             wstSC.Cells[rowIdx, GetColIndex("學號")].PutValue(dr["學號"] + "");
                             wstSC.Cells[rowIdx, GetColIndex("科別")].PutValue(dr["科別名稱"] + "");
@@ -331,6 +331,15 @@ namespace SHGraduationWarning.UIForm
                             wstSC.Cells[rowIdx, GetColIndex("領域")].PutValue(dr["新領域"] + "");
                             wstSC.Cells[rowIdx, GetColIndex("指定學年科目名稱")].PutValue(dr["新指定學年科目名稱"] + "");
                             wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(dr["新課程代碼"] + "");
+                            wstSC.Cells[rowIdx, GetColIndex("分項類別")].PutValue(dr["新分項類別"] + "");
+                            wstSC.Cells[rowIdx, GetColIndex("必選修")].PutValue(dr["新必選修"] + "");
+
+                            // 轉換部訂字為部定
+                            string RequiredBy = dr["新校部訂"] + "";
+                            if (RequiredBy == "部訂")
+                                RequiredBy = "部定";
+
+                            wstSC.Cells[rowIdx, GetColIndex("校部訂")].PutValue(RequiredBy);
                             rowIdx++;
                         }
 
@@ -358,7 +367,7 @@ namespace SHGraduationWarning.UIForm
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
             dgData2ChkEdit.Rows.Clear();
 
-            // 取得學期成績與課規以科目名稱+級別比對相同，領域、指定學年科目名稱、課程代碼，不同。
+            // 取得學期成績與課規以科目名稱+級別比對相同，分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼，不同。
             if (chkDataReport4.Count > 0)
             {
                 foreach (DataRow dr in chkDataReport4)
@@ -380,6 +389,23 @@ namespace SHGraduationWarning.UIForm
                     dgData2ChkEdit.Rows[rowIdx].Cells["新指定學年科目名稱"].Value = dr["新指定學年科目名稱"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["課程代碼"].Value = dr["課程代碼"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["新課程代碼"].Value = dr["新課程代碼"] + "";
+                    dgData2ChkEdit.Rows[rowIdx].Cells["分項類別"].Value = dr["分項類別"] + "";
+                    dgData2ChkEdit.Rows[rowIdx].Cells["新分項類別"].Value = dr["新分項類別"] + "";
+                    // 轉換部訂字為部定
+                    string RequiredBy = dr["校部訂"] + "";
+                    if (RequiredBy == "部訂")
+                        RequiredBy = "部定";
+
+                    dgData2ChkEdit.Rows[rowIdx].Cells["校部訂"].Value = RequiredBy;
+
+                    string RequiredByNew = dr["新校部訂"] + "";
+                    if (RequiredByNew == "部訂")
+                        RequiredByNew = "部定";
+
+                    dgData2ChkEdit.Rows[rowIdx].Cells["新校部訂"].Value = RequiredByNew;
+                    
+                    dgData2ChkEdit.Rows[rowIdx].Cells["必選修"].Value = dr["必選修"] + "";
+                    dgData2ChkEdit.Rows[rowIdx].Cells["新必選修"].Value = dr["新必選修"] + "";
                 }
             }
 
@@ -1074,6 +1100,18 @@ namespace SHGraduationWarning.UIForm
                     ""ReadOnly"": true
                 },
                 {
+                    ""HeaderText"": ""分項類別"",
+                    ""Name"": ""分項類別"",
+                    ""Width"": 80,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""新分項類別"",
+                    ""Name"": ""新分項類別"",
+                    ""Width"": 80,
+                    ""ReadOnly"": true
+                },
+                {
                     ""HeaderText"": ""領域"",
                     ""Name"": ""領域"",
                     ""Width"": 80,
@@ -1084,7 +1122,32 @@ namespace SHGraduationWarning.UIForm
                     ""Name"": ""新領域"",
                     ""Width"": 80,
                     ""ReadOnly"": true
-                },                
+                },
+                {
+                    ""HeaderText"": ""校部訂"",
+                    ""Name"": ""校部訂"",
+                    ""Width"": 40,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""新校部訂"",
+                    ""Name"": ""新校部訂"",
+                    ""Width"": 40,
+                    ""ReadOnly"": true
+                }
+                ,
+                {
+                    ""HeaderText"": ""必選修"",
+                    ""Name"": ""必選修"",
+                    ""Width"": 40,
+                    ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""新必選修"",
+                    ""Name"": ""新必選修"",
+                    ""Width"": 40,
+                    ""ReadOnly"": true
+                },
                 {
                     ""HeaderText"": ""指定學年科目名稱"",
                     ""Name"": ""指定學年科目名稱"",
@@ -1340,7 +1403,7 @@ namespace SHGraduationWarning.UIForm
             {
                 // 資料合理檢查_科目屬性
                 msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)
-1. 檢查學期成績與課程規劃，以科目名稱+科目級別比對相同，找出領域、指定學年科目名稱、課程代碼 有差異資料。
+1. 檢查學期成績與課程規劃，以科目名稱+科目級別比對相同，找出分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼 有差異資料。
 2. 產生報表:產生可匯入學期成績檔案。
 ";
             }
