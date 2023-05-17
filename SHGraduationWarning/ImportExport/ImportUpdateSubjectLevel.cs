@@ -25,6 +25,10 @@ namespace SHGraduationWarning.ImportExport
             return ImportAction.Update;
         }
 
+        public ImportUpdateSubjectLevel()
+        {
+            this.IsSplit = false;
+        }
 
         public override string GetValidateRule()
         {
