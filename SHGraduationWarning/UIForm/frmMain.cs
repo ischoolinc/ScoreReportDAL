@@ -43,10 +43,14 @@ namespace SHGraduationWarning.UIForm
         // 資料合理檢查報告
         BackgroundWorker bgwDataChkEditReport;
 
+        // 處理報部科目名稱更新使用
+        BackgroundWorker bwDataUpdateDSubject;
+
         List<ClassDeptInfo> ClassDeptInfoList;
         string SelectedGradeYearYear = "3";
         string SelectedDeptName = "";
         string SelectedClassName = "";
+
         Dictionary<string, List<string>> DeptNameDict;
         Dictionary<string, List<string>> GradeYearDeptNameDict;
         Dictionary<string, List<string>> GradeYearClassNameDict;
@@ -85,6 +89,9 @@ namespace SHGraduationWarning.UIForm
         // 資料合理檢查報告--科目屬性使用
         List<DataRow> chkDataReport4;
 
+        // 資料合理檢查報告--報部科目名稱使用
+        List<DataRow> chkDataDSubject;
+
         public frmMain()
         {
             _ColIdxDict = new Dictionary<string, int>();
@@ -120,6 +127,11 @@ namespace SHGraduationWarning.UIForm
             bgwDataChkEditLoad2.ProgressChanged += BgwDataChkEditLoad2_ProgressChanged;
             bgwDataChkEditLoad2.WorkerReportsProgress = true;
 
+            bwDataUpdateDSubject = new BackgroundWorker();
+            bwDataUpdateDSubject.DoWork += BwDataUpdateDSubject_DoWork;
+            bwDataUpdateDSubject.RunWorkerCompleted += BwDataUpdateDSubject_RunWorkerCompleted;
+            bwDataUpdateDSubject.ProgressChanged += BwDataUpdateDSubject_ProgressChanged;
+            bwDataUpdateDSubject.WorkerReportsProgress = true;
 
             StudSubjectInfoList = new List<StudSubjectInfo>();
 
@@ -139,7 +151,45 @@ namespace SHGraduationWarning.UIForm
             bgwDataChkEditReport.ProgressChanged += BgwDataChkEditReport_ProgressChanged;
             bgwDataChkEditReport.RunWorkerCompleted += BgwDataChkEditReport_RunWorkerCompleted;
             bgwDataChkEditReport.WorkerReportsProgress = true;
+
+            chkDataDSubject = new List<DataRow>();
+
+
             InitializeComponent();
+        }
+
+        private void BwDataUpdateDSubject_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("報部科目名稱更新中...", e.ProgressPercentage);
+        }
+
+        private void BwDataUpdateDSubject_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            if (e.Error == null)
+            {
+                int count = (int)e.Result;
+                MsgBox.Show("共更新" + count + "筆。");
+            }
+            else
+            {
+                MsgBox.Show(e.Error.Message);
+            }
+
+            ControlEnable(true);
+
+        }
+
+        private void BwDataUpdateDSubject_DoWork(object sender, DoWorkEventArgs e)
+        {
+            bwDataUpdateDSubject.ReportProgress(10);
+            int UpdateCount = 0;
+            if (chkDataDSubject.Count > 0)
+                UpdateCount = DataAccess.UpdateSemsScoreDSubjectName(chkDataDSubject);
+
+            e.Result = UpdateCount;
+
+            bwDataUpdateDSubject.ReportProgress(100);
         }
 
         private void BgwDataChkEditReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -315,7 +365,7 @@ namespace SHGraduationWarning.UIForm
                     if (chkDataReport4.Count > 0)
                     {
                         foreach (DataRow dr in chkDataReport4)
-                        {                            
+                        {
                             wstSC.Cells[rowIdx, GetColIndex("學生系統編號")].PutValue(dr["學生系統編號"] + "");
                             wstSC.Cells[rowIdx, GetColIndex("學號")].PutValue(dr["學號"] + "");
                             wstSC.Cells[rowIdx, GetColIndex("科別")].PutValue(dr["科別名稱"] + "");
@@ -340,6 +390,8 @@ namespace SHGraduationWarning.UIForm
                                 RequiredBy = "部定";
 
                             wstSC.Cells[rowIdx, GetColIndex("校部訂")].PutValue(RequiredBy);
+                            wstSC.Cells[rowIdx, GetColIndex("報部科目名稱")].PutValue(dr["新報部科目名稱"] + "");
+
                             rowIdx++;
                         }
 
@@ -367,7 +419,7 @@ namespace SHGraduationWarning.UIForm
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
             dgData2ChkEdit.Rows.Clear();
 
-            // 取得學期成績與課規以科目名稱+級別比對相同，分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼，不同。
+            // 取得學期成績與課規以科目名稱+級別比對相同，分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼、報部科目名稱，不同。
             if (chkDataReport4.Count > 0)
             {
                 foreach (DataRow dr in chkDataReport4)
@@ -403,9 +455,10 @@ namespace SHGraduationWarning.UIForm
                         RequiredByNew = "部定";
 
                     dgData2ChkEdit.Rows[rowIdx].Cells["新校部訂"].Value = RequiredByNew;
-                    
+
                     dgData2ChkEdit.Rows[rowIdx].Cells["必選修"].Value = dr["必選修"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["新必選修"].Value = dr["新必選修"] + "";
+                    dgData2ChkEdit.Rows[rowIdx].Cells["報部科目名稱"].Value = dr["報部科目名稱"] + "";
                 }
             }
 
@@ -428,13 +481,14 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
-            // 取得學期成績與課規以科目名稱+級別比對相同，領域、指定學年科目名稱、課程代碼，不同。
+            // 取得學期成績與課規以科目名稱+級別比對相同，領域、指定學年科目名稱、課程代碼、分項、校部定、必選修、報部科目，不同。
             chkDataReport4 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, DeptID, ClassID);
 
 
             rpInt = 70;
             bgwDataChkEditLoad2.ReportProgress(rpInt);
-
+            // 取得報部科目名稱，更新使用。
+            chkDataDSubject = DataAccess.GetSemsSubjectLevelCheckGraduationPlan5(SelectedGradeYearYear, DeptID, ClassID);
 
             rpInt = 100;
             bgwDataChkEditLoad2.ReportProgress(rpInt);
@@ -666,8 +720,9 @@ namespace SHGraduationWarning.UIForm
         {
 
             ControlEnable(false);
+            // 更新報部科目名稱按鈕
+            buttonUpdateDSubjectName.Visible = false;
             ClearClassDept();
-            lblDesc.Text = "";
             SelectedTabName = ChkEditTabName;
             LoadTabDesc();
 
@@ -699,6 +754,8 @@ namespace SHGraduationWarning.UIForm
         private void ControlEnable(bool value)
         {
             btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnReport.Enabled = value;
+
+            buttonUpdateDSubjectName.Enabled = value;
 
             tabControl1.Enabled = value;
             btnDel.Enabled = btnUpdate.Enabled = false;
@@ -1171,6 +1228,12 @@ namespace SHGraduationWarning.UIForm
                     ""Name"": ""新課程代碼"",
                     ""Width"": 120,
                     ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""報部科目名稱"",
+                    ""Name"": ""報部科目名稱"",
+                    ""Width"": 120,
+                    ""ReadOnly"": true
                 }
                 ]   
 ";
@@ -1361,6 +1424,7 @@ namespace SHGraduationWarning.UIForm
             // 畢業預警
             SelectedTabName = GWTabName;
             btnQuery.Enabled = false;
+            buttonUpdateDSubjectName.Visible = false;
             LoadTabDesc();
             lblMsg.Text = "共0筆";
         }
@@ -1369,6 +1433,7 @@ namespace SHGraduationWarning.UIForm
         {
             // 資料合理檢查 -- 科目級別
             SelectedTabName = ChkEditTabName;
+            buttonUpdateDSubjectName.Visible = false;
             btnQuery.Enabled = true;
             LoadTabDesc();
             lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
@@ -1377,7 +1442,7 @@ namespace SHGraduationWarning.UIForm
 
 
         // 載入說明資訊
-        private void LoadTabDesc()
+        private string LoadTabDesc()
         {
             string msg = "";
             // 畢業預警
@@ -1391,24 +1456,25 @@ namespace SHGraduationWarning.UIForm
             else if (SelectedTabName == ChkEditTabName)
             {
                 // 資料合理檢查_科目級別
-                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)
+                msg = @"資料合理檢查(科目級別)：(學生範圍：學生狀態：一般+延修)
 依年級、科別、班級，檢查學生學期成績科目科目+級別與學生使用課程規畫表科目+級別差異，產生新科目名稱與新科目級別，並產生3個工作表：
 1.依學期成績為主比對課規沒有。(產生畫面資料與符合匯入更新學期科目級別格式)
 2.依課規為主比對學期成績沒有。
 3.依課規比對課程群組學分總數不符合。
 ";
-                lblDesc.Text = msg;
+
             }
             else if (SelectedTabName == ChkEditTabName2)
             {
                 // 資料合理檢查_科目屬性
-                msg = @"資料合理檢查：(學生範圍：學生狀態：一般+延修)
-1. 檢查學期成績與課程規劃，以科目名稱+科目級別比對相同，找出分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼 有差異資料。
+                msg = @"資料合理檢查(科目屬性)：(學生範圍：學生狀態：一般+延修)
+1. 檢查學期成績與課程規劃，以科目名稱+科目級別比對相同，找出分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼、報部科目名稱 有差異資料。
 2. 產生報表:產生可匯入學期成績檔案。
+3. 更新報部科目名稱：依學生課程規劃比對學期成績，當科目名稱+級別相同，將學期成績的報部科目名稱更新為課程規劃報部科目名稱。
 ";
             }
 
-            lblDesc.Text = msg;
+            return msg;
         }
 
         private void tabControl1_Click(object sender, EventArgs e)
@@ -1421,6 +1487,7 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查 -- 科目屬性
             SelectedTabName = ChkEditTabName2;
             btnQuery.Enabled = true;
+            buttonUpdateDSubjectName.Visible = true;
             LoadTabDesc();
             //lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
         }
@@ -1503,6 +1570,33 @@ namespace SHGraduationWarning.UIForm
                         comboClass.SelectedIndex = 0;
                 }
             }
+        }
+
+        private void buttonUpdateDSubjectName_Click(object sender, EventArgs e)
+        {
+            buttonUpdateDSubjectName.Enabled = false;
+            if (chkDataDSubject.Count == 0)
+            {
+                MsgBox.Show("沒有資料可更新");
+                buttonUpdateDSubjectName.Enabled = true;
+            }
+            else
+            {
+                if (MsgBox.Show("選「是」將更新" + chkDataDSubject.Count + "筆報部科目名稱。", "更新報部科目名稱", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    ControlEnable(false);
+                    // 更新報部科目名稱
+                    bwDataUpdateDSubject.RunWorkerAsync();
+                }
+            }
+        }
+
+        private void buttonLoadDesc_Click(object sender, EventArgs e)
+        {
+            string desc = LoadTabDesc();
+            frmDesc frm = new frmDesc();
+            frm.SetDesc(desc);
+            frm.ShowDialog();
         }
     }
 }
