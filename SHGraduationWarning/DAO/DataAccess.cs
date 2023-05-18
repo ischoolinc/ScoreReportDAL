@@ -1633,23 +1633,29 @@ namespace SHGraduationWarning.DAO
                 target_match AS (
                     --成績年級、學期、科目、級別比對到的資料
                     SELECT
-                        target_data.student_id,
-                        target_data.grade_year,
-                        target_data.semester,
-                        target_data.school_year,
-                        target_data.subject_name,
-                        target_data.subject_level,
-                        target_data.分組名稱,
-                        target_data.分組修課學分數,
-                        target_data.credit,
-			            target_data.領域,
-			            target_data.指定學年科目名稱,
-			            target_data.課程代碼,
-                        target_data.domain AS 新領域,
-                        target_data.指定學年科目名稱,
-			            target_data.新課程代碼,
-			            target_data.報部科目名稱,
-			            target_data.新報部科目名稱
+                       target_data.student_id,
+		                target_data.grade_year,
+		                target_data.semester,
+		                target_data.school_year,
+		                target_data.subject_name,
+		                target_data.subject_level,
+		                target_data.分組名稱,
+		                target_data.分組修課學分數,
+		                target_data.credit,
+		                target_data.領域,
+		                target_data.指定學年科目名稱,
+		                target_data.課程代碼,
+		                target_data.domain AS 新領域,
+		                target_data.新指定學年科目名稱,
+		                target_data.新課程代碼,
+		                target_data.報部科目名稱,
+		                target_data.新報部科目名稱,
+		                target_data.分項類別,
+		                target_data.新分項類別,
+		                target_data.校部訂,
+		                target_data.新校部訂,
+		                target_data.必選修,
+		                target_data.新必選修
                     FROM
                         target_data
                     WHERE
@@ -1665,16 +1671,16 @@ namespace SHGraduationWarning.DAO
                 ),
                 target_mismatch AS (
                     --成績年級、學期、科目、級別比對到的資料
-                    SELECT
-                        target_data.student_id,
-                        target_data.grade_year,
-                        target_data.semester,
-                        target_data.school_year,
-                        target_data.subject_name,
-                        target_data.subject_level,
-                        target_data.credit,
-                        target_data.不計學分,
-                        target_data.不需評分
+                 	SELECT
+		            target_data.student_id,
+		            target_data.grade_year,
+		            target_data.semester,
+		            target_data.school_year,
+		            target_data.subject_name,
+		            target_data.subject_level,
+		            target_data.credit,
+		            target_data.不計學分,
+		            target_data.不需評分
                     FROM
                         target_data
                     WHERE
@@ -1742,46 +1748,45 @@ namespace SHGraduationWarning.DAO
                     HAVING
                         SUM(target_data.credit) <> target_data.分組修課學分數
                 )
-                SELECT DISTINCT 
-		                target_data.student_id AS 學生系統編號,
+                 SELECT DISTINCT 
+		                target_match.student_id AS 學生系統編號,
 		                target_student.student_number AS 學號,
 		                target_student.dept_name AS 科別名稱,
 		                target_student.class_name AS 班級,
 		                target_student.seat_no AS 座號,
 		                target_student.student_name AS 姓名,
-		                target_data.school_year AS 學年度,
-		                target_data.semester AS 學期,
-		                target_data.grade_year AS 成績年級,
-		                target_data.subject_name AS 科目名稱,
-		                target_data.subject_level AS 科目級別,
-		                target_data.credit AS 學分數,
-		                target_data.領域,
-		                 target_data.domain AS 新領域,
-		                target_data.指定學年科目名稱,
-		                target_data.新指定學年科目名稱,
-		                target_data.課程代碼,
-		                target_data.新課程代碼,
-                        target_data.分項類別,
-                        target_data.新分項類別,
-                        target_data.校部訂,
-                        target_data.新校部訂,
-                        target_data.必選修,
-                        target_data.新必選修,                        
-                        target_data.報部科目名稱,
-                        target_data.新報部科目名稱
+		                target_match.school_year AS 學年度,
+		                target_match.semester AS 學期,
+		                target_match.grade_year AS 成績年級,
+		                target_match.subject_name AS 科目名稱,
+		                target_match.subject_level AS 科目級別,
+		                target_match.credit AS 學分數,
+		                target_match.領域,
+		                target_match.新領域,
+		                target_match.指定學年科目名稱,
+		                target_match.新指定學年科目名稱,
+		                target_match.課程代碼,
+		                target_match.新課程代碼,
+		                target_match.分項類別,
+		                target_match.新分項類別,
+		                target_match.校部訂,
+		                target_match.新校部訂,
+		                target_match.必選修,
+		                target_match.新必選修,                        
+		                target_match.報部科目名稱,
+		                target_match.新報部科目名稱
 	                FROM
-		                target_data 
+		                target_match 
 			                INNER JOIN target_student
-			                ON target_data.student_id = target_student.student_id
+			                ON target_match.student_id = target_student.student_id
 		                WHERE 
-			                (領域 <> domain) 
+			                (領域 <> 新領域) 
 			                OR (指定學年科目名稱 <> 新指定學年科目名稱)
 			                OR (課程代碼 <> 新課程代碼) 
-                            OR (分項類別 <> 新分項類別) 
-                            OR (校部訂 <> 新校部訂)
-                            OR (必選修 <> 新必選修)
-                            OR (必選修 <> 新必選修) 
-                            OR (報部科目名稱 <> 新報部科目名稱)
+			                OR (分項類別 <> 新分項類別) 
+			                OR (校部訂 <> 新校部訂)
+			                OR (必選修 <> 新必選修)			
+			                OR (報部科目名稱 <> 新報部科目名稱)
 	                ORDER BY
 			                班級,
 			                座號,
@@ -2053,24 +2058,30 @@ namespace SHGraduationWarning.DAO
                 ),
                 target_match AS (
                     --成績年級、學期、科目、級別比對到的資料
-                    SELECT
-                        target_data.student_id,
-                        target_data.grade_year,
-                        target_data.semester,
-                        target_data.school_year,
-                        target_data.subject_name,
-                        target_data.subject_level,
-                        target_data.分組名稱,
-                        target_data.分組修課學分數,
-                        target_data.credit,
-			            target_data.領域,
-			            target_data.指定學年科目名稱,
-			            target_data.課程代碼,
-                        target_data.domain AS 新領域,
-                        target_data.指定學年科目名稱,
-			            target_data.新課程代碼,
-			            target_data.報部科目名稱,
-			            target_data.新報部科目名稱,
+                   SELECT
+		                target_data.student_id,
+		                target_data.grade_year,
+		                target_data.semester,
+		                target_data.school_year,
+		                target_data.subject_name,
+		                target_data.subject_level,
+		                target_data.分組名稱,
+		                target_data.分組修課學分數,
+		                target_data.credit,
+		                target_data.領域,
+		                target_data.指定學年科目名稱,
+		                target_data.課程代碼,
+		                target_data.domain AS 新領域,
+		                target_data.新指定學年科目名稱,
+		                target_data.新課程代碼,
+		                target_data.報部科目名稱,
+		                target_data.新報部科目名稱,
+		                target_data.分項類別,
+		                target_data.新分項類別,
+		                target_data.校部訂,
+		                target_data.新校部訂,
+		                target_data.必選修,
+		                target_data.新必選修,
                         target_data.sems_subj_score_id 
                     FROM
                         target_data
@@ -2164,38 +2175,38 @@ namespace SHGraduationWarning.DAO
                     HAVING
                         SUM(target_data.credit) <> target_data.分組修課學分數
                 )
-                SELECT DISTINCT 
-		                target_data.student_id AS 學生系統編號,
+                    SELECT DISTINCT 
+		                target_match.student_id AS 學生系統編號,
 		                target_student.student_number AS 學號,
 		                target_student.dept_name AS 科別名稱,
 		                target_student.class_name AS 班級,
 		                target_student.seat_no AS 座號,
 		                target_student.student_name AS 姓名,
-		                target_data.school_year AS 學年度,
-		                target_data.semester AS 學期,
-		                target_data.grade_year AS 成績年級,
-		                target_data.subject_name AS 科目名稱,
-		                target_data.subject_level AS 科目級別,
-		                target_data.credit AS 學分數,
-		                target_data.領域,
-		                 target_data.domain AS 新領域,
-		                target_data.指定學年科目名稱,
-		                target_data.新指定學年科目名稱,
-		                target_data.課程代碼,
-		                target_data.新課程代碼,
-                        target_data.分項類別,
-                        target_data.新分項類別,
-                        target_data.校部訂,
-                        target_data.新校部訂,
-                        target_data.必選修,
-                        target_data.新必選修,                        
-                        target_data.報部科目名稱,
-                        target_data.新報部科目名稱,
-                        target_data.sems_subj_score_id
+		                target_match.school_year AS 學年度,
+		                target_match.semester AS 學期,
+		                target_match.grade_year AS 成績年級,
+		                target_match.subject_name AS 科目名稱,
+		                target_match.subject_level AS 科目級別,
+		                target_match.credit AS 學分數,
+		                target_match.領域,
+		                target_match.新領域,
+		                target_match.指定學年科目名稱,
+		                target_match.新指定學年科目名稱,
+		                target_match.課程代碼,
+		                target_match.新課程代碼,
+		                target_match.分項類別,
+		                target_match.新分項類別,
+		                target_match.校部訂,
+		                target_match.新校部訂,
+		                target_match.必選修,
+		                target_match.新必選修,                        
+		                target_match.報部科目名稱,
+		                target_match.新報部科目名稱,
+                        target_match.sems_subj_score_id
 	                FROM
-		                target_data 
+		                target_match 
 			                INNER JOIN target_student
-			                ON target_data.student_id = target_student.student_id
+			                ON target_match.student_id = target_student.student_id
 		                WHERE 			               
                             (報部科目名稱 <> 新報部科目名稱)
 	                ORDER BY

@@ -230,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Template\學期成績匯入檔樣板.xlsx" />
+    <None Include="Template\學期成績匯入檔樣板1.xlsx" />
     <None Include="Template\學期成績與課規比對樣板.xlsx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
