@@ -38,7 +38,7 @@
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonClose.BackColor = System.Drawing.Color.Transparent;
             this.buttonClose.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonClose.Location = new System.Drawing.Point(599, 361);
+            this.buttonClose.Location = new System.Drawing.Point(737, 329);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -60,14 +60,14 @@
             this.textDesc.Multiline = true;
             this.textDesc.Name = "textDesc";
             this.textDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textDesc.Size = new System.Drawing.Size(661, 337);
+            this.textDesc.Size = new System.Drawing.Size(799, 305);
             this.textDesc.TabIndex = 1;
             // 
             // frmDesc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(686, 391);
+            this.ClientSize = new System.Drawing.Size(824, 359);
             this.Controls.Add(this.textDesc);
             this.Controls.Add(this.buttonClose);
             this.DoubleBuffered = true;
