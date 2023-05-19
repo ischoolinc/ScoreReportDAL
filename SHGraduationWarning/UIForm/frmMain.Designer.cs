@@ -103,7 +103,7 @@
             this.btnQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuery.BackColor = System.Drawing.Color.Transparent;
             this.btnQuery.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnQuery.Location = new System.Drawing.Point(723, 752);
+            this.btnQuery.Location = new System.Drawing.Point(887, 752);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(75, 23);
             this.btnQuery.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -357,6 +357,7 @@
             this.tbItemGW.AttachedControl = this.tabControlPanel1;
             this.tbItemGW.Name = "tbItemGW";
             this.tbItemGW.Text = "畢業預警";
+            this.tbItemGW.Visible = false;
             this.tbItemGW.Click += new System.EventHandler(this.tbItemGW_Click);
             // 
             // tabControlPanel3
@@ -413,12 +414,13 @@
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
             this.btnUpdate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnUpdate.Location = new System.Drawing.Point(805, 752);
+            this.btnUpdate.Location = new System.Drawing.Point(850, 34);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 23);
             this.btnUpdate.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnUpdate.TabIndex = 64;
             this.btnUpdate.Text = "更新";
+            this.btnUpdate.Visible = false;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDel
@@ -427,12 +429,13 @@
             this.btnDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDel.BackColor = System.Drawing.Color.Transparent;
             this.btnDel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnDel.Location = new System.Drawing.Point(887, 752);
+            this.btnDel.Location = new System.Drawing.Point(932, 34);
             this.btnDel.Name = "btnDel";
             this.btnDel.Size = new System.Drawing.Size(75, 23);
             this.btnDel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnDel.TabIndex = 65;
             this.btnDel.Text = "刪除";
+            this.btnDel.Visible = false;
             this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
             // 
             // btnReport
@@ -441,7 +444,7 @@
             this.btnReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReport.BackColor = System.Drawing.Color.Transparent;
             this.btnReport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnReport.Location = new System.Drawing.Point(622, 752);
+            this.btnReport.Location = new System.Drawing.Point(783, 752);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(95, 23);
             this.btnReport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
