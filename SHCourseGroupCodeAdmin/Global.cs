@@ -48,10 +48,16 @@ namespace SHCourseGroupCodeAdmin
             builder.Writeln("=======合併欄位總表=======");
 
             builder.StartTable();
-            //builder.InsertCell(); builder.Write("學年度");
-            //builder.InsertCell();
-            //builder.InsertField("MERGEFIELD " + "學年度" + " \\* MERGEFORMAT ", "«" + "學年度" + "»");
-            //builder.EndRow();
+            builder.InsertCell(); builder.Write("學年度");
+            builder.InsertCell();
+            builder.InsertField("MERGEFIELD " + "學年度" + " \\* MERGEFORMAT ", "«" + "學年度" + "»");
+            builder.EndRow();
+
+            builder.InsertCell(); builder.Write("學期");
+            builder.InsertCell();
+            builder.InsertField("MERGEFIELD " + "學期" + " \\* MERGEFORMAT ", "«" + "學期" + "»");
+            builder.EndRow();
+
             builder.InsertCell(); builder.Write("學生系統編號");
             builder.InsertCell();
             builder.InsertField("MERGEFIELD " + "學生系統編號" + " \\* MERGEFORMAT ", "«" + "學生系統編號" + "»");
