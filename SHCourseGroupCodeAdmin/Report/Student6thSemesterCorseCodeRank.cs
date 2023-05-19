@@ -81,7 +81,7 @@ namespace SHCourseGroupCodeAdmin.Report
 
             bgWorkerReport.ReportProgress(10);
 
-            // 取得(3,6,12年級) 110-2 學期科目原始成績
+            // 取得(3,6,12年級) 第6學期科目原始成績
             List<rptStudSemsScoreCodeChkInfo> StudSemsScoreCodeChkInfoList = da.GetStudentSemsScoreInfo("3,6,12", SchoolYear, Semester);
 
             // 取得修課紀錄
@@ -155,6 +155,8 @@ namespace SHCourseGroupCodeAdmin.Report
                         && StudSCAttendCodeInfoList[i].RequiredBy == sem.RequiredBy)
                     {
                         StudSCAttendCodeInfoList.Remove(StudSCAttendCodeInfoList[i]);
+                        Console.WriteLine("StuID:" + StudSCAttendCodeInfoList[i].StudentID);
+                        Console.WriteLine("SubjectName:" + StudSCAttendCodeInfoList[i].SubjectName);
                         break;
                     }
                 }
@@ -206,7 +208,7 @@ namespace SHCourseGroupCodeAdmin.Report
             //    //errorMsgList.Add(ex.Message);
             //}
             #endregion
-
+            bool skipLoop=false;
             bgWorkerReport.ReportProgress(70);
             // 整理資料，填入 DataTable
             foreach (StudentInfo si in StudentInfoList)
@@ -256,8 +258,42 @@ namespace SHCourseGroupCodeAdmin.Report
                 {
                     if (data.StudentID == si.StudentID)
                     {
-                        if (data.NCredit == "是" && data.NScore == "是")
-                            continue; //不計學分也不須評分 跳過
+                        // Modify by Jackie Wang 20230510 增加是否列出不計學分及不須評分的判斷
+
+                        /*if (data.NCredit == "是" && data.NScore == "是")
+                            continue; //不計學分也不須評分 跳過 */
+                        
+                        if(data.NCredit == "是" && data.NScore == "是")
+                        {
+                            if (chkNCredit.Checked && chkNScore.Checked) skipLoop = false;
+                            if (chkNCredit.Checked && !chkNScore.Checked) skipLoop = true;
+                            if (!chkNCredit.Checked && chkNScore.Checked) skipLoop = true;
+                            if (!chkNCredit.Checked && !chkNScore.Checked) skipLoop = true;
+
+                        }
+                        if (data.NCredit == "是" && data.NScore != "是")
+                        {
+                            if (chkNCredit.Checked && chkNScore.Checked) skipLoop = true; 
+                            if (chkNCredit.Checked && !chkNScore.Checked) skipLoop = false;
+                            if (!chkNCredit.Checked && chkNScore.Checked) skipLoop = true;
+                            if (!chkNCredit.Checked && !chkNScore.Checked) skipLoop = true;
+                        }
+                        if (data.NCredit != "是" && data.NScore == "是")
+                        {
+                            if (chkNCredit.Checked && chkNScore.Checked) skipLoop = true;
+                            if (chkNCredit.Checked && !chkNScore.Checked) skipLoop = true;
+                            if (!chkNCredit.Checked && chkNScore.Checked) skipLoop = false;
+                            if (!chkNCredit.Checked && !chkNScore.Checked) skipLoop = true;
+                        }
+                        if (data.NCredit != "是" && data.NScore != "是")
+                        {
+                            skipLoop = false;
+                        }
+
+                            if (skipLoop)
+                        {
+                           continue; //跳過
+                        }                            
 
                         if (index <= 60)
                         {
@@ -730,5 +766,7 @@ namespace SHCourseGroupCodeAdmin.Report
         {
             this.Close();
         }
+
+
     }
 }

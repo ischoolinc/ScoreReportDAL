@@ -1863,12 +1863,12 @@ namespace SHCourseGroupCodeAdmin.DAO
 " , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
 " , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
 " FROM course " +
-" 	INNER JOIN sc_attend " +
+"  INNER JOIN sc_attend " +
 "  ON course.id = sc_attend.ref_course_id  " +
-" 	INNER JOIN student  " +
+"  INNER JOIN student  " +
 "  ON sc_attend.ref_student_id = student.id " +
-" 	INNER JOIN class " +
-" 	ON student.ref_class_id = class.id " +
+"  INNER JOIN class " +
+"  ON student.ref_class_id = class.id " +
 " WHERE  " +
 "  student.status IN(1,2) AND class.grade_year IN(" + strGrYear + ") " +
 " AND course.school_year = " + SchoolYear + " AND course.semester = " + Semester + " " +
