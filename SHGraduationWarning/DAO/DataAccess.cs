@@ -781,7 +781,10 @@ namespace SHGraduationWarning.DAO
                         array_to_string(xpath('//Subject/@分組名稱', subject_ele), '') :: TEXT AS 分組名稱,
                         (
                             '0' || array_to_string(xpath('//Subject/@分組修課學分數', subject_ele), '')
-                        ) :: INTEGER AS 分組修課學分數
+                        ) :: INTEGER AS 分組修課學分數,
+                        array_to_string(xpath('//Subject/@Entry', subject_ele), '') :: TEXT AS 分項類別,
+                        array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '') :: TEXT AS 校部訂,
+                        array_to_string(xpath('//Subject/@Required', subject_ele), '') :: TEXT AS 必選修
                     FROM
                         (
                             SELECT
@@ -871,6 +874,9 @@ namespace SHGraduationWarning.DAO
                         graduation_plan_expand_with_student.domain,
                         graduation_plan_expand_with_student.分組名稱,
                         graduation_plan_expand_with_student.分組修課學分數,
+                        graduation_plan_expand_with_student.分項類別 AS 新分項類別,
+                        graduation_plan_expand_with_student.必選修 AS 新必選修,
+                        graduation_plan_expand_with_student.校部訂 AS 新校部訂,
 		                suggest_graduation_plan.subject_name AS suggest_subject_name,
 		                suggest_graduation_plan.subject_level AS suggest_subject_level
                     FROM
@@ -946,7 +952,10 @@ namespace SHGraduationWarning.DAO
                         target_data.subject_name,
                         target_data.subject_level,
                         target_data.分組名稱,
-                        target_data.分組修課學分數
+                        target_data.分組修課學分數,
+                        target_data.新分項類別,
+                        target_data.新必選修,
+                        target_data.新校部訂 
                     FROM
                         target_data
                     WHERE
@@ -1004,7 +1013,10 @@ namespace SHGraduationWarning.DAO
                     graduation_plan_mismatch.semester AS 學期,
                     graduation_plan_mismatch.domain AS 領域,
                     graduation_plan_mismatch.subject_name AS 科目名稱,
-                    graduation_plan_mismatch.subject_level AS 科目級別
+                    graduation_plan_mismatch.subject_level AS 科目級別,
+                    graduation_plan_mismatch.新分項類別,
+                    graduation_plan_mismatch.新必選修,
+                    graduation_plan_mismatch.新校部訂
                 FROM
                     graduation_plan_mismatch
                     INNER JOIN target_student

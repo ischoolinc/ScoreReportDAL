@@ -121,6 +121,13 @@
       <HintPath>Library\K12.Presentation.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SmartSchool.Customization.Data">
+      <HintPath>D:\ischool_test\t_高中第六學期學期修課記錄\modules\SHSchoolLoader\SmartSchool.Customization.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSchool.Evaluation.HS, Version=1.0.7.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\dev\高中畢業預警核心測試\SmartSchool.Evaluation.HS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

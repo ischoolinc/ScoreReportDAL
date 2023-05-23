@@ -16,6 +16,9 @@ using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using Aspose.Cells;
 using System.IO;
+using SmartSchool.Customization.Data;
+using K12.Data;
+using System.Xml;
 
 namespace SHGraduationWarning.UIForm
 {
@@ -303,6 +306,14 @@ namespace SHGraduationWarning.UIForm
                             wstSC2.Cells[rowIdx, GetColIndex("領域")].PutValue(dr["領域"] + "");
                             wstSC2.Cells[rowIdx, GetColIndex("科目名稱")].PutValue(dr["科目名稱"] + "");
                             wstSC2.Cells[rowIdx, GetColIndex("科目級別")].PutValue(dr["科目級別"] + "");
+                            wstSC2.Cells[rowIdx, GetColIndex("分項類別")].PutValue(dr["新分項類別"] + "");
+                            // 校部訂字轉換
+                            string RequiredBy = dr["新校部訂"] + "";
+                            if (RequiredBy == "部訂")
+                                RequiredBy = "部定";
+
+                            wstSC2.Cells[rowIdx, GetColIndex("校部訂")].PutValue(RequiredBy);
+                            wstSC2.Cells[rowIdx, GetColIndex("必選修")].PutValue(dr["新必選修"] + "");
                             rowIdx++;
                         }
                     }
@@ -1497,6 +1508,17 @@ namespace SHGraduationWarning.UIForm
         }
         private void btnQuery_Click(object sender, EventArgs e)
         {
+            //// 測試呼叫畢業檢查核心
+            //AccessHelper accessHelper = new AccessHelper();
+            //SmartSchool.Customization.Data.StudentRecord studentRec = accessHelper.StudentHelper.GetStudent("18228");
+            //new SmartSchool.Evaluation.WearyDogComputer().FillStudentGradCheck(accessHelper, new List<SmartSchool.Customization.Data.StudentRecord>() { studentRec });
+            //XmlElement xmlElement = studentRec.Fields["GrandCheckReport"] as XmlElement;
+
+            //foreach (XmlElement elm in xmlElement.SelectNodes("項目"))
+            //{
+            //    Console.WriteLine(elm.GetAttribute("規則"));
+            //}
+
             // 畢業預警
             if (SelectedTabName == GWTabName)
             {
