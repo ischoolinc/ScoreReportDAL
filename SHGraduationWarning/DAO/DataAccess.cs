@@ -2886,6 +2886,107 @@ namespace SHGraduationWarning.DAO
             return value;
         }
 
+        // 取得報表用學生id
+        public static List<ReportStudentInfo> GetReportStudentList(string GradeYear, string DeptID, string ClassID)
+        {
+            List<ReportStudentInfo> value = new List<ReportStudentInfo>();
+            try
+            {
+                // 取得科別對照
+                Dictionary<string, string> deptDict = GetDeptIDNameDict();
 
+                string condition = @"
+                    SELECT
+                        " + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+                        NULL :: INTEGER AS class_id,
+                        NULL :: INTEGER AS dept_id
+                ";
+
+
+                // SELECT 3::INT AS grade_year -- NULL時為全部年級
+                //	           , NULL::TEXT AS dept_name--NULL時為全部科別
+
+                if (!string.IsNullOrEmpty(DeptID))
+                {
+                    condition = @"
+                    SELECT                        
+                        NULL :: INTEGER AS class_id,
+                        " + DeptID + " AS dept_id," +
+                        "" + GradeYear + " AS grade_year ";
+                }
+
+
+                if (!string.IsNullOrEmpty(ClassID))
+                {
+                    condition = @"
+                    SELECT                        
+                        " + ClassID + " AS class_id," +
+                        "" + DeptID + " AS dept_id," +
+                    "" + GradeYear + " AS grade_year ";
+                }
+
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+                 WITH row AS(
+	               {0}
+                ),
+                target_student AS(
+	                SELECT
+                        student.id AS student_id,                        
+		                class.id AS class_id,
+		                class.class_name,
+		                dept.id AS dept_id,
+		                student.student_number,
+		                student.seat_no,
+		                student.name AS student_name,
+                        dept.name AS dept_name
+	                FROM
+		                row
+		                INNER JOIN class
+			                       ON (
+                                   class.grade_year = row.grade_year 
+				                   AND ( 
+                                        row.class_id is null 
+                                        OR class.id = row.class_id
+                                    )   
+			                    )
+		                INNER JOIN student
+			                ON student.ref_class_id = class.id
+			                AND student.status IN (1, 2)
+		                INNER JOIN dept
+			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+			                AND (
+				                row.dept_id IS NULL
+				                 OR dept.id = row.dept_id
+			                )                        
+                )
+                SELECT
+                    *
+                FROM 
+                target_student;
+", condition);
+
+                DataTable dt = qh.Select(strSQL);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ReportStudentInfo sc = new ReportStudentInfo();
+                    sc.StudentID = dr["student_id"] + "";
+                    sc.ClassID = dr["class_id"] + "";
+                    sc.ClassName = dr["class_name"] + "";
+                    sc.DeptID = dr["dept_id"] + "";
+                    sc.DeptName = dr["dept_name"] + "";
+                    sc.StudentNumber = dr["student_number"] + "";
+                    sc.SeatNo = dr["seat_no"] + "";
+                    sc.StudentName = dr["student_name"] + "";
+                    value.Add(sc);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
     }
 }

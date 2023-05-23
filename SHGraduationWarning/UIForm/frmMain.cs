@@ -54,6 +54,10 @@ namespace SHGraduationWarning.UIForm
         string SelectedDeptName = "";
         string SelectedClassName = "";
 
+        // 畢業預警學生報表資料(StudentID,ReportStudentInfo)
+        Dictionary<string, ReportStudentInfo> ReportStudentDict;
+        List<ReportStudentInfo> ReportStudentList;
+
         Dictionary<string, List<string>> DeptNameDict;
         Dictionary<string, List<string>> GradeYearDeptNameDict;
         Dictionary<string, List<string>> GradeYearClassNameDict;
@@ -104,6 +108,8 @@ namespace SHGraduationWarning.UIForm
             hasErrorSubjectInfoDict = new Dictionary<string, StudSubjectInfo>();
             DeptNameIDDic = new Dictionary<string, string>();
             ClassNameIDDic = new Dictionary<string, string>();
+            ReportStudentDict = new Dictionary<string, ReportStudentInfo>();
+            ReportStudentList = new List<ReportStudentInfo>();
             wb = new Workbook();
 
             bgWorkerLoadDefault = new BackgroundWorker();
@@ -607,11 +613,19 @@ namespace SHGraduationWarning.UIForm
 
             if (string.IsNullOrEmpty(DeptID))
             {
+                List<string> DeptIDList = new List<string>();
+                foreach (ClassDeptInfo ci in ClassDeptInfoList)
+                {
+                    if (ci.GradeYear == SelectedGradeYearYear)
+                        if (!DeptIDList.Contains(ci.DeptID))
+                            DeptIDList.Add(ci.DeptID);
+                }
+
                 // 一個年級分科
                 chkDataReport4.Clear();
-                foreach (string str in DeptNameIDDic.Values)
+                foreach (string id in DeptIDList)
                 {
-                    chkDataReport4.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, str, ClassID));
+                    chkDataReport4.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, id, ClassID));
                 }
             }
             else
@@ -629,9 +643,18 @@ namespace SHGraduationWarning.UIForm
             {
                 // 一個年級分科
                 chkDataDSubject.Clear();
-                foreach (string str in DeptNameIDDic.Values)
+
+                List<string> DeptIDList = new List<string>();
+                foreach (ClassDeptInfo ci in ClassDeptInfoList)
                 {
-                    chkDataDSubject.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan5(SelectedGradeYearYear, str, ClassID));
+                    if (ci.GradeYear == SelectedGradeYearYear)
+                        if (!DeptIDList.Contains(ci.DeptID))
+                            DeptIDList.Add(ci.DeptID);
+                }
+
+                foreach (string id in DeptIDList)
+                {
+                    chkDataDSubject.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan5(SelectedGradeYearYear, id, ClassID));
                 }
 
             }
@@ -761,13 +784,79 @@ namespace SHGraduationWarning.UIForm
         private void BgwDataGWLoad_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+
+            lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
+            ControlEnable(true);
+
         }
 
         private void BgwDataGWLoad_DoWork(object sender, DoWorkEventArgs e)
         {
-            int rpInt = 1;
+            int rpInt = 10;
+            bgwDataGWLoad.ReportProgress(rpInt);
+            ReportStudentDict.Clear();
+            ReportStudentList.Clear();
+            string DeptID = "";
+            string ClassID = "";
+
+            if (DeptNameIDDic.ContainsKey(SelectedDeptName))
+                DeptID = DeptNameIDDic[SelectedDeptName];
+
+            if (ClassNameIDDic.ContainsKey(SelectedClassName))
+                ClassID = ClassNameIDDic[SelectedClassName];
+
+            if (string.IsNullOrEmpty(DeptID))
+            {
+                List<string> DeptIDList = new List<string>();
+                foreach (ClassDeptInfo ci in ClassDeptInfoList)
+                {
+                    if (ci.GradeYear == SelectedGradeYearYear)
+                        if (!DeptIDList.Contains(ci.DeptID))
+                            DeptIDList.Add(ci.DeptID);
+                }
+
+                // 一個年級分科            
+                foreach (string id in DeptIDList)
+                {
+                    ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, id, ClassID));
+                }
+            }
+            else
+            {
+                // 單科
+                ReportStudentList = DataAccess.GetReportStudentList(SelectedGradeYearYear, DeptID, ClassID);
+            }
+
+            rpInt = 40;
             bgwDataGWLoad.ReportProgress(rpInt);
 
+            // 整理資料
+            foreach (ReportStudentInfo rs in ReportStudentList)
+            {
+                if (!ReportStudentDict.ContainsKey(rs.StudentID))
+                    ReportStudentDict.Add(rs.StudentID, rs);
+            }
+
+
+            // 取得學生畢業報告
+            AccessHelper accessHelper = new AccessHelper();
+            List<SmartSchool.Customization.Data.StudentRecord> studentRecList = accessHelper.StudentHelper.GetStudents(ReportStudentDict.Keys);
+            new SmartSchool.Evaluation.WearyDogComputer().FillStudentGradCheck(accessHelper, studentRecList);
+            foreach (SmartSchool.Customization.Data.StudentRecord studRec in
+                studentRecList)
+            {
+                if (studRec.Fields.ContainsKey("GrandCheckReport"))
+                {
+                    XmlElement xmlElement = studRec.Fields["GrandCheckReport"] as XmlElement;
+                    if (xmlElement != null)
+                    {
+                        if (ReportStudentDict.ContainsKey(studRec.StudentID))
+                        {
+                            ReportStudentDict[studRec.StudentID].GraGrandCheckXml = xmlElement;
+                        }
+                    }
+                }
+            }
 
 
             rpInt = 100;
@@ -812,8 +901,11 @@ namespace SHGraduationWarning.UIForm
                 if (!ClassNameIDDic.ContainsKey(cd.ClassName))
                     ClassNameIDDic.Add(cd.ClassName, cd.ClassID);
 
-                if (!DeptNameIDDic.ContainsKey(cd.DeptName))
-                    DeptNameIDDic.Add(cd.DeptName, cd.DeptID);
+                if (cd.DeptName != "")
+                {
+                    if (!DeptNameIDDic.ContainsKey(cd.DeptName))
+                        DeptNameIDDic.Add(cd.DeptName, cd.DeptID);
+                }
 
                 if (!GradeYearDeptNameDict.ContainsKey(cd.GradeYear))
                     GradeYearDeptNameDict.Add(cd.GradeYear, new List<string>());
@@ -889,7 +981,7 @@ namespace SHGraduationWarning.UIForm
             comboClass.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // 載入畢業預警欄位
-            //    LoadDgGWColumns();
+            LoadDgGWColumns();
 
             // 載入資料合理性檢查欄位--科目級別
             LoadDgDataChkColumns();
@@ -1587,7 +1679,7 @@ namespace SHGraduationWarning.UIForm
         {
             // 畢業預警
             SelectedTabName = GWTabName;
-            btnQuery.Enabled = false;
+            btnQuery.Enabled = true;
             buttonUpdateDSubjectName.Visible = false;
             LoadTabDesc();
             lblMsg.Text = "共0筆";
