@@ -43,6 +43,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         // 總表及課程群組通用
         List<GPlanCourseInfo108> _CourseInfoList = new List<GPlanCourseInfo108>();
         TabItem _SelectedTab = null; // TreeView切換需回到null
+        List<GPlanCourseInfo108> _CourseInfoLostOfficialSubjectNameList = new List<GPlanCourseInfo108>();
 
         // 總表用
         bool _MainIsLoading = false;
@@ -673,6 +674,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lbMainGraduationPlanName.Text = SelectInfo.RefGPName;
             _MainRowList = new List<DataGridViewRow>();
             _MainSelectedRow = new DataGridViewRow();
+            _CourseInfoLostOfficialSubjectNameList = new List<GPlanCourseInfo108>();
 
             //// 設定課程群組
             lbCourseGroupGraduationPlanName.Text = SelectInfo.RefGPName;
@@ -1037,6 +1039,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
             #endregion
 
             #region 課程群組
+            // 還原顯示欄位設定
+            foreach (ToolStripMenuItem menuItem in menuSetCourseGroupCol.Items)
+            {
+                menuItem.Checked = true;
+            }
+
             foreach (string index in dataDict.Keys)
             {
                 XElement firstElement = null;
@@ -1054,7 +1062,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 courseInfo.SubjectAttribute = firstElement.Attribute("科目屬性") == null ? "" : firstElement.Attribute("科目屬性").Value;
                 courseInfo.Entry = firstElement.Attribute("Entry").Value;
                 courseInfo.DomainName = firstElement.Attribute("Domain").Value;
-                courseInfo.OfficialSubjectName = firstElement.Attribute("OfficialSubjectName") == null ? firstElement.Attribute("SubjectName").Value : firstElement.Attribute("OfficialSubjectName").Value;
+                courseInfo.OfficialSubjectName = firstElement.Attribute("OfficialSubjectName") == null ? "" : firstElement.Attribute("OfficialSubjectName").Value;
+
+                // 檢查報部科目名稱是否存在，若不存在則先記錄下來
+                if (firstElement.Attribute("OfficialSubjectName") == null)
+                {
+                    _CourseInfoLostOfficialSubjectNameList.Add(courseInfo);
+                }
+
                 courseInfo.StartLevel = firstElement.Element("Grouping").Attribute("startLevel").Value;
                 courseInfo.SubjectName = firstElement.Attribute("SubjectName").Value;
                 courseInfo.SchoolYearGroupName = firstElement.Attribute("指定學年科目名稱") == null ? "" : firstElement.Attribute("指定學年科目名稱").Value;
@@ -1076,6 +1091,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 mainRow.Cells[13].Value = courseInfo.StartLevel;
                 mainRow.Cells[14].Value = courseInfo.SubjectName;
                 mainRow.Cells[15].Value = courseInfo.SchoolYearGroupName;
+
                 foreach (XElement element in courseInfo.CourseContentList)
                 {
                     string credit = element.Attribute("Credit").Value;
@@ -1089,41 +1105,39 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         courseGroupColor = courseGroupSetting.CourseGroupColor;
                     }
 
+                    int columnIndex = -1;
                     if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
                     {
-                        mainRow.Cells[7].Tag = element;
-                        mainRow.Cells[7].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[7].Style.BackColor = courseGroupColor;
+                        columnIndex = 7;
                     }
                     if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
                     {
-                        mainRow.Cells[8].Tag = element;
-                        mainRow.Cells[8].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[8].Style.BackColor = courseGroupColor;
+                        columnIndex = 8;
                     }
                     if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                     {
-                        mainRow.Cells[9].Tag = element;
-                        mainRow.Cells[9].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[9].Style.BackColor = courseGroupColor;
+                        columnIndex = 9;
                     }
                     if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                     {
-                        mainRow.Cells[10].Tag = element;
-                        mainRow.Cells[10].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[10].Style.BackColor = courseGroupColor;
+                        columnIndex = 10;
                     }
                     if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                     {
-                        mainRow.Cells[11].Tag = element;
-                        mainRow.Cells[11].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[11].Style.BackColor = courseGroupColor;
+                        columnIndex = 11;
                     }
                     if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
                     {
-                        mainRow.Cells[12].Tag = element;
-                        mainRow.Cells[12].Value = element.Attribute("Credit").Value;
-                        mainRow.Cells[12].Style.BackColor = courseGroupColor;
+                        columnIndex = 12;
+                    }
+
+                    if (columnIndex != -1)
+                    {
+                        mainRow.Cells[columnIndex].Tag = element;
+                        mainRow.Cells[columnIndex].Value = credit;
+                        mainRow.Cells[columnIndex].Style.BackColor = courseGroupColor;
+
+                        SetMainCellLevelStyle(element, mainRow.Cells[columnIndex]);
                     }
                 }
                 _MainRowList.Add(mainRow);
@@ -1139,6 +1153,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 courseGroupRow.Cells[4].Value = courseInfo.Entry;
                 courseGroupRow.Cells[5].Value = courseInfo.DomainName;
                 courseGroupRow.Cells[6].Value = courseInfo.OfficialSubjectName;
+
                 foreach (XElement element in courseInfo.CourseContentList)
                 {
                     string credit = element.Attribute("Credit").Value;
@@ -1152,82 +1167,67 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         courseGroupColor = courseGroupSetting.CourseGroupColor;
                     }
 
+                    int columnIndex = -1;
                     if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
                     {
-                        courseGroupRow.Cells[7].Tag = element;
-                        courseGroupRow.Cells[7].Value = credit;
-                        courseGroupRow.Cells[7].Style.BackColor = courseGroupColor;
-
-                        // 依據群組設定分類至CourseGroupSettingDic
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
-                        {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[7]);
-                        }
+                        columnIndex = 7;
                     }
                     if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
                     {
-                        courseGroupRow.Cells[8].Tag = element;
-                        courseGroupRow.Cells[8].Value = credit;
-                        courseGroupRow.Cells[8].Style.BackColor = courseGroupColor;
-
-                        // 依據群組設定分類至CourseGroupSettingDic
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
-                        {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[8]);
-                        }
+                        columnIndex = 8;
                     }
                     if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                     {
-                        courseGroupRow.Cells[9].Tag = element;
-                        courseGroupRow.Cells[9].Value = credit;
-                        courseGroupRow.Cells[9].Style.BackColor = courseGroupColor;
-
-                        // 依據群組設定分類至CourseGroupSettingDic
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
-                        {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[9]);
-                        }
+                        columnIndex = 9;
                     }
                     if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                     {
-                        courseGroupRow.Cells[10].Tag = element;
-                        courseGroupRow.Cells[10].Value = credit;
-                        courseGroupRow.Cells[10].Style.BackColor = courseGroupColor;
-
-                        // 依據群組設定分類至CourseGroupSettingDic
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
-                        {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[10]);
-                        }
+                        columnIndex = 10;
                     }
                     if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                     {
-                        courseGroupRow.Cells[11].Tag = element;
-                        courseGroupRow.Cells[11].Value = credit;
-                        courseGroupRow.Cells[11].Style.BackColor = courseGroupColor;
-
-                        // 依據群組設定分類至CourseGroupSettingDic
-                        if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
-                        {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[11]);
-                        }
+                        columnIndex = 11;
                     }
                     if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
                     {
-                        courseGroupRow.Cells[12].Tag = element;
-                        courseGroupRow.Cells[12].Value = credit;
-                        courseGroupRow.Cells[12].Style.BackColor = courseGroupColor;
+                        columnIndex = 12;
+                    }
+
+                    if (columnIndex != -1)
+                    {
+                        courseGroupRow.Cells[columnIndex].Tag = element;
+                        courseGroupRow.Cells[columnIndex].Value = credit;
+                        courseGroupRow.Cells[columnIndex].Style.BackColor = courseGroupColor;
 
                         // 依據群組設定分類至CourseGroupSettingDic
                         if (_CourseGroupSettingDic.ContainsKey(courseGroupName))
                         {
-                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[12]);
+                            _CourseGroupSettingDic[courseGroupName].Add(courseGroupRow.Cells[columnIndex]);
                         }
                     }
                 }
                 _CourseGroupRowList.Add(courseGroupRow);
             }
             #endregion
+
+            // 如果有缺少報部科目名稱的科目，就需要詢問後補上
+            if (_CourseInfoLostOfficialSubjectNameList.Count > 0)
+            {
+                if (MessageBox.Show($"有 {_CourseInfoLostOfficialSubjectNameList.Count} 筆資料缺少報部科目名稱，是否直接以科目名稱補上該資料？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    foreach (GPlanCourseInfo108 courseInfo in _CourseInfoLostOfficialSubjectNameList)
+                    {
+                        foreach (XElement element in courseInfo.CourseContentList)
+                        {
+                            string subjectName = element.Attribute("SubjectName").Value;
+                            element.SetAttributeValue("OfficialSubjectName", subjectName);
+                        }
+                    }
+
+                    btnUpdate_Click(null, null);
+                    return;
+                }
+            }
 
             _MainIsFirstLoad = true;
             LoadMainComboBoxData(null, null);
@@ -1243,7 +1243,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _IsMainDataDirty = false;
             _IsCourseGroupDataDirty = false;
             isLoadUDDataFinish = true;
-
         }
 
         private void TabItem2_Click(object sender, EventArgs e)
@@ -2123,7 +2122,37 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _SelectedTab = tabControl1.SelectedTab;
         }
 
-        // 總表用事件
+        private void SetMainCellLevelStyle(XElement element, DataGridViewCell cell)
+        {
+            string level = element.Attribute("Level").Value;
+
+            // 依據級別調整學分字體顏色
+            switch (level)
+            {
+                case "1":
+                    cell.Style.ForeColor = Color.YellowGreen;
+                    break;
+                case "2":
+                    cell.Style.ForeColor = Color.DarkGreen;
+                    break;
+                case "3":
+                    cell.Style.ForeColor = Color.MediumBlue;
+                    break;
+                case "4":
+                    cell.Style.ForeColor = Color.MediumPurple;
+                    break;
+                case "5":
+                    cell.Style.ForeColor = Color.Red;
+                    break;
+                case "6":
+                    cell.Style.ForeColor = Color.DarkOrange;
+                    break;
+                default:
+                    cell.Style.ForeColor = Color.Black;
+                    break;
+            }
+        }
+
         private void LoadMainComboBoxData(object sender, EventArgs args)
         {
             if (_MainIsLoading == true)
@@ -2307,7 +2336,238 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     tbMainStartLevel.Text = courseInfo.StartLevel;
                     tbMainSubjectName.Text = courseInfo.SubjectName;
                     tbMainSchoolYearGroupName.Text = courseInfo.SchoolYearGroupName;
+
+                    dgvMainLevel.Rows.Clear();
+                    DataGridViewRow creditRow = new DataGridViewRow();
+                    creditRow.CreateCells(dgvMainLevel);
+                    creditRow.HeaderCell.Value = "學分";
+                    creditRow.ReadOnly = true;
+                    DataGridViewRow levelRow = new DataGridViewRow();
+                    levelRow.CreateCells(dgvMainLevel);
+                    levelRow.HeaderCell.Value = "級別";
+
+                    foreach (XElement element in courseInfo.CourseContentList)
+                    {
+                        CreditInfo creditInfo = GetCreditAttr(element);
+                        string credit = creditInfo.StringValue;
+                        string level = element.Attribute("Level").Value.ToString();
+
+                        if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                        {
+                            creditRow.Cells[0].Value = credit;
+                            levelRow.Cells[0].Value = level;
+                        }
+                        if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                        {
+                            creditRow.Cells[1].Value = credit;
+                            levelRow.Cells[1].Value = level;
+                        }
+                        if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                        {
+                            creditRow.Cells[2].Value = credit;
+                            levelRow.Cells[2].Value = level;
+                        }
+                        if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                        {
+                            creditRow.Cells[3].Value = credit;
+                            levelRow.Cells[3].Value = level;
+                        }
+                        if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                        {
+                            creditRow.Cells[4].Value = credit;
+                            levelRow.Cells[4].Value = level;
+                        }
+                        if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                        {
+                            creditRow.Cells[5].Value = credit;
+                            levelRow.Cells[5].Value = level;
+                        }
+                    }
+
+                    dgvMainLevel.Rows.AddRange(
+                        creditRow
+                        , levelRow
+                    );
+
                     _MainSelectedRow = row;
+                }
+            }
+        }
+
+        private void btnMainCalcuateLevel_Click(object sender, EventArgs e)
+        {
+            /*
+                計算過程如下所示：
+                1.  111111      2.  11A1A1      3.  111A1A      4.  B2BBBB      5.  B2B2B2      6.  BBBBXX      7.  BBXXB2      8.  1AA11A
+                    1               1               1                1               1              1                    1          1
+                    12              12              12              11              11              11                  11          11
+                    123             12 3            123             111             11 2            111              1  11          11 2
+                    1234            1233            1233            1111            1122            1111            11  11          1122
+                    12345           1233 4          12334           11111           1122 3                                          11223
+                    123456          123344          123344          111111          112233                                          112233
+
+                9.  AA11AA      10. 1AAAA1     11.  AABBCC
+                      1             1               1
+                      12            11              11
+                      122           11   2          112
+                      1222          11  22          1122
+                     11222          111 22          11223
+                    111222          111122          112233    
+             */
+
+            GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
+            int startLevel;
+            string[] creditList = new string[6];
+
+            if (int.TryParse(tbMainStartLevel.Text, out startLevel))
+            {
+                foreach (XElement element in courseInfo.CourseContentList)
+                {
+                    CreditInfo creditInfo = GetCreditAttr(element);
+
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                    {
+                        creditList[0] = creditInfo.StringValue;
+                    }
+                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                    {
+                        creditList[1] = creditInfo.StringValue;
+                    }
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                    {
+                        creditList[2] = creditInfo.StringValue;
+                    }
+                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                    {
+                        creditList[3] = creditInfo.StringValue;
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                    {
+                        creditList[4] = creditInfo.StringValue;
+                    }
+                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    {
+                        creditList[5] = creditInfo.StringValue;
+                    }
+                }
+
+                int level = startLevel;
+                List<string> creditToLevel = new List<string>(new string[creditList.Length]);
+                string lastCreditString = "";
+
+                for (int i = 0; i < creditList.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(creditList[i]))
+                    {
+                        int credit;
+                        bool behindHasNumber = false;
+                        for (int j = i + 1; j < creditList.Length; j++)
+                        {
+                            if (!string.IsNullOrEmpty(creditList[j]))
+                            {
+                                if (int.TryParse(creditList[j], out credit))
+                                {
+                                    behindHasNumber = true;
+                                }
+                            }
+                        }
+
+                        if (int.TryParse(creditList[i], out credit))
+                        {
+                            creditToLevel[i] = level.ToString();
+
+                            if ((i % 2) == 0)
+                            {
+                                if (!string.IsNullOrEmpty(creditList[i + 1]))
+                                {
+                                    if (!int.TryParse(creditList[i + 1], out credit))
+                                    {
+                                        creditToLevel[i + 1] = level.ToString();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(creditList[i - 1]))
+                                {
+                                    if (!int.TryParse(creditList[i - 1], out credit))
+                                    {
+                                        creditToLevel[i - 1] = level.ToString();
+                                    }
+                                }
+                            }
+
+                            if (behindHasNumber)
+                            {
+                                level++;
+                            }
+                        }
+
+                        if (!behindHasNumber)
+                        {
+                            for (int j = i; j < creditList.Length; j++)
+                            {
+                                if (!string.IsNullOrEmpty(creditList[j]))
+                                {
+                                    if (!int.TryParse(creditList[j], out credit))
+                                    {
+                                        if (!string.IsNullOrEmpty(lastCreditString) && lastCreditString != creditList[j])
+                                        {
+                                            level++;
+                                        }
+                                        creditToLevel[j] = level.ToString();
+                                        lastCreditString = creditList[j];
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < creditToLevel.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(creditToLevel[i]))
+                    {
+                        for (int j = i + 1; j < creditToLevel.Count; j++)
+                        {
+                            int credit;
+                            if (string.IsNullOrEmpty(creditToLevel[j]))
+                            {
+                                if (!string.IsNullOrEmpty(creditList[j]) && !int.TryParse(creditList[j], out credit))
+                                {
+                                    creditToLevel[j] = creditToLevel[i];
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        for (int j = i - 1; j >= 0; j--)
+                        {
+                            int credit;
+                            if (string.IsNullOrEmpty(creditToLevel[j]))
+                            {
+                                if (!string.IsNullOrEmpty(creditList[j]) && !int.TryParse(creditList[j], out credit))
+                                {
+                                    creditToLevel[j] = creditToLevel[i];
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                int index = 0;
+                foreach (string levelString in creditToLevel)
+                {
+                    dgvMainLevel[index, 1].Value = levelString;
+                    index++;
                 }
             }
         }
@@ -2338,14 +2598,45 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         courseInfo.StartLevel = tbMainStartLevel.Text;
                         courseInfo.SubjectName = tbMainSubjectName.Text;
                         courseInfo.SchoolYearGroupName = tbMainSchoolYearGroupName.Text;
-                        int level = startLevel;
                         foreach (XElement element in courseInfo.CourseContentList)
                         {
                             element.Element("Grouping").SetAttributeValue("startLevel", tbMainStartLevel.Text);
-                            element.SetAttributeValue("Level", level);
                             element.SetAttributeValue("SubjectName", tbMainSubjectName.Text);
                             element.SetAttributeValue("指定學年科目名稱", tbMainSchoolYearGroupName.Text);
-                            level++;
+
+                            int columnIndex = -1;
+                            if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                            {
+                                element.SetAttributeValue("Level", dgvMainLevel[0, 1].Value);
+                                columnIndex = 7;
+                            }
+                            if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                            {
+                                element.SetAttributeValue("Level", dgvMainLevel[1, 1].Value);
+                                columnIndex = 8;
+                            }
+                            if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                            {
+                                element.SetAttributeValue("Level", dgvMainLevel[2, 1].Value);
+                                columnIndex = 9;
+                            }
+                            if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                            {
+                                element.SetAttributeValue("Level", dgvMainLevel[3, 1].Value);
+                                columnIndex = 10;
+                            }
+                            if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                            {
+                                element.SetAttributeValue("Level", dgvMainLevel[4, 1].Value);
+                                columnIndex = 11;
+                            }
+                            if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                            {
+                                element.SetAttributeValue("Level", dgvMainLevel[5, 1].Value);
+                                columnIndex = 12;
+                            }
+
+                            SetMainCellLevelStyle(element, _MainSelectedRow.Cells[columnIndex]);
                         }
 
                         LoadMainDataGridViewData();
@@ -2359,10 +2650,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnMainCancel_Click(object sender, EventArgs e)
         {
-            GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
-            tbMainStartLevel.Text = courseInfo.StartLevel;
-            tbMainSubjectName.Text = courseInfo.SubjectName;
-            tbMainSchoolYearGroupName.Text = courseInfo.SchoolYearGroupName;
+            dgvMain_SelectionChanged(null, null);
         }
 
         // 課程群組用事件
@@ -2863,7 +3151,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
 
                 LoadCourseGroupSettingDataGridView();
-                SetIsDirtyDisplay(true); 
+                SetIsDirtyDisplay(true);
             }
         }
 
@@ -2937,7 +3225,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             int courseGroupCredit = 0;
                             if (int.TryParse(setting.CourseGroupCredit, out courseGroupCredit))
                             {
-                                credit += courseGroupCredit; 
+                                credit += courseGroupCredit;
                             }
                         }
                     }
@@ -3038,6 +3326,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
         }
 
         //// 設定群組
+        private void dgvCourseGroup_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                menuSetCourseGroupCol.Show(Cursor.Position.X, Cursor.Position.Y);
+            }
+        }
+
+        private void menuItemSetCourseGroupCol1_CheckedChanged(object sender, EventArgs e)
+        {
+            dgvCourseGroup.Columns[0].Visible = menuItemSetCourseGroupCol1.Checked;
+            dgvCourseGroup.Columns[1].Visible = menuItemSetCourseGroupCol2.Checked;
+            dgvCourseGroup.Columns[2].Visible = menuItemSetCourseGroupCol3.Checked;
+            dgvCourseGroup.Columns[3].Visible = menuItemSetCourseGroupCol4.Checked;
+            dgvCourseGroup.Columns[4].Visible = menuItemSetCourseGroupCol5.Checked;
+            dgvCourseGroup.Columns[5].Visible = menuItemSetCourseGroupCol6.Checked;
+        }
+
         private void dgvCourseGroup_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvCourseGroupManageGroup.SelectedRows.Count > 0)
@@ -3097,7 +3403,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         }
                         SetIsDirtyDisplay(true);
                     }
-                } 
+                }
             }
         }
     }

@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.expandablePanel1 = new DevComponents.DotNetBar.ExpandablePanel();
             this.advTree1 = new DevComponents.AdvTree.AdvTree();
@@ -51,6 +53,67 @@
             this.btnDelete = new DevComponents.DotNetBar.ButtonX();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1 = new DevComponents.DotNetBar.TabControl();
+            this.tabControlPanel5 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.gpMainCourseFilter = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX16 = new DevComponents.DotNetBar.LabelX();
+            this.cboMainEntry = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX9 = new DevComponents.DotNetBar.LabelX();
+            this.cboMainDomainName = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX13 = new DevComponents.DotNetBar.LabelX();
+            this.cboMainSubjectAttribute = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX4 = new DevComponents.DotNetBar.LabelX();
+            this.cboMainSpecialCategory = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX3 = new DevComponents.DotNetBar.LabelX();
+            this.cboMainRequired = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.cboMainRequiredBy = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.gpMainSetCourseData = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.btnMainCalcuateLevel = new DevComponents.DotNetBar.ButtonX();
+            this.dgvMainLevel = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.colMain1_1Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain1_2Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain2_1Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain2_2Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain3_1Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain3_2Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbMainSchoolYearGroupName = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX14 = new DevComponents.DotNetBar.LabelX();
+            this.btnMainCancel = new DevComponents.DotNetBar.ButtonX();
+            this.btnMainSet = new DevComponents.DotNetBar.ButtonX();
+            this.tbMainSubjectName = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX6 = new DevComponents.DotNetBar.LabelX();
+            this.tbMainStartLevel = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX5 = new DevComponents.DotNetBar.LabelX();
+            this.lbMainGraduationPlanName = new DevComponents.DotNetBar.LabelX();
+            this.gpMainData = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.dgvMain = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.colMainRequiredBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainRequired = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainSpecialCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainSubjectAttribute = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainEntry = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainDomainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainOfficialSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain1_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain1_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain2_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain2_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain3_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMain3_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainStartLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMainSchoolYearGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbiCourseGroupMain = new DevComponents.DotNetBar.TabItem(this.components);
+            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblGroupName = new DevComponents.DotNetBar.LabelX();
+            this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabItem1 = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel6 = new DevComponents.DotNetBar.TabControlPanel();
             this.tlpCourseGroup = new System.Windows.Forms.TableLayoutPanel();
             this.lbCourseGroupGraduationPlanName = new DevComponents.DotNetBar.LabelX();
@@ -158,63 +221,6 @@
             this.lbDeleteCourseGroup = new System.Windows.Forms.LinkLabel();
             this.lbInsertCourseGroup = new System.Windows.Forms.LinkLabel();
             this.tbiSetCourseGroup = new DevComponents.DotNetBar.TabItem(this.components);
-            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblGroupName = new DevComponents.DotNetBar.LabelX();
-            this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabItem1 = new DevComponents.DotNetBar.TabItem(this.components);
-            this.tabControlPanel5 = new DevComponents.DotNetBar.TabControlPanel();
-            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
-            this.gpMainCourseFilter = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.cboMainEntry = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX9 = new DevComponents.DotNetBar.LabelX();
-            this.cboMainDomainName = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX13 = new DevComponents.DotNetBar.LabelX();
-            this.cboMainSubjectAttribute = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX4 = new DevComponents.DotNetBar.LabelX();
-            this.cboMainSpecialCategory = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX3 = new DevComponents.DotNetBar.LabelX();
-            this.cboMainRequired = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
-            this.cboMainRequiredBy = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.gpMainSetCourseData = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.tbMainSchoolYearGroupName = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX14 = new DevComponents.DotNetBar.LabelX();
-            this.btnMainCancel = new DevComponents.DotNetBar.ButtonX();
-            this.btnMainSet = new DevComponents.DotNetBar.ButtonX();
-            this.tbMainSubjectName = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX6 = new DevComponents.DotNetBar.LabelX();
-            this.tbMainStartLevel = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX5 = new DevComponents.DotNetBar.LabelX();
-            this.lbMainGraduationPlanName = new DevComponents.DotNetBar.LabelX();
-            this.gpMainData = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.dgvMain = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.colMainRequiredBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainRequired = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainSpecialCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainSubjectAttribute = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainEntry = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainDomainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainOfficialSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMain1_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMain1_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMain2_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMain2_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMain3_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMain3_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainStartLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMainSchoolYearGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tbiCourseGroupMain = new DevComponents.DotNetBar.TabItem(this.components);
-            this.tabControlPanel4 = new DevComponents.DotNetBar.TabControlPanel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblUDGroupName = new DevComponents.DotNetBar.LabelX();
-            this.dgUDData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.tabItem4 = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel2 = new DevComponents.DotNetBar.TabControlPanel();
             this.listViewEx1 = new DevComponents.DotNetBar.Controls.ListViewEx();
             this.tabItem2 = new DevComponents.DotNetBar.TabItem(this.components);
@@ -222,13 +228,36 @@
             this.dgCreditsSetUp = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.btnSaveCreditSetup = new DevComponents.DotNetBar.ButtonX();
             this.tabItem3 = new DevComponents.DotNetBar.TabItem(this.components);
+            this.tabControlPanel4 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblUDGroupName = new DevComponents.DotNetBar.LabelX();
+            this.dgUDData = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.tabItem4 = new DevComponents.DotNetBar.TabItem(this.components);
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
+            this.menuSetCourseGroupCol = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuItemSetCourseGroupCol1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSetCourseGroupCol2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSetCourseGroupCol3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSetCourseGroupCol4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSetCourseGroupCol5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSetCourseGroupCol6 = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.expandablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advTree1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabControlPanel5.SuspendLayout();
+            this.tlpMain.SuspendLayout();
+            this.gpMainCourseFilter.SuspendLayout();
+            this.gpMainSetCourseData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMainLevel)).BeginInit();
+            this.gpMainData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
+            this.tabControlPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabControlPanel6.SuspendLayout();
             this.tlpCourseGroup.SuspendLayout();
             this.tlpCourseGroupData.SuspendLayout();
@@ -244,22 +273,13 @@
             this.tlpCourseGroupSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseGroupManageGroup)).BeginInit();
             this.plCourseGroupSettingOption.SuspendLayout();
-            this.tabControlPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
-            this.tabControlPanel5.SuspendLayout();
-            this.tlpMain.SuspendLayout();
-            this.gpMainCourseFilter.SuspendLayout();
-            this.gpMainSetCourseData.SuspendLayout();
-            this.gpMainData.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
-            this.tabControlPanel4.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgUDData)).BeginInit();
             this.tabControlPanel2.SuspendLayout();
             this.tabControlPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgCreditsSetUp)).BeginInit();
+            this.tabControlPanel4.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgUDData)).BeginInit();
+            this.menuSetCourseGroupCol.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -432,12 +452,12 @@
             // 
             this.tabControl1.BackColor = System.Drawing.Color.Transparent;
             this.tabControl1.CanReorderTabs = false;
-            this.tabControl1.Controls.Add(this.tabControlPanel6);
             this.tabControl1.Controls.Add(this.tabControlPanel1);
             this.tabControl1.Controls.Add(this.tabControlPanel5);
-            this.tabControl1.Controls.Add(this.tabControlPanel4);
+            this.tabControl1.Controls.Add(this.tabControlPanel6);
             this.tabControl1.Controls.Add(this.tabControlPanel2);
             this.tabControl1.Controls.Add(this.tabControlPanel3);
+            this.tabControl1.Controls.Add(this.tabControlPanel4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 15);
             this.tabControl1.Name = "tabControl1";
@@ -454,6 +474,896 @@
             this.tabControl1.Tabs.Add(this.tbiSetCourseGroup);
             this.tabControl1.Text = "課程規劃表內容";
             this.tabControl1.SelectedTabChanged += new DevComponents.DotNetBar.TabStrip.SelectedTabChangedEventHandler(this.tabControl1_SelectedTabChanged);
+            // 
+            // tabControlPanel5
+            // 
+            this.tabControlPanel5.Controls.Add(this.tlpMain);
+            this.tabControlPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel5.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel5.Name = "tabControlPanel5";
+            this.tabControlPanel5.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel5.Size = new System.Drawing.Size(1341, 705);
+            this.tabControlPanel5.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel5.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel5.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel5.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel5.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel5.Style.GradientAngle = 90;
+            this.tabControlPanel5.TabIndex = 5;
+            this.tabControlPanel5.TabItem = this.tbiCourseGroupMain;
+            // 
+            // tlpMain
+            // 
+            this.tlpMain.AutoSize = true;
+            this.tlpMain.BackColor = System.Drawing.Color.White;
+            this.tlpMain.ColumnCount = 1;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.Controls.Add(this.gpMainCourseFilter, 0, 1);
+            this.tlpMain.Controls.Add(this.gpMainSetCourseData, 0, 3);
+            this.tlpMain.Controls.Add(this.lbMainGraduationPlanName, 0, 0);
+            this.tlpMain.Controls.Add(this.gpMainData, 0, 2);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(1, 1);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.RowCount = 4;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tlpMain.Size = new System.Drawing.Size(1339, 703);
+            this.tlpMain.TabIndex = 1;
+            // 
+            // gpMainCourseFilter
+            // 
+            this.gpMainCourseFilter.AutoScroll = true;
+            this.gpMainCourseFilter.CanvasColor = System.Drawing.SystemColors.Control;
+            this.gpMainCourseFilter.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.gpMainCourseFilter.Controls.Add(this.labelX16);
+            this.gpMainCourseFilter.Controls.Add(this.cboMainEntry);
+            this.gpMainCourseFilter.Controls.Add(this.labelX9);
+            this.gpMainCourseFilter.Controls.Add(this.cboMainDomainName);
+            this.gpMainCourseFilter.Controls.Add(this.labelX13);
+            this.gpMainCourseFilter.Controls.Add(this.cboMainSubjectAttribute);
+            this.gpMainCourseFilter.Controls.Add(this.labelX4);
+            this.gpMainCourseFilter.Controls.Add(this.cboMainSpecialCategory);
+            this.gpMainCourseFilter.Controls.Add(this.labelX3);
+            this.gpMainCourseFilter.Controls.Add(this.cboMainRequired);
+            this.gpMainCourseFilter.Controls.Add(this.labelX2);
+            this.gpMainCourseFilter.Controls.Add(this.cboMainRequiredBy);
+            this.gpMainCourseFilter.Controls.Add(this.labelX1);
+            this.gpMainCourseFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gpMainCourseFilter.Location = new System.Drawing.Point(3, 38);
+            this.gpMainCourseFilter.Name = "gpMainCourseFilter";
+            this.gpMainCourseFilter.Size = new System.Drawing.Size(1333, 114);
+            // 
+            // 
+            // 
+            this.gpMainCourseFilter.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.gpMainCourseFilter.Style.BackColorGradientAngle = 90;
+            this.gpMainCourseFilter.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.gpMainCourseFilter.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainCourseFilter.Style.BorderBottomWidth = 1;
+            this.gpMainCourseFilter.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.gpMainCourseFilter.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainCourseFilter.Style.BorderLeftWidth = 1;
+            this.gpMainCourseFilter.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainCourseFilter.Style.BorderRightWidth = 1;
+            this.gpMainCourseFilter.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainCourseFilter.Style.BorderTopWidth = 1;
+            this.gpMainCourseFilter.Style.Class = "";
+            this.gpMainCourseFilter.Style.CornerDiameter = 4;
+            this.gpMainCourseFilter.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.gpMainCourseFilter.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.gpMainCourseFilter.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.gpMainCourseFilter.StyleMouseDown.Class = "";
+            this.gpMainCourseFilter.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.gpMainCourseFilter.StyleMouseOver.Class = "";
+            this.gpMainCourseFilter.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.gpMainCourseFilter.TabIndex = 8;
+            this.gpMainCourseFilter.Text = "課程篩選";
+            // 
+            // labelX16
+            // 
+            this.labelX16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelX16.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX16.BackgroundStyle.Class = "";
+            this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX16.Font = new System.Drawing.Font("Microsoft JhengHei", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labelX16.Location = new System.Drawing.Point(1019, 11);
+            this.labelX16.Name = "labelX16";
+            this.labelX16.Size = new System.Drawing.Size(308, 63);
+            this.labelX16.TabIndex = 12;
+            this.labelX16.Text = "提示：\r\n　　學分數會依照課程級別調整字體顏色\r\n　　級別1→深綠色、級別2→淺綠色、級別3→紫色\r\n　　級別4→藍色、級別5→紅色、級別6→橘色、其他→黑色";
+            // 
+            // cboMainEntry
+            // 
+            this.cboMainEntry.DisplayMember = "Text";
+            this.cboMainEntry.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboMainEntry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainEntry.FormattingEnabled = true;
+            this.cboMainEntry.ItemHeight = 19;
+            this.cboMainEntry.Location = new System.Drawing.Point(102, 49);
+            this.cboMainEntry.Name = "cboMainEntry";
+            this.cboMainEntry.Size = new System.Drawing.Size(160, 25);
+            this.cboMainEntry.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboMainEntry.TabIndex = 9;
+            this.cboMainEntry.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
+            // 
+            // labelX9
+            // 
+            this.labelX9.AutoSize = true;
+            this.labelX9.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX9.BackgroundStyle.Class = "";
+            this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX9.Location = new System.Drawing.Point(30, 51);
+            this.labelX9.Name = "labelX9";
+            this.labelX9.Size = new System.Drawing.Size(74, 21);
+            this.labelX9.TabIndex = 8;
+            this.labelX9.Text = "分項類別：";
+            // 
+            // cboMainDomainName
+            // 
+            this.cboMainDomainName.DisplayMember = "Text";
+            this.cboMainDomainName.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboMainDomainName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainDomainName.FormattingEnabled = true;
+            this.cboMainDomainName.ItemHeight = 19;
+            this.cboMainDomainName.Location = new System.Drawing.Point(348, 49);
+            this.cboMainDomainName.Name = "cboMainDomainName";
+            this.cboMainDomainName.Size = new System.Drawing.Size(177, 25);
+            this.cboMainDomainName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboMainDomainName.TabIndex = 11;
+            this.cboMainDomainName.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
+            // 
+            // labelX13
+            // 
+            this.labelX13.AutoSize = true;
+            this.labelX13.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX13.BackgroundStyle.Class = "";
+            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX13.Location = new System.Drawing.Point(276, 51);
+            this.labelX13.Name = "labelX13";
+            this.labelX13.Size = new System.Drawing.Size(74, 21);
+            this.labelX13.TabIndex = 10;
+            this.labelX13.Text = "領域名稱：";
+            // 
+            // cboMainSubjectAttribute
+            // 
+            this.cboMainSubjectAttribute.DisplayMember = "Text";
+            this.cboMainSubjectAttribute.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboMainSubjectAttribute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainSubjectAttribute.FormattingEnabled = true;
+            this.cboMainSubjectAttribute.ItemHeight = 19;
+            this.cboMainSubjectAttribute.Location = new System.Drawing.Point(827, 9);
+            this.cboMainSubjectAttribute.Name = "cboMainSubjectAttribute";
+            this.cboMainSubjectAttribute.Size = new System.Drawing.Size(160, 25);
+            this.cboMainSubjectAttribute.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboMainSubjectAttribute.TabIndex = 7;
+            this.cboMainSubjectAttribute.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
+            // 
+            // labelX4
+            // 
+            this.labelX4.AutoSize = true;
+            this.labelX4.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX4.Location = new System.Drawing.Point(755, 11);
+            this.labelX4.Name = "labelX4";
+            this.labelX4.Size = new System.Drawing.Size(74, 21);
+            this.labelX4.TabIndex = 6;
+            this.labelX4.Text = "科目屬性：";
+            // 
+            // cboMainSpecialCategory
+            // 
+            this.cboMainSpecialCategory.DisplayMember = "Text";
+            this.cboMainSpecialCategory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboMainSpecialCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainSpecialCategory.FormattingEnabled = true;
+            this.cboMainSpecialCategory.ItemHeight = 19;
+            this.cboMainSpecialCategory.Location = new System.Drawing.Point(568, 9);
+            this.cboMainSpecialCategory.Name = "cboMainSpecialCategory";
+            this.cboMainSpecialCategory.Size = new System.Drawing.Size(146, 25);
+            this.cboMainSpecialCategory.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboMainSpecialCategory.TabIndex = 5;
+            this.cboMainSpecialCategory.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
+            // 
+            // labelX3
+            // 
+            this.labelX3.AutoSize = true;
+            this.labelX3.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX3.BackgroundStyle.Class = "";
+            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX3.Location = new System.Drawing.Point(496, 11);
+            this.labelX3.Name = "labelX3";
+            this.labelX3.Size = new System.Drawing.Size(74, 21);
+            this.labelX3.TabIndex = 4;
+            this.labelX3.Text = "特殊類別：";
+            // 
+            // cboMainRequired
+            // 
+            this.cboMainRequired.DisplayMember = "Text";
+            this.cboMainRequired.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboMainRequired.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainRequired.FormattingEnabled = true;
+            this.cboMainRequired.ItemHeight = 19;
+            this.cboMainRequired.Location = new System.Drawing.Point(348, 9);
+            this.cboMainRequired.Name = "cboMainRequired";
+            this.cboMainRequired.Size = new System.Drawing.Size(104, 25);
+            this.cboMainRequired.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboMainRequired.TabIndex = 3;
+            this.cboMainRequired.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
+            // 
+            // labelX2
+            // 
+            this.labelX2.AutoSize = true;
+            this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(290, 11);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(60, 21);
+            this.labelX2.TabIndex = 2;
+            this.labelX2.Text = "必選修：";
+            // 
+            // cboMainRequiredBy
+            // 
+            this.cboMainRequiredBy.DisplayMember = "Text";
+            this.cboMainRequiredBy.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboMainRequiredBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainRequiredBy.FormattingEnabled = true;
+            this.cboMainRequiredBy.ItemHeight = 19;
+            this.cboMainRequiredBy.Location = new System.Drawing.Point(102, 9);
+            this.cboMainRequiredBy.Name = "cboMainRequiredBy";
+            this.cboMainRequiredBy.Size = new System.Drawing.Size(96, 25);
+            this.cboMainRequiredBy.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboMainRequiredBy.TabIndex = 1;
+            this.cboMainRequiredBy.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(44, 11);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(60, 21);
+            this.labelX1.TabIndex = 0;
+            this.labelX1.Text = "校部定：";
+            // 
+            // gpMainSetCourseData
+            // 
+            this.gpMainSetCourseData.CanvasColor = System.Drawing.SystemColors.Control;
+            this.gpMainSetCourseData.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.gpMainSetCourseData.Controls.Add(this.btnMainCalcuateLevel);
+            this.gpMainSetCourseData.Controls.Add(this.dgvMainLevel);
+            this.gpMainSetCourseData.Controls.Add(this.tbMainSchoolYearGroupName);
+            this.gpMainSetCourseData.Controls.Add(this.labelX14);
+            this.gpMainSetCourseData.Controls.Add(this.btnMainCancel);
+            this.gpMainSetCourseData.Controls.Add(this.btnMainSet);
+            this.gpMainSetCourseData.Controls.Add(this.tbMainSubjectName);
+            this.gpMainSetCourseData.Controls.Add(this.labelX6);
+            this.gpMainSetCourseData.Controls.Add(this.tbMainStartLevel);
+            this.gpMainSetCourseData.Controls.Add(this.labelX5);
+            this.gpMainSetCourseData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gpMainSetCourseData.Location = new System.Drawing.Point(3, 536);
+            this.gpMainSetCourseData.Name = "gpMainSetCourseData";
+            this.gpMainSetCourseData.Size = new System.Drawing.Size(1333, 164);
+            // 
+            // 
+            // 
+            this.gpMainSetCourseData.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.gpMainSetCourseData.Style.BackColorGradientAngle = 90;
+            this.gpMainSetCourseData.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.gpMainSetCourseData.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainSetCourseData.Style.BorderBottomWidth = 1;
+            this.gpMainSetCourseData.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.gpMainSetCourseData.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainSetCourseData.Style.BorderLeftWidth = 1;
+            this.gpMainSetCourseData.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainSetCourseData.Style.BorderRightWidth = 1;
+            this.gpMainSetCourseData.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainSetCourseData.Style.BorderTopWidth = 1;
+            this.gpMainSetCourseData.Style.Class = "";
+            this.gpMainSetCourseData.Style.CornerDiameter = 4;
+            this.gpMainSetCourseData.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.gpMainSetCourseData.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.gpMainSetCourseData.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.gpMainSetCourseData.StyleMouseDown.Class = "";
+            this.gpMainSetCourseData.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.gpMainSetCourseData.StyleMouseOver.Class = "";
+            this.gpMainSetCourseData.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.gpMainSetCourseData.TabIndex = 6;
+            this.gpMainSetCourseData.Text = "設定課程屬性";
+            // 
+            // btnMainCalcuateLevel
+            // 
+            this.btnMainCalcuateLevel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnMainCalcuateLevel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnMainCalcuateLevel.Location = new System.Drawing.Point(698, 7);
+            this.btnMainCalcuateLevel.Name = "btnMainCalcuateLevel";
+            this.btnMainCalcuateLevel.Size = new System.Drawing.Size(90, 23);
+            this.btnMainCalcuateLevel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnMainCalcuateLevel.TabIndex = 18;
+            this.btnMainCalcuateLevel.Text = "試算級別";
+            this.btnMainCalcuateLevel.Click += new System.EventHandler(this.btnMainCalcuateLevel_Click);
+            // 
+            // dgvMainLevel
+            // 
+            this.dgvMainLevel.AllowUserToAddRows = false;
+            this.dgvMainLevel.AllowUserToDeleteRows = false;
+            this.dgvMainLevel.AllowUserToOrderColumns = true;
+            this.dgvMainLevel.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMainLevel.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvMainLevel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMainLevel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colMain1_1Level,
+            this.colMain1_2Level,
+            this.colMain2_1Level,
+            this.colMain2_2Level,
+            this.colMain3_1Level,
+            this.colMain3_2Level});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMainLevel.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvMainLevel.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgvMainLevel.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.dgvMainLevel.Location = new System.Drawing.Point(30, 43);
+            this.dgvMainLevel.MultiSelect = false;
+            this.dgvMainLevel.Name = "dgvMainLevel";
+            this.dgvMainLevel.RowHeadersWidth = 80;
+            this.dgvMainLevel.RowTemplate.Height = 24;
+            this.dgvMainLevel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvMainLevel.Size = new System.Drawing.Size(657, 90);
+            this.dgvMainLevel.TabIndex = 19;
+            // 
+            // colMain1_1Level
+            // 
+            this.colMain1_1Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMain1_1Level.HeaderText = "一上";
+            this.colMain1_1Level.MinimumWidth = 50;
+            this.colMain1_1Level.Name = "colMain1_1Level";
+            // 
+            // colMain1_2Level
+            // 
+            this.colMain1_2Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMain1_2Level.HeaderText = "一下";
+            this.colMain1_2Level.MinimumWidth = 50;
+            this.colMain1_2Level.Name = "colMain1_2Level";
+            // 
+            // colMain2_1Level
+            // 
+            this.colMain2_1Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMain2_1Level.HeaderText = "二上";
+            this.colMain2_1Level.MinimumWidth = 50;
+            this.colMain2_1Level.Name = "colMain2_1Level";
+            // 
+            // colMain2_2Level
+            // 
+            this.colMain2_2Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMain2_2Level.HeaderText = "二下";
+            this.colMain2_2Level.MinimumWidth = 50;
+            this.colMain2_2Level.Name = "colMain2_2Level";
+            // 
+            // colMain3_1Level
+            // 
+            this.colMain3_1Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMain3_1Level.HeaderText = "三上";
+            this.colMain3_1Level.MinimumWidth = 50;
+            this.colMain3_1Level.Name = "colMain3_1Level";
+            // 
+            // colMain3_2Level
+            // 
+            this.colMain3_2Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMain3_2Level.HeaderText = "三下";
+            this.colMain3_2Level.MinimumWidth = 50;
+            this.colMain3_2Level.Name = "colMain3_2Level";
+            // 
+            // tbMainSchoolYearGroupName
+            // 
+            // 
+            // 
+            // 
+            this.tbMainSchoolYearGroupName.Border.Class = "TextBoxBorder";
+            this.tbMainSchoolYearGroupName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbMainSchoolYearGroupName.Location = new System.Drawing.Point(568, 6);
+            this.tbMainSchoolYearGroupName.Name = "tbMainSchoolYearGroupName";
+            this.tbMainSchoolYearGroupName.Size = new System.Drawing.Size(119, 25);
+            this.tbMainSchoolYearGroupName.TabIndex = 17;
+            // 
+            // labelX14
+            // 
+            this.labelX14.AutoSize = true;
+            this.labelX14.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX14.BackgroundStyle.Class = "";
+            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX14.Location = new System.Drawing.Point(440, 8);
+            this.labelX14.Name = "labelX14";
+            this.labelX14.Size = new System.Drawing.Size(127, 21);
+            this.labelX14.TabIndex = 16;
+            this.labelX14.Text = "指定學年科目名稱：";
+            // 
+            // btnMainCancel
+            // 
+            this.btnMainCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnMainCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnMainCancel.Location = new System.Drawing.Point(801, 110);
+            this.btnMainCancel.Name = "btnMainCancel";
+            this.btnMainCancel.Size = new System.Drawing.Size(90, 23);
+            this.btnMainCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnMainCancel.TabIndex = 21;
+            this.btnMainCancel.Text = "取消";
+            this.btnMainCancel.Click += new System.EventHandler(this.btnMainCancel_Click);
+            // 
+            // btnMainSet
+            // 
+            this.btnMainSet.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnMainSet.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnMainSet.Location = new System.Drawing.Point(698, 110);
+            this.btnMainSet.Name = "btnMainSet";
+            this.btnMainSet.Size = new System.Drawing.Size(90, 23);
+            this.btnMainSet.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnMainSet.TabIndex = 20;
+            this.btnMainSet.Text = "設定";
+            this.btnMainSet.Click += new System.EventHandler(this.btnMainSet_Click);
+            // 
+            // tbMainSubjectName
+            // 
+            // 
+            // 
+            // 
+            this.tbMainSubjectName.Border.Class = "TextBoxBorder";
+            this.tbMainSubjectName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbMainSubjectName.Location = new System.Drawing.Point(249, 6);
+            this.tbMainSubjectName.Name = "tbMainSubjectName";
+            this.tbMainSubjectName.Size = new System.Drawing.Size(172, 25);
+            this.tbMainSubjectName.TabIndex = 3;
+            // 
+            // labelX6
+            // 
+            this.labelX6.AutoSize = true;
+            this.labelX6.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX6.BackgroundStyle.Class = "";
+            this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX6.Location = new System.Drawing.Point(177, 8);
+            this.labelX6.Name = "labelX6";
+            this.labelX6.Size = new System.Drawing.Size(74, 21);
+            this.labelX6.TabIndex = 2;
+            this.labelX6.Text = "科目名稱：";
+            // 
+            // tbMainStartLevel
+            // 
+            // 
+            // 
+            // 
+            this.tbMainStartLevel.Border.Class = "TextBoxBorder";
+            this.tbMainStartLevel.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.tbMainStartLevel.Location = new System.Drawing.Point(102, 6);
+            this.tbMainStartLevel.Name = "tbMainStartLevel";
+            this.tbMainStartLevel.Size = new System.Drawing.Size(52, 25);
+            this.tbMainStartLevel.TabIndex = 1;
+            // 
+            // labelX5
+            // 
+            this.labelX5.AutoSize = true;
+            this.labelX5.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX5.BackgroundStyle.Class = "";
+            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX5.Location = new System.Drawing.Point(30, 8);
+            this.labelX5.Name = "labelX5";
+            this.labelX5.Size = new System.Drawing.Size(74, 21);
+            this.labelX5.TabIndex = 0;
+            this.labelX5.Text = "開始級別：";
+            // 
+            // lbMainGraduationPlanName
+            // 
+            // 
+            // 
+            // 
+            this.lbMainGraduationPlanName.BackgroundStyle.Class = "";
+            this.lbMainGraduationPlanName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lbMainGraduationPlanName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lbMainGraduationPlanName.Location = new System.Drawing.Point(3, 3);
+            this.lbMainGraduationPlanName.MaximumSize = new System.Drawing.Size(1097, 27);
+            this.lbMainGraduationPlanName.Name = "lbMainGraduationPlanName";
+            this.lbMainGraduationPlanName.Size = new System.Drawing.Size(1097, 27);
+            this.lbMainGraduationPlanName.TabIndex = 3;
+            this.lbMainGraduationPlanName.Text = "課程規畫表名稱";
+            // 
+            // gpMainData
+            // 
+            this.gpMainData.CanvasColor = System.Drawing.SystemColors.Control;
+            this.gpMainData.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.gpMainData.Controls.Add(this.dgvMain);
+            this.gpMainData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gpMainData.Location = new System.Drawing.Point(3, 158);
+            this.gpMainData.Name = "gpMainData";
+            this.gpMainData.Size = new System.Drawing.Size(1333, 372);
+            // 
+            // 
+            // 
+            this.gpMainData.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.gpMainData.Style.BackColorGradientAngle = 90;
+            this.gpMainData.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.gpMainData.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainData.Style.BorderBottomWidth = 1;
+            this.gpMainData.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.gpMainData.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainData.Style.BorderLeftWidth = 1;
+            this.gpMainData.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainData.Style.BorderRightWidth = 1;
+            this.gpMainData.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.gpMainData.Style.BorderTopWidth = 1;
+            this.gpMainData.Style.Class = "";
+            this.gpMainData.Style.CornerDiameter = 4;
+            this.gpMainData.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.gpMainData.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.gpMainData.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.gpMainData.StyleMouseDown.Class = "";
+            this.gpMainData.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.gpMainData.StyleMouseOver.Class = "";
+            this.gpMainData.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.gpMainData.TabIndex = 7;
+            this.gpMainData.Text = "課程規畫表內容";
+            // 
+            // dgvMain
+            // 
+            this.dgvMain.AllowUserToAddRows = false;
+            this.dgvMain.AllowUserToDeleteRows = false;
+            this.dgvMain.AllowUserToOrderColumns = true;
+            this.dgvMain.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMain.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colMainRequiredBy,
+            this.colMainRequired,
+            this.colMainSpecialCategory,
+            this.colMainSubjectAttribute,
+            this.colMainEntry,
+            this.colMainDomainName,
+            this.colMainOfficialSubjectName,
+            this.colMain1_1,
+            this.colMain1_2,
+            this.colMain2_1,
+            this.colMain2_2,
+            this.colMain3_1,
+            this.colMain3_2,
+            this.colMainStartLevel,
+            this.colMainSubjectName,
+            this.colMainSchoolYearGroupName});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMain.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMain.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgvMain.Location = new System.Drawing.Point(0, 0);
+            this.dgvMain.MultiSelect = false;
+            this.dgvMain.Name = "dgvMain";
+            this.dgvMain.ReadOnly = true;
+            this.dgvMain.RowTemplate.Height = 24;
+            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMain.Size = new System.Drawing.Size(1327, 345);
+            this.dgvMain.TabIndex = 6;
+            this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
+            // 
+            // colMainRequiredBy
+            // 
+            this.colMainRequiredBy.Frozen = true;
+            this.colMainRequiredBy.HeaderText = "校部定";
+            this.colMainRequiredBy.MinimumWidth = 25;
+            this.colMainRequiredBy.Name = "colMainRequiredBy";
+            this.colMainRequiredBy.ReadOnly = true;
+            this.colMainRequiredBy.Width = 75;
+            // 
+            // colMainRequired
+            // 
+            this.colMainRequired.Frozen = true;
+            this.colMainRequired.HeaderText = "必選修";
+            this.colMainRequired.MinimumWidth = 25;
+            this.colMainRequired.Name = "colMainRequired";
+            this.colMainRequired.ReadOnly = true;
+            this.colMainRequired.Width = 75;
+            // 
+            // colMainSpecialCategory
+            // 
+            this.colMainSpecialCategory.Frozen = true;
+            this.colMainSpecialCategory.HeaderText = "特殊類別";
+            this.colMainSpecialCategory.MinimumWidth = 25;
+            this.colMainSpecialCategory.Name = "colMainSpecialCategory";
+            this.colMainSpecialCategory.ReadOnly = true;
+            this.colMainSpecialCategory.Width = 60;
+            // 
+            // colMainSubjectAttribute
+            // 
+            this.colMainSubjectAttribute.Frozen = true;
+            this.colMainSubjectAttribute.HeaderText = "科目屬性";
+            this.colMainSubjectAttribute.MinimumWidth = 25;
+            this.colMainSubjectAttribute.Name = "colMainSubjectAttribute";
+            this.colMainSubjectAttribute.ReadOnly = true;
+            this.colMainSubjectAttribute.Width = 60;
+            // 
+            // colMainEntry
+            // 
+            this.colMainEntry.Frozen = true;
+            this.colMainEntry.HeaderText = "分項類別";
+            this.colMainEntry.MinimumWidth = 25;
+            this.colMainEntry.Name = "colMainEntry";
+            this.colMainEntry.ReadOnly = true;
+            this.colMainEntry.Width = 60;
+            // 
+            // colMainDomainName
+            // 
+            this.colMainDomainName.Frozen = true;
+            this.colMainDomainName.HeaderText = "領域名稱";
+            this.colMainDomainName.MinimumWidth = 25;
+            this.colMainDomainName.Name = "colMainDomainName";
+            this.colMainDomainName.ReadOnly = true;
+            this.colMainDomainName.Width = 67;
+            // 
+            // colMainOfficialSubjectName
+            // 
+            this.colMainOfficialSubjectName.Frozen = true;
+            this.colMainOfficialSubjectName.HeaderText = "報部科目名稱";
+            this.colMainOfficialSubjectName.MinimumWidth = 25;
+            this.colMainOfficialSubjectName.Name = "colMainOfficialSubjectName";
+            this.colMainOfficialSubjectName.ReadOnly = true;
+            this.colMainOfficialSubjectName.Width = 80;
+            // 
+            // colMain1_1
+            // 
+            this.colMain1_1.HeaderText = "一上";
+            this.colMain1_1.MinimumWidth = 50;
+            this.colMain1_1.Name = "colMain1_1";
+            this.colMain1_1.ReadOnly = true;
+            this.colMain1_1.Width = 60;
+            // 
+            // colMain1_2
+            // 
+            this.colMain1_2.HeaderText = "一下";
+            this.colMain1_2.MinimumWidth = 50;
+            this.colMain1_2.Name = "colMain1_2";
+            this.colMain1_2.ReadOnly = true;
+            this.colMain1_2.Width = 60;
+            // 
+            // colMain2_1
+            // 
+            this.colMain2_1.HeaderText = "二上";
+            this.colMain2_1.MinimumWidth = 50;
+            this.colMain2_1.Name = "colMain2_1";
+            this.colMain2_1.ReadOnly = true;
+            this.colMain2_1.Width = 60;
+            // 
+            // colMain2_2
+            // 
+            this.colMain2_2.HeaderText = "二下";
+            this.colMain2_2.MinimumWidth = 50;
+            this.colMain2_2.Name = "colMain2_2";
+            this.colMain2_2.ReadOnly = true;
+            this.colMain2_2.Width = 60;
+            // 
+            // colMain3_1
+            // 
+            this.colMain3_1.HeaderText = "三上";
+            this.colMain3_1.MinimumWidth = 50;
+            this.colMain3_1.Name = "colMain3_1";
+            this.colMain3_1.ReadOnly = true;
+            this.colMain3_1.Width = 60;
+            // 
+            // colMain3_2
+            // 
+            this.colMain3_2.HeaderText = "三下";
+            this.colMain3_2.MinimumWidth = 50;
+            this.colMain3_2.Name = "colMain3_2";
+            this.colMain3_2.ReadOnly = true;
+            this.colMain3_2.Width = 60;
+            // 
+            // colMainStartLevel
+            // 
+            this.colMainStartLevel.HeaderText = "開始級別";
+            this.colMainStartLevel.MinimumWidth = 60;
+            this.colMainStartLevel.Name = "colMainStartLevel";
+            this.colMainStartLevel.ReadOnly = true;
+            this.colMainStartLevel.Width = 85;
+            // 
+            // colMainSubjectName
+            // 
+            this.colMainSubjectName.HeaderText = "科目名稱";
+            this.colMainSubjectName.MinimumWidth = 60;
+            this.colMainSubjectName.Name = "colMainSubjectName";
+            this.colMainSubjectName.ReadOnly = true;
+            this.colMainSubjectName.Width = 85;
+            // 
+            // colMainSchoolYearGroupName
+            // 
+            this.colMainSchoolYearGroupName.HeaderText = "指定學年科目名稱";
+            this.colMainSchoolYearGroupName.MinimumWidth = 100;
+            this.colMainSchoolYearGroupName.Name = "colMainSchoolYearGroupName";
+            this.colMainSchoolYearGroupName.ReadOnly = true;
+            // 
+            // tbiCourseGroupMain
+            // 
+            this.tbiCourseGroupMain.AttachedControl = this.tabControlPanel5;
+            this.tbiCourseGroupMain.Name = "tbiCourseGroupMain";
+            this.tbiCourseGroupMain.Text = "課程群組總表";
+            // 
+            // tabControlPanel1
+            // 
+            this.tabControlPanel1.Controls.Add(this.tableLayoutPanel3);
+            this.tabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel1.Name = "tabControlPanel1";
+            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel1.Size = new System.Drawing.Size(1341, 705);
+            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel1.Style.GradientAngle = 90;
+            this.tabControlPanel1.TabIndex = 1;
+            this.tabControlPanel1.TabItem = this.tabItem1;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.lblGroupName, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.dgData, 0, 1);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 1);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1339, 703);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // lblGroupName
+            // 
+            this.lblGroupName.BackColor = System.Drawing.Color.White;
+            // 
+            // 
+            // 
+            this.lblGroupName.BackgroundStyle.Class = "";
+            this.lblGroupName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblGroupName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblGroupName.Location = new System.Drawing.Point(3, 3);
+            this.lblGroupName.Name = "lblGroupName";
+            this.lblGroupName.Size = new System.Drawing.Size(791, 24);
+            this.lblGroupName.TabIndex = 0;
+            this.lblGroupName.Text = "群組名稱";
+            // 
+            // dgData
+            // 
+            this.dgData.AllowUserToAddRows = false;
+            this.dgData.AllowUserToDeleteRows = false;
+            this.dgData.AllowUserToResizeRows = false;
+            this.dgData.BackgroundColor = System.Drawing.Color.White;
+            this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgData.ContextMenuStrip = this.contextMenuStrip1;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgData.Location = new System.Drawing.Point(3, 33);
+            this.dgData.MultiSelect = false;
+            this.dgData.Name = "dgData";
+            this.dgData.RowTemplate.Height = 24;
+            this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgData.Size = new System.Drawing.Size(1333, 667);
+            this.dgData.TabIndex = 1;
+            this.dgData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgData_CellMouseClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(127, 48);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
+            this.toolStripMenuItem1.Text = "設定對開";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(126, 22);
+            this.toolStripMenuItem2.Text = "取消對開";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // tabItem1
+            // 
+            this.tabItem1.AttachedControl = this.tabControlPanel1;
+            this.tabItem1.Name = "tabItem1";
+            this.tabItem1.Text = "課程規劃表內容";
             // 
             // tabControlPanel6
             // 
@@ -582,14 +1492,14 @@
             this.dgvCourseGroup.AllowUserToAddRows = false;
             this.dgvCourseGroup.AllowUserToOrderColumns = true;
             this.dgvCourseGroup.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle52.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle52.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle52.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle52.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle52.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCourseGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle52;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCourseGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvCourseGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCourseGroupRequiredBy,
@@ -605,14 +1515,14 @@
             this.colCourseGroup2_2,
             this.colCourseGroup3_1,
             this.colCourseGroup3_2});
-            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle53.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle53.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle53.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle53.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle53.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCourseGroup.DefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCourseGroup.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvCourseGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCourseGroup.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvCourseGroup.Location = new System.Drawing.Point(0, 0);
@@ -624,6 +1534,7 @@
             this.dgvCourseGroup.Size = new System.Drawing.Size(815, 488);
             this.dgvCourseGroup.TabIndex = 16;
             this.dgvCourseGroup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourseGroup_CellClick);
+            this.dgvCourseGroup.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCourseGroup_ColumnHeaderMouseClick);
             // 
             // colCourseGroupRequiredBy
             // 
@@ -2353,28 +3264,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCourseGroupManageGroup.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle54.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle54.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle54.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle54.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle54.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle54.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCourseGroupManageGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCourseGroupManageGroup.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvCourseGroupManageGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseGroupManageGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCourseGroupColor,
             this.colCourseGroupName,
             this.colCourseGroupCredit,
             this.colSetSchoolYearCouse});
-            dataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle56.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle56.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle56.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle56.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle56.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle56.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCourseGroupManageGroup.DefaultCellStyle = dataGridViewCellStyle56;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCourseGroupManageGroup.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvCourseGroupManageGroup.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvCourseGroupManageGroup.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dgvCourseGroupManageGroup.Location = new System.Drawing.Point(3, 23);
@@ -2404,8 +3315,8 @@
             // 
             // colCourseGroupCredit
             // 
-            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colCourseGroupCredit.DefaultCellStyle = dataGridViewCellStyle55;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colCourseGroupCredit.DefaultCellStyle = dataGridViewCellStyle9;
             this.colCourseGroupCredit.HeaderText = "單一學期修課學分數";
             this.colCourseGroupCredit.MinimumWidth = 20;
             this.colCourseGroupCredit.Name = "colCourseGroupCredit";
@@ -2473,868 +3384,6 @@
             this.tbiSetCourseGroup.Name = "tbiSetCourseGroup";
             this.tbiSetCourseGroup.Text = "設定課程群組";
             // 
-            // tabControlPanel1
-            // 
-            this.tabControlPanel1.Controls.Add(this.tableLayoutPanel3);
-            this.tabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel1.Name = "tabControlPanel1";
-            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel1.Size = new System.Drawing.Size(1341, 705);
-            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel1.Style.GradientAngle = 90;
-            this.tabControlPanel1.TabIndex = 1;
-            this.tabControlPanel1.TabItem = this.tabItem1;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.lblGroupName, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.dgData, 0, 1);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 1);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1339, 703);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // lblGroupName
-            // 
-            this.lblGroupName.BackColor = System.Drawing.Color.White;
-            // 
-            // 
-            // 
-            this.lblGroupName.BackgroundStyle.Class = "";
-            this.lblGroupName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblGroupName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblGroupName.Location = new System.Drawing.Point(3, 3);
-            this.lblGroupName.Name = "lblGroupName";
-            this.lblGroupName.Size = new System.Drawing.Size(791, 24);
-            this.lblGroupName.TabIndex = 0;
-            this.lblGroupName.Text = "群組名稱";
-            // 
-            // dgData
-            // 
-            this.dgData.AllowUserToAddRows = false;
-            this.dgData.AllowUserToDeleteRows = false;
-            this.dgData.AllowUserToResizeRows = false;
-            this.dgData.BackgroundColor = System.Drawing.Color.White;
-            this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgData.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle57.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle57.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle57.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle57.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle57.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle57.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle57;
-            this.dgData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgData.Location = new System.Drawing.Point(3, 33);
-            this.dgData.MultiSelect = false;
-            this.dgData.Name = "dgData";
-            this.dgData.RowTemplate.Height = 24;
-            this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgData.Size = new System.Drawing.Size(1333, 667);
-            this.dgData.TabIndex = 1;
-            this.dgData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgData_CellMouseClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(127, 48);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
-            this.toolStripMenuItem1.Text = "設定對開";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(126, 22);
-            this.toolStripMenuItem2.Text = "取消對開";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // tabItem1
-            // 
-            this.tabItem1.AttachedControl = this.tabControlPanel1;
-            this.tabItem1.Name = "tabItem1";
-            this.tabItem1.Text = "課程規劃表內容";
-            // 
-            // tabControlPanel5
-            // 
-            this.tabControlPanel5.Controls.Add(this.tlpMain);
-            this.tabControlPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel5.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel5.Name = "tabControlPanel5";
-            this.tabControlPanel5.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel5.Size = new System.Drawing.Size(1341, 705);
-            this.tabControlPanel5.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel5.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel5.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel5.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel5.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel5.Style.GradientAngle = 90;
-            this.tabControlPanel5.TabIndex = 5;
-            this.tabControlPanel5.TabItem = this.tbiCourseGroupMain;
-            // 
-            // tlpMain
-            // 
-            this.tlpMain.AutoSize = true;
-            this.tlpMain.BackColor = System.Drawing.Color.White;
-            this.tlpMain.ColumnCount = 1;
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.Controls.Add(this.gpMainCourseFilter, 0, 1);
-            this.tlpMain.Controls.Add(this.gpMainSetCourseData, 0, 3);
-            this.tlpMain.Controls.Add(this.lbMainGraduationPlanName, 0, 0);
-            this.tlpMain.Controls.Add(this.gpMainData, 0, 2);
-            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMain.Location = new System.Drawing.Point(1, 1);
-            this.tlpMain.Name = "tlpMain";
-            this.tlpMain.RowCount = 4;
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tlpMain.Size = new System.Drawing.Size(1339, 703);
-            this.tlpMain.TabIndex = 1;
-            // 
-            // gpMainCourseFilter
-            // 
-            this.gpMainCourseFilter.AutoScroll = true;
-            this.gpMainCourseFilter.CanvasColor = System.Drawing.SystemColors.Control;
-            this.gpMainCourseFilter.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.gpMainCourseFilter.Controls.Add(this.cboMainEntry);
-            this.gpMainCourseFilter.Controls.Add(this.labelX9);
-            this.gpMainCourseFilter.Controls.Add(this.cboMainDomainName);
-            this.gpMainCourseFilter.Controls.Add(this.labelX13);
-            this.gpMainCourseFilter.Controls.Add(this.cboMainSubjectAttribute);
-            this.gpMainCourseFilter.Controls.Add(this.labelX4);
-            this.gpMainCourseFilter.Controls.Add(this.cboMainSpecialCategory);
-            this.gpMainCourseFilter.Controls.Add(this.labelX3);
-            this.gpMainCourseFilter.Controls.Add(this.cboMainRequired);
-            this.gpMainCourseFilter.Controls.Add(this.labelX2);
-            this.gpMainCourseFilter.Controls.Add(this.cboMainRequiredBy);
-            this.gpMainCourseFilter.Controls.Add(this.labelX1);
-            this.gpMainCourseFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpMainCourseFilter.Location = new System.Drawing.Point(3, 38);
-            this.gpMainCourseFilter.Name = "gpMainCourseFilter";
-            this.gpMainCourseFilter.Size = new System.Drawing.Size(1333, 114);
-            // 
-            // 
-            // 
-            this.gpMainCourseFilter.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.gpMainCourseFilter.Style.BackColorGradientAngle = 90;
-            this.gpMainCourseFilter.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.gpMainCourseFilter.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainCourseFilter.Style.BorderBottomWidth = 1;
-            this.gpMainCourseFilter.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.gpMainCourseFilter.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainCourseFilter.Style.BorderLeftWidth = 1;
-            this.gpMainCourseFilter.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainCourseFilter.Style.BorderRightWidth = 1;
-            this.gpMainCourseFilter.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainCourseFilter.Style.BorderTopWidth = 1;
-            this.gpMainCourseFilter.Style.Class = "";
-            this.gpMainCourseFilter.Style.CornerDiameter = 4;
-            this.gpMainCourseFilter.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.gpMainCourseFilter.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.gpMainCourseFilter.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.gpMainCourseFilter.StyleMouseDown.Class = "";
-            this.gpMainCourseFilter.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.gpMainCourseFilter.StyleMouseOver.Class = "";
-            this.gpMainCourseFilter.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.gpMainCourseFilter.TabIndex = 8;
-            this.gpMainCourseFilter.Text = "課程篩選";
-            // 
-            // cboMainEntry
-            // 
-            this.cboMainEntry.DisplayMember = "Text";
-            this.cboMainEntry.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboMainEntry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMainEntry.FormattingEnabled = true;
-            this.cboMainEntry.ItemHeight = 19;
-            this.cboMainEntry.Location = new System.Drawing.Point(102, 49);
-            this.cboMainEntry.Name = "cboMainEntry";
-            this.cboMainEntry.Size = new System.Drawing.Size(160, 25);
-            this.cboMainEntry.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboMainEntry.TabIndex = 9;
-            this.cboMainEntry.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
-            // 
-            // labelX9
-            // 
-            this.labelX9.AutoSize = true;
-            this.labelX9.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX9.BackgroundStyle.Class = "";
-            this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX9.Location = new System.Drawing.Point(30, 51);
-            this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(74, 21);
-            this.labelX9.TabIndex = 8;
-            this.labelX9.Text = "分項類別：";
-            // 
-            // cboMainDomainName
-            // 
-            this.cboMainDomainName.DisplayMember = "Text";
-            this.cboMainDomainName.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboMainDomainName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMainDomainName.FormattingEnabled = true;
-            this.cboMainDomainName.ItemHeight = 19;
-            this.cboMainDomainName.Location = new System.Drawing.Point(348, 49);
-            this.cboMainDomainName.Name = "cboMainDomainName";
-            this.cboMainDomainName.Size = new System.Drawing.Size(177, 25);
-            this.cboMainDomainName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboMainDomainName.TabIndex = 11;
-            this.cboMainDomainName.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
-            // 
-            // labelX13
-            // 
-            this.labelX13.AutoSize = true;
-            this.labelX13.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX13.BackgroundStyle.Class = "";
-            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX13.Location = new System.Drawing.Point(276, 51);
-            this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(74, 21);
-            this.labelX13.TabIndex = 10;
-            this.labelX13.Text = "領域名稱：";
-            // 
-            // cboMainSubjectAttribute
-            // 
-            this.cboMainSubjectAttribute.DisplayMember = "Text";
-            this.cboMainSubjectAttribute.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboMainSubjectAttribute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMainSubjectAttribute.FormattingEnabled = true;
-            this.cboMainSubjectAttribute.ItemHeight = 19;
-            this.cboMainSubjectAttribute.Location = new System.Drawing.Point(827, 9);
-            this.cboMainSubjectAttribute.Name = "cboMainSubjectAttribute";
-            this.cboMainSubjectAttribute.Size = new System.Drawing.Size(160, 25);
-            this.cboMainSubjectAttribute.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboMainSubjectAttribute.TabIndex = 7;
-            this.cboMainSubjectAttribute.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
-            // 
-            // labelX4
-            // 
-            this.labelX4.AutoSize = true;
-            this.labelX4.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX4.BackgroundStyle.Class = "";
-            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX4.Location = new System.Drawing.Point(755, 11);
-            this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(74, 21);
-            this.labelX4.TabIndex = 6;
-            this.labelX4.Text = "科目屬性：";
-            // 
-            // cboMainSpecialCategory
-            // 
-            this.cboMainSpecialCategory.DisplayMember = "Text";
-            this.cboMainSpecialCategory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboMainSpecialCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMainSpecialCategory.FormattingEnabled = true;
-            this.cboMainSpecialCategory.ItemHeight = 19;
-            this.cboMainSpecialCategory.Location = new System.Drawing.Point(568, 9);
-            this.cboMainSpecialCategory.Name = "cboMainSpecialCategory";
-            this.cboMainSpecialCategory.Size = new System.Drawing.Size(146, 25);
-            this.cboMainSpecialCategory.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboMainSpecialCategory.TabIndex = 5;
-            this.cboMainSpecialCategory.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
-            // 
-            // labelX3
-            // 
-            this.labelX3.AutoSize = true;
-            this.labelX3.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX3.BackgroundStyle.Class = "";
-            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(496, 11);
-            this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(74, 21);
-            this.labelX3.TabIndex = 4;
-            this.labelX3.Text = "特殊類別：";
-            // 
-            // cboMainRequired
-            // 
-            this.cboMainRequired.DisplayMember = "Text";
-            this.cboMainRequired.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboMainRequired.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMainRequired.FormattingEnabled = true;
-            this.cboMainRequired.ItemHeight = 19;
-            this.cboMainRequired.Location = new System.Drawing.Point(348, 9);
-            this.cboMainRequired.Name = "cboMainRequired";
-            this.cboMainRequired.Size = new System.Drawing.Size(104, 25);
-            this.cboMainRequired.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboMainRequired.TabIndex = 3;
-            this.cboMainRequired.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
-            // 
-            // labelX2
-            // 
-            this.labelX2.AutoSize = true;
-            this.labelX2.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX2.BackgroundStyle.Class = "";
-            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(290, 11);
-            this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(60, 21);
-            this.labelX2.TabIndex = 2;
-            this.labelX2.Text = "必選修：";
-            // 
-            // cboMainRequiredBy
-            // 
-            this.cboMainRequiredBy.DisplayMember = "Text";
-            this.cboMainRequiredBy.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboMainRequiredBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMainRequiredBy.FormattingEnabled = true;
-            this.cboMainRequiredBy.ItemHeight = 19;
-            this.cboMainRequiredBy.Location = new System.Drawing.Point(102, 9);
-            this.cboMainRequiredBy.Name = "cboMainRequiredBy";
-            this.cboMainRequiredBy.Size = new System.Drawing.Size(96, 25);
-            this.cboMainRequiredBy.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboMainRequiredBy.TabIndex = 1;
-            this.cboMainRequiredBy.SelectedIndexChanged += new System.EventHandler(this.LoadMainComboBoxData);
-            // 
-            // labelX1
-            // 
-            this.labelX1.AutoSize = true;
-            this.labelX1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(44, 11);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 21);
-            this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "校部定：";
-            // 
-            // gpMainSetCourseData
-            // 
-            this.gpMainSetCourseData.CanvasColor = System.Drawing.SystemColors.Control;
-            this.gpMainSetCourseData.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.gpMainSetCourseData.Controls.Add(this.tbMainSchoolYearGroupName);
-            this.gpMainSetCourseData.Controls.Add(this.labelX14);
-            this.gpMainSetCourseData.Controls.Add(this.btnMainCancel);
-            this.gpMainSetCourseData.Controls.Add(this.btnMainSet);
-            this.gpMainSetCourseData.Controls.Add(this.tbMainSubjectName);
-            this.gpMainSetCourseData.Controls.Add(this.labelX6);
-            this.gpMainSetCourseData.Controls.Add(this.tbMainStartLevel);
-            this.gpMainSetCourseData.Controls.Add(this.labelX5);
-            this.gpMainSetCourseData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpMainSetCourseData.Location = new System.Drawing.Point(3, 631);
-            this.gpMainSetCourseData.Name = "gpMainSetCourseData";
-            this.gpMainSetCourseData.Size = new System.Drawing.Size(1333, 69);
-            // 
-            // 
-            // 
-            this.gpMainSetCourseData.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.gpMainSetCourseData.Style.BackColorGradientAngle = 90;
-            this.gpMainSetCourseData.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.gpMainSetCourseData.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainSetCourseData.Style.BorderBottomWidth = 1;
-            this.gpMainSetCourseData.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.gpMainSetCourseData.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainSetCourseData.Style.BorderLeftWidth = 1;
-            this.gpMainSetCourseData.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainSetCourseData.Style.BorderRightWidth = 1;
-            this.gpMainSetCourseData.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainSetCourseData.Style.BorderTopWidth = 1;
-            this.gpMainSetCourseData.Style.Class = "";
-            this.gpMainSetCourseData.Style.CornerDiameter = 4;
-            this.gpMainSetCourseData.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.gpMainSetCourseData.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.gpMainSetCourseData.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.gpMainSetCourseData.StyleMouseDown.Class = "";
-            this.gpMainSetCourseData.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.gpMainSetCourseData.StyleMouseOver.Class = "";
-            this.gpMainSetCourseData.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.gpMainSetCourseData.TabIndex = 6;
-            this.gpMainSetCourseData.Text = "設定課程屬性";
-            // 
-            // tbMainSchoolYearGroupName
-            // 
-            // 
-            // 
-            // 
-            this.tbMainSchoolYearGroupName.Border.Class = "TextBoxBorder";
-            this.tbMainSchoolYearGroupName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbMainSchoolYearGroupName.Location = new System.Drawing.Point(546, 6);
-            this.tbMainSchoolYearGroupName.Name = "tbMainSchoolYearGroupName";
-            this.tbMainSchoolYearGroupName.Size = new System.Drawing.Size(141, 25);
-            this.tbMainSchoolYearGroupName.TabIndex = 17;
-            // 
-            // labelX14
-            // 
-            this.labelX14.AutoSize = true;
-            this.labelX14.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX14.BackgroundStyle.Class = "";
-            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX14.Location = new System.Drawing.Point(417, 8);
-            this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(127, 21);
-            this.labelX14.TabIndex = 16;
-            this.labelX14.Text = "指定學年科目名稱：";
-            // 
-            // btnMainCancel
-            // 
-            this.btnMainCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnMainCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnMainCancel.Location = new System.Drawing.Point(821, 7);
-            this.btnMainCancel.Name = "btnMainCancel";
-            this.btnMainCancel.Size = new System.Drawing.Size(90, 23);
-            this.btnMainCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnMainCancel.TabIndex = 19;
-            this.btnMainCancel.Text = "取消";
-            this.btnMainCancel.Click += new System.EventHandler(this.btnMainCancel_Click);
-            // 
-            // btnMainSet
-            // 
-            this.btnMainSet.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnMainSet.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnMainSet.Location = new System.Drawing.Point(718, 7);
-            this.btnMainSet.Name = "btnMainSet";
-            this.btnMainSet.Size = new System.Drawing.Size(90, 23);
-            this.btnMainSet.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnMainSet.TabIndex = 18;
-            this.btnMainSet.Text = "設定";
-            this.btnMainSet.Click += new System.EventHandler(this.btnMainSet_Click);
-            // 
-            // tbMainSubjectName
-            // 
-            // 
-            // 
-            // 
-            this.tbMainSubjectName.Border.Class = "TextBoxBorder";
-            this.tbMainSubjectName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbMainSubjectName.Location = new System.Drawing.Point(254, 6);
-            this.tbMainSubjectName.Name = "tbMainSubjectName";
-            this.tbMainSubjectName.Size = new System.Drawing.Size(141, 25);
-            this.tbMainSubjectName.TabIndex = 3;
-            // 
-            // labelX6
-            // 
-            this.labelX6.AutoSize = true;
-            this.labelX6.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX6.BackgroundStyle.Class = "";
-            this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX6.Location = new System.Drawing.Point(182, 8);
-            this.labelX6.Name = "labelX6";
-            this.labelX6.Size = new System.Drawing.Size(74, 21);
-            this.labelX6.TabIndex = 2;
-            this.labelX6.Text = "科目名稱：";
-            // 
-            // tbMainStartLevel
-            // 
-            // 
-            // 
-            // 
-            this.tbMainStartLevel.Border.Class = "TextBoxBorder";
-            this.tbMainStartLevel.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbMainStartLevel.Location = new System.Drawing.Point(102, 6);
-            this.tbMainStartLevel.Name = "tbMainStartLevel";
-            this.tbMainStartLevel.Size = new System.Drawing.Size(58, 25);
-            this.tbMainStartLevel.TabIndex = 1;
-            // 
-            // labelX5
-            // 
-            this.labelX5.AutoSize = true;
-            this.labelX5.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX5.BackgroundStyle.Class = "";
-            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX5.Location = new System.Drawing.Point(30, 8);
-            this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(74, 21);
-            this.labelX5.TabIndex = 0;
-            this.labelX5.Text = "開始級別：";
-            // 
-            // lbMainGraduationPlanName
-            // 
-            // 
-            // 
-            // 
-            this.lbMainGraduationPlanName.BackgroundStyle.Class = "";
-            this.lbMainGraduationPlanName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbMainGraduationPlanName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lbMainGraduationPlanName.Location = new System.Drawing.Point(3, 3);
-            this.lbMainGraduationPlanName.MaximumSize = new System.Drawing.Size(1097, 27);
-            this.lbMainGraduationPlanName.Name = "lbMainGraduationPlanName";
-            this.lbMainGraduationPlanName.Size = new System.Drawing.Size(1097, 27);
-            this.lbMainGraduationPlanName.TabIndex = 3;
-            this.lbMainGraduationPlanName.Text = "課程規畫表名稱";
-            // 
-            // gpMainData
-            // 
-            this.gpMainData.CanvasColor = System.Drawing.SystemColors.Control;
-            this.gpMainData.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.gpMainData.Controls.Add(this.dgvMain);
-            this.gpMainData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpMainData.Location = new System.Drawing.Point(3, 158);
-            this.gpMainData.Name = "gpMainData";
-            this.gpMainData.Size = new System.Drawing.Size(1333, 467);
-            // 
-            // 
-            // 
-            this.gpMainData.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.gpMainData.Style.BackColorGradientAngle = 90;
-            this.gpMainData.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.gpMainData.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainData.Style.BorderBottomWidth = 1;
-            this.gpMainData.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.gpMainData.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainData.Style.BorderLeftWidth = 1;
-            this.gpMainData.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainData.Style.BorderRightWidth = 1;
-            this.gpMainData.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.gpMainData.Style.BorderTopWidth = 1;
-            this.gpMainData.Style.Class = "";
-            this.gpMainData.Style.CornerDiameter = 4;
-            this.gpMainData.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.gpMainData.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.gpMainData.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.gpMainData.StyleMouseDown.Class = "";
-            this.gpMainData.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.gpMainData.StyleMouseOver.Class = "";
-            this.gpMainData.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.gpMainData.TabIndex = 7;
-            this.gpMainData.Text = "課程規畫表內容";
-            // 
-            // dgvMain
-            // 
-            this.dgvMain.AllowUserToAddRows = false;
-            this.dgvMain.AllowUserToDeleteRows = false;
-            this.dgvMain.AllowUserToOrderColumns = true;
-            this.dgvMain.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle49.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle49.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle49.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle49.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle49.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMain.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle49;
-            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colMainRequiredBy,
-            this.colMainRequired,
-            this.colMainSpecialCategory,
-            this.colMainSubjectAttribute,
-            this.colMainEntry,
-            this.colMainDomainName,
-            this.colMainOfficialSubjectName,
-            this.colMain1_1,
-            this.colMain1_2,
-            this.colMain2_1,
-            this.colMain2_2,
-            this.colMain3_1,
-            this.colMain3_2,
-            this.colMainStartLevel,
-            this.colMainSubjectName,
-            this.colMainSchoolYearGroupName});
-            dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle58.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle58.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle58.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle58.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle58.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle58.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMain.DefaultCellStyle = dataGridViewCellStyle58;
-            this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMain.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgvMain.Location = new System.Drawing.Point(0, 0);
-            this.dgvMain.MultiSelect = false;
-            this.dgvMain.Name = "dgvMain";
-            this.dgvMain.ReadOnly = true;
-            this.dgvMain.RowTemplate.Height = 24;
-            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(1327, 440);
-            this.dgvMain.TabIndex = 6;
-            this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
-            // 
-            // colMainRequiredBy
-            // 
-            this.colMainRequiredBy.Frozen = true;
-            this.colMainRequiredBy.HeaderText = "校部定";
-            this.colMainRequiredBy.MinimumWidth = 25;
-            this.colMainRequiredBy.Name = "colMainRequiredBy";
-            this.colMainRequiredBy.ReadOnly = true;
-            this.colMainRequiredBy.Width = 75;
-            // 
-            // colMainRequired
-            // 
-            this.colMainRequired.Frozen = true;
-            this.colMainRequired.HeaderText = "必選修";
-            this.colMainRequired.MinimumWidth = 25;
-            this.colMainRequired.Name = "colMainRequired";
-            this.colMainRequired.ReadOnly = true;
-            this.colMainRequired.Width = 75;
-            // 
-            // colMainSpecialCategory
-            // 
-            this.colMainSpecialCategory.Frozen = true;
-            this.colMainSpecialCategory.HeaderText = "特殊類別";
-            this.colMainSpecialCategory.MinimumWidth = 25;
-            this.colMainSpecialCategory.Name = "colMainSpecialCategory";
-            this.colMainSpecialCategory.ReadOnly = true;
-            this.colMainSpecialCategory.Width = 60;
-            // 
-            // colMainSubjectAttribute
-            // 
-            this.colMainSubjectAttribute.Frozen = true;
-            this.colMainSubjectAttribute.HeaderText = "科目屬性";
-            this.colMainSubjectAttribute.MinimumWidth = 25;
-            this.colMainSubjectAttribute.Name = "colMainSubjectAttribute";
-            this.colMainSubjectAttribute.ReadOnly = true;
-            this.colMainSubjectAttribute.Width = 60;
-            // 
-            // colMainEntry
-            // 
-            this.colMainEntry.Frozen = true;
-            this.colMainEntry.HeaderText = "分項類別";
-            this.colMainEntry.MinimumWidth = 25;
-            this.colMainEntry.Name = "colMainEntry";
-            this.colMainEntry.ReadOnly = true;
-            this.colMainEntry.Width = 60;
-            // 
-            // colMainDomainName
-            // 
-            this.colMainDomainName.Frozen = true;
-            this.colMainDomainName.HeaderText = "領域名稱";
-            this.colMainDomainName.MinimumWidth = 25;
-            this.colMainDomainName.Name = "colMainDomainName";
-            this.colMainDomainName.ReadOnly = true;
-            this.colMainDomainName.Width = 67;
-            // 
-            // colMainOfficialSubjectName
-            // 
-            this.colMainOfficialSubjectName.Frozen = true;
-            this.colMainOfficialSubjectName.HeaderText = "報部科目名稱";
-            this.colMainOfficialSubjectName.MinimumWidth = 25;
-            this.colMainOfficialSubjectName.Name = "colMainOfficialSubjectName";
-            this.colMainOfficialSubjectName.ReadOnly = true;
-            this.colMainOfficialSubjectName.Width = 80;
-            // 
-            // colMain1_1
-            // 
-            this.colMain1_1.HeaderText = "一上";
-            this.colMain1_1.MinimumWidth = 50;
-            this.colMain1_1.Name = "colMain1_1";
-            this.colMain1_1.ReadOnly = true;
-            this.colMain1_1.Width = 60;
-            // 
-            // colMain1_2
-            // 
-            this.colMain1_2.HeaderText = "一下";
-            this.colMain1_2.MinimumWidth = 50;
-            this.colMain1_2.Name = "colMain1_2";
-            this.colMain1_2.ReadOnly = true;
-            this.colMain1_2.Width = 60;
-            // 
-            // colMain2_1
-            // 
-            this.colMain2_1.HeaderText = "二上";
-            this.colMain2_1.MinimumWidth = 50;
-            this.colMain2_1.Name = "colMain2_1";
-            this.colMain2_1.ReadOnly = true;
-            this.colMain2_1.Width = 60;
-            // 
-            // colMain2_2
-            // 
-            this.colMain2_2.HeaderText = "二下";
-            this.colMain2_2.MinimumWidth = 50;
-            this.colMain2_2.Name = "colMain2_2";
-            this.colMain2_2.ReadOnly = true;
-            this.colMain2_2.Width = 60;
-            // 
-            // colMain3_1
-            // 
-            this.colMain3_1.HeaderText = "三上";
-            this.colMain3_1.MinimumWidth = 50;
-            this.colMain3_1.Name = "colMain3_1";
-            this.colMain3_1.ReadOnly = true;
-            this.colMain3_1.Width = 60;
-            // 
-            // colMain3_2
-            // 
-            this.colMain3_2.HeaderText = "三下";
-            this.colMain3_2.MinimumWidth = 50;
-            this.colMain3_2.Name = "colMain3_2";
-            this.colMain3_2.ReadOnly = true;
-            this.colMain3_2.Width = 60;
-            // 
-            // colMainStartLevel
-            // 
-            this.colMainStartLevel.HeaderText = "開始級別";
-            this.colMainStartLevel.MinimumWidth = 60;
-            this.colMainStartLevel.Name = "colMainStartLevel";
-            this.colMainStartLevel.ReadOnly = true;
-            this.colMainStartLevel.Width = 85;
-            // 
-            // colMainSubjectName
-            // 
-            this.colMainSubjectName.HeaderText = "科目名稱";
-            this.colMainSubjectName.MinimumWidth = 60;
-            this.colMainSubjectName.Name = "colMainSubjectName";
-            this.colMainSubjectName.ReadOnly = true;
-            this.colMainSubjectName.Width = 85;
-            // 
-            // colMainSchoolYearGroupName
-            // 
-            this.colMainSchoolYearGroupName.HeaderText = "指定學年科目名稱";
-            this.colMainSchoolYearGroupName.MinimumWidth = 100;
-            this.colMainSchoolYearGroupName.Name = "colMainSchoolYearGroupName";
-            this.colMainSchoolYearGroupName.ReadOnly = true;
-            // 
-            // tbiCourseGroupMain
-            // 
-            this.tbiCourseGroupMain.AttachedControl = this.tabControlPanel5;
-            this.tbiCourseGroupMain.Name = "tbiCourseGroupMain";
-            this.tbiCourseGroupMain.Text = "課程群組總表";
-            // 
-            // tabControlPanel4
-            // 
-            this.tabControlPanel4.Controls.Add(this.tableLayoutPanel4);
-            this.tabControlPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel4.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel4.Name = "tabControlPanel4";
-            this.tabControlPanel4.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel4.Size = new System.Drawing.Size(1341, 705);
-            this.tabControlPanel4.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel4.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel4.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel4.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel4.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel4.Style.GradientAngle = 90;
-            this.tabControlPanel4.TabIndex = 4;
-            this.tabControlPanel4.TabItem = this.tabItem4;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.lblUDGroupName, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.dgUDData, 0, 1);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(1, 1);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1339, 703);
-            this.tableLayoutPanel4.TabIndex = 1;
-            // 
-            // lblUDGroupName
-            // 
-            this.lblUDGroupName.BackColor = System.Drawing.Color.White;
-            // 
-            // 
-            // 
-            this.lblUDGroupName.BackgroundStyle.Class = "";
-            this.lblUDGroupName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblUDGroupName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblUDGroupName.Location = new System.Drawing.Point(3, 3);
-            this.lblUDGroupName.Name = "lblUDGroupName";
-            this.lblUDGroupName.Size = new System.Drawing.Size(791, 24);
-            this.lblUDGroupName.TabIndex = 0;
-            this.lblUDGroupName.Text = "群組名稱";
-            // 
-            // dgUDData
-            // 
-            this.dgUDData.AllowUserToResizeRows = false;
-            this.dgUDData.BackgroundColor = System.Drawing.Color.White;
-            this.dgUDData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgUDData.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle59.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle59.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle59.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle59.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle59.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle59.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgUDData.DefaultCellStyle = dataGridViewCellStyle59;
-            this.dgUDData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgUDData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgUDData.Location = new System.Drawing.Point(3, 33);
-            this.dgUDData.MultiSelect = false;
-            this.dgUDData.Name = "dgUDData";
-            this.dgUDData.RowTemplate.Height = 24;
-            this.dgUDData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgUDData.Size = new System.Drawing.Size(1333, 667);
-            this.dgUDData.TabIndex = 1;
-            this.dgUDData.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUDData_CellEnter);
-            this.dgUDData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgUDData_CellMouseClick);
-            this.dgUDData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUDData_CellValueChanged);
-            this.dgUDData.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgUDData_CurrentCellDirtyStateChanged);
-            this.dgUDData.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgUDData_RowHeaderMouseClick);
-            this.dgUDData.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgUDData_RowsRemoved);
-            // 
-            // tabItem4
-            // 
-            this.tabItem4.AttachedControl = this.tabControlPanel4;
-            this.tabItem4.Name = "tabItem4";
-            this.tabItem4.Text = "自訂課程規劃表內容";
-            // 
             // tabControlPanel2
             // 
             this.tabControlPanel2.Controls.Add(this.listViewEx1);
@@ -3401,14 +3450,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgCreditsSetUp.BackgroundColor = System.Drawing.Color.White;
             this.dgCreditsSetUp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle43.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle43.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle43.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle43.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle43.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgCreditsSetUp.DefaultCellStyle = dataGridViewCellStyle43;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgCreditsSetUp.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgCreditsSetUp.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgCreditsSetUp.Location = new System.Drawing.Point(18, 52);
             this.dgCreditsSetUp.Name = "dgCreditsSetUp";
@@ -3436,6 +3485,92 @@
             this.tabItem3.Text = "設定總計學分";
             this.tabItem3.Visible = false;
             // 
+            // tabControlPanel4
+            // 
+            this.tabControlPanel4.Controls.Add(this.tableLayoutPanel4);
+            this.tabControlPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel4.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel4.Name = "tabControlPanel4";
+            this.tabControlPanel4.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel4.Size = new System.Drawing.Size(1341, 705);
+            this.tabControlPanel4.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel4.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel4.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel4.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel4.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel4.Style.GradientAngle = 90;
+            this.tabControlPanel4.TabIndex = 4;
+            this.tabControlPanel4.TabItem = this.tabItem4;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.lblUDGroupName, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.dgUDData, 0, 1);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(1, 1);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1339, 703);
+            this.tableLayoutPanel4.TabIndex = 1;
+            // 
+            // lblUDGroupName
+            // 
+            this.lblUDGroupName.BackColor = System.Drawing.Color.White;
+            // 
+            // 
+            // 
+            this.lblUDGroupName.BackgroundStyle.Class = "";
+            this.lblUDGroupName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblUDGroupName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblUDGroupName.Location = new System.Drawing.Point(3, 3);
+            this.lblUDGroupName.Name = "lblUDGroupName";
+            this.lblUDGroupName.Size = new System.Drawing.Size(791, 24);
+            this.lblUDGroupName.TabIndex = 0;
+            this.lblUDGroupName.Text = "群組名稱";
+            // 
+            // dgUDData
+            // 
+            this.dgUDData.AllowUserToResizeRows = false;
+            this.dgUDData.BackgroundColor = System.Drawing.Color.White;
+            this.dgUDData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgUDData.ContextMenuStrip = this.contextMenuStrip1;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgUDData.DefaultCellStyle = dataGridViewCellStyle12;
+            this.dgUDData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgUDData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgUDData.Location = new System.Drawing.Point(3, 33);
+            this.dgUDData.MultiSelect = false;
+            this.dgUDData.Name = "dgUDData";
+            this.dgUDData.RowTemplate.Height = 24;
+            this.dgUDData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgUDData.Size = new System.Drawing.Size(1333, 667);
+            this.dgUDData.TabIndex = 1;
+            this.dgUDData.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUDData_CellEnter);
+            this.dgUDData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgUDData_CellMouseClick);
+            this.dgUDData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUDData_CellValueChanged);
+            this.dgUDData.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgUDData_CurrentCellDirtyStateChanged);
+            this.dgUDData.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgUDData_RowHeaderMouseClick);
+            this.dgUDData.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgUDData_RowsRemoved);
+            // 
+            // tabItem4
+            // 
+            this.tabItem4.AttachedControl = this.tabControlPanel4;
+            this.tabItem4.Name = "tabItem4";
+            this.tabItem4.Text = "自訂課程規劃表內容";
+            // 
             // btnSave
             // 
             this.btnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -3450,6 +3585,78 @@
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // menuSetCourseGroupCol
+            // 
+            this.menuSetCourseGroupCol.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemSetCourseGroupCol1,
+            this.menuItemSetCourseGroupCol2,
+            this.menuItemSetCourseGroupCol3,
+            this.menuItemSetCourseGroupCol4,
+            this.menuItemSetCourseGroupCol5,
+            this.menuItemSetCourseGroupCol6});
+            this.menuSetCourseGroupCol.Name = "menuSetCourseGroupCol";
+            this.menuSetCourseGroupCol.Size = new System.Drawing.Size(127, 136);
+            // 
+            // menuItemSetCourseGroupCol1
+            // 
+            this.menuItemSetCourseGroupCol1.Checked = true;
+            this.menuItemSetCourseGroupCol1.CheckOnClick = true;
+            this.menuItemSetCourseGroupCol1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemSetCourseGroupCol1.Name = "menuItemSetCourseGroupCol1";
+            this.menuItemSetCourseGroupCol1.Size = new System.Drawing.Size(126, 22);
+            this.menuItemSetCourseGroupCol1.Text = "校部定";
+            this.menuItemSetCourseGroupCol1.CheckedChanged += new System.EventHandler(this.menuItemSetCourseGroupCol1_CheckedChanged);
+            // 
+            // menuItemSetCourseGroupCol2
+            // 
+            this.menuItemSetCourseGroupCol2.Checked = true;
+            this.menuItemSetCourseGroupCol2.CheckOnClick = true;
+            this.menuItemSetCourseGroupCol2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemSetCourseGroupCol2.Name = "menuItemSetCourseGroupCol2";
+            this.menuItemSetCourseGroupCol2.Size = new System.Drawing.Size(126, 22);
+            this.menuItemSetCourseGroupCol2.Text = "必選修";
+            this.menuItemSetCourseGroupCol2.CheckedChanged += new System.EventHandler(this.menuItemSetCourseGroupCol1_CheckedChanged);
+            // 
+            // menuItemSetCourseGroupCol3
+            // 
+            this.menuItemSetCourseGroupCol3.Checked = true;
+            this.menuItemSetCourseGroupCol3.CheckOnClick = true;
+            this.menuItemSetCourseGroupCol3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemSetCourseGroupCol3.Name = "menuItemSetCourseGroupCol3";
+            this.menuItemSetCourseGroupCol3.Size = new System.Drawing.Size(126, 22);
+            this.menuItemSetCourseGroupCol3.Text = "特殊類別";
+            this.menuItemSetCourseGroupCol3.CheckedChanged += new System.EventHandler(this.menuItemSetCourseGroupCol1_CheckedChanged);
+            // 
+            // menuItemSetCourseGroupCol4
+            // 
+            this.menuItemSetCourseGroupCol4.Checked = true;
+            this.menuItemSetCourseGroupCol4.CheckOnClick = true;
+            this.menuItemSetCourseGroupCol4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemSetCourseGroupCol4.Name = "menuItemSetCourseGroupCol4";
+            this.menuItemSetCourseGroupCol4.Size = new System.Drawing.Size(126, 22);
+            this.menuItemSetCourseGroupCol4.Text = "科目屬性";
+            this.menuItemSetCourseGroupCol4.CheckedChanged += new System.EventHandler(this.menuItemSetCourseGroupCol1_CheckedChanged);
+            // 
+            // menuItemSetCourseGroupCol5
+            // 
+            this.menuItemSetCourseGroupCol5.Checked = true;
+            this.menuItemSetCourseGroupCol5.CheckOnClick = true;
+            this.menuItemSetCourseGroupCol5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemSetCourseGroupCol5.Name = "menuItemSetCourseGroupCol5";
+            this.menuItemSetCourseGroupCol5.Size = new System.Drawing.Size(126, 22);
+            this.menuItemSetCourseGroupCol5.Text = "分項類別";
+            this.menuItemSetCourseGroupCol5.CheckedChanged += new System.EventHandler(this.menuItemSetCourseGroupCol1_CheckedChanged);
+            // 
+            // menuItemSetCourseGroupCol6
+            // 
+            this.menuItemSetCourseGroupCol6.Checked = true;
+            this.menuItemSetCourseGroupCol6.CheckOnClick = true;
+            this.menuItemSetCourseGroupCol6.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemSetCourseGroupCol6.Name = "menuItemSetCourseGroupCol6";
+            this.menuItemSetCourseGroupCol6.Size = new System.Drawing.Size(126, 22);
+            this.menuItemSetCourseGroupCol6.Text = "領域名稱";
+            this.menuItemSetCourseGroupCol6.CheckedChanged += new System.EventHandler(this.menuItemSetCourseGroupCol1_CheckedChanged);
+            // 
             // frmGPlanConfig108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -3461,6 +3668,7 @@
             this.MaximizeBox = true;
             this.Name = "frmGPlanConfig108";
             this.Text = "課程規劃表(108適用)";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGPlanConfig108_FormClosing);
             this.Load += new System.EventHandler(this.frmGPlanConfig108_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -3469,6 +3677,20 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabControlPanel5.ResumeLayout(false);
+            this.tabControlPanel5.PerformLayout();
+            this.tlpMain.ResumeLayout(false);
+            this.gpMainCourseFilter.ResumeLayout(false);
+            this.gpMainCourseFilter.PerformLayout();
+            this.gpMainSetCourseData.ResumeLayout(false);
+            this.gpMainSetCourseData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMainLevel)).EndInit();
+            this.gpMainData.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
+            this.tabControlPanel1.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabControlPanel6.ResumeLayout(false);
             this.tlpCourseGroup.ResumeLayout(false);
             this.tlpCourseGroupData.ResumeLayout(false);
@@ -3487,26 +3709,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseGroupManageGroup)).EndInit();
             this.plCourseGroupSettingOption.ResumeLayout(false);
             this.plCourseGroupSettingOption.PerformLayout();
-            this.tabControlPanel1.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.tabControlPanel5.ResumeLayout(false);
-            this.tabControlPanel5.PerformLayout();
-            this.tlpMain.ResumeLayout(false);
-            this.gpMainCourseFilter.ResumeLayout(false);
-            this.gpMainCourseFilter.PerformLayout();
-            this.gpMainSetCourseData.ResumeLayout(false);
-            this.gpMainSetCourseData.PerformLayout();
-            this.gpMainData.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
-            this.tabControlPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgUDData)).EndInit();
             this.tabControlPanel2.ResumeLayout(false);
             this.tabControlPanel3.ResumeLayout(false);
             this.tabControlPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgCreditsSetUp)).EndInit();
+            this.tabControlPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgUDData)).EndInit();
+            this.menuSetCourseGroupCol.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3697,5 +3907,21 @@
         private DevComponents.DotNetBar.Controls.TextBoxX tbSpecialCatory1_2;
         private DevComponents.DotNetBar.Controls.TextBoxX tbSpecialCatory1_1;
         private DevComponents.DotNetBar.Controls.TextBoxX tbSpecialCatorySummary;
+        private System.Windows.Forms.ContextMenuStrip menuSetCourseGroupCol;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetCourseGroupCol1;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetCourseGroupCol2;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetCourseGroupCol3;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetCourseGroupCol4;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetCourseGroupCol5;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetCourseGroupCol6;
+        private DevComponents.DotNetBar.Controls.DataGridViewX dgvMainLevel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMain1_1Level;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMain1_2Level;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMain2_1Level;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMain2_2Level;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMain3_1Level;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMain3_2Level;
+        private DevComponents.DotNetBar.ButtonX btnMainCalcuateLevel;
+        private DevComponents.DotNetBar.LabelX labelX16;
     }
 }
