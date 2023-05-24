@@ -166,7 +166,7 @@ namespace SHGraduationWarning.ImportExport
                                 "，班級：" + StudS.ClassName + "" +
                                 "，座號：" + StudS.SeatNo + "" +
                                 "，姓名:" + StudS.StudentName + "" +
-                                "，科目名稱：：由「" + StudS.SubjectName + "」改成「" + StudS.SubjectNameNew + "」" +
+                                "，科目名稱：由「" + StudS.SubjectName + "」改成「" + StudS.SubjectNameNew + "」" +
                                 "，級別：由「" + StudS.SubjectLevel + "」改成「" + StudS.SubjectLevelNew + "」。");
 
                                 count++;

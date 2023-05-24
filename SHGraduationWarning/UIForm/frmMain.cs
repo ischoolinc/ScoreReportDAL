@@ -957,8 +957,11 @@ namespace SHGraduationWarning.UIForm
                 if (!GradeYearClassNameDict.ContainsKey(cd.GradeYear))
                     GradeYearClassNameDict.Add(cd.GradeYear, new List<string>());
 
-                GradeYearDeptNameDict[cd.GradeYear].Add(cd.DeptName);
-                GradeYearClassNameDict[cd.GradeYear].Add(cd.ClassName);
+                if (!GradeYearDeptNameDict[cd.GradeYear].Contains(cd.DeptName))
+                    GradeYearDeptNameDict[cd.GradeYear].Add(cd.DeptName);
+
+                if (!GradeYearClassNameDict[cd.GradeYear].Contains(cd.ClassName))
+                    GradeYearClassNameDict[cd.GradeYear].Add(cd.ClassName);
             }
 
             rpInt = 10;
@@ -993,11 +996,22 @@ namespace SHGraduationWarning.UIForm
                 comboDept.Items.Remove(AllStr);
 
             comboClass.Items.Add(AllStr);
-            foreach (string name in DeptNameDict.Keys)
+
+            // 加入年級科別
+            if (GradeYearDeptNameDict.ContainsKey(SelectedGradeYearYear))
             {
-                comboDept.Items.Add(name);
-                foreach (string cname in DeptNameDict[name])
-                    comboClass.Items.Add(cname);
+                foreach (string name in GradeYearDeptNameDict[SelectedGradeYearYear])
+                    comboDept.Items.Add(name);
+            }
+
+            // 加入年級班級
+            if (GradeYearClassNameDict.ContainsKey(SelectedGradeYearYear))
+            {
+                foreach (string name in GradeYearClassNameDict[SelectedGradeYearYear])
+                {
+                    comboClass.Items.Add(name);
+                }
+
             }
 
             // 判斷是否有未分年級再加入
@@ -1073,6 +1087,12 @@ namespace SHGraduationWarning.UIForm
                 if (comboDept.Items.Count == 0)
                 {
                     LoadClassDeptToForm();
+                }
+
+                if (GradeYearClassNameDict.ContainsKey(SelectedGradeYearYear))
+                {
+                    foreach (string name in GradeYearClassNameDict[SelectedGradeYearYear])
+                        comboClass.Items.Add(name);
                 }
             }
             else
@@ -1654,14 +1674,25 @@ namespace SHGraduationWarning.UIForm
         {
             //// 測試呼叫畢業檢查核心
             //AccessHelper accessHelper = new AccessHelper();
-            //SmartSchool.Customization.Data.StudentRecord studentRec = accessHelper.StudentHelper.GetStudent("18228");
+            //SmartSchool.Customization.Data.StudentRecord studentRec = accessHelper.StudentHelper.GetStudent("35748");
             //new SmartSchool.Evaluation.WearyDogComputer().FillStudentGradCheck(accessHelper, new List<SmartSchool.Customization.Data.StudentRecord>() { studentRec });
-            //XmlElement xmlElement = studentRec.Fields["GrandCheckReport"] as XmlElement;
-
-            //foreach (XmlElement elm in xmlElement.SelectNodes("項目"))
+            //if (studentRec.Fields.ContainsKey("GrandCheckReport"))
             //{
-            //    Console.WriteLine(elm.GetAttribute("規則"));
+            //    XmlElement xmlElement = studentRec.Fields["GrandCheckReport"] as XmlElement;
+            //    string path = System.IO.Path.Combine(Application.StartupPath, "Reports");
+            //    if (!Directory.Exists(path))
+            //        Directory.CreateDirectory(path);
+
+            //    string filePath = System.IO.Path.Combine(path, "畢業驗證.xml");
+
+            //    xmlElement.OwnerDocument.Save(filePath);
+
+            //    foreach (XmlElement elm in xmlElement.SelectNodes("項目"))
+            //    {
+            //        Console.WriteLine(elm.GetAttribute("規則"));
+            //    }
             //}
+
 
             // 畢業預警
             if (SelectedTabName == GWTabName)
