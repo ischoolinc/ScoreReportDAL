@@ -40,6 +40,11 @@ namespace SHGraduationWarning.ImportExport
         {
             // 取得匯入資料Excel 檔案內資料
             List<StudUpdateSubjectLevelInfo> StudUpdateSubjectLevelList = new List<StudUpdateSubjectLevelInfo>();
+
+            // 建立取資料索引student_id+school_year+semester+grade_year,放第一筆
+            Dictionary<string, StudUpdateSubjectLevelInfo> StudUpdateSubjectLeveDict = new Dictionary<string, StudUpdateSubjectLevelInfo>();
+
+
             foreach (IRowStream ir in Rows)
             {
                 // 必要欄位
@@ -60,6 +65,9 @@ namespace SHGraduationWarning.ImportExport
                     ss.SubjectNameNew = ir.GetValue("新科目名稱");
                     ss.SubjectLevel = ir.GetValue("科目級別");
                     ss.SubjectLevelNew = ir.GetValue("新科目級別");
+                    string key = ss.StudentID + "_" + ss.SchoolYear + "_" + ss.Semester + "_" + ss.GradeYear;
+                    if (!StudUpdateSubjectLeveDict.ContainsKey(key))
+                        StudUpdateSubjectLeveDict.Add(key, ss);
 
                     StudUpdateSubjectLevelList.Add(ss);
 
@@ -67,14 +75,16 @@ namespace SHGraduationWarning.ImportExport
             }
             StringBuilder sbSelSemsScore = new StringBuilder();
             int cot = 1;
-            foreach (StudUpdateSubjectLevelInfo ss in StudUpdateSubjectLevelList)
+
+            //foreach (StudUpdateSubjectLevelInfo ss in StudUpdateSubjectLevelList)
+            foreach (StudUpdateSubjectLevelInfo ss in StudUpdateSubjectLeveDict.Values)
             {
                 sbSelSemsScore.AppendLine("SELECT ");
                 sbSelSemsScore.AppendLine(ss.StudentID + " AS student_id, ");
                 sbSelSemsScore.AppendLine(ss.SchoolYear + " AS school_year, ");
                 sbSelSemsScore.AppendLine(ss.Semester + " AS semester, ");
                 sbSelSemsScore.AppendLine(ss.GradeYear + " AS grade_year ");
-                if (cot < StudUpdateSubjectLevelList.Count)
+                if (cot < StudUpdateSubjectLeveDict.Values.Count)
                     sbSelSemsScore.AppendLine("UNION ALL ");
 
                 cot++;
