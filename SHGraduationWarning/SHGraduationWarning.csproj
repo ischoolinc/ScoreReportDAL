@@ -124,7 +124,7 @@
     <Reference Include="SmartSchool.Customization.Data">
       <HintPath>D:\ischool_test\t_高中第六學期學期修課記錄\modules\SHSchoolLoader\SmartSchool.Customization.Data.dll</HintPath>
     </Reference>
-    <Reference Include="SmartSchool.Evaluation.HS, Version=1.0.7.65, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SmartSchool.Evaluation.HS, Version=1.0.7.60, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\dev\高中畢業預警核心測試\SmartSchool.Evaluation.HS.dll</HintPath>
     </Reference>
@@ -240,6 +240,7 @@
     <None Include="Template\學期成績匯入檔樣板.xlsx" />
     <None Include="Template\學期成績匯入檔樣板1.xlsx" />
     <None Include="Template\學期成績與課規比對樣板.xlsx" />
+    <None Include="Template\畢業預警通知單合併欄位總表.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
