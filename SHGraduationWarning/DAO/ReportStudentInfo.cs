@@ -32,5 +32,9 @@ namespace SHGraduationWarning.DAO
         // 畢業檢查資料
         public XmlElement GraGrandCheckXml = null;
 
+        public Dictionary<string, XmlElement> dicRetake = new Dictionary<string, XmlElement>();
+
+        public Dictionary<string, List<string>> dicRetaleRelate = new Dictionary<string, List<string>>();
+
     }
 }

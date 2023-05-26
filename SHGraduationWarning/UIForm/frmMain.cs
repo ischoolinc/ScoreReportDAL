@@ -19,6 +19,8 @@ using System.IO;
 using SmartSchool.Customization.Data;
 using K12.Data;
 using System.Xml;
+using SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel;
+using Aspose.Words;
 
 namespace SHGraduationWarning.UIForm
 {
@@ -35,6 +37,9 @@ namespace SHGraduationWarning.UIForm
         Workbook wb;
         Dictionary<string, int> _ColIdxDict;
 
+        // 樣板設定
+        Configure configure;
+
         // 載入預設資料
         BackgroundWorker bgWorkerLoadDefault;
         // 載入畢業資格檢查資料
@@ -49,6 +54,12 @@ namespace SHGraduationWarning.UIForm
 
         // 處理報部科目名稱更新使用
         BackgroundWorker bwDataUpdateDSubject;
+
+        // 學生報表合併使用
+        DataTable StudDT;
+
+        // 處理畢業預警列印報表
+        BackgroundWorker bgwGrandCheckReport;
 
         List<ClassDeptInfo> ClassDeptInfoList;
         string SelectedGradeYearYear = "3";
@@ -112,6 +123,7 @@ namespace SHGraduationWarning.UIForm
             ReportStudentDict = new Dictionary<string, ReportStudentInfo>();
             ReportStudentList = new List<ReportStudentInfo>();
             wb = new Workbook();
+            StudDT = new DataTable();
 
             bgWorkerLoadDefault = new BackgroundWorker();
             bgWorkerLoadDefault.DoWork += BgWorkerLoadDefault_DoWork;
@@ -143,6 +155,12 @@ namespace SHGraduationWarning.UIForm
             bwDataUpdateDSubject.ProgressChanged += BwDataUpdateDSubject_ProgressChanged;
             bwDataUpdateDSubject.WorkerReportsProgress = true;
 
+            bgwGrandCheckReport = new BackgroundWorker();
+            bgwGrandCheckReport.DoWork += BgwGrandCheckReport_DoWork;
+            bgwGrandCheckReport.RunWorkerCompleted += BgwGrandCheckReport_RunWorkerCompleted;
+            bgwGrandCheckReport.ProgressChanged += BgwGrandCheckReport_ProgressChanged;
+            bgwGrandCheckReport.WorkerReportsProgress = true;
+
             StudSubjectInfoList = new List<StudSubjectInfo>();
 
             StudSchoolYearSubjectNameDict = new Dictionary<string, StudSchoolYearSubjectNameInfo>();
@@ -166,6 +184,316 @@ namespace SHGraduationWarning.UIForm
 
 
             InitializeComponent();
+        }
+
+        private void BgwGrandCheckReport_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("畢業預警報表產生中...", e.ProgressPercentage);
+        }
+
+        private void BgwGrandCheckReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+
+            if (e.Error != null)
+            {
+                MessageBox.Show(e.Error.Message);
+                return;
+            }
+
+            try
+            {
+                Document doc = e.Result as Document;
+
+                string reportName = K12.Data.School.DefaultSchoolYear + "學年度第" + K12.Data.School.DefaultSemester + "學生畢業預警通知單";
+
+                string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                path = Path.Combine(path, reportName + ".docx");
+
+                if (File.Exists(path))
+                {
+                    int i = 1;
+                    while (true)
+                    {
+                        string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
+                        if (!File.Exists(newPath))
+                        {
+                            path = newPath;
+                            break;
+                        }
+                    }
+                }
+
+                try
+                {
+                    Document document = doc;
+                    document.Save(path, Aspose.Words.SaveFormat.Docx);
+                    System.Diagnostics.Process.Start(path);
+                }
+                catch
+                {
+                    System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
+                    sd.Title = "另存新檔";
+                    sd.FileName = reportName + ".docx";
+                    sd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
+                    if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        try
+                        {
+                            Document document = doc;
+                            document.Save(sd.FileName, Aspose.Words.SaveFormat.Docx);
+
+                        }
+                        catch
+                        {
+                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Show(ex.Message);
+            }
+
+
+            this.btnReport.Enabled = true;
+        }
+
+        private void BgwGrandCheckReport_DoWork(object sender, DoWorkEventArgs e)
+        {
+            bgwGrandCheckReport.ReportProgress(1);
+
+            if (ReportStudentList.Count > 0)
+            {
+                // 建立 Word 合併欄位表
+                StudDT.Clear();
+                StudDT.Columns.Add("目前學年度");
+                StudDT.Columns.Add("目前學期");
+                StudDT.Columns.Add("學校名稱");
+                StudDT.Columns.Add("科別");
+                StudDT.Columns.Add("班級");
+                StudDT.Columns.Add("座號");
+                StudDT.Columns.Add("姓名");
+                StudDT.Columns.Add("學號");
+                StudDT.Columns.Add("成績計算規則");
+                StudDT.Columns.Add("課程規劃表");
+
+                // 規則
+                List<string> ruList = new List<string>();
+                ruList.Add("應修總學分數");
+                ruList.Add("應修所有必修課程");
+                ruList.Add("應修專業及實習總學分數");
+                ruList.Add("總學分數");
+                ruList.Add("必修學分數");
+                ruList.Add("部訂必修學分數");
+                ruList.Add("校訂必修學分數");
+                ruList.Add("選修學分數");
+                ruList.Add("專業及實習總學分數");
+                ruList.Add("實習學分數");
+
+                List<string> ruColList = new List<string>();
+                List<string> ruColList1 = new List<string>();
+                ruColList.Add("設定值");
+                ruColList.Add("課規總學分數");
+                ruColList.Add("通過標準");
+                ruColList.Add("累計學分");
+                ruColList1.Add("畢業差額");
+                ruColList1.Add("已修習");
+                ruColList1.Add("已取得");
+                ruColList1.Add("尚未開課");
+                ruColList1.Add("可重修");
+                ruColList1.Add("可補修");
+                ruColList1.Add("未修習");
+
+                foreach (string r1 in ruList)
+                {
+                    foreach (string r2 in ruColList)
+                    {
+                        StudDT.Columns.Add(r1 + "_" + r2);
+                    }
+                    foreach (string r2 in ruColList1)
+                    {
+                        StudDT.Columns.Add(r1 + "_" + r2);
+                    }
+                }
+
+                // 核心科目表固定
+                for (int i = 1; i <= 5; i++)
+                {
+                    StudDT.Columns.Add("核心科目表序號" + i + "_名稱");
+                    foreach (string r1 in ruColList)
+                    {
+                        StudDT.Columns.Add("核心科目表序號" + i + "_修課學分數統計_" + r1);
+                        StudDT.Columns.Add("核心科目表序號" + i + "_取得學分數統計" + r1);
+                    }
+                }
+
+                // 功過相抵未滿三大過
+                List<string> ru3List = new List<string>();
+                ru3List.Add("設定值");
+                ru3List.Add("通過標準");
+                ru3List.Add("目前累計支數");
+                foreach (string r3 in ru3List)
+                    StudDT.Columns.Add("功過相抵未滿三大過_" + r3);
+
+
+                // 處理科目
+                List<string> colN1List = new List<string>();
+                colN1List.Add("狀態");
+                colN1List.Add("修課學年度");
+                colN1List.Add("修課學期");
+                colN1List.Add("科目名稱");
+                colN1List.Add("科目級別");
+                colN1List.Add("學分數");
+                for (int s = 1; s <= 30; s++)
+                {
+                    foreach (string cname in colN1List)
+                    {
+                        StudDT.Columns.Add("科目" + s + "_" + cname);
+
+                    }
+
+                }
+
+
+
+
+                // 填資料至 DataTable
+                foreach (ReportStudentInfo rs in ReportStudentList)
+                {
+                    DataRow dr = StudDT.NewRow();
+                    dr["目前學年度"] = K12.Data.School.DefaultSchoolYear;
+                    dr["目前學期"] = K12.Data.School.DefaultSemester;
+                    dr["學校名稱"] = K12.Data.School.ChineseName;
+                    dr["科別"] = rs.GraGrandCheckXml.GetAttribute("科別");
+                    dr["班級"] = rs.GraGrandCheckXml.GetAttribute("班級");
+                    dr["座號"] = rs.GraGrandCheckXml.GetAttribute("座號");
+                    dr["學號"] = rs.GraGrandCheckXml.GetAttribute("學號");
+                    dr["姓名"] = rs.GraGrandCheckXml.GetAttribute("姓名");
+                    dr["課程規劃表"] = rs.GraGrandCheckXml.GetAttribute("課程規劃表");
+                    dr["成績計算規則"] = rs.GraGrandCheckXml.GetAttribute("成績計算規則");
+
+                    //Console.WriteLine(rs.GraGrandCheckXml.OuterXml);
+                    foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
+                    {
+                        if (xmlRule.GetAttribute("啟用") == "是")
+                        {
+                            // 處理固定規則統計
+                            string Rule = xmlRule.GetAttribute("規則");
+                            foreach (string ruCol in ruColList)
+                            {
+                                string key = Rule + "_" + ruCol;
+                                if (StudDT.Columns.Contains(key))
+                                {
+                                    dr[key] = xmlRule.GetAttribute(ruCol);
+                                }
+                            }
+
+                            // 處理 預警統計
+                            foreach (XmlElement xmlRuleC in xmlRule.SelectNodes("預警統計"))
+                            {
+                                foreach (string ruCol in ruColList1)
+                                {
+                                    string key = Rule + "_" + ruCol;
+                                    if (StudDT.Columns.Contains(key))
+                                    {
+                                        dr[key] = xmlRuleC.GetAttribute(ruCol);
+                                    }
+                                }
+                            }
+
+                            // 處理核心科目
+                            string coreId = xmlRule.GetAttribute("核心科目表序號");
+                            if (coreId != "")
+                            {
+                                string cidKeyName = "核心科目表序號" + coreId + "_名稱";
+                                string cidKey = "核心科目表序號" + coreId + "_修課學分數統計_設定值";
+                                string cidKey2 = "核心科目表序號" + coreId + "_取得學分數統計_設定值";
+                                if (StudDT.Columns.Contains(cidKeyName))
+                                {
+                                    dr[cidKeyName] = xmlRule.GetAttribute("核心科目表名稱");
+                                }
+
+                                if (StudDT.Columns.Contains(cidKeyName))
+                                {
+                                    if (xmlRule.GetAttribute("類型") == "修課學分數統計")
+                                        dr[cidKey] = xmlRule.GetAttribute("設定值");
+                                }
+
+                                if (StudDT.Columns.Contains(cidKeyName))
+                                {
+                                    if (xmlRule.GetAttribute("類型") == "取得學分數統計")
+                                        dr[cidKey2] = xmlRule.GetAttribute("設定值");
+                                }
+                            }
+
+                            // 處理 功過相抵未滿三大過
+                            if (Rule == "功過相抵未滿三大過")
+                            {
+                                foreach (string ruCol in ru3List)
+                                {
+                                    string key = Rule + "_" + ruCol;
+                                    if (StudDT.Columns.Contains(key))
+                                    {
+                                        dr[key] = xmlRule.GetAttribute(ruCol);
+                                    }
+                                }
+                            }
+
+                            // 處理科目可補修、可重修
+                            foreach (XmlElement xmlRuleS in xmlRule.SelectNodes("科目"))
+                            {
+                                if (xmlRuleS.GetAttribute("狀態") == "可補修" || xmlRuleS.GetAttribute("狀態") == "可重修")
+                                {
+                                    // key = 科目名稱+級別
+                                    string sKey = xmlRuleS.GetAttribute("科目名稱") + "_" + xmlRuleS.GetAttribute("科目級別");
+                                    if (!rs.dicRetake.ContainsKey(sKey))
+                                        rs.dicRetake.Add(sKey, xmlRuleS);
+
+                                    // 規則
+                                    if (!rs.dicRetaleRelate.ContainsKey(sKey))
+                                        rs.dicRetaleRelate.Add(sKey, new List<string>());
+                                    rs.dicRetaleRelate[sKey].Add(Rule);
+                                }
+                            }
+                        }
+                    }
+
+                    // 處理科目填入
+                    int sKeyIdx = 1;
+                    foreach (string sKey in rs.dicRetake.Keys)
+                    {
+                        foreach (string name in colN1List)
+                        {
+                            string sK1 = "科目" + sKeyIdx + "_" + name;
+                            if (StudDT.Columns.Contains(sK1))
+                            {
+                                dr[sK1] = rs.dicRetake[sKey].GetAttribute(name);
+                            }
+
+                        }
+                        sKeyIdx++;
+                    }
+
+                    StudDT.Rows.Add(dr);
+                }
+
+
+                // 合併
+                if (this.configure != null)
+                {
+                    Document doc = configure.Template;
+                    doc.MailMerge.Execute(StudDT);
+                    doc.MailMerge.DeleteFields();
+                    e.Result = doc;
+                }
+            }
+
+            bgwGrandCheckReport.ReportProgress(100);
         }
 
         private void BwDataUpdateDSubject_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -593,7 +921,7 @@ namespace SHGraduationWarning.UIForm
 
             lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
             ControlEnable(true);
-            btnDel.Enabled = false;
+
         }
 
         private void BgwDataChkEditLoad2_DoWork(object sender, DoWorkEventArgs e)
@@ -827,8 +1155,22 @@ namespace SHGraduationWarning.UIForm
         private void BgwDataGWLoad_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            dgDataGW.Rows.Clear();
 
-            lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
+            if (ReportStudentList.Count > 0)
+            {
+                foreach (ReportStudentInfo rs in ReportStudentList)
+                {
+                    int rowIdx = dgDataGW.Rows.Add();
+                    dgDataGW.Rows[rowIdx].Cells["學號"].Value = rs.StudentNumber;
+                    dgDataGW.Rows[rowIdx].Cells["班級"].Value = rs.ClassName;
+                    dgDataGW.Rows[rowIdx].Cells["座號"].Value = rs.SeatNo;
+                    dgDataGW.Rows[rowIdx].Cells["姓名"].Value = rs.StudentName;
+                }
+
+            }
+
+            lblMsg.Text = "共" + dgDataGW.Rows.Count + "筆";
             ControlEnable(true);
 
         }
@@ -917,7 +1259,7 @@ namespace SHGraduationWarning.UIForm
             // 載入班級科別資訊
             LoadClassDeptToForm();
             ControlEnable(true);
-            btnReport.Enabled = btnDel.Enabled = btnUpdate.Enabled = false;
+            btnReport.Enabled = false;
         }
 
         private void BgWorkerLoadDefault_DoWork(object sender, DoWorkEventArgs e)
@@ -1032,6 +1374,7 @@ namespace SHGraduationWarning.UIForm
             ControlEnable(false);
             // 更新報部科目名稱按鈕
             buttonUpdateDSubjectName.Visible = false;
+            lnkSetReportTemplate.Visible = false;
             ClearClassDept();
             SelectedTabName = ChkEditTabName;
             LoadTabDesc();
@@ -1069,7 +1412,7 @@ namespace SHGraduationWarning.UIForm
             buttonUpdateDSubjectName.Enabled = value;
 
             tabControl1.Enabled = value;
-            btnDel.Enabled = btnUpdate.Enabled = false;
+
         }
 
         private void comboDept_SelectedIndexChanged(object sender, EventArgs e)
@@ -1146,84 +1489,6 @@ namespace SHGraduationWarning.UIForm
                             ""Name"": ""姓名"",
                             ""Width"": 80,
                             ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""總學分數"",
-                            ""Name"": ""總學分數"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""必修學分"",
-                            ""Name"": ""必修學分"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""部定必修"",
-                            ""Name"": ""部定必修"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""校訂必修"",
-                            ""Name"": ""校訂必修"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""選修學分"",
-                            ""Name"": ""選修學分"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""專業及實習"",
-                            ""Name"": ""專業及實習"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""實習科目"",
-                            ""Name"": ""實習科目"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""部定均修習"",
-                            ""Name"": ""部定均修習"",
-                            ""Width"": 40,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""必修均修習"",
-                            ""Name"": ""必修均修習"",
-                            ""Width"": 40,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""部定及格率"",
-                            ""Name"": ""部定及格率"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""校訂必修及格率"",
-                            ""Name"": ""校訂必修及格率"",
-                            ""Width"": 80,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""是否畢業"",
-                            ""Name"": ""是否畢業"",
-                            ""Width"": 40,
-                            ""ReadOnly"": true
-                        },
-                        {
-                            ""HeaderText"": ""未達畢業標準說明"",
-                            ""Name"": ""未達畢業標準說明"",
-                            ""Width"": 140,
-                            ""ReadOnly"": true
                         }
                     ]            
                 
@@ -1241,35 +1506,35 @@ namespace SHGraduationWarning.UIForm
                     dgDataGW.Columns.Add(dgt);
                 }
 
-                // 加入學生功能按鈕
-                DataGridViewButtonXColumn btnCol1 = new DataGridViewButtonXColumn();
-                btnCol1.Name = "學生通知單";
-                btnCol1.HeaderText = "學生通知單";
-                btnCol1.Text = "列印";
-                btnCol1.Width = 100;
-                btnCol1.UseColumnTextForButtonValue = true;
-                btnCol1.Click += BtnCol1_Click;
-                dgDataGW.Columns.Add(btnCol1);
+                //// 加入學生功能按鈕
+                //DataGridViewButtonXColumn btnCol1 = new DataGridViewButtonXColumn();
+                //btnCol1.Name = "學生通知單";
+                //btnCol1.HeaderText = "學生通知單";
+                //btnCol1.Text = "列印";
+                //btnCol1.Width = 100;
+                //btnCol1.UseColumnTextForButtonValue = true;
+                //btnCol1.Click += BtnCol1_Click;
+                //dgDataGW.Columns.Add(btnCol1);
 
-                // 加入班級功能按鈕
-                DataGridViewButtonXColumn btnCol2 = new DataGridViewButtonXColumn();
-                btnCol2.Name = "班級通知單";
-                btnCol2.HeaderText = "班級通知單";
-                btnCol2.Text = "列印";
-                btnCol2.Width = 100;
-                btnCol2.UseColumnTextForButtonValue = true;
-                btnCol2.Click += BtnCol2_Click;
-                dgDataGW.Columns.Add(btnCol2);
+                //// 加入班級功能按鈕
+                //DataGridViewButtonXColumn btnCol2 = new DataGridViewButtonXColumn();
+                //btnCol2.Name = "班級通知單";
+                //btnCol2.HeaderText = "班級通知單";
+                //btnCol2.Text = "列印";
+                //btnCol2.Width = 100;
+                //btnCol2.UseColumnTextForButtonValue = true;
+                //btnCol2.Click += BtnCol2_Click;
+                //dgDataGW.Columns.Add(btnCol2);
 
-                // 加入學生待處理
-                DataGridViewButtonXColumn btnCol3 = new DataGridViewButtonXColumn();
-                btnCol3.Name = "學生待處理";
-                btnCol3.HeaderText = "學生待處理";
-                btnCol3.Text = "加入";
-                btnCol3.Width = 80;
-                btnCol3.UseColumnTextForButtonValue = true;
-                btnCol3.Click += BtnCol3_Click;
-                dgDataGW.Columns.Add(btnCol3);
+                //// 加入學生待處理
+                //DataGridViewButtonXColumn btnCol3 = new DataGridViewButtonXColumn();
+                //btnCol3.Name = "學生待處理";
+                //btnCol3.HeaderText = "學生待處理";
+                //btnCol3.Text = "加入";
+                //btnCol3.Width = 80;
+                //btnCol3.UseColumnTextForButtonValue = true;
+                //btnCol3.Click += BtnCol3_Click;
+                //dgDataGW.Columns.Add(btnCol3);
 
             }
             catch (Exception ex)
@@ -1628,7 +1893,7 @@ namespace SHGraduationWarning.UIForm
 
                         dgDataChkEdit.Rows.Clear();
                         lblMsg.Text = "共0筆";
-                        btnUpdate.Enabled = btnDel.Enabled = false;
+
                     }
                 }
             }
@@ -1665,34 +1930,13 @@ namespace SHGraduationWarning.UIForm
 
                         dgDataChkEdit.Rows.Clear();
                         lblMsg.Text = "共0筆";
-                        btnUpdate.Enabled = btnDel.Enabled = false;
+
                     }
                 }
             }
         }
         private void btnQuery_Click(object sender, EventArgs e)
         {
-            //// 測試呼叫畢業檢查核心
-            //AccessHelper accessHelper = new AccessHelper();
-            //SmartSchool.Customization.Data.StudentRecord studentRec = accessHelper.StudentHelper.GetStudent("35748");
-            //new SmartSchool.Evaluation.WearyDogComputer().FillStudentGradCheck(accessHelper, new List<SmartSchool.Customization.Data.StudentRecord>() { studentRec });
-            //if (studentRec.Fields.ContainsKey("GrandCheckReport"))
-            //{
-            //    XmlElement xmlElement = studentRec.Fields["GrandCheckReport"] as XmlElement;
-            //    string path = System.IO.Path.Combine(Application.StartupPath, "Reports");
-            //    if (!Directory.Exists(path))
-            //        Directory.CreateDirectory(path);
-
-            //    string filePath = System.IO.Path.Combine(path, "畢業驗證.xml");
-
-            //    xmlElement.OwnerDocument.Save(filePath);
-
-            //    foreach (XmlElement elm in xmlElement.SelectNodes("項目"))
-            //    {
-            //        Console.WriteLine(elm.GetAttribute("規則"));
-            //    }
-            //}
-
 
             // 畢業預警
             if (SelectedTabName == GWTabName)
@@ -1766,6 +2010,8 @@ namespace SHGraduationWarning.UIForm
             buttonUpdateDSubjectName.Visible = false;
             LoadTabDesc();
             lblMsg.Text = "共0筆";
+            lnkSetReportTemplate.Visible = true;
+            btnReport.Enabled = false;
         }
 
         private void tbItemChkEdit_Click(object sender, EventArgs e)
@@ -1776,6 +2022,7 @@ namespace SHGraduationWarning.UIForm
             btnQuery.Enabled = true;
             LoadTabDesc();
             lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
+            lnkSetReportTemplate.Visible = false;
         }
 
 
@@ -1829,10 +2076,75 @@ namespace SHGraduationWarning.UIForm
             buttonUpdateDSubjectName.Visible = true;
             LoadTabDesc();
             //lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
+            lnkSetReportTemplate.Visible = false;
         }
 
         private void btnReport_Click(object sender, EventArgs e)
         {
+            // 畢業預警報表
+            if (SelectedTabName == GWTabName)
+            {
+                btnReport.Enabled = false;
+
+                // 取得範本
+                if (this.configure == null)
+                {
+                    FISCA.UDT.AccessHelper accessHelper = new FISCA.UDT.AccessHelper();
+                    List<Configure> Configures = new List<Configure>();
+                    Configures = accessHelper.Select<Configure>();
+                    foreach (Configure cf in Configures)
+                    {
+                        if (cf.Active)
+                        {
+                            this.configure = cf;
+                            this.configure.Decode();
+                            break;
+                        }
+                    }
+                }
+
+                if (this.configure == null)
+                {
+                    MsgBox.Show("沒有設定範本");
+                    btnReport.Enabled = true;
+                }
+                else
+                {
+                    if (this.configure.Template == null)
+                    {
+                        MsgBox.Show("沒有設定範本");
+                        btnReport.Enabled = true;
+                    }
+                }
+
+
+                bgwGrandCheckReport.RunWorkerAsync();
+
+
+
+                //// 測試呼叫畢業檢查核心
+                //AccessHelper accessHelper = new AccessHelper();
+                //SmartSchool.Customization.Data.StudentRecord studentRec = accessHelper.StudentHelper.GetStudent("35748");
+                //new SmartSchool.Evaluation.WearyDogComputer().FillStudentGradCheck(accessHelper, new List<SmartSchool.Customization.Data.StudentRecord>() { studentRec });
+                //if (studentRec.Fields.ContainsKey("GrandCheckReport"))
+                //{
+                //    XmlElement xmlElement = studentRec.Fields["GrandCheckReport"] as XmlElement;
+                //    string path = System.IO.Path.Combine(Application.StartupPath, "Reports");
+                //    if (!Directory.Exists(path))
+                //        Directory.CreateDirectory(path);
+
+                //    string filePath = System.IO.Path.Combine(path, "畢業驗證.xml");
+
+                //    xmlElement.OwnerDocument.Save(filePath);
+
+                //    foreach (XmlElement elm in xmlElement.SelectNodes("項目"))
+                //    {
+                //        Console.WriteLine(elm.GetAttribute("規則"));
+                //    }
+                //}
+
+            }
+
             if (SelectedTabName == ChkEditTabName)
             {
                 btnReport.Enabled = false;
@@ -1957,6 +2269,15 @@ namespace SHGraduationWarning.UIForm
             frmDesc frm = new frmDesc();
             frm.SetDesc(desc);
             frm.ShowDialog();
+        }
+
+        private void lnkSetReportTemplate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ConfigForm cf = new ConfigForm();
+            if (cf.ShowDialog() == DialogResult.OK)
+            {
+                this.configure = cf.Configure;
+            }
         }
     }
 }

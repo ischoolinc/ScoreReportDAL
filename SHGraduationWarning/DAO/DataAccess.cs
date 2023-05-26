@@ -3754,7 +3754,9 @@ namespace SHGraduationWarning.DAO
                 SELECT
                     *
                 FROM 
-                target_student;
+                    target_student 
+                ORDER BY 
+                    class_name,seat_no;
 ", condition);
 
                 DataTable dt = qh.Select(strSQL);
