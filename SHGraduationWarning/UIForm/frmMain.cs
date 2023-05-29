@@ -31,6 +31,9 @@ namespace SHGraduationWarning.UIForm
         // 選擇Tab名稱
         string SelectedTabName = "";
 
+        // 打勾符號
+        string chkMark = "√";
+
         string GWTabName = "畢業預警";
         string ChkEditTabName = "資料合理檢查_科目級別";
         string ChkEditTabName2 = "資料合理檢查_科目屬性";
@@ -270,7 +273,7 @@ namespace SHGraduationWarning.UIForm
             if (ReportStudentList.Count > 0)
             {
                 // 建立 Word 合併欄位表
-                StudDT.Clear();
+                StudDT.Columns.Clear();
                 StudDT.Columns.Add("目前學年度");
                 StudDT.Columns.Add("目前學期");
                 StudDT.Columns.Add("學校名稱");
@@ -321,14 +324,34 @@ namespace SHGraduationWarning.UIForm
                     }
                 }
 
-                // 核心科目表固定
+                // 產生核心科目合併欄位，分2類：
+                // 修課學分數統計
                 for (int i = 1; i <= 5; i++)
                 {
-                    StudDT.Columns.Add("核心科目表序號" + i + "_名稱");
-                    foreach (string r1 in ruColList)
+                    StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_名稱");
+                    StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_規則");
+                    foreach (string r2 in ruColList)
                     {
-                        StudDT.Columns.Add("核心科目表序號" + i + "_修課學分數統計_" + r1);
-                        StudDT.Columns.Add("核心科目表序號" + i + "_取得學分數統計" + r1);
+                        StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_" + r2);
+                    }
+                    foreach (string r2 in ruColList1)
+                    {
+                        StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_" + r2);
+                    }
+                }
+
+                // 取得學分數統計
+                for (int i = 1; i <= 5; i++)
+                {
+                    StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_名稱");
+                    StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_規則");
+                    foreach (string r2 in ruColList)
+                    {
+                        StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_" + r2);
+                    }
+                    foreach (string r2 in ruColList1)
+                    {
+                        StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_" + r2);
                     }
                 }
 
@@ -359,8 +382,31 @@ namespace SHGraduationWarning.UIForm
 
                 }
 
+                // 處理固定規則檢查，可補考、可重修 符合打勾欄位
+                // // 科目1_應修總學分數_可補考重修_打勾
+                foreach (string name in ruList)
+                {
+                    for (int i = 1; i <= 30; i++)
+                    {
+                        StudDT.Columns.Add("科目" + i + "_" + name + "_可補修重修_打勾");
+                    }
+                }
 
-
+                // 核心科目表科目符合規則可補修可重修打勾
+                for (int i = 1; i <= 5; i++)
+                {
+                    for (int j = 1; j <= 30; j++)
+                    {
+                        StudDT.Columns.Add("科目" + j + "_修課學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
+                    }
+                }
+                for (int i = 1; i <= 5; i++)
+                {
+                    for (int j = 1; j <= 30; j++)
+                    {
+                        StudDT.Columns.Add("科目" + j + "_取得學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
+                    }
+                }
 
                 // 填資料至 DataTable
                 foreach (ReportStudentInfo rs in ReportStudentList)
@@ -382,54 +428,78 @@ namespace SHGraduationWarning.UIForm
                     {
                         if (xmlRule.GetAttribute("啟用") == "是")
                         {
-                            // 處理固定規則統計
                             string Rule = xmlRule.GetAttribute("規則");
-                            foreach (string ruCol in ruColList)
+                            //處理一般
+                            if (xmlRule.GetAttribute("核心科目表序號") == "")
                             {
-                                string key = Rule + "_" + ruCol;
-                                if (StudDT.Columns.Contains(key))
-                                {
-                                    dr[key] = xmlRule.GetAttribute(ruCol);
-                                }
-                            }
-
-                            // 處理 預警統計
-                            foreach (XmlElement xmlRuleC in xmlRule.SelectNodes("預警統計"))
-                            {
-                                foreach (string ruCol in ruColList1)
+                                // 處理固定規則統計                                
+                                foreach (string ruCol in ruColList)
                                 {
                                     string key = Rule + "_" + ruCol;
                                     if (StudDT.Columns.Contains(key))
                                     {
-                                        dr[key] = xmlRuleC.GetAttribute(ruCol);
+                                        dr[key] = xmlRule.GetAttribute(ruCol);
+                                    }
+                                }
+
+                                // 處理 預警統計
+                                foreach (XmlElement xmlRuleC in xmlRule.SelectNodes("預警統計"))
+                                {
+                                    foreach (string ruCol in ruColList1)
+                                    {
+                                        string key = Rule + "_" + ruCol;
+                                        if (StudDT.Columns.Contains(key))
+                                        {
+                                            dr[key] = xmlRuleC.GetAttribute(ruCol);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // 核心科目表
+                                string c_key1 = xmlRule.GetAttribute("類型") + "_核心科目表序號" + xmlRule.GetAttribute("核心科目表序號") + "_名稱";
+                                if (StudDT.Columns.Contains(c_key1))
+                                {
+                                    dr[c_key1] = xmlRule.GetAttribute("核心科目表名稱");
+                                }
+
+                                string c_key2 = xmlRule.GetAttribute("類型") + "_核心科目表序號" + xmlRule.GetAttribute("核心科目表序號") + "_規則";
+
+                                // 建立核心科目規則對照
+                                if (!rs.dicCoreSubjectRule.ContainsKey(Rule))
+                                    rs.dicCoreSubjectRule.Add(Rule, c_key2);
+
+                                if (StudDT.Columns.Contains(c_key2))
+                                {
+                                    dr[c_key2] = Rule;
+                                }
+
+                                // 處理固定規則統計                                
+                                foreach (string ruCol in ruColList)
+                                {
+                                    string key = xmlRule.GetAttribute("類型") + "_核心科目表序號" + xmlRule.GetAttribute("核心科目表序號") + "_" + ruCol;
+                                    if (StudDT.Columns.Contains(key))
+                                    {
+                                        dr[key] = xmlRule.GetAttribute(ruCol);
+                                    }
+                                }
+
+                                // 處理 預警統計
+                                foreach (XmlElement xmlRuleC in xmlRule.SelectNodes("預警統計"))
+                                {
+                                    foreach (string ruCol in ruColList1)
+                                    {
+                                        string key = xmlRule.GetAttribute("類型") + "_核心科目表序號" + xmlRule.GetAttribute("核心科目表序號") + "_" + ruCol;
+                                        if (StudDT.Columns.Contains(key))
+                                        {
+                                            dr[key] = xmlRuleC.GetAttribute(ruCol);
+                                        }
                                     }
                                 }
                             }
 
-                            // 處理核心科目
-                            string coreId = xmlRule.GetAttribute("核心科目表序號");
-                            if (coreId != "")
-                            {
-                                string cidKeyName = "核心科目表序號" + coreId + "_名稱";
-                                string cidKey = "核心科目表序號" + coreId + "_修課學分數統計_設定值";
-                                string cidKey2 = "核心科目表序號" + coreId + "_取得學分數統計_設定值";
-                                if (StudDT.Columns.Contains(cidKeyName))
-                                {
-                                    dr[cidKeyName] = xmlRule.GetAttribute("核心科目表名稱");
-                                }
 
-                                if (StudDT.Columns.Contains(cidKeyName))
-                                {
-                                    if (xmlRule.GetAttribute("類型") == "修課學分數統計")
-                                        dr[cidKey] = xmlRule.GetAttribute("設定值");
-                                }
-
-                                if (StudDT.Columns.Contains(cidKeyName))
-                                {
-                                    if (xmlRule.GetAttribute("類型") == "取得學分數統計")
-                                        dr[cidKey2] = xmlRule.GetAttribute("設定值");
-                                }
-                            }
 
                             // 處理 功過相抵未滿三大過
                             if (Rule == "功過相抵未滿三大過")
@@ -454,10 +524,10 @@ namespace SHGraduationWarning.UIForm
                                     if (!rs.dicRetake.ContainsKey(sKey))
                                         rs.dicRetake.Add(sKey, xmlRuleS);
 
-                                    // 規則
-                                    if (!rs.dicRetaleRelate.ContainsKey(sKey))
-                                        rs.dicRetaleRelate.Add(sKey, new List<string>());
-                                    rs.dicRetaleRelate[sKey].Add(Rule);
+                                    // 整理符合規則的科目與級別
+                                    if (!rs.dicRetaleRelate.ContainsKey(Rule))
+                                        rs.dicRetaleRelate.Add(Rule, new List<string>());
+                                    rs.dicRetaleRelate[Rule].Add(sKey);
                                 }
                             }
                         }
@@ -467,6 +537,7 @@ namespace SHGraduationWarning.UIForm
                     int sKeyIdx = 1;
                     foreach (string sKey in rs.dicRetake.Keys)
                     {
+                        // 處理科目屬性填入
                         foreach (string name in colN1List)
                         {
                             string sK1 = "科目" + sKeyIdx + "_" + name;
@@ -474,8 +545,34 @@ namespace SHGraduationWarning.UIForm
                             {
                                 dr[sK1] = rs.dicRetake[sKey].GetAttribute(name);
                             }
-
                         }
+
+                        // 處理符合規則打勾
+                        // 科目1_應修總學分數_可補修重修_打勾
+                        foreach (string key in rs.dicRetaleRelate.Keys)
+                        {
+                            if (rs.dicRetaleRelate[key].Contains(sKey))
+                            {
+                                string rKey = "科目" + sKeyIdx + "_" + key + "_可補修重修_打勾";
+
+                                if (StudDT.Columns.Contains(rKey))
+                                {
+                                    dr[rKey] = chkMark;
+                                }
+                            
+                                // 處理核心科目規則
+                                if (rs.dicCoreSubjectRule.ContainsKey(key))
+                                {
+                                    rKey = "科目" + sKeyIdx + "_"+rs.dicCoreSubjectRule[key] + "_可補修重修_打勾";
+                                    if (StudDT.Columns.Contains(rKey))
+                                    {
+                                        dr[rKey] = chkMark;
+                                    }
+                                }
+                            
+                            }                           
+                        }
+
                         sKeyIdx++;
                     }
 

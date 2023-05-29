@@ -49,16 +49,20 @@ namespace SHGraduationWarning
             };
             bkw.RunWorkerCompleted += delegate
             {
+                int activeIndex = 0, idx = 0;
                 cboConfigure.Items.Clear();
                 foreach (var item in _Configures)
                 {
+                    if (item.Active)
+                        activeIndex = idx;
                     cboConfigure.Items.Add(item);
+                    idx += 1;
                 }
                 cboConfigure.Items.Add(new Configure() { Name = "新增" });
 
                 if (_Configures.Count > 0)
                 {
-                    cboConfigure.SelectedIndex = 0;
+                    cboConfigure.SelectedIndex = activeIndex;
                 }
                 else
                 {
@@ -119,6 +123,15 @@ namespace SHGraduationWarning
         private void SaveTemplate(object sender, EventArgs e)
         {
             if (Configure == null) return;
+
+            // 現在全部正在使用設成 false
+            foreach (var item in _Configures)
+            {
+                item.Active = false;
+            }
+            _Configures.SaveAll();
+
+            // 將目前使用設成 true
             Configure.Active = true;
             Configure.Encode();
             
