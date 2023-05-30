@@ -33,7 +33,7 @@ namespace SHGraduationWarning.UIForm
 
         // 打勾符號
         string chkMark = "✔";
-        
+
         string GWTabName = "畢業預警";
         string ChkEditTabName = "資料合理檢查_科目級別";
         string ChkEditTabName2 = "資料合理檢查_科目屬性";
@@ -114,8 +114,11 @@ namespace SHGraduationWarning.UIForm
         // 資料合理檢查報告--報部科目名稱使用
         List<DataRow> chkDataDSubject;
 
+        // 僅顯示未達畢業標準
+        bool isChkNotUptoGStandard = false;
         public frmMain()
         {
+
             _ColIdxDict = new Dictionary<string, int>();
             GPlanDict = new Dictionary<string, GPlanInfo>();
             UpdateSubjectInfoList = new List<StudSubjectInfo>();
@@ -265,7 +268,7 @@ namespace SHGraduationWarning.UIForm
             }
 
             this.btnReport.Enabled = true;
-            
+
         }
 
         private void BgwGrandCheckReport_DoWork(object sender, DoWorkEventArgs e)
@@ -285,6 +288,7 @@ namespace SHGraduationWarning.UIForm
             StudDT.Columns.Add("學號");
             StudDT.Columns.Add("成績計算規則");
             StudDT.Columns.Add("課程規劃表");
+            StudDT.Columns.Add("畢業審查");
 
             // 規則
             List<string> ruList = new List<string>();
@@ -416,6 +420,10 @@ namespace SHGraduationWarning.UIForm
                 // 填資料至 DataTable
                 foreach (ReportStudentInfo rs in ReportStudentList)
                 {
+                    // 判斷僅顯示不通過
+                    if (isChkNotUptoGStandard && rs.GraduationCheck == "通過")
+                        continue;
+
                     DataRow dr = StudDT.NewRow();
                     dr["目前學年度"] = K12.Data.School.DefaultSchoolYear;
                     dr["目前學期"] = K12.Data.School.DefaultSemester;
@@ -427,6 +435,8 @@ namespace SHGraduationWarning.UIForm
                     dr["姓名"] = rs.GraGrandCheckXml.GetAttribute("姓名");
                     dr["課程規劃表"] = rs.GraGrandCheckXml.GetAttribute("課程規劃表");
                     dr["成績計算規則"] = rs.GraGrandCheckXml.GetAttribute("成績計算規則");
+                    dr["畢業審查"] = rs.GraGrandCheckXml.GetAttribute("畢業審查");
+
 
                     //Console.WriteLine(rs.GraGrandCheckXml.OuterXml);
                     foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
@@ -564,18 +574,18 @@ namespace SHGraduationWarning.UIForm
                                 {
                                     dr[rKey] = chkMark;
                                 }
-                            
+
                                 // 處理核心科目規則
                                 if (rs.dicCoreSubjectRule.ContainsKey(key))
                                 {
-                                    rKey = "科目" + sKeyIdx + "_"+rs.dicCoreSubjectRule[key] + "_可補修重修_打勾";
+                                    rKey = "科目" + sKeyIdx + "_" + rs.dicCoreSubjectRule[key] + "_可補修重修_打勾";
                                     if (StudDT.Columns.Contains(rKey))
                                     {
                                         dr[rKey] = chkMark;
                                     }
                                 }
-                            
-                            }                           
+
+                            }
                         }
 
                         sKeyIdx++;
@@ -595,7 +605,7 @@ namespace SHGraduationWarning.UIForm
                     e.Result = doc;
                 }
             }
-            
+
             bgwGrandCheckReport.ReportProgress(100);
         }
 
@@ -1258,22 +1268,7 @@ namespace SHGraduationWarning.UIForm
         private void BgwDataGWLoad_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
-            dgDataGW.Rows.Clear();
-
-            if (ReportStudentList.Count > 0)
-            {
-                foreach (ReportStudentInfo rs in ReportStudentList)
-                {
-                    int rowIdx = dgDataGW.Rows.Add();
-                    dgDataGW.Rows[rowIdx].Cells["學號"].Value = rs.StudentNumber;
-                    dgDataGW.Rows[rowIdx].Cells["班級"].Value = rs.ClassName;
-                    dgDataGW.Rows[rowIdx].Cells["座號"].Value = rs.SeatNo;
-                    dgDataGW.Rows[rowIdx].Cells["姓名"].Value = rs.StudentName;
-                }
-
-            }
-
-            lblMsg.Text = "共" + dgDataGW.Rows.Count + "筆";
+            ReloadDataGridViewGW();
             ControlEnable(true);
 
         }
@@ -1341,6 +1336,8 @@ namespace SHGraduationWarning.UIForm
                         if (ReportStudentDict.ContainsKey(studRec.StudentID))
                         {
                             ReportStudentDict[studRec.StudentID].GraGrandCheckXml = xmlElement;
+                            // 取得畢業審查結果
+                            ReportStudentDict[studRec.StudentID].GraduationCheck = xmlElement.GetAttribute("畢業審查");
                         }
                     }
                 }
@@ -1478,6 +1475,7 @@ namespace SHGraduationWarning.UIForm
             // 更新報部科目名稱按鈕
             buttonUpdateDSubjectName.Visible = false;
             lnkSetReportTemplate.Visible = false;
+            ChkNotUptoGStandard.Visible = false;
             ClearClassDept();
             SelectedTabName = ChkEditTabName;
             LoadTabDesc();
@@ -1591,6 +1589,12 @@ namespace SHGraduationWarning.UIForm
                             ""HeaderText"": ""姓名"",
                             ""Name"": ""姓名"",
                             ""Width"": 80,
+                            ""ReadOnly"": true
+                        },
+                        {
+                            ""HeaderText"": ""畢業審查"",
+                            ""Name"": ""畢業審查"",
+                            ""Width"": 90,
                             ""ReadOnly"": true
                         }
                     ]            
@@ -1954,21 +1958,6 @@ namespace SHGraduationWarning.UIForm
             }
         }
 
-        private void BtnCol3_Click(object sender, EventArgs e)
-        {
-            MsgBox.Show("學生待處理");
-        }
-
-        private void BtnCol2_Click(object sender, EventArgs e)
-        {
-            MsgBox.Show("班級通知單");
-        }
-
-        private void BtnCol1_Click(object sender, EventArgs e)
-        {
-            MsgBox.Show("學生通知單");
-        }
-
         private void btnDel_Click(object sender, EventArgs e)
         {
             // 資料合理檢查 -- 科目級別
@@ -2045,6 +2034,10 @@ namespace SHGraduationWarning.UIForm
             if (SelectedTabName == GWTabName)
             {
                 ControlEnable(false);
+
+                // 檢查僅顯示未達設定
+                isChkNotUptoGStandard = ChkNotUptoGStandard.Checked;
+
                 bgwDataGWLoad.RunWorkerAsync();
             }
 
@@ -2111,6 +2104,7 @@ namespace SHGraduationWarning.UIForm
             SelectedTabName = GWTabName;
             btnQuery.Enabled = true;
             buttonUpdateDSubjectName.Visible = false;
+            ChkNotUptoGStandard.Visible = true;
             LoadTabDesc();
             lblMsg.Text = "共0筆";
             lnkSetReportTemplate.Visible = true;
@@ -2126,6 +2120,7 @@ namespace SHGraduationWarning.UIForm
             LoadTabDesc();
             lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
             lnkSetReportTemplate.Visible = false;
+            ChkNotUptoGStandard.Visible = false;
         }
 
 
@@ -2180,6 +2175,7 @@ namespace SHGraduationWarning.UIForm
             LoadTabDesc();
             //lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
             lnkSetReportTemplate.Visible = false;
+            ChkNotUptoGStandard.Visible = false;
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -2359,5 +2355,38 @@ namespace SHGraduationWarning.UIForm
                 this.configure = cf.Configure;
             }
         }
+
+        private void ChkNotUptoGStandard_CheckedChanged(object sender, EventArgs e)
+        {
+            isChkNotUptoGStandard = ChkNotUptoGStandard.Checked;
+            ReloadDataGridViewGW();
+        }
+
+        // 重整畢業預警審查畫面通過判斷
+        private void ReloadDataGridViewGW()
+        {
+            dgDataGW.Rows.Clear();
+            if (ReportStudentList.Count > 0)
+            {
+                foreach (ReportStudentInfo rs in ReportStudentList)
+                {
+                    // 畢業預警審查通過不顯示
+                    if (isChkNotUptoGStandard && rs.GraduationCheck == "通過")
+                        continue;
+
+                    int rowIdx = dgDataGW.Rows.Add();
+                    dgDataGW.Rows[rowIdx].Cells["學號"].Value = rs.StudentNumber;
+                    dgDataGW.Rows[rowIdx].Cells["班級"].Value = rs.ClassName;
+                    dgDataGW.Rows[rowIdx].Cells["座號"].Value = rs.SeatNo;
+                    dgDataGW.Rows[rowIdx].Cells["姓名"].Value = rs.StudentName;
+                    dgDataGW.Rows[rowIdx].Cells["畢業審查"].Value = rs.GraduationCheck;
+                }
+
+            }
+
+            lblMsg.Text = "共" + dgDataGW.Rows.Count + "筆";
+        }
+
+
     }
 }

@@ -18,26 +18,19 @@ namespace SHGraduationWarning
     public partial class ConfigForm : FISCA.Presentation.Controls.BaseForm
     {
         private FISCA.UDT.AccessHelper _AccessHelper = new FISCA.UDT.AccessHelper();
-        private Dictionary<string, List<string>> _ExamSubjects = new Dictionary<string, List<string>>();
-        private Dictionary<string, List<string>> _ExamSubjectFull = new Dictionary<string, List<string>>();
 
         private List<Configure> _Configures = new List<Configure>();
-        private string _DefalutSchoolYear = "";
-        private string _DefaultSemester = "";
 
         public ConfigForm()
         {
             InitializeComponent();
-            List<ExamRecord> exams = new List<ExamRecord>();
+
             BackgroundWorker bkw = new BackgroundWorker();
             bkw.DoWork += delegate
             {
-                bkw.ReportProgress(1);
+
                 bkw.ReportProgress(10);
-
-                bkw.ReportProgress(20);
-
-                bkw.ReportProgress(80);
+                bkw.ReportProgress(50);
                 _Configures = _AccessHelper.Select<Configure>();
                 bkw.ReportProgress(100);
 
@@ -51,6 +44,42 @@ namespace SHGraduationWarning
             {
                 int activeIndex = 0, idx = 0;
                 cboConfigure.Items.Clear();
+                //bool AddTemp1 = true, AddTemp2 = true;
+
+                //// 檢查是否有預設樣板
+                //foreach (var item in _Configures)
+                //{
+                //    if (item.Name == "普通高中個人畢業預警通知書樣版")
+                //    {
+                //        AddTemp1 = false;
+                //    }
+                //    if (item.Name == "技術型高中個人畢業預警通知書樣版")
+                //    {
+                //        AddTemp2 = false;
+                //    }
+                //}
+
+                //if (AddTemp1)
+                //{
+                //    Configure conf = new Configure();
+                //    conf.Name = "普通高中個人畢業預警通知書樣版";
+                //    conf.Template = new Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣版));
+
+                //    conf.Active = false;
+                //    conf.Encode();
+                //    _Configures.Add(conf);
+                //}
+                //if (AddTemp2)
+                //{
+                //    Configure conf2 = new Configure();
+                //    conf2.Name = "技術型高中個人畢業預警通知書樣版";
+                //    conf2.Template = new Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+                //    conf2.Active = false;
+                //    conf2.Encode();
+                //    _Configures.Add(conf2);
+                //}
+                //_Configures.SaveAll();
+
                 foreach (var item in _Configures)
                 {
                     if (item.Active)
@@ -134,7 +163,7 @@ namespace SHGraduationWarning
             // 將目前使用設成 true
             Configure.Active = true;
             Configure.Encode();
-            
+
             Configure.Save();
         }
 
@@ -243,9 +272,9 @@ namespace SHGraduationWarning
 
             try
             {
-             
+
                 System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-                this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Docx);             
+                this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Docx);
                 stream.Flush();
                 stream.Close();
                 System.Diagnostics.Process.Start(path);

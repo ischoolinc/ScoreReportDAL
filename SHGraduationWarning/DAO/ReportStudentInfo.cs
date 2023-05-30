@@ -39,8 +39,8 @@ namespace SHGraduationWarning.DAO
         // 規則,科目名稱+級別(存放符合可補修+可重修,規則與科目+級別清單)
         public Dictionary<string, List<string>> dicRetaleRelate = new Dictionary<string, List<string>>();
 
-        // 是否通過
-        public bool isPass { get; set; }
+        // 畢業審查是否通過
+        public string GraduationCheck = "";
 
         // 核心科目規則對照
         public Dictionary<string, string> dicCoreSubjectRule = new Dictionary<string, string>();
