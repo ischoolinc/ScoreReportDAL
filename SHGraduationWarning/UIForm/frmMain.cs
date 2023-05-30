@@ -294,6 +294,7 @@ namespace SHGraduationWarning.UIForm
             List<string> ruList = new List<string>();
             ruList.Add("應修總學分數");
             ruList.Add("應修所有必修課程");
+            ruList.Add("應修所有部定必修課程");
             ruList.Add("應修專業及實習總學分數");
             ruList.Add("總學分數");
             ruList.Add("必修學分數");
@@ -1511,7 +1512,7 @@ namespace SHGraduationWarning.UIForm
             btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnReport.Enabled = value;
 
             buttonUpdateDSubjectName.Enabled = value;
-
+            ChkNotUptoGStandard.Enabled = value;
             tabControl1.Enabled = value;
 
         }
