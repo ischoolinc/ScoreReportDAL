@@ -32,8 +32,8 @@ namespace SHGraduationWarning.UIForm
         string SelectedTabName = "";
 
         // 打勾符號
-        string chkMark = "√";
-
+        string chkMark = "✔";
+        
         string GWTabName = "畢業預警";
         string ChkEditTabName = "資料合理檢查_科目級別";
         string ChkEditTabName2 = "資料合理檢查_科目屬性";
@@ -256,158 +256,163 @@ namespace SHGraduationWarning.UIForm
                         }
                     }
                 }
+                doc = null;
+                GC.Collect();
             }
             catch (Exception ex)
             {
                 MsgBox.Show(ex.Message);
             }
 
-
             this.btnReport.Enabled = true;
+            
         }
 
         private void BgwGrandCheckReport_DoWork(object sender, DoWorkEventArgs e)
         {
-            bgwGrandCheckReport.ReportProgress(1);
+            bgwGrandCheckReport.ReportProgress(10);
+            StudDT.Clear();
+            StudDT.Columns.Clear();
+            // 建立 Word 合併欄位表
+            StudDT.Columns.Clear();
+            StudDT.Columns.Add("目前學年度");
+            StudDT.Columns.Add("目前學期");
+            StudDT.Columns.Add("學校名稱");
+            StudDT.Columns.Add("科別");
+            StudDT.Columns.Add("班級");
+            StudDT.Columns.Add("座號");
+            StudDT.Columns.Add("姓名");
+            StudDT.Columns.Add("學號");
+            StudDT.Columns.Add("成績計算規則");
+            StudDT.Columns.Add("課程規劃表");
 
+            // 規則
+            List<string> ruList = new List<string>();
+            ruList.Add("應修總學分數");
+            ruList.Add("應修所有必修課程");
+            ruList.Add("應修專業及實習總學分數");
+            ruList.Add("總學分數");
+            ruList.Add("必修學分數");
+            ruList.Add("部訂必修學分數");
+            ruList.Add("校訂必修學分數");
+            ruList.Add("選修學分數");
+            ruList.Add("專業及實習總學分數");
+            ruList.Add("實習學分數");
+
+            List<string> ruColList = new List<string>();
+            List<string> ruColList1 = new List<string>();
+            ruColList.Add("設定值");
+            ruColList.Add("課規總學分數");
+            ruColList.Add("通過標準");
+            ruColList.Add("累計學分");
+            ruColList1.Add("畢業差額");
+            ruColList1.Add("已修習");
+            ruColList1.Add("已取得");
+            ruColList1.Add("尚未開課");
+            ruColList1.Add("可重修");
+            ruColList1.Add("可補修");
+            ruColList1.Add("未修習");
+
+            foreach (string r1 in ruList)
+            {
+                foreach (string r2 in ruColList)
+                {
+                    StudDT.Columns.Add(r1 + "_" + r2);
+                }
+                foreach (string r2 in ruColList1)
+                {
+                    StudDT.Columns.Add(r1 + "_" + r2);
+                }
+            }
+
+            // 產生核心科目合併欄位，分2類：
+            // 修課學分數統計
+            for (int i = 1; i <= 5; i++)
+            {
+                StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_名稱");
+                StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_規則");
+                foreach (string r2 in ruColList)
+                {
+                    StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_" + r2);
+                }
+                foreach (string r2 in ruColList1)
+                {
+                    StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_" + r2);
+                }
+            }
+
+            // 取得學分數統計
+            for (int i = 1; i <= 5; i++)
+            {
+                StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_名稱");
+                StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_規則");
+                foreach (string r2 in ruColList)
+                {
+                    StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_" + r2);
+                }
+                foreach (string r2 in ruColList1)
+                {
+                    StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_" + r2);
+                }
+            }
+
+            // 功過相抵未滿三大過
+            List<string> ru3List = new List<string>();
+            ru3List.Add("設定值");
+            ru3List.Add("通過標準");
+            ru3List.Add("目前累計支數");
+            foreach (string r3 in ru3List)
+                StudDT.Columns.Add("功過相抵未滿三大過_" + r3);
+
+
+            // 處理科目
+            List<string> colN1List = new List<string>();
+            colN1List.Add("狀態");
+            colN1List.Add("修課學年度");
+            colN1List.Add("修課學期");
+            colN1List.Add("科目名稱");
+            colN1List.Add("科目級別");
+            colN1List.Add("學分數");
+            for (int s = 1; s <= 30; s++)
+            {
+                foreach (string cname in colN1List)
+                {
+                    StudDT.Columns.Add("科目" + s + "_" + cname);
+
+                }
+
+            }
+
+            // 處理固定規則檢查，可補考、可重修 符合打勾欄位
+            // // 科目1_應修總學分數_可補考重修_打勾
+            foreach (string name in ruList)
+            {
+                for (int i = 1; i <= 30; i++)
+                {
+                    StudDT.Columns.Add("科目" + i + "_" + name + "_可補修重修_打勾");
+                }
+            }
+
+            // 核心科目表科目符合規則可補修可重修打勾
+            for (int i = 1; i <= 5; i++)
+            {
+                for (int j = 1; j <= 30; j++)
+                {
+                    StudDT.Columns.Add("科目" + j + "_修課學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
+                }
+            }
+            for (int i = 1; i <= 5; i++)
+            {
+                for (int j = 1; j <= 30; j++)
+                {
+                    StudDT.Columns.Add("科目" + j + "_取得學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
+                }
+            }
+
+
+            // 填資料
             if (ReportStudentList.Count > 0)
             {
-                // 建立 Word 合併欄位表
-                StudDT.Columns.Clear();
-                StudDT.Columns.Add("目前學年度");
-                StudDT.Columns.Add("目前學期");
-                StudDT.Columns.Add("學校名稱");
-                StudDT.Columns.Add("科別");
-                StudDT.Columns.Add("班級");
-                StudDT.Columns.Add("座號");
-                StudDT.Columns.Add("姓名");
-                StudDT.Columns.Add("學號");
-                StudDT.Columns.Add("成績計算規則");
-                StudDT.Columns.Add("課程規劃表");
-
-                // 規則
-                List<string> ruList = new List<string>();
-                ruList.Add("應修總學分數");
-                ruList.Add("應修所有必修課程");
-                ruList.Add("應修專業及實習總學分數");
-                ruList.Add("總學分數");
-                ruList.Add("必修學分數");
-                ruList.Add("部訂必修學分數");
-                ruList.Add("校訂必修學分數");
-                ruList.Add("選修學分數");
-                ruList.Add("專業及實習總學分數");
-                ruList.Add("實習學分數");
-
-                List<string> ruColList = new List<string>();
-                List<string> ruColList1 = new List<string>();
-                ruColList.Add("設定值");
-                ruColList.Add("課規總學分數");
-                ruColList.Add("通過標準");
-                ruColList.Add("累計學分");
-                ruColList1.Add("畢業差額");
-                ruColList1.Add("已修習");
-                ruColList1.Add("已取得");
-                ruColList1.Add("尚未開課");
-                ruColList1.Add("可重修");
-                ruColList1.Add("可補修");
-                ruColList1.Add("未修習");
-
-                foreach (string r1 in ruList)
-                {
-                    foreach (string r2 in ruColList)
-                    {
-                        StudDT.Columns.Add(r1 + "_" + r2);
-                    }
-                    foreach (string r2 in ruColList1)
-                    {
-                        StudDT.Columns.Add(r1 + "_" + r2);
-                    }
-                }
-
-                // 產生核心科目合併欄位，分2類：
-                // 修課學分數統計
-                for (int i = 1; i <= 5; i++)
-                {
-                    StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_名稱");
-                    StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_規則");
-                    foreach (string r2 in ruColList)
-                    {
-                        StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_" + r2);
-                    }
-                    foreach (string r2 in ruColList1)
-                    {
-                        StudDT.Columns.Add("修課學分數統計_核心科目表序號" + i + "_" + r2);
-                    }
-                }
-
-                // 取得學分數統計
-                for (int i = 1; i <= 5; i++)
-                {
-                    StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_名稱");
-                    StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_規則");
-                    foreach (string r2 in ruColList)
-                    {
-                        StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_" + r2);
-                    }
-                    foreach (string r2 in ruColList1)
-                    {
-                        StudDT.Columns.Add("取得學分數統計_核心科目表序號" + i + "_" + r2);
-                    }
-                }
-
-                // 功過相抵未滿三大過
-                List<string> ru3List = new List<string>();
-                ru3List.Add("設定值");
-                ru3List.Add("通過標準");
-                ru3List.Add("目前累計支數");
-                foreach (string r3 in ru3List)
-                    StudDT.Columns.Add("功過相抵未滿三大過_" + r3);
-
-
-                // 處理科目
-                List<string> colN1List = new List<string>();
-                colN1List.Add("狀態");
-                colN1List.Add("修課學年度");
-                colN1List.Add("修課學期");
-                colN1List.Add("科目名稱");
-                colN1List.Add("科目級別");
-                colN1List.Add("學分數");
-                for (int s = 1; s <= 30; s++)
-                {
-                    foreach (string cname in colN1List)
-                    {
-                        StudDT.Columns.Add("科目" + s + "_" + cname);
-
-                    }
-
-                }
-
-                // 處理固定規則檢查，可補考、可重修 符合打勾欄位
-                // // 科目1_應修總學分數_可補考重修_打勾
-                foreach (string name in ruList)
-                {
-                    for (int i = 1; i <= 30; i++)
-                    {
-                        StudDT.Columns.Add("科目" + i + "_" + name + "_可補修重修_打勾");
-                    }
-                }
-
-                // 核心科目表科目符合規則可補修可重修打勾
-                for (int i = 1; i <= 5; i++)
-                {
-                    for (int j = 1; j <= 30; j++)
-                    {
-                        StudDT.Columns.Add("科目" + j + "_修課學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
-                    }
-                }
-                for (int i = 1; i <= 5; i++)
-                {
-                    for (int j = 1; j <= 30; j++)
-                    {
-                        StudDT.Columns.Add("科目" + j + "_取得學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
-                    }
-                }
-
                 // 填資料至 DataTable
                 foreach (ReportStudentInfo rs in ReportStudentList)
                 {
@@ -583,13 +588,14 @@ namespace SHGraduationWarning.UIForm
                 // 合併
                 if (this.configure != null)
                 {
-                    Document doc = configure.Template;
+                    bgwGrandCheckReport.ReportProgress(50);
+                    Document doc = configure.Template.Clone();
                     doc.MailMerge.Execute(StudDT);
                     doc.MailMerge.DeleteFields();
                     e.Result = doc;
                 }
             }
-
+            
             bgwGrandCheckReport.ReportProgress(100);
         }
 
@@ -1246,7 +1252,7 @@ namespace SHGraduationWarning.UIForm
 
         private void BgwDataGWLoad_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("畢業預計檢查中...", e.ProgressPercentage);
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("畢業預警檢查中...", e.ProgressPercentage);
         }
 
         private void BgwDataGWLoad_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -2204,6 +2210,7 @@ namespace SHGraduationWarning.UIForm
                 {
                     MsgBox.Show("沒有設定範本");
                     btnReport.Enabled = true;
+                    return;
                 }
                 else
                 {
@@ -2211,34 +2218,10 @@ namespace SHGraduationWarning.UIForm
                     {
                         MsgBox.Show("沒有設定範本");
                         btnReport.Enabled = true;
+                        return;
                     }
                 }
-
-
                 bgwGrandCheckReport.RunWorkerAsync();
-
-
-
-                //// 測試呼叫畢業檢查核心
-                //AccessHelper accessHelper = new AccessHelper();
-                //SmartSchool.Customization.Data.StudentRecord studentRec = accessHelper.StudentHelper.GetStudent("35748");
-                //new SmartSchool.Evaluation.WearyDogComputer().FillStudentGradCheck(accessHelper, new List<SmartSchool.Customization.Data.StudentRecord>() { studentRec });
-                //if (studentRec.Fields.ContainsKey("GrandCheckReport"))
-                //{
-                //    XmlElement xmlElement = studentRec.Fields["GrandCheckReport"] as XmlElement;
-                //    string path = System.IO.Path.Combine(Application.StartupPath, "Reports");
-                //    if (!Directory.Exists(path))
-                //        Directory.CreateDirectory(path);
-
-                //    string filePath = System.IO.Path.Combine(path, "畢業驗證.xml");
-
-                //    xmlElement.OwnerDocument.Save(filePath);
-
-                //    foreach (XmlElement elm in xmlElement.SelectNodes("項目"))
-                //    {
-                //        Console.WriteLine(elm.GetAttribute("規則"));
-                //    }
-                //}
 
             }
 
