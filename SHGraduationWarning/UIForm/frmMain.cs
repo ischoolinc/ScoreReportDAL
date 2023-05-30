@@ -378,7 +378,8 @@ namespace SHGraduationWarning.UIForm
             colN1List.Add("科目名稱");
             colN1List.Add("科目級別");
             colN1List.Add("學分數");
-            for (int s = 1; s <= 30; s++)
+            int maxSubj = 50;
+            for (int s = 1; s <= maxSubj; s++)
             {
                 foreach (string cname in colN1List)
                 {
@@ -392,7 +393,7 @@ namespace SHGraduationWarning.UIForm
             // // 科目1_應修總學分數_可補考重修_打勾
             foreach (string name in ruList)
             {
-                for (int i = 1; i <= 30; i++)
+                for (int i = 1; i <= maxSubj; i++)
                 {
                     StudDT.Columns.Add("科目" + i + "_" + name + "_可補修重修_打勾");
                 }
@@ -401,7 +402,7 @@ namespace SHGraduationWarning.UIForm
             // 核心科目表科目符合規則可補修可重修打勾
             for (int i = 1; i <= 5; i++)
             {
-                for (int j = 1; j <= 30; j++)
+                for (int j = 1; j <= maxSubj; j++)
                 {
                     StudDT.Columns.Add("科目" + j + "_修課學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
                 }
@@ -436,7 +437,16 @@ namespace SHGraduationWarning.UIForm
                     dr["姓名"] = rs.GraGrandCheckXml.GetAttribute("姓名");
                     dr["課程規劃表"] = rs.GraGrandCheckXml.GetAttribute("課程規劃表");
                     dr["成績計算規則"] = rs.GraGrandCheckXml.GetAttribute("成績計算規則");
-                    dr["畢業審查"] = rs.GraGrandCheckXml.GetAttribute("畢業審查");
+                    if (rs.GraGrandCheckXml.GetAttribute("畢業審查") == "通過")
+                    {
+                        dr["畢業審查"] = "符合畢業標準";
+                    }
+                    else if (rs.GraGrandCheckXml.GetAttribute("畢業審查") == "不通過")
+                    {
+                        dr["畢業審查"] = "未達畢業標準";
+                    }
+                    else
+                        dr["畢業審查"] = "";
 
 
                     //Console.WriteLine(rs.GraGrandCheckXml.OuterXml);
@@ -1595,7 +1605,7 @@ namespace SHGraduationWarning.UIForm
                         {
                             ""HeaderText"": ""畢業審查"",
                             ""Name"": ""畢業審查"",
-                            ""Width"": 90,
+                            ""Width"": 110,
                             ""ReadOnly"": true
                         }
                     ]            
@@ -2380,7 +2390,21 @@ namespace SHGraduationWarning.UIForm
                     dgDataGW.Rows[rowIdx].Cells["班級"].Value = rs.ClassName;
                     dgDataGW.Rows[rowIdx].Cells["座號"].Value = rs.SeatNo;
                     dgDataGW.Rows[rowIdx].Cells["姓名"].Value = rs.StudentName;
-                    dgDataGW.Rows[rowIdx].Cells["畢業審查"].Value = rs.GraduationCheck;
+
+                    if (rs.GraduationCheck == "通過")
+                    {
+                        dgDataGW.Rows[rowIdx].Cells["畢業審查"].Value = "符合畢業標準";
+                    }
+                    else if (rs.GraduationCheck == "不通過")
+                    {
+                        dgDataGW.Rows[rowIdx].Cells["畢業審查"].Value = "未達畢業標準";
+                    }
+                    else
+                    {
+                        dgDataGW.Rows[rowIdx].Cells["畢業審查"].Value = "";
+                    }
+
+
                 }
 
             }
