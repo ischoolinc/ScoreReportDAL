@@ -159,6 +159,7 @@
     <Compile Include="DAO\DataGridViewTextBoxColumnInfo.cs" />
     <Compile Include="DAO\GPlanInfo.cs" />
     <Compile Include="DAO\GPlanSubjectInfo.cs" />
+    <Compile Include="DAO\ReportClassInfo.cs" />
     <Compile Include="DAO\ReportStudentInfo.cs" />
     <Compile Include="DAO\SemsScoreInfo.cs" />
     <Compile Include="DAO\StudGraduationCheckInfo.cs" />
@@ -264,6 +265,7 @@
     <None Include="Template\學期成績與課規比對樣板.xlsx" />
     <None Include="Template\技術型高中個人畢業預警通知書樣版.docx" />
     <None Include="Template\普通高中個人畢業預警通知書樣版.docx" />
+    <None Include="Template\班級預警報表樣板.xlsx" />
     <None Include="Template\畢業預警通知單合併欄位總表.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

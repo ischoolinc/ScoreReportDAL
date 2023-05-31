@@ -3782,6 +3782,104 @@ namespace SHGraduationWarning.DAO
             return value;
         }
 
+
+        // 取得報表用班級id
+        public static List<ReportClassInfo> GetReportClassList(string GradeYear, string DeptID, string ClassID)
+        {
+            List<ReportClassInfo> value = new List<ReportClassInfo>();
+            try
+            {
+                // 取得科別對照
+                Dictionary<string, string> deptDict = GetDeptIDNameDict();
+
+                string condition = @"
+                    SELECT
+                        " + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+                        NULL :: INTEGER AS class_id,
+                        NULL :: INTEGER AS dept_id
+                ";
+
+
+                // SELECT 3::INT AS grade_year -- NULL時為全部年級
+                //	           , NULL::TEXT AS dept_name--NULL時為全部科別
+
+                if (!string.IsNullOrEmpty(DeptID))
+                {
+                    condition = @"
+                    SELECT                        
+                        NULL :: INTEGER AS class_id,
+                        " + DeptID + " AS dept_id," +
+                        "" + GradeYear + " AS grade_year ";
+                }
+
+
+                if (!string.IsNullOrEmpty(ClassID))
+                {
+                    condition = @"
+                    SELECT                        
+                        " + ClassID + " AS class_id," +
+                        "" + DeptID + " AS dept_id," +
+                    "" + GradeYear + " AS grade_year ";
+                }
+
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+                 WITH row AS(
+	               {0}
+                ),
+                target_student AS(
+	                SELECT DISTINCT                         
+		                class.id AS class_id,
+		                class.class_name,						
+						teacher.teacher_name 
+	                FROM
+		                row
+		                INNER JOIN class
+			                       ON (
+                                   class.grade_year = row.grade_year 
+				                   AND ( 
+                                        row.class_id is null 
+                                        OR class.id = row.class_id
+                                    )   
+			                    )
+		                INNER JOIN student
+			                ON student.ref_class_id = class.id
+			                AND student.status IN (1, 2)
+		                INNER JOIN dept
+			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+			                AND (
+				                row.dept_id IS NULL
+				                 OR dept.id = row.dept_id
+			                ) 
+						LEFT JOIN teacher 
+							ON class.ref_teacher_id = teacher.id
+                )
+                SELECT
+                    *
+                FROM 
+                    target_student 
+                ORDER BY 
+                    class_name;
+", condition);
+
+                DataTable dt = qh.Select(strSQL);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ReportClassInfo rc = new ReportClassInfo();                    
+                    rc.ClassID = dr["class_id"] + "";
+                    rc.ClassName = dr["class_name"] + "";                   
+                    rc.TeacherName = dr["teacher_name"] + "";
+                    value.Add(rc);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
         // 比對課程規畫表SQL(學期科目成績為主比對課規)(未分年級)
         public static List<StudSubjectInfo> GetSemsSubjectLevelCheckGraduationPlan1NoGradeYear(string GradeYear, string DeptID, string ClassID)
         {
