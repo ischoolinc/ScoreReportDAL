@@ -147,6 +147,16 @@ namespace SHGraduationWarning.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] 畢業審查學生清單樣板 {
+            get {
+                object obj = ResourceManager.GetObject("畢業審查學生清單樣板", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] 畢業預警通知單合併欄位總表 {
             get {
                 object obj = ResourceManager.GetObject("畢業預警通知單合併欄位總表", resourceCulture);

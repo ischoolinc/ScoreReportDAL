@@ -44,5 +44,6 @@ namespace SHGraduationWarning.DAO
 
         // 核心科目規則對照
         public Dictionary<string, string> dicCoreSubjectRule = new Dictionary<string, string>();
+
     }
 }

@@ -266,6 +266,7 @@
     <None Include="Template\技術型高中個人畢業預警通知書樣版.docx" />
     <None Include="Template\普通高中個人畢業預警通知書樣版.docx" />
     <None Include="Template\班級預警報表樣板.xlsx" />
+    <None Include="Template\畢業審查學生清單樣板.xlsx" />
     <None Include="Template\畢業預警通知單合併欄位總表.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
