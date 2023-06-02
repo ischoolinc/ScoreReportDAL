@@ -20,10 +20,10 @@ namespace SHGraduationWarning.DAO
         // 班導師
         public string TeacherName { get; set; }
 
-        // 報表欄位索引
-        public Dictionary<string, int> dicColumnIndex = new Dictionary<string, int>();
+        // 符合規則名稱與規則
+        public Dictionary<string, List<string>> dicClassRule = new Dictionary<string, List<string>>();
 
-        // 符合規則名稱
-        public List<string> RuleList = new List<string>();
+        // 班級最大欄位索引
+        public int MaxColumnIndex = 0;
     }
 }

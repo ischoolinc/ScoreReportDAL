@@ -338,8 +338,7 @@ namespace SHGraduationWarning.UIForm
             // 清空班級暫存資料
             foreach (string id in ReportClassDict.Keys)
             {
-                ReportClassDict[id].RuleList.Clear();
-                ReportClassDict[id].dicColumnIndex.Clear();
+                ReportClassDict[id].dicClassRule.Clear();
                 ReportClassDict[id].StudentInfoList.Clear();
             }
 
@@ -364,49 +363,59 @@ namespace SHGraduationWarning.UIForm
                         {
                             if (xmlRule.GetAttribute("啟用") == "是")
                             {
+                                string key = "";
                                 string Rule = xmlRule.GetAttribute("規則");
                                 if (Rule == "學年學業成績及格" || Rule == "功過相抵未滿三大過")
                                     continue;
 
-                                if (!ReportClassDict[rs.ClassID].RuleList.Contains(Rule))
-                                    ReportClassDict[rs.ClassID].RuleList.Add(Rule);
+                                if (xmlRule.GetAttribute("核心科目表序號") == "")
+                                {
+                                    // 班級共通規則
+                                    if (Rule == "應修總學分數")
+                                        key = "總學分";
+                                    if (Rule == "總學分數")
+                                        key = "總學分";
+                                    if (Rule == "應修所有必修課程")
+                                        key = "必修";
+                                    if (Rule == "必修學分數")
+                                        key = "必修";
+                                    if (Rule == "應修所有部定必修課程")
+                                        key = "部定必修";
+                                    if (Rule == "部訂必修學分數")
+                                        key = "部定必修";
+                                    if (Rule == "校訂必修學分數")
+                                        key = "校定必修";
+
+                                    if (Rule == "選修學分數")
+                                        key = "選修";
+
+                                    if (Rule == "應修專業及實習總學分數")
+                                        key = "專業及實習";
+
+                                    if (Rule == "專業及實習總學分數")
+                                        key = "專業及實習";
+
+                                    if (Rule == "實習學分數")
+                                        key = "實習";
+
+                                }
+                                else
+                                {
+                                    // 自訂
+                                    key = xmlRule.GetAttribute("核心科目表名稱");
+
+                                }
+                                if (!ReportClassDict[rs.ClassID].dicClassRule.ContainsKey(key))
+                                    ReportClassDict[rs.ClassID].dicClassRule.Add(key, new List<string>());
+                                if (!ReportClassDict[rs.ClassID].dicClassRule[key].Contains(Rule))
+                                    ReportClassDict[rs.ClassID].dicClassRule[key].Add(Rule);
                             }
                         }
                     }
                 }
 
                 bgwGrandCheckClassReport.ReportProgress(50);
-                // 規則固定欄位1
-                List<string> colName1List = new List<string>();
-                colName1List.Add("應修");
-                colName1List.Add("已修");
-                colName1List.Add("應取得");
-                colName1List.Add("取得");
 
-                // 處理班級內資料欄位置
-                foreach (string ClassID in ReportClassDict.Keys)
-                {
-                    int colIdx = 0;
-                    ReportClassDict[ClassID].dicColumnIndex.Add("學號", colIdx); colIdx++;
-                    ReportClassDict[ClassID].dicColumnIndex.Add("座號", colIdx); colIdx++;
-                    ReportClassDict[ClassID].dicColumnIndex.Add("姓名", colIdx); colIdx++;
-                    foreach (string ruleName in ReportClassDict[ClassID].RuleList)
-                    {
-                        foreach (string colName in colName1List)
-                        {
-                            string c_name = ruleName + "_" + colName;
-                            if (!ReportClassDict[ClassID].dicColumnIndex.ContainsKey(c_name))
-                                ReportClassDict[ClassID].dicColumnIndex.Add(c_name, colIdx);
-
-                            colIdx++;
-                        }
-                    }
-
-                    // 放學年學業成績及格
-                    ReportClassDict[ClassID].dicColumnIndex.Add("學年學業成績及格", colIdx); colIdx++;
-                    // 放功過相抵未滿三大過
-                    ReportClassDict[ClassID].dicColumnIndex.Add("功過相抵未滿三大過", colIdx); colIdx++;
-                }
 
                 // 處理報表填入 Excel
                 Workbook wb = new Workbook(new MemoryStream(Properties.Resources.班級預警報表樣板));
@@ -425,36 +434,33 @@ namespace SHGraduationWarning.UIForm
                     // 新增Excel 工作表(班級名稱)
                     Worksheet wstNew = wb.Worksheets.Add(ClassName);
 
-
-                    // 最右邊
-                    int rightColIdx = ReportClassDict[cid].dicColumnIndex["功過相抵未滿三大過"];
-
-                    // 複製樣板
-                    // 學校
-                    wstNew.Cells.CopyRows(wstTemp.Cells, 0, 0, 1);
-                    // 學校合併
-                    wstNew.Cells.Merge(0, 0, 1, rightColIdx + 1);
-
-                    // 班級
-                    wstNew.Cells.CopyRows(wstTemp.Cells, 1, 1, 1);
-                    wstNew.Cells.Merge(1, 0, 1, rightColIdx + 1);
-
                     // 姓名
                     wstNew.Cells.CopyColumns(wstTemp.Cells, 0, 0, 3);
 
+                    int ColIdx = 3;
+                    // 動態樣板
+                    foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
+                    {
+                        if (ReportClassDict[cid].dicClassRule[name].Count == 1)
+                        {
+                            wstNew.Cells.CopyColumns(wstTemp.Cells, 7, ColIdx, 2);
+                            ColIdx += 2;
+                        }
+                        if (ReportClassDict[cid].dicClassRule[name].Count == 2)
+                        {
+                            wstNew.Cells.CopyColumns(wstTemp.Cells, 3, ColIdx, 4);
+                            ColIdx += 4;
+                        }
+                    }
+
                     // 學年
-                    wstNew.Cells.CopyColumns(wstTemp.Cells, 7, rightColIdx - 1, 1);
+                    wstNew.Cells.CopyColumns(wstTemp.Cells, 9, ColIdx, 1);
+                    ColIdx++;
 
                     // 功過
-                    wstNew.Cells.CopyColumns(wstTemp.Cells, 8, rightColIdx, 1);
-
-                    int ruleColIdx = 3;
-                    foreach (string sname in ReportClassDict[cid].RuleList)
-                    {
-                        wstNew.Cells.CopyColumns(wstTemp.Cells, 3, ruleColIdx, 4);
-                        wstNew.Cells[3, ruleColIdx].PutValue(sname);
-                        ruleColIdx += 4;
-                    }
+                    wstNew.Cells.CopyColumns(wstTemp.Cells, 10, ColIdx, 1);
+                    // 最大值
+                    ReportClassDict[cid].MaxColumnIndex = ColIdx;
 
                     // 學生資料
                     int studRIdx = 5;
@@ -465,126 +471,144 @@ namespace SHGraduationWarning.UIForm
                         studRIdx++;
                     }
 
+                    // 學校
+                    wstNew.Cells.CopyRows(wstTemp.Cells, 0, 0, 1);
+                    // 學校合併
+                    wstNew.Cells.Merge(0, 0, 1, ReportClassDict[cid].MaxColumnIndex + 1);
+
+                    // 班級
+                    wstNew.Cells.CopyRows(wstTemp.Cells, 1, 1, 1);
+                    wstNew.Cells.Merge(1, 0, 1, ReportClassDict[cid].MaxColumnIndex + 1);
+
                     // 學校名稱
                     wstNew.Cells[0, 0].PutValue(K12.Data.School.ChineseName);
                     wstNew.Cells[1, 0].PutValue(ClassName + " 畢業預警表");
-                    wstNew.Cells[2, rightColIdx].PutValue("班導師：" + ReportClassDict[cid].TeacherName);
+                    wstNew.Cells[2, ReportClassDict[cid].MaxColumnIndex].PutValue("班導師：" + ReportClassDict[cid].TeacherName);
 
-                    studRIdx = 5;
-                    foreach (ReportStudentInfo rs in ReportClassDict[cid].StudentInfoList)
+                    int col1 = 3;
+                    foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
                     {
-                        wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex["學號"]].PutValue(rs.StudentNumber);
-                        wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex["座號"]].PutValue(rs.SeatNo);
-                        wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex["姓名"]].PutValue(rs.StudentName);
-
-                        // 應修：XML(課規總學分數),已修：XML(已修習),應取得：XML(設定值), 取得：XML(已取得)
-                        foreach (string RuleName in ReportClassDict[cid].RuleList)
+                        if (ReportClassDict[cid].dicClassRule[name].Count == 1)
                         {
-                            // 資料整理
-                            foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
+                            string rule = ReportClassDict[cid].dicClassRule[name][0];
+                            if (rule.Contains("應修"))
                             {
-                                if (xmlRule.GetAttribute("啟用") == "是")
+                                wstNew.Cells[4, col1].PutValue("應修");
+                                wstNew.Cells[4, col1 + 1].PutValue("已修");
+                            }
+                            else
+                            {
+                                wstNew.Cells[4, col1].PutValue("應取得");
+                                wstNew.Cells[4, col1 + 1].PutValue("取得");
+                            }
+
+                            wstNew.Cells[3, col1].PutValue(name); col1 += 2;
+                        }
+                        if (ReportClassDict[cid].dicClassRule[name].Count == 2)
+                        {
+                            foreach (string rule in ReportClassDict[cid].dicClassRule[name])
+                            {
+                                if (rule.Contains("應修"))
                                 {
-                                    string Rule = xmlRule.GetAttribute("規則");
-
-                                    string key1 = Rule + "_應修";
-                                    string key2 = Rule + "_應取得";
-
-                                    if (ReportClassDict[cid].dicColumnIndex.ContainsKey(key1))
-                                    {
-                                        double x;
-                                        if (double.TryParse(xmlRule.GetAttribute("課規總學分數"), out x))
-                                        {
-                                            wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key1]].PutValue(x);
-                                        }
-                                        else
-                                        {
-                                            wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key1]].PutValue(xmlRule.GetAttribute("課規總學分數"));
-                                        }
-
-                                    }
-
-
-                                    if (ReportClassDict[cid].dicColumnIndex.ContainsKey(key2))
-                                    {
-                                        double x;
-                                        if (double.TryParse(xmlRule.GetAttribute("設定值"), out x))
-                                        {
-                                            wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key2]].PutValue(x);
-                                        }
-                                        else
-                                        {
-                                            wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key2]].PutValue(xmlRule.GetAttribute("設定值"));
-                                        }
-
-                                    }
-
-
-                                    // 處理 預警統計
-                                    foreach (XmlElement xmlRuleC in xmlRule.SelectNodes("預警統計"))
-                                    {
-                                        key1 = Rule + "_已修";
-                                        key2 = Rule + "_取得";
-
-                                        if (ReportClassDict[cid].dicColumnIndex.ContainsKey(key1))
-                                        {
-                                            double x;
-                                            if (double.TryParse(xmlRuleC.GetAttribute("已修習"), out x))
-                                            {
-                                                wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key1]].PutValue(x);
-                                            }
-                                            else
-                                            {
-                                                wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key1]].PutValue(xmlRuleC.GetAttribute("已修習"));
-                                            }
-                                        }
-
-
-                                        if (ReportClassDict[cid].dicColumnIndex.ContainsKey(key2))
-                                        {
-                                            double x;
-                                            if (double.TryParse(xmlRuleC.GetAttribute("已取得"), out x))
-                                            {
-                                                wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key2]].PutValue(x);
-                                            }
-                                            else
-                                            {
-                                                wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key2]].PutValue(xmlRuleC.GetAttribute("已取得"));
-                                            }
-                                        }
-
-                                    }
-
-
-                                    // 處理 學年學業成績及格
-                                    if (Rule == "學年學業成績及格")
-                                    {
-                                        string ruCol = "設定值";
-                                        string key = Rule + "";
-                                        if (ReportClassDict[cid].dicColumnIndex.ContainsKey(key))
-                                            wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key]].PutValue(xmlRule.GetAttribute(ruCol));
-
-                                    }
-
-
-                                    // 處理 功過相抵未滿三大過
-                                    if (Rule == "功過相抵未滿三大過")
-                                    {
-                                        string ruCol = "設定值";
-                                        string key = Rule + "";
-                                        if (ReportClassDict[cid].dicColumnIndex.ContainsKey(key))
-                                            wstNew.Cells[studRIdx, ReportClassDict[cid].dicColumnIndex[key]].PutValue(xmlRule.GetAttribute(ruCol));
-
-                                    }
+                                    wstNew.Cells[4, col1].PutValue("應修");
+                                    wstNew.Cells[4, col1 + 1].PutValue("已修");
+                                    wstNew.Cells[4, col1 + 2].PutValue("應取得");
+                                    wstNew.Cells[4, col1 + 3].PutValue("取得");
                                 }
                             }
 
+                            wstNew.Cells[3, col1].PutValue(name); col1 += 4;
 
+                        }
+                    }
+
+
+                    studRIdx = 5;
+                    int rptColIdx = 0;
+
+                    foreach (ReportStudentInfo rs in ReportClassDict[cid].StudentInfoList)
+                    {
+                        wstNew.Cells[studRIdx, rptColIdx].PutValue(rs.StudentNumber); rptColIdx++;
+                        wstNew.Cells[studRIdx, rptColIdx].PutValue(rs.SeatNo); rptColIdx++;
+                        wstNew.Cells[studRIdx, rptColIdx].PutValue(rs.StudentName); rptColIdx++;
+
+                        foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
+                        {
+                            foreach (string rule in ReportClassDict[cid].dicClassRule[name])
+                            {
+                                foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
+                                {
+                                    if (xmlRule.GetAttribute("啟用") == "是")
+                                    {
+                                        string Rule = xmlRule.GetAttribute("規則");
+                                        if (rule == Rule)
+                                        {
+                                            double x1, x2;
+                                            if (double.TryParse(xmlRule.GetAttribute("通過標準"), out x1))
+                                            {
+                                                wstNew.Cells[studRIdx, rptColIdx].PutValue(x1);
+                                            }
+
+                                            if (double.TryParse(xmlRule.GetAttribute("累計學分"), out x2))
+                                            {
+                                                wstNew.Cells[studRIdx, rptColIdx + 1].PutValue(x2);
+                                            }
+
+                                            break;
+                                        }
+                                    }
+                                }
+                                rptColIdx += 2;
+                            }
 
                         }
 
+                        // 資料整理
+                        foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
+                        {
+                            if (xmlRule.GetAttribute("啟用") == "是")
+                            {
+                                string Rule = xmlRule.GetAttribute("規則");
+
+
+                                // 處理 學年學業成績及格
+                                if (Rule == "學年學業成績及格")
+                                {
+
+                                    if (xmlRule.GetAttribute("畢業審查") == "通過")
+                                        wstNew.Cells[studRIdx, ReportClassDict[cid].MaxColumnIndex - 1].PutValue("是");
+                                    else if (xmlRule.GetAttribute("畢業審查") == "不通過")
+                                    {
+                                        wstNew.Cells[studRIdx, ReportClassDict[cid].MaxColumnIndex - 1].PutValue("否");
+                                    }
+                                    else
+                                        wstNew.Cells[studRIdx, ReportClassDict[cid].MaxColumnIndex - 1].PutValue("");
+
+                                }
+
+
+                                // 處理 功過相抵未滿三大過
+                                if (Rule == "功過相抵未滿三大過")
+                                {
+
+                                    if (xmlRule.GetAttribute("畢業審查") == "通過")
+                                        wstNew.Cells[studRIdx, ReportClassDict[cid].MaxColumnIndex].PutValue("是");
+                                    else if (xmlRule.GetAttribute("畢業審查") == "不通過")
+                                    {
+                                        wstNew.Cells[studRIdx, ReportClassDict[cid].MaxColumnIndex].PutValue("否");
+                                    }
+                                    else
+                                        wstNew.Cells[studRIdx, ReportClassDict[cid].MaxColumnIndex].PutValue("");
+
+                                }
+
+                            }
+                        }
                         studRIdx++;
+                        rptColIdx = 0;
                     }
+
+
 
                 }
 
@@ -771,8 +795,16 @@ namespace SHGraduationWarning.UIForm
             ru3List.Add("設定值");
             ru3List.Add("通過標準");
             ru3List.Add("目前累計支數");
+            ru3List.Add("畢業審查");
             foreach (string r3 in ru3List)
                 StudDT.Columns.Add("功過相抵未滿三大過_" + r3);
+
+            // 學年學業成績及格
+            List<string> ru4List = new List<string>();
+            ru4List.Add("設定值");
+            ru4List.Add("通過標準");
+            ru4List.Add("不及格學年");
+            ru4List.Add("畢業審查");
 
 
             // 處理科目
@@ -936,6 +968,19 @@ namespace SHGraduationWarning.UIForm
                             if (Rule == "功過相抵未滿三大過")
                             {
                                 foreach (string ruCol in ru3List)
+                                {
+                                    string key = Rule + "_" + ruCol;
+                                    if (StudDT.Columns.Contains(key))
+                                    {
+                                        dr[key] = xmlRule.GetAttribute(ruCol);
+                                    }
+                                }
+                            }
+
+                            // 處理 學年學業成績及格
+                            if (Rule == "學年學業成績及格")
+                            {
+                                foreach (string ruCol in ru4List)
                                 {
                                     string key = Rule + "_" + ruCol;
                                     if (StudDT.Columns.Contains(key))
