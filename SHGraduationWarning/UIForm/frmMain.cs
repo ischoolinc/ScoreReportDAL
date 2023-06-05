@@ -411,7 +411,22 @@ namespace SHGraduationWarning.UIForm
                                     ReportClassDict[rs.ClassID].dicClassRule[key].Add(Rule);
                             }
                         }
+
+                        // 將規則內應修排在前面，主要避免先讀到取得再讀到應修，產生錯誤。
+                        foreach (string key in ReportClassDict[rs.ClassID].dicClassRule.Keys)
+                        {
+                            ReportClassDict[rs.ClassID].dicClassRule[key].Sort((x, y) =>
+                            {
+                                if (x.Contains("應修") && !y.Contains("應修"))
+                                    return -1;
+                                else if (!x.Contains("應修") && y.Contains("應修"))
+                                    return 1;
+                                else
+                                    return string.Compare(x, y);
+                            });
+                        }
                     }
+
                 }
 
                 bgwGrandCheckClassReport.ReportProgress(50);
@@ -422,6 +437,9 @@ namespace SHGraduationWarning.UIForm
                 // 用來複製用樣板
                 // temp
                 Worksheet wstTemp = wb.Worksheets["temp"];
+
+                // 定義固定排列順序
+                List<string> itemSorter = new List<string> { "總學分", "必修", "部定必修", "校定必修", "選修", "專業及實習", "實習" };
 
                 //  新增樣板
                 foreach (string cid in ReportClassDict.Keys)
@@ -437,21 +455,45 @@ namespace SHGraduationWarning.UIForm
                     // 姓名
                     wstNew.Cells.CopyColumns(wstTemp.Cells, 0, 0, 3);
 
-                    int ColIdx = 3;
-                    // 動態樣板
+                    // 處理樣板項目固定順訊總學分先
+                    List<string> ItemNameList = new List<string>();
                     foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
                     {
-                        if (ReportClassDict[cid].dicClassRule[name].Count == 1)
+                        if (itemSorter.Contains(name))
+                            ItemNameList.Add(name);
+                    }
+
+                    // 將固定排序
+                    ItemNameList.Sort((x, y) =>
+                        itemSorter.IndexOf(x).CompareTo(itemSorter.IndexOf(y)));
+
+                    // 加入自訂
+                    foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
+                    {
+                        if (!itemSorter.Contains(name))
+                            ItemNameList.Add(name);
+                    }
+
+
+                    int ColIdx = 3;
+                    // 動態樣板
+                    foreach (string item in ItemNameList)
+                    {
+                        if (ReportClassDict[cid].dicClassRule.ContainsKey(item))
                         {
-                            wstNew.Cells.CopyColumns(wstTemp.Cells, 7, ColIdx, 2);
-                            ColIdx += 2;
-                        }
-                        if (ReportClassDict[cid].dicClassRule[name].Count == 2)
-                        {
-                            wstNew.Cells.CopyColumns(wstTemp.Cells, 3, ColIdx, 4);
-                            ColIdx += 4;
+                            if (ReportClassDict[cid].dicClassRule[item].Count == 1)
+                            {
+                                wstNew.Cells.CopyColumns(wstTemp.Cells, 7, ColIdx, 2);
+                                ColIdx += 2;
+                            }
+                            if (ReportClassDict[cid].dicClassRule[item].Count == 2)
+                            {
+                                wstNew.Cells.CopyColumns(wstTemp.Cells, 3, ColIdx, 4);
+                                ColIdx += 4;
+                            }
                         }
                     }
+                  
 
                     // 學年
                     wstNew.Cells.CopyColumns(wstTemp.Cells, 9, ColIdx, 1);
@@ -486,43 +528,43 @@ namespace SHGraduationWarning.UIForm
                     wstNew.Cells[2, ReportClassDict[cid].MaxColumnIndex].PutValue("班導師：" + ReportClassDict[cid].TeacherName);
 
                     int col1 = 3;
-                    foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
+                    foreach (string item in ItemNameList)
                     {
-                        if (ReportClassDict[cid].dicClassRule[name].Count == 1)
+                        if (ReportClassDict[cid].dicClassRule.ContainsKey(item))
                         {
-                            string rule = ReportClassDict[cid].dicClassRule[name][0];
-                            if (rule.Contains("應修"))
+                            if (ReportClassDict[cid].dicClassRule[item].Count == 1)
                             {
-                                wstNew.Cells[4, col1].PutValue("應修");
-                                wstNew.Cells[4, col1 + 1].PutValue("已修");
-                            }
-                            else
-                            {
-                                wstNew.Cells[4, col1].PutValue("應取得");
-                                wstNew.Cells[4, col1 + 1].PutValue("取得");
-                            }
-
-                            wstNew.Cells[3, col1].PutValue(name); col1 += 2;
-                        }
-                        if (ReportClassDict[cid].dicClassRule[name].Count == 2)
-                        {
-                            foreach (string rule in ReportClassDict[cid].dicClassRule[name])
-                            {
+                                string rule = ReportClassDict[cid].dicClassRule[item][0];
                                 if (rule.Contains("應修"))
+                                {
+                                    wstNew.Cells[4, col1].PutValue("應修");
+                                    wstNew.Cells[4, col1 + 1].PutValue("已修");
+                                }
+                                else
+                                {
+                                    wstNew.Cells[4, col1].PutValue("應取得");
+                                    wstNew.Cells[4, col1 + 1].PutValue("取得");
+                                }
+
+                                wstNew.Cells[3, col1].PutValue(item); col1 += 2;
+                            }
+                            if (ReportClassDict[cid].dicClassRule[item].Count == 2)
+                            {
+                                foreach (string rule in ReportClassDict[cid].dicClassRule[item])
                                 {
                                     wstNew.Cells[4, col1].PutValue("應修");
                                     wstNew.Cells[4, col1 + 1].PutValue("已修");
                                     wstNew.Cells[4, col1 + 2].PutValue("應取得");
                                     wstNew.Cells[4, col1 + 3].PutValue("取得");
                                 }
-                            }
 
-                            wstNew.Cells[3, col1].PutValue(name); col1 += 4;
+                                wstNew.Cells[3, col1].PutValue(item); col1 += 4;
+
+                            }
 
                         }
                     }
-
-
+                    
                     studRIdx = 5;
                     int rptColIdx = 0;
 
@@ -532,36 +574,38 @@ namespace SHGraduationWarning.UIForm
                         wstNew.Cells[studRIdx, rptColIdx].PutValue(rs.SeatNo); rptColIdx++;
                         wstNew.Cells[studRIdx, rptColIdx].PutValue(rs.StudentName); rptColIdx++;
 
-                        foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
+                        foreach (string item in ItemNameList)
                         {
-                            foreach (string rule in ReportClassDict[cid].dicClassRule[name])
+                            if (ReportClassDict[cid].dicClassRule.ContainsKey(item))
                             {
-                                foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
+                                foreach (string rule in ReportClassDict[cid].dicClassRule[item])
                                 {
-                                    if (xmlRule.GetAttribute("啟用") == "是")
+                                    XmlNode node = rs.GraGrandCheckXml.SelectSingleNode("//畢業規則[@規則='" + rule + "']");
+
+                                    if (node != null)
                                     {
-                                        string Rule = xmlRule.GetAttribute("規則");
-                                        if (rule == Rule)
+                                        double x1, x2;
+                                        if (double.TryParse(node.Attributes["通過標準"].Value, out x1))
                                         {
-                                            double x1, x2;
-                                            if (double.TryParse(xmlRule.GetAttribute("通過標準"), out x1))
-                                            {
-                                                wstNew.Cells[studRIdx, rptColIdx].PutValue(x1);
-                                            }
+                                            wstNew.Cells[studRIdx, rptColIdx].PutValue(x1);
+                                        }
 
-                                            if (double.TryParse(xmlRule.GetAttribute("累計學分"), out x2))
-                                            {
-                                                wstNew.Cells[studRIdx, rptColIdx + 1].PutValue(x2);
-                                            }
-
-                                            break;
+                                        if (double.TryParse(node.Attributes["累計學分"].Value, out x2))
+                                        {
+                                            wstNew.Cells[studRIdx, rptColIdx + 1].PutValue(x2);
                                         }
                                     }
+                                    
+                                    rptColIdx += 2;
                                 }
-                                rptColIdx += 2;
                             }
-
                         }
+
+                        //foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
+                        //{
+
+
+                        //}
 
                         // 資料整理
                         foreach (XmlElement xmlRule in rs.GraGrandCheckXml.SelectNodes("畢業規則"))
