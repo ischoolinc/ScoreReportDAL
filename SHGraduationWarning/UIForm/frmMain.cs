@@ -493,7 +493,7 @@ namespace SHGraduationWarning.UIForm
                             }
                         }
                     }
-                  
+
 
                     // 學年
                     wstNew.Cells.CopyColumns(wstTemp.Cells, 9, ColIdx, 1);
@@ -564,7 +564,7 @@ namespace SHGraduationWarning.UIForm
 
                         }
                     }
-                    
+
                     studRIdx = 5;
                     int rptColIdx = 0;
 
@@ -595,7 +595,7 @@ namespace SHGraduationWarning.UIForm
                                             wstNew.Cells[studRIdx, rptColIdx + 1].PutValue(x2);
                                         }
                                     }
-                                    
+
                                     rptColIdx += 2;
                                 }
                             }
@@ -1547,6 +1547,7 @@ namespace SHGraduationWarning.UIForm
                     dgData2ChkEdit.Rows[rowIdx].Cells["必選修"].Value = dr["必選修"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["新必選修"].Value = dr["新必選修"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["報部科目名稱"].Value = dr["報部科目名稱"] + "";
+                    dgData2ChkEdit.Rows[rowIdx].Cells["新報部科目名稱"].Value = dr["新報部科目名稱"] + "";
                 }
             }
 
@@ -1576,7 +1577,7 @@ namespace SHGraduationWarning.UIForm
             {
                 chkDataReport4 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan4NoGradeYear(SelectedGradeYearYear, "", ClassID);
 
-                rpInt = 70;
+                rpInt = 80;
                 bgwDataChkEditLoad2.ReportProgress(rpInt);
 
                 chkDataDSubject = DataAccess.GetSemsSubjectLevelCheckGraduationPlan5NoGradeYear(SelectedGradeYearYear, "", ClassID);
@@ -1608,33 +1609,9 @@ namespace SHGraduationWarning.UIForm
                 }
 
 
-                rpInt = 70;
+                rpInt = 80;
                 bgwDataChkEditLoad2.ReportProgress(rpInt);
-                // 取得報部科目名稱，更新使用。
-                if (string.IsNullOrEmpty(DeptID))
-                {
-                    // 一個年級分科
-                    chkDataDSubject.Clear();
 
-                    List<string> DeptIDList = new List<string>();
-                    foreach (ClassDeptInfo ci in ClassDeptInfoList)
-                    {
-                        if (ci.GradeYear == SelectedGradeYearYear)
-                            if (!DeptIDList.Contains(ci.DeptID))
-                                DeptIDList.Add(ci.DeptID);
-                    }
-
-                    foreach (string id in DeptIDList)
-                    {
-                        chkDataDSubject.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan5(SelectedGradeYearYear, id, ClassID));
-                    }
-
-                }
-                else
-                {
-                    // 單科班
-                    chkDataDSubject = DataAccess.GetSemsSubjectLevelCheckGraduationPlan5(SelectedGradeYearYear, DeptID, ClassID);
-                }
 
             }
 
@@ -2003,8 +1980,6 @@ namespace SHGraduationWarning.UIForm
         {
 
             ControlEnable(false);
-            // 更新報部科目名稱按鈕
-            buttonUpdateDSubjectName.Visible = false;
             lnkSetReportTemplate.Visible = false;
             ChkNotUptoGStandard.Visible = false;
             btnExport.Visible = btnClassReport.Visible = false;
@@ -2043,7 +2018,6 @@ namespace SHGraduationWarning.UIForm
         {
             btnQuery.Enabled = comboDept.Enabled = comboClass.Enabled = btnReport.Enabled = value;
 
-            buttonUpdateDSubjectName.Enabled = value;
             ChkNotUptoGStandard.Enabled = value;
             btnExport.Enabled = btnClassReport.Enabled = value;
             tabControl1.Enabled = value;
@@ -2457,6 +2431,12 @@ namespace SHGraduationWarning.UIForm
                     ""Name"": ""報部科目名稱"",
                     ""Width"": 120,
                     ""ReadOnly"": true
+                },
+                {
+                    ""HeaderText"": ""新報部科目名稱"",
+                    ""Name"": ""新報部科目名稱"",
+                    ""Width"": 120,
+                    ""ReadOnly"": true
                 }
                 ]   
 ";
@@ -2637,7 +2617,6 @@ namespace SHGraduationWarning.UIForm
             // 畢業預警
             SelectedTabName = GWTabName;
             btnQuery.Enabled = true;
-            buttonUpdateDSubjectName.Visible = false;
             ChkNotUptoGStandard.Visible = true;
             LoadTabDesc();
             lblMsg.Text = "共0筆";
@@ -2651,7 +2630,6 @@ namespace SHGraduationWarning.UIForm
         {
             // 資料合理檢查 -- 科目級別
             SelectedTabName = ChkEditTabName;
-            buttonUpdateDSubjectName.Visible = false;
             btnQuery.Enabled = true;
             LoadTabDesc();
             lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
@@ -2708,7 +2686,6 @@ namespace SHGraduationWarning.UIForm
             // 資料合理檢查 -- 科目屬性
             SelectedTabName = ChkEditTabName2;
             btnQuery.Enabled = true;
-            buttonUpdateDSubjectName.Visible = true;
             LoadTabDesc();
             //lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
             lnkSetReportTemplate.Visible = false;
@@ -2880,25 +2857,6 @@ namespace SHGraduationWarning.UIForm
                         if (comboClass.Items.Count > 0)
                             comboClass.SelectedIndex = 0;
                     }
-                }
-            }
-        }
-
-        private void buttonUpdateDSubjectName_Click(object sender, EventArgs e)
-        {
-            buttonUpdateDSubjectName.Enabled = false;
-            if (chkDataDSubject.Count == 0)
-            {
-                MsgBox.Show("沒有資料可更新");
-                buttonUpdateDSubjectName.Enabled = true;
-            }
-            else
-            {
-                if (MsgBox.Show("選「是」將更新" + chkDataDSubject.Count + "筆報部科目名稱。", "更新報部科目名稱", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-                {
-                    ControlEnable(false);
-                    // 更新報部科目名稱
-                    bwDataUpdateDSubject.RunWorkerAsync();
                 }
             }
         }
