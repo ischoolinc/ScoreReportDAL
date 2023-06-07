@@ -48,6 +48,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         // 總表用
         bool _MainIsLoading = false;
         bool _MainIsFirstLoad = false;
+        bool _MainOneSemesterHasDuplicateSubjectLevel = false;
         List<DataGridViewRow> _MainRowList = new List<DataGridViewRow>();
         DataGridViewRow _MainSelectedRow = new DataGridViewRow();
         bool _IsMainDataDirty = false;
@@ -243,6 +244,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
             btnEditName.Enabled = btnUpdate.Enabled = btnDelete.Enabled = false;
             tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = tbiCourseGroupMain.Visible = tbiSetCourseGroup.Visible = false;
             _bgWorker.RunWorkerAsync();
+
+            // 還原設定課程群組顯示欄位設定
+            foreach (ToolStripMenuItem menuItem in menuSetCourseGroupCol.Items)
+            {
+                menuItem.Checked = true;
+            }
         }
 
         private void LoadDataGridViewColumns()
@@ -1039,12 +1046,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
             #endregion
 
             #region 課程群組
-            // 還原顯示欄位設定
-            foreach (ToolStripMenuItem menuItem in menuSetCourseGroupCol.Items)
-            {
-                menuItem.Checked = true;
-            }
-
             foreach (string index in dataDict.Keys)
             {
                 XElement firstElement = null;
@@ -1090,12 +1091,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 mainRow.Cells[6].Value = courseInfo.OfficialSubjectName;
                 mainRow.Cells[13].Value = courseInfo.StartLevel;
                 mainRow.Cells[14].Value = courseInfo.SubjectName;
-                mainRow.Cells[15].Value = courseInfo.SchoolYearGroupName;
+                mainRow.Cells[15].Value = string.Join(",", courseInfo.CourseContentList.Select(x => Utility.NumberToRomanNumber(x.Attribute("Level").Value + "")).ToList());
+                mainRow.Cells[16].Value = courseInfo.SchoolYearGroupName;
 
                 foreach (XElement element in courseInfo.CourseContentList)
                 {
+                    int creditNumber = 0;
+                    CreditInfo creditInfo = GetCreditAttr(element);
                     string credit = element.Attribute("Credit").Value;
+
+                    // 學分數若不為數字代表為選修課，學分數會加上括號表示
+                    if (!int.TryParse(creditInfo.StringValue, out creditNumber))
+                    {
+                        credit = "(" + credit + ")";
+                    }
+
                     string courseGroupName = element.Attribute("分組名稱") == null ? "" : element.Attribute("分組名稱").Value;
+                    string gradeYear = element.Attribute("GradeYear").Value;
+                    string semester = element.Attribute("Semester").Value;
                     Color courseGroupColor = Color.White;
 
                     // 讀取群組設定
@@ -1106,27 +1119,27 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
 
                     int columnIndex = -1;
-                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
+                    if (gradeYear == "1" && semester == "1")
                     {
                         columnIndex = 7;
                     }
-                    if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
+                    if (gradeYear == "1" && semester == "2")
                     {
                         columnIndex = 8;
                     }
-                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
+                    if (gradeYear == "2" && semester == "1")
                     {
                         columnIndex = 9;
                     }
-                    if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
+                    if (gradeYear == "2" && semester == "2")
                     {
                         columnIndex = 10;
                     }
-                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
+                    if (gradeYear == "3" && semester == "1")
                     {
                         columnIndex = 11;
                     }
-                    if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
+                    if (gradeYear == "3" && semester == "2")
                     {
                         columnIndex = 12;
                     }
@@ -1209,6 +1222,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 _CourseGroupRowList.Add(courseGroupRow);
             }
             #endregion
+            // 檢查單學期科目名稱及整張課程規畫表科目+級別是否重複
+            CheckSubjectNameLevelDuplicate();
 
             // 如果有缺少報部科目名稱的科目，就需要詢問後補上
             if (_CourseInfoLostOfficialSubjectNameList.Count > 0)
@@ -1546,6 +1561,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     SelectInfo.SetUserDefSubjectDict(ConvertDGYDDToXML());
                 }
+
+                // 科目級別錯誤無法儲存
+                if (_MainOneSemesterHasDuplicateSubjectLevel)
+                {
+                    MessageBox.Show("同學期科目+級別不可重複");
+                    return;
+                }
+
                 // 回寫資料
                 _da.UpdateGPlanXML(SelectInfo.RefGPID, SelectInfo.RefGPContentXml.ToString());
                 SelectInfo.RefGPContent = SelectInfo.RefGPContentXml.ToString();
@@ -2122,6 +2145,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _SelectedTab = tabControl1.SelectedTab;
         }
 
+        // 總表用事件
         private void SetMainCellLevelStyle(XElement element, DataGridViewCell cell)
         {
             string level = element.Attribute("Level").Value;
@@ -2153,6 +2177,63 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
+        //// 檢查科目級別資料是否正確
+        private void CheckSubjectNameLevelDuplicate()
+        {
+            _MainOneSemesterHasDuplicateSubjectLevel = false;
+
+            Dictionary<string, Dictionary<string, List<DataGridViewCell>>> _MainSubjectLevelInSemester = new Dictionary<string, Dictionary<string, List<DataGridViewCell>>>(); // {Key = $"{GradeYear}_{Semester}", Value = {Key = $"{SubjectName}_{Level}", Value = CourseInfo as DataGridViewCell}
+
+            foreach (DataGridViewRow row in _MainRowList)
+            {
+                for (int columnIndex = 7; columnIndex <= 12; columnIndex++)
+                {
+                    if (row.Cells[columnIndex].Tag != null)
+                    {
+                        XElement element = (XElement)row.Cells[columnIndex].Tag;
+                        string gradeYear = element.Attribute("GradeYear").Value;
+                        string semester = element.Attribute("Semester").Value;
+                        string subjectName = element.Attribute("SubjectName").Value;
+                        string level = element.Attribute("Level").Value;
+
+                        // 重製總表表格檢查結果
+                        if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
+                        {
+                            row.Cells[columnIndex].ErrorText = "";
+                        }
+
+                        // 準備判斷同學期科目+級別是否重複的資料
+                        if (!_MainSubjectLevelInSemester.ContainsKey($"{gradeYear}_{semester}"))
+                        {
+                            _MainSubjectLevelInSemester.Add($"{gradeYear}_{semester}", new Dictionary<string, List<DataGridViewCell>>());
+                        }
+                        if (!_MainSubjectLevelInSemester[$"{gradeYear}_{semester}"].ContainsKey($"{subjectName}_{level}"))
+                        {
+                            _MainSubjectLevelInSemester[$"{gradeYear}_{semester}"].Add($"{subjectName}_{level}", new List<DataGridViewCell>());
+                        }
+                        _MainSubjectLevelInSemester[$"{gradeYear}_{semester}"][$"{subjectName}_{level}"].Add(row.Cells[columnIndex]);
+                    }
+                }
+            }
+
+            // 檢查同學期科目+級別是否重複
+            foreach (string gradeYear_semester in _MainSubjectLevelInSemester.Keys)
+            {
+                foreach (string subjectLevel in _MainSubjectLevelInSemester[gradeYear_semester].Keys)
+                {
+                    if (_MainSubjectLevelInSemester[gradeYear_semester][subjectLevel].Count > 1)
+                    {
+                        foreach (DataGridViewCell cell in _MainSubjectLevelInSemester[gradeYear_semester][subjectLevel])
+                        {
+                            cell.ErrorText = "同學期科目名稱+級別重複，需修正科目名稱或級別。";
+                            _MainOneSemesterHasDuplicateSubjectLevel = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        //// 篩選
         private void LoadMainComboBoxData(object sender, EventArgs args)
         {
             if (_MainIsLoading == true)
@@ -2394,6 +2475,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
+        //// 試算級別
         private void btnMainCalcuateLevel_Click(object sender, EventArgs e)
         {
             /*
@@ -2578,12 +2660,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)_MainSelectedRow.Tag;
 
-                if (_CourseInfoList.Where(x => x.CourseCode != courseInfo.CourseCode && x.SubjectName == tbMainSubjectName.Text).Count() > 0)
-                {
-                    MessageBox.Show("科目名稱不可重複");
-                    return;
-                }
-
                 int index = 0;
                 string rowIndex = courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex") == null ? "" : courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex").Value;
                 if (Int32.TryParse(rowIndex, out index))
@@ -2592,9 +2668,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     int startLevel = 0;
                     if (Int32.TryParse(tbMainStartLevel.Text, out startLevel))
                     {
-                        _MainRowList[index].Cells[13].Value = tbMainStartLevel.Text;
-                        _MainRowList[index].Cells[14].Value = tbMainSubjectName.Text;
-                        _MainRowList[index].Cells[15].Value = tbMainSchoolYearGroupName.Text;
                         courseInfo.StartLevel = tbMainStartLevel.Text;
                         courseInfo.SubjectName = tbMainSubjectName.Text;
                         courseInfo.SchoolYearGroupName = tbMainSchoolYearGroupName.Text;
@@ -2638,10 +2711,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                             SetMainCellLevelStyle(element, _MainSelectedRow.Cells[columnIndex]);
                         }
+                        _MainRowList[index].Cells[13].Value = tbMainStartLevel.Text;
+                        _MainRowList[index].Cells[14].Value = tbMainSubjectName.Text;
+                        _MainRowList[index].Cells[15].Value = string.Join(",", courseInfo.CourseContentList.Select(x => Utility.NumberToRomanNumber(x.Attribute("Level").Value + "")).ToList());
+                        _MainRowList[index].Cells[16].Value = tbMainSchoolYearGroupName.Text;
+
+                        // 檢查科目級別資料是否正確
+                        CheckSubjectNameLevelDuplicate();
 
                         LoadMainDataGridViewData();
-
                         dgvMain.Rows[index].Selected = true;
+                        dgvMain.FirstDisplayedScrollingRowIndex = index;
                         SetIsDirtyDisplay(true);
                     }
                 }
@@ -3342,6 +3422,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
             dgvCourseGroup.Columns[3].Visible = menuItemSetCourseGroupCol4.Checked;
             dgvCourseGroup.Columns[4].Visible = menuItemSetCourseGroupCol5.Checked;
             dgvCourseGroup.Columns[5].Visible = menuItemSetCourseGroupCol6.Checked;
+        }
+
+        private void menuSetCourseGroupCol_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+            {
+                e.Cancel = true;
+            }
         }
 
         private void dgvCourseGroup_CellClick(object sender, DataGridViewCellEventArgs e)

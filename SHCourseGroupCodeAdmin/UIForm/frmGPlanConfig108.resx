@@ -117,9 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="labelX16.Text" xml:space="preserve">
+    <value>提示：&lt;br /&gt;
+　　學分數會依照課程級別調整字體顏色&lt;br /&gt;
+　　級別1→&lt;font color="#9ACD32"&gt;淺綠色&lt;/font&gt;、級別2→&lt;font color="#006400"&gt;深綠色&lt;/font&gt;、級別3→&lt;font color="#0000CD"&gt;藍色&lt;/font&gt;&lt;br /&gt;
+　　級別4→&lt;font color="#9370DB"&gt;紫色&lt;/font&gt;、級別5→&lt;font color="#FF0000"&gt;紅色&lt;/font&gt;、級別6→&lt;font color="#FF8C00"&gt;橘色&lt;/font&gt;、其他→黑色</value>
+  </data>
   <metadata name="colMain1_1Level.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -183,8 +186,14 @@
   <metadata name="colMainSubjectName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="colMainLevel.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="colMainSchoolYearGroupName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
   <metadata name="colCourseGroupRequiredBy.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

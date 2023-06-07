@@ -286,7 +286,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subjElm.SetAttributeValue("RequiredBy", data.require_by);
 
                     subjElm.SetAttributeValue("Semester", strSemester);
-                    subjElm.SetAttributeValue("報部科目名稱", data.subject_name);
+                    subjElm.SetAttributeValue("OfficialSubjectName", data.subject_name);
                     subjElm.SetAttributeValue("SubjectName", data.subject_name);
                     subjElm.SetAttributeValue("課程代碼", data.course_code);
 
@@ -977,14 +977,14 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                     }
 
-                                    if (elmM.Attribute("報部科目名稱") != null && elmG.Attribute("報部科目名稱") != null)
+                                    if (elmM.Attribute("OfficialSubjectName") != null && elmG.Attribute("OfficialSubjectName") != null)
                                     {
-                                        if (elmM.Attribute("報部科目名稱").Value != elmG.Attribute("報部科目名稱").Value)
+                                        if (elmM.Attribute("OfficialSubjectName").Value != elmG.Attribute("OfficialSubjectName").Value)
                                         {
                                             if (!subj.DiffStatusList.Contains("報部科目名稱不同"))
                                                 subj.DiffStatusList.Add("報部科目名稱不同");
 
-                                            string msg = "報部科目名稱：課程代碼表「" + elmM.Attribute("報部科目名稱").Value + "」、課程規劃表「" + elmG.Attribute("報部科目名稱").Value + "」";
+                                            string msg = "報部科目名稱：課程代碼表「" + elmM.Attribute("OfficialSubjectName").Value + "」、課程規劃表「" + elmG.Attribute("OfficialSubjectName").Value + "」";
                                             if (!subj.DiffMessageList.Contains(msg))
                                                 subj.DiffMessageList.Add(msg);
 
