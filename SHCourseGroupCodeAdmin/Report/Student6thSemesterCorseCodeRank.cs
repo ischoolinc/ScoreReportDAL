@@ -155,8 +155,8 @@ namespace SHCourseGroupCodeAdmin.Report
                         && StudSCAttendCodeInfoList[i].RequiredBy == sem.RequiredBy)
                     {
                         StudSCAttendCodeInfoList.Remove(StudSCAttendCodeInfoList[i]);
-                        Console.WriteLine("StuID:" + StudSCAttendCodeInfoList[i].StudentID);
-                        Console.WriteLine("SubjectName:" + StudSCAttendCodeInfoList[i].SubjectName);
+                        //Console.WriteLine("StuID:" + StudSCAttendCodeInfoList[i].StudentID);
+                        //Console.WriteLine("SubjectName:" + StudSCAttendCodeInfoList[i].SubjectName);
                         break;
                     }
                 }
