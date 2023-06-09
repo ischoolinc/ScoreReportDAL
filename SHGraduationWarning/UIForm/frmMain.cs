@@ -366,7 +366,9 @@ namespace SHGraduationWarning.UIForm
                                 string key = "";
                                 string Rule = xmlRule.GetAttribute("規則");
                                 if (Rule == "學年學業成績及格" || Rule == "功過相抵未滿三大過")
-                                    continue;
+                                {
+                                    key = Rule;
+                                }
 
                                 if (xmlRule.GetAttribute("核心科目表序號") == "")
                                 {
@@ -459,6 +461,10 @@ namespace SHGraduationWarning.UIForm
                     List<string> ItemNameList = new List<string>();
                     foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
                     {
+                        // 放最後不參與排序
+                        if (name == "學年學業成績及格" || name == "功過相抵未滿三大過")
+                            continue;
+
                         if (itemSorter.Contains(name))
                             ItemNameList.Add(name);
                     }
@@ -470,6 +476,10 @@ namespace SHGraduationWarning.UIForm
                     // 加入自訂
                     foreach (string name in ReportClassDict[cid].dicClassRule.Keys)
                     {
+                        // 放最後不參與排序
+                        if (name == "學年學業成績及格" || name == "功過相抵未滿三大過")
+                            continue;
+
                         if (!itemSorter.Contains(name))
                             ItemNameList.Add(name);
                     }
@@ -495,12 +505,20 @@ namespace SHGraduationWarning.UIForm
                     }
 
 
-                    // 學年
-                    wstNew.Cells.CopyColumns(wstTemp.Cells, 9, ColIdx, 1);
-                    ColIdx++;
+                    if (ReportClassDict[cid].dicClassRule.ContainsKey("學年學業成績及格"))
+                    {
+                        // 學年
+                        wstNew.Cells.CopyColumns(wstTemp.Cells, 9, ColIdx, 1);
+                        ColIdx++;
+                    }
 
-                    // 功過
-                    wstNew.Cells.CopyColumns(wstTemp.Cells, 10, ColIdx, 1);
+                    if (ReportClassDict[cid].dicClassRule.ContainsKey("功過相抵未滿三大過"))
+                    {
+                        // 功過
+                        wstNew.Cells.CopyColumns(wstTemp.Cells, 10, ColIdx, 1);
+                    }
+
+
                     // 最大值
                     ReportClassDict[cid].MaxColumnIndex = ColIdx;
 
@@ -525,6 +543,12 @@ namespace SHGraduationWarning.UIForm
                     // 學校名稱
                     wstNew.Cells[0, 0].PutValue(K12.Data.School.ChineseName);
                     wstNew.Cells[1, 0].PutValue(ClassName + " 畢業預警表");
+
+                    // 設定字靠右對齊
+                    Aspose.Cells.Style ss = wstNew.Cells[2, 0].GetStyle();
+                    ss.HorizontalAlignment = TextAlignmentType.Right;
+                    wstNew.Cells[2, ReportClassDict[cid].MaxColumnIndex].SetStyle(ss);
+
                     wstNew.Cells[2, ReportClassDict[cid].MaxColumnIndex].PutValue("班導師：" + ReportClassDict[cid].TeacherName);
 
                     int col1 = 3;
@@ -1016,7 +1040,17 @@ namespace SHGraduationWarning.UIForm
                                     string key = Rule + "_" + ruCol;
                                     if (StudDT.Columns.Contains(key))
                                     {
-                                        dr[key] = xmlRule.GetAttribute(ruCol);
+                                        if (ruCol == "畢業審查")
+                                        {
+                                            if (xmlRule.GetAttribute(ruCol) == "通過")
+                                                dr[key] = "是";
+                                            else
+                                                dr[key] = "否";
+                                        }
+                                        else
+                                        {
+                                            dr[key] = xmlRule.GetAttribute(ruCol);
+                                        }
                                     }
                                 }
                             }
@@ -1029,7 +1063,17 @@ namespace SHGraduationWarning.UIForm
                                     string key = Rule + "_" + ruCol;
                                     if (StudDT.Columns.Contains(key))
                                     {
-                                        dr[key] = xmlRule.GetAttribute(ruCol);
+                                        if (ruCol == "畢業審查")
+                                        {
+                                            if (xmlRule.GetAttribute(ruCol) == "通過")
+                                                dr[key] = "是";
+                                            else
+                                                dr[key] = "否";
+                                        }
+                                        else
+                                        {
+                                            dr[key] = xmlRule.GetAttribute(ruCol);
+                                        }
                                     }
                                 }
                             }
@@ -1516,7 +1560,16 @@ namespace SHGraduationWarning.UIForm
                     dgData2ChkEdit.Rows[rowIdx].Cells["學號"].Value = dr["學號"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["科別"].Value = dr["科別名稱"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["班級"].Value = dr["班級"] + "";
-                    dgData2ChkEdit.Rows[rowIdx].Cells["座號"].Value = dr["座號"] + "";
+                    int seatNo;
+                    if (int.TryParse(dr["座號"] + "", out seatNo))
+                    {
+                        dgData2ChkEdit.Rows[rowIdx].Cells["座號"].Value = seatNo;
+                    }
+                    else
+                    {
+                        dgData2ChkEdit.Rows[rowIdx].Cells["座號"].Value = 0;
+                    }
+
                     dgData2ChkEdit.Rows[rowIdx].Cells["姓名"].Value = dr["姓名"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["學年度"].Value = dr["學年度"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["學期"].Value = dr["學期"] + "";
@@ -1640,7 +1693,15 @@ namespace SHGraduationWarning.UIForm
                         dgDataChkEdit.Rows[rowIdx].Tag = ss;
                         dgDataChkEdit.Rows[rowIdx].Cells["學號"].Value = ss.StudentNumber;
                         dgDataChkEdit.Rows[rowIdx].Cells["班級"].Value = ss.ClassName;
-                        dgDataChkEdit.Rows[rowIdx].Cells["座號"].Value = ss.SeatNo;
+                        int seatNo;
+                        if (int.TryParse(ss.SeatNo, out seatNo))
+                        {
+                            dgDataChkEdit.Rows[rowIdx].Cells["座號"].Value = seatNo;
+                        }
+                        else
+                            dgDataChkEdit.Rows[rowIdx].Cells["座號"].Value = 0;
+
+
                         dgDataChkEdit.Rows[rowIdx].Cells["科別"].Value = ss.DeptName;
                         dgDataChkEdit.Rows[rowIdx].Cells["姓名"].Value = ss.Name;
                         dgDataChkEdit.Rows[rowIdx].Cells["學年度"].Value = ss.SchoolYear;
@@ -2900,7 +2961,16 @@ namespace SHGraduationWarning.UIForm
                     dgDataGW.Rows[rowIdx].Tag = rs;
                     dgDataGW.Rows[rowIdx].Cells["學號"].Value = rs.StudentNumber;
                     dgDataGW.Rows[rowIdx].Cells["班級"].Value = rs.ClassName;
-                    dgDataGW.Rows[rowIdx].Cells["座號"].Value = rs.SeatNo;
+                    int seatNo;
+                    if (int.TryParse(rs.SeatNo, out seatNo))
+                    {
+                        dgDataGW.Rows[rowIdx].Cells["座號"].Value = seatNo;
+                    }
+                    else
+                    {
+                        dgDataGW.Rows[rowIdx].Cells["座號"].Value = 0;
+                    }
+
                     dgDataGW.Rows[rowIdx].Cells["姓名"].Value = rs.StudentName;
 
                     if (rs.GraduationCheck == "通過")
