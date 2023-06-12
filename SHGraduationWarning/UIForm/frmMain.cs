@@ -2814,7 +2814,25 @@ namespace SHGraduationWarning.UIForm
 
                 // 有資料在執行
                 if (SelectedReportStudentList.Count > 0)
+                {
+                    // 將所選的學生依照學生班級座號排序
+
+                    try
+                    {
+                        SelectedReportStudentList = SelectedReportStudentList.OrderBy(x => x.ClassName).ThenBy(x =>
+                        {
+                            int seatNo;
+                            return int.TryParse(x.SeatNo, out seatNo) ? seatNo : 0;
+                        }).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+
                     bgwGrandCheckReport.RunWorkerAsync();
+                }
                 else
                 {
                     MsgBox.Show("沒有資料。");
