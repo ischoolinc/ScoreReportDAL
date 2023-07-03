@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblTitle = new DevComponents.DotNetBar.LabelX();
             this.lblGroupCount = new DevComponents.DotNetBar.LabelX();
@@ -43,7 +44,11 @@
             this.btnQueryAndSet = new DevComponents.DotNetBar.ButtonX();
             this.btnCreate = new DevComponents.DotNetBar.ButtonX();
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
+            this.menuCalculateSubjectLevel = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuItemMultiCalculateSubjectLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblUpdateLevelCount = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
+            this.menuCalculateSubjectLevel.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -84,7 +89,7 @@
             // 
             this.lblAddCount.BackgroundStyle.Class = "";
             this.lblAddCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblAddCount.Location = new System.Drawing.Point(217, 46);
+            this.lblAddCount.Location = new System.Drawing.Point(207, 46);
             this.lblAddCount.Name = "lblAddCount";
             this.lblAddCount.Size = new System.Drawing.Size(55, 21);
             this.lblAddCount.TabIndex = 2;
@@ -99,7 +104,7 @@
             // 
             this.lblUpdateCount.BackgroundStyle.Class = "";
             this.lblUpdateCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblUpdateCount.Location = new System.Drawing.Point(402, 46);
+            this.lblUpdateCount.Location = new System.Drawing.Point(360, 46);
             this.lblUpdateCount.Name = "lblUpdateCount";
             this.lblUpdateCount.Size = new System.Drawing.Size(55, 21);
             this.lblUpdateCount.TabIndex = 3;
@@ -114,7 +119,7 @@
             // 
             this.lblNoChangeCount.BackgroundStyle.Class = "";
             this.lblNoChangeCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblNoChangeCount.Location = new System.Drawing.Point(581, 46);
+            this.lblNoChangeCount.Location = new System.Drawing.Point(693, 46);
             this.lblNoChangeCount.Name = "lblNoChangeCount";
             this.lblNoChangeCount.Size = new System.Drawing.Size(68, 21);
             this.lblNoChangeCount.TabIndex = 4;
@@ -138,7 +143,7 @@
             this.colUpdateSetup});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
@@ -148,9 +153,11 @@
             this.dgData.Location = new System.Drawing.Point(28, 73);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
+            this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgData.Size = new System.Drawing.Size(832, 450);
             this.dgData.TabIndex = 5;
             this.dgData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellContentClick);
+            this.dgData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgData_CellMouseClick);
             // 
             // colEntrySchoolYear
             // 
@@ -231,11 +238,41 @@
             this.btnCancel.Text = "取消";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // menuCalculateSubjectLevel
+            // 
+            this.menuCalculateSubjectLevel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemMultiCalculateSubjectLevel});
+            this.menuCalculateSubjectLevel.Name = "menuCalculateSubjectLevel";
+            this.menuCalculateSubjectLevel.Size = new System.Drawing.Size(179, 26);
+            // 
+            // menuItemMultiCalculateSubjectLevel
+            // 
+            this.menuItemMultiCalculateSubjectLevel.Name = "menuItemMultiCalculateSubjectLevel";
+            this.menuItemMultiCalculateSubjectLevel.Size = new System.Drawing.Size(178, 22);
+            this.menuItemMultiCalculateSubjectLevel.Text = "批次計算科目級別";
+            this.menuItemMultiCalculateSubjectLevel.Click += new System.EventHandler(this.menuItemMultiCalculateSubjectLevel_Click);
+            // 
+            // lblUpdateLevelCount
+            // 
+            this.lblUpdateLevelCount.AutoSize = true;
+            this.lblUpdateLevelCount.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.lblUpdateLevelCount.BackgroundStyle.Class = "";
+            this.lblUpdateLevelCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblUpdateLevelCount.Location = new System.Drawing.Point(513, 46);
+            this.lblUpdateLevelCount.Name = "lblUpdateLevelCount";
+            this.lblUpdateLevelCount.Size = new System.Drawing.Size(82, 21);
+            this.lblUpdateLevelCount.TabIndex = 4;
+            this.lblUpdateLevelCount.Text = "級別更新0筆";
+            // 
             // frmCreateGPlanMain108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 580);
+            this.Controls.Add(this.lblUpdateLevelCount);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.btnQueryAndSet);
@@ -251,6 +288,7 @@
             this.Text = "產生課程規劃";
             this.Load += new System.EventHandler(this.frmCreateGPlanMain108_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
+            this.menuCalculateSubjectLevel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,5 +310,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colGpName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colChangeDesc;
         private System.Windows.Forms.DataGridViewButtonColumn colUpdateSetup;
+        private System.Windows.Forms.ContextMenuStrip menuCalculateSubjectLevel;
+        private System.Windows.Forms.ToolStripMenuItem menuItemMultiCalculateSubjectLevel;
+        private DevComponents.DotNetBar.LabelX lblUpdateLevelCount;
     }
 }

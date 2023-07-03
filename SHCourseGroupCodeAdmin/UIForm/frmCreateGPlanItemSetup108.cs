@@ -21,8 +21,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
         List<string> _ProcessList = new List<string>() { 
             "新增"
             , "更新"
+            , "級別更新"
             , "略過"
-            , "刪除" };
+            , "刪除"};
         public frmCreateGPlanItemSetup108()
         {
             InitializeComponent();
@@ -74,6 +75,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     subj.OrderBy = 2;
                 if (subj.ProcessStatus == "刪除")
                     subj.OrderBy = 3;
+                if (subj.ProcessStatus == "級別更新")
+                    subj.OrderBy = 4;
             }
 
             _GPlanInfo.chkSubjectInfoList = _GPlanInfo.chkSubjectInfoList.OrderBy(x => x.OrderBy).ToList();
@@ -317,7 +320,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         /// </summary>
         private void dgDataCount()
         {
-            int addCount = 0, diffCount = 0, updateCount = 0, delCount = 0, noChangeCount = 0;
+            int addCount = 0, diffCount = 0, updateCount = 0, updateLevelCount = 0, delCount = 0, noChangeCount = 0;
 
             foreach (DataGridViewRow dr in dgData.Rows)
             {
@@ -337,6 +340,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     if (dr.Cells["處理方式"].Value.ToString() == "更新")
                         updateCount++;
+
+                    if (dr.Cells["處理方式"].Value.ToString() == "級別更新")
+                        updateLevelCount++;
                 }
             }
 
@@ -344,6 +350,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lblDiffCount.Text = "差異科目數：" + diffCount;
             lblAddCount.Text = "新增" + addCount + "筆";
             lblUpdateCount.Text = "更新" + updateCount + "筆";
+            lblUpdateLevelCount.Text = "級別更新" + updateLevelCount + "筆";
             lblDelCount.Text = "刪除" + delCount + "筆";
             lblNoChangeCount.Text = "略過" + noChangeCount + "筆";
         }

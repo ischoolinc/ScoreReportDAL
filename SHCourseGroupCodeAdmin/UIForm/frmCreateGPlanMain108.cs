@@ -66,7 +66,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         /// </summary>
         private void GPlanDataCount()
         {
-            int AddCount = 0, UpdateCount = 0, NoChangeCount = 0;
+            int AddCount = 0, UpdateCount = 0, NoChangeCount = 0, UpdateLevelCount = 0;
 
             foreach (DataGridViewRow drv in dgData.Rows)
             {
@@ -81,6 +81,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (Status == "更新")
                     UpdateCount++;
 
+                if (Status == "級別更新")
+                    UpdateLevelCount++;
+
                 if (Status == "無變動")
                     NoChangeCount++;
             }
@@ -88,6 +91,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lblGroupCount.Text = "群科班數" + _GPlanInfo108List.Count + "筆";
             lblAddCount.Text = "新增" + AddCount + "筆";
             lblUpdateCount.Text = "更新" + UpdateCount + "筆";
+            lblUpdateLevelCount.Text = "級別更新" + UpdateLevelCount + "筆";
             lblNoChangeCount.Text = "無變動" + NoChangeCount + "筆";
         }
 
@@ -184,7 +188,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (data.Status == "新增")
                         insertDataList.Add(data);
 
-                    if (data.Status == "更新")
+                    if (data.Status == "更新" || data.Status == "級別更新")
                         updateDataList.Add(data);
                 }
 
@@ -211,7 +215,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             XElement GPlanXml = new XElement("GraduationPlan");
                             foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
                             {
-
                                 if (subj.ProcessStatus == "更新" || subj.ProcessStatus == "新增")
                                 {
                                     foreach (XElement elm in subj.MOEXml)
@@ -220,6 +223,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     }
                                 }
 
+                                if (subj.ProcessStatus == "級別更新")
+                                {
+                                    foreach (XElement element in subj.GPlanXml)
+                                    {
+                                        Utility.CalculateSubjectLevel(element);
+                                        GPlanXml.Add(element);
+                                    }
+                                }
 
                                 if (subj.ProcessStatus == "略過")
                                 {
@@ -251,45 +262,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     elm.Element("Grouping").SetAttributeValue("RowIndex", rowIdx);
                                 }
                             }
-
-                            // 重新排列科目級別
-                            Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
-
-                            foreach (XElement elm in GPlanXml.Elements("Subject"))
-                            {
-                                string subj = elm.Attribute("SubjectName").Value;
-
-                                if (!tmpSubjLevelDict.ContainsKey(subj))
-                                    tmpSubjLevelDict.Add(subj, 0);
-
-                                tmpSubjLevelDict[subj] += 1;
-
-                                elm.SetAttributeValue("FullName", Utility.SubjFullName(subj, tmpSubjLevelDict[subj]));
-                                elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
-
-                            }
-
-                            // 重新整理開始級別
-                            Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
-                            foreach (XElement elm in GPlanXml.Elements("Subject"))
-                            {
-                                string subjName = elm.Attribute("SubjectName").Value;
-
-                                string RowIndex = elm.Element("Grouping").Attribute("RowIndex").Value;
-
-                                if (!tmpStartLevel.ContainsKey(subjName))
-                                    tmpStartLevel.Add(subjName, RowIndex);
-                                else
-                                {
-                                    if (tmpStartLevel[subjName] != RowIndex)
-                                    {
-                                        // 設定開始級別是目前級別
-                                        elm.Element("Grouping").SetAttributeValue("startLevel", elm.Attribute("Level").Value);
-                                        tmpStartLevel[subjName] = RowIndex;
-                                    }
-                                }
-                            }
-
 
                             GPlanXml.ReplaceAll(orderList);
                             if (data.GDCCode.Length > 3)
@@ -495,6 +467,28 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(dgData.CurrentCell.ColumnIndex + ":" + dgData.CurrentCell.RowIndex);
+        }
+
+        private void dgData_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                menuCalculateSubjectLevel.Show(Cursor.Position.X, Cursor.Position.Y);
+            }
+        }
+
+        private void menuItemMultiCalculateSubjectLevel_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dgData.SelectedRows)
+            {
+                GPlanInfo108 gplanInfo = (GPlanInfo108)row.Tag;
+                gplanInfo.Status = "級別更新";
+                row.Cells[colChangeDesc.Index].Value = gplanInfo.Status;
+                foreach (chkSubjectInfo subjectInfo in gplanInfo.chkSubjectInfoList)
+                {
+                    subjectInfo.ProcessStatus = "級別更新";
+                }
+            }
         }
     }
 }

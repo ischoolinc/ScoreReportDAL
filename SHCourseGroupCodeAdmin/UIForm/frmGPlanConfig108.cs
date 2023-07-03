@@ -273,6 +273,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbScoreType.ReadOnly = true;
                 tbScoreType.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+                DataGridViewTextBoxColumn tbOfficialSubjectName = new DataGridViewTextBoxColumn();
+                tbOfficialSubjectName.Name = "報部科目名稱";
+                tbOfficialSubjectName.Width = 180;
+                tbOfficialSubjectName.HeaderText = "報部科目名稱";
+                tbOfficialSubjectName.ReadOnly = true;
+                tbOfficialSubjectName.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
                 DataGridViewTextBoxColumn tbSubjectName = new DataGridViewTextBoxColumn();
                 tbSubjectName.Name = "科目名稱";
                 tbSubjectName.Width = 160;
@@ -367,6 +374,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 dgData.Columns.Add(tbDomain);
                 dgData.Columns.Add(tbScoreType);
+                dgData.Columns.Add(tbOfficialSubjectName);
                 dgData.Columns.Add(tbSubjectName);
                 dgData.Columns.Add(tbRequiredBy);
                 dgData.Columns.Add(tbIsRequired);
@@ -791,6 +799,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 dgData.Rows[rowIdx].Cells["領域"].Value = firstElm.Attribute("Domain").Value;
                 dgData.Rows[rowIdx].Cells["分項類別"].Value = firstElm.Attribute("Entry").Value;
+                dgData.Rows[rowIdx].Cells["報部科目名稱"].Value = firstElm.Attribute("OfficialSubjectName") == null ? "" : firstElm.Attribute("OfficialSubjectName").Value;
                 dgData.Rows[rowIdx].Cells["科目名稱"].Value = firstElm.Attribute("SubjectName").Value;
 
                 chkSubjectNameList.Add(firstElm.Attribute("SubjectName").Value);
@@ -1079,6 +1088,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 _CourseInfoList.Add(courseInfo);
 
                 // 總表表格用
+                Dictionary<string, List<string>> gradeYearCreditDic = new Dictionary<string, List<string>>(); // 用來記錄同學年上下學期的學分數
                 DataGridViewRow mainRow = new DataGridViewRow();
                 mainRow.CreateCells(dgvMain);
                 mainRow.Tag = courseInfo;
@@ -1152,8 +1162,29 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                         SetMainCellLevelStyle(element, mainRow.Cells[columnIndex]);
                     }
+
+                    // 紀錄同學年上下學期學分數，用來後面進行學分數是否一致的判斷
+                    if (!gradeYearCreditDic.ContainsKey(gradeYear))
+                    {
+                        gradeYearCreditDic.Add(gradeYear, new List<string>());
+                    }
+                    gradeYearCreditDic[gradeYear].Add(credit.Trim('(').Trim(')'));
                 }
                 _MainRowList.Add(mainRow);
+
+                //// 判斷同學年上下學期學分數是否一致
+                foreach (string gradeYear in gradeYearCreditDic.Keys)
+                {
+                    if (gradeYearCreditDic[gradeYear].Count == 2)
+                    {
+                        // 上下學期學分數不一致，需提醒使用者設定指定學年科目名稱
+                        if (gradeYearCreditDic[gradeYear][0] != gradeYearCreditDic[gradeYear][1])
+                        {
+                            mainRow.Cells[16].ErrorText = "同學年上下學期學分數不一致，需設定指定學年科目名稱。";
+                        } 
+                    }
+                }
+
 
                 // 課程群組表格用
                 DataGridViewRow courseGroupRow = new DataGridViewRow();
@@ -2476,7 +2507,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         }
 
         //// 試算級別
-        private void btnMainCalcuateLevel_Click(object sender, EventArgs e)
+        private void btnMainCalculateLevel_Click(object sender, EventArgs e)
         {
             /*
                 計算過程如下所示：

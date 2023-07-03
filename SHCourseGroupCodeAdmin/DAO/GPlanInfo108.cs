@@ -90,9 +90,31 @@ namespace SHCourseGroupCodeAdmin.DAO
             else
             {
                 if (calSubjDiffCount() > 0)
-                    Status = "更新";
+                {
+                    if (calSubjLevelCalCount() > 0)
+                    {
+                        Status = "級別更新";
+                    }
+                    else
+                    {
+                        Status = "更新";
+                    }
+                }
             }
 
+        }
+
+        public int calSubjLevelCalCount()
+        {
+            int value = 0;
+
+            foreach (chkSubjectInfo subj in chkSubjectInfoList)
+            {
+                if (subj.ProcessStatus == "級別更新")
+                    value++;
+            }
+
+            return value;
         }
 
         public int calSubjDiffCount()
@@ -273,7 +295,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     subjElm.SetAttributeValue("Entry", "學業");
                     subjElm.SetAttributeValue("GradeYear", strGradeYear);
-                    subjElm.SetAttributeValue("Level", idx);
+                    subjElm.SetAttributeValue("Level", idx);  // 先塞學期別
                     subjElm.SetAttributeValue("FullName", SubjFullName(data.subject_name, idx));
 
                     subjElm.SetAttributeValue("NotIncludedInCalc", CheckNotIncludedInCredit(data.course_code));
@@ -405,43 +427,55 @@ namespace SHCourseGroupCodeAdmin.DAO
                 RowIndex++;
             }
 
-            //// 重新排列科目級別
-            //Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
+            // 將級別中的學期別轉成冊別
+            Dictionary<string, int> tmpSubjLevelDict = new Dictionary<string, int>();
 
-            //foreach (XElement elm in MOEXml.Elements("Subject"))
-            //{
-            //    string subj = elm.Attribute("SubjectName").Value;
+            foreach (XElement elm in MOEXml.Elements("Subject"))
+            {
+                string subj = elm.Attribute("SubjectName").Value;
 
-            //    if (!tmpSubjLevelDict.ContainsKey(subj))
-            //        tmpSubjLevelDict.Add(subj, 0);
+                if (!tmpSubjLevelDict.ContainsKey(subj))
+                    tmpSubjLevelDict.Add(subj, 0);
 
-            //    tmpSubjLevelDict[subj] += 1;
+                tmpSubjLevelDict[subj] += 1;
 
-            //    elm.SetAttributeValue("FullName", SubjFullName(subj, tmpSubjLevelDict[subj]));
-            //    elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
+                elm.SetAttributeValue("FullName", SubjFullName(subj, tmpSubjLevelDict[subj]));
+                elm.SetAttributeValue("Level", tmpSubjLevelDict[subj]);
 
-            //}
+            }
 
-            //// 重新整理開始級別
-            //Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
-            //foreach (XElement elm in MOEXml.Elements("Subject"))
-            //{
-            //    string subjName = elm.Attribute("SubjectName").Value;
+            // 依據冊別重新整理開始級別
+            Dictionary<string, string> tmpStartLevel = new Dictionary<string, string>();
+            string startLevelString = "";
+            foreach (XElement elm in MOEXml.Elements("Subject"))
+            {
+                string subjName = elm.Attribute("SubjectName").Value;
 
-            //    string rowIdx = elm.Element("Grouping").Attribute("RowIndex").Value;
+                string rowIdx = elm.Element("Grouping").Attribute("RowIndex").Value;
 
-            //    if (!tmpStartLevel.ContainsKey(subjName))
-            //        tmpStartLevel.Add(subjName, rowIdx);
-            //    else 
-            //    {
-            //        if (tmpStartLevel[subjName] != rowIdx)
-            //        {
-            //            // 設定開始級別是目前級別
-            //            elm.Element("Grouping").SetAttributeValue("startLevel", elm.Attribute("Level").Value);
-            //            tmpStartLevel[subjName] = rowIdx;
-            //        }
-            //    }
-            //}
+                if (!tmpStartLevel.ContainsKey(subjName))
+                {
+                    tmpStartLevel.Add(subjName, rowIdx);
+                    startLevelString = startLevel.ToString();
+                }
+                else
+                {
+                    if (tmpStartLevel[subjName] != rowIdx)
+                    {
+                        // 設定開始級別是目前級別
+                        startLevelString = elm.Attribute("Level").Value.ToString();
+                        tmpStartLevel[subjName] = rowIdx;
+                    }
+
+                    elm.Element("Grouping").SetAttributeValue("startLevel", startLevelString);
+                }
+            }
+
+            // 處理多元選修級別計算
+            foreach (XElement element in MOEXml.Elements("Subject"))
+            {
+                Utility.CalculateSubjectLevel(element);
+            }
         }
 
         private string SubjFullName(string SubjectName, int level)
@@ -895,10 +929,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                     {
                         if (GPlanDict.ContainsKey(mCo))
                         {
-                            // 複製原有課程規畫表群組設定
                             int index = 0;
                             foreach (XElement graduationPlanEle in GPlanDict[mCo])
                             {
+                                XElement moeEle = MOEDict[mCo][index];
+
+                                // 複製原有課程規畫表群組設定
                                 if (graduationPlanEle.Attribute("分組名稱") != null)
                                 {
                                     string courseGroupName = graduationPlanEle.Attribute("分組名稱").Value.ToString();
@@ -906,9 +942,28 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                     if (!string.IsNullOrEmpty(courseGroupName))
                                     {
-                                        XElement moeEle = MOEDict[mCo][index];
                                         moeEle.SetAttributeValue("分組名稱", courseGroupName);
                                         moeEle.SetAttributeValue("分組修課學分數", courseGroupCredit);
+                                    }
+                                }
+
+                                // 複製對開設定，之後可以用課程群組取代對開設定時再移除
+                                if (graduationPlanEle.Attribute("設定對開") != null)
+                                {
+                                    string openD = graduationPlanEle.Attribute("設定對開").Value.ToString();
+                                    if (!string.IsNullOrEmpty(openD))
+                                    {
+                                        moeEle.SetAttributeValue("設定對開", openD);
+                                    }
+                                }
+
+                                // 複製級別設定
+                                if (graduationPlanEle.Attribute("Level") != null)
+                                {
+                                    string level = graduationPlanEle.Attribute("Level").Value.ToString();
+                                    if (!string.IsNullOrEmpty(level))
+                                    {
+                                        moeEle.SetAttributeValue("Level", level);
                                     }
                                 }
 
@@ -931,7 +986,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                             subj.isRequired = GetAttribute(elm, "Required");
                             subj.CourseCode = GetAttribute(elm, "課程代碼");
-                            
+
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
 
                             // 因為授課學期學分與OpenType，有可能總表調整需要更新，所以需要以總表為主
@@ -988,7 +1043,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                             if (!subj.DiffMessageList.Contains(msg))
                                                 subj.DiffMessageList.Add(msg);
 
-                                        } 
+                                        }
                                     }
 
                                     if (elmM.Attribute("RequiredBy").Value != elmG.Attribute("RequiredBy").Value)

@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using FISCA.Authentication;
+using System.Xml.Linq;
 
 namespace SHCourseGroupCodeAdmin
 {
@@ -578,6 +579,175 @@ T	12學分
                     break;
             }
             return romanNumber;
+        }
+
+        public static void CalculateSubjectLevel(XElement courseInfoElement)
+        {
+            string startLevelString = courseInfoElement.Element("Grouping").Attribute("startLevel").Value.ToString();
+            string creditPeriod = courseInfoElement.Attribute("授課學期學分").Value.ToString();
+            string gradeYear = courseInfoElement.Attribute("GradeYear").Value.ToString();
+            string semester = courseInfoElement.Attribute("Semester").Value.ToString();
+            string subjectName = courseInfoElement.Attribute("SubjectName").Value.ToString();
+            List<string> creditList = new List<string>();
+
+            int startLevel = 0;
+
+            // 授課學期學分數長度應為6
+            if (creditPeriod.Length != 6)
+            {
+                return;
+            }
+
+            for (int i = 0; i < creditPeriod.Length; i++)
+            {
+                creditList.Add(creditPeriod[i].ToString());
+            }
+
+            if (int.TryParse(startLevelString, out startLevel))
+            {
+                int level = startLevel;
+                List<string> creditToLevelList = new List<string>(new string[creditList.Count]);
+                string previousCreditString = "";
+
+                for (int i = 0; i < creditList.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(creditList[i]) && creditList[i] != "0")
+                    {
+                        int credit;
+                        bool behindHasNumber = false;
+                        for (int j = i + 1; j < creditList.Count; j++)
+                        {
+                            if (!string.IsNullOrEmpty(creditList[j]) && creditList[j] != "0")
+                            {
+                                if (int.TryParse(creditList[j], out credit))
+                                {
+                                    behindHasNumber = true;
+                                    break;
+                                } 
+                            }
+                        }
+
+                        if (int.TryParse(creditList[i], out credit))
+                        {
+                            creditToLevelList[i] = level.ToString();
+
+                            if ((i % 2) == 0)
+                            {
+                                if (!string.IsNullOrEmpty(creditList[i + 1]) && creditList[i + 1] != "0")
+                                {
+                                    if (!int.TryParse(creditList[i + 1], out credit))
+                                    {
+                                        creditToLevelList[i + 1] = level.ToString();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(creditList[i - 1]) && creditList[i - 1] != "0")
+                                {
+                                    if (!int.TryParse(creditList[i - 1], out credit))
+                                    {
+                                        creditToLevelList[i - 1] = level.ToString();
+                                    }
+                                }
+                            }
+
+                            if (behindHasNumber)
+                            {
+                                level++;
+                            }
+                        }
+
+                        if (!behindHasNumber)
+                        {
+                            for (int j = i; j < creditList.Count; j++)
+                            {
+                                if (!string.IsNullOrEmpty(creditList[j]) && creditList[j] != "0")
+                                {
+                                    if (!int.TryParse(creditList[j], out credit))
+                                    {
+                                        if (!string.IsNullOrEmpty(previousCreditString) && creditList[j] != previousCreditString)
+                                        {
+                                            level++;
+                                        }
+
+                                        creditToLevelList[j] = level.ToString();
+                                        previousCreditString = creditList[j];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < creditToLevelList.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(creditToLevelList[i]))
+                    {
+                        int credit;
+                        for (int j = i + 1; j < creditToLevelList.Count; j++)
+                        {
+                            if (string.IsNullOrEmpty(creditToLevelList[j]))
+                            {
+                                if (!string.IsNullOrEmpty(creditList[j]) && !int.TryParse(creditList[j], out credit))
+                                {
+                                    creditToLevelList[j] = creditToLevelList[i];
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        for (int j = i - 1; j >= 0; j++)
+                        {
+                            if (string.IsNullOrEmpty(creditToLevelList[j]))
+                            {
+                                if (!string.IsNullOrEmpty(creditList[j]) && !int.TryParse(creditList[j], out credit))
+                                {
+                                    creditToLevelList[j] = creditToLevelList[i];
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (gradeYear == "1" && semester == "1")
+                {
+                    courseInfoElement.SetAttributeValue("Level", creditToLevelList[0]);
+                    courseInfoElement.SetAttributeValue("FullName", (subjectName + " "+ NumberToRomanNumber(creditToLevelList[0])));
+                }
+                if (gradeYear == "1" && semester == "2")
+                {
+                    courseInfoElement.SetAttributeValue("Level", creditToLevelList[1]);
+                    courseInfoElement.SetAttributeValue("FullName", (subjectName + " " + NumberToRomanNumber(creditToLevelList[1])));
+                }
+                if (gradeYear == "2" && semester == "1")
+                {
+                    courseInfoElement.SetAttributeValue("Level", creditToLevelList[2]);
+                    courseInfoElement.SetAttributeValue("FullName", (subjectName + " " + NumberToRomanNumber(creditToLevelList[2])));
+                }
+                if (gradeYear == "2" && semester == "2")
+                {
+                    courseInfoElement.SetAttributeValue("Level", creditToLevelList[3]);
+                    courseInfoElement.SetAttributeValue("FullName", (subjectName + " " + NumberToRomanNumber(creditToLevelList[3])));
+                }
+                if (gradeYear == "3" && semester == "1")
+                {
+                    courseInfoElement.SetAttributeValue("Level", creditToLevelList[4]);
+                    courseInfoElement.SetAttributeValue("FullName", (subjectName + " " + NumberToRomanNumber(creditToLevelList[4])));
+                }
+                if (gradeYear == "3" && semester == "2")
+                {
+                    courseInfoElement.SetAttributeValue("Level", creditToLevelList[5]);
+                    courseInfoElement.SetAttributeValue("FullName", (subjectName + " " + NumberToRomanNumber(creditToLevelList[5])));
+                }
+            }
         }
     }
 }
