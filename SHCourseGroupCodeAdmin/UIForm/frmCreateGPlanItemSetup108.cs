@@ -99,6 +99,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     dgData.Rows[rowIdx].Cells["處理方式"].Value = subj.ProcessStatus;
                     dgData.Rows[rowIdx].Cells["領域"].Value = subj.Domain;
                     dgData.Rows[rowIdx].Cells["分項類別"].Value = subj.Entry;
+                    dgData.Rows[rowIdx].Cells["報部科目名稱"].Value = subj.OfficialSubjectName;
                     dgData.Rows[rowIdx].Cells["科目名稱"].Value = subj.SubjectName;
                     dgData.Rows[rowIdx].Cells["校訂部定"].Value = subj.RequiredBy;
                     dgData.Rows[rowIdx].Cells["必選修"].Value = subj.isRequired;
@@ -211,6 +212,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbScoreType.HeaderText = "分項類別";
                 tbScoreType.ReadOnly = true;
 
+                DataGridViewTextBoxColumn tbOfficialSubjectName = new DataGridViewTextBoxColumn();
+                tbOfficialSubjectName.Name = "報部科目名稱";
+                tbOfficialSubjectName.Width = 150;
+                tbOfficialSubjectName.HeaderText = "報部科目名稱";
+                tbOfficialSubjectName.ReadOnly = true;
+
                 DataGridViewTextBoxColumn tbSubjectName = new DataGridViewTextBoxColumn();
                 tbSubjectName.Name = "科目名稱";
                 tbSubjectName.Width = 150;
@@ -295,6 +302,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgData.Columns.Add(cbProcStatus);
                 dgData.Columns.Add(tbDomain);
                 dgData.Columns.Add(tbScoreType);
+                dgData.Columns.Add(tbOfficialSubjectName);
                 dgData.Columns.Add(tbSubjectName);
                 dgData.Columns.Add(tbRequiredBy);
                 dgData.Columns.Add(tbIsRequired);

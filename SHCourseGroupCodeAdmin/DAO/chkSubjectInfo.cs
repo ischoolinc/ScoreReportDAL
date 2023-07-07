@@ -43,5 +43,10 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string NotIncludedInCalc { get; set; }
 
         public string NotIncludedInCredit { get; set; }
+
+        /// <summary>
+        /// 報部科目名稱
+        /// </summary>
+        public string OfficialSubjectName { get; set; }
     }
 }

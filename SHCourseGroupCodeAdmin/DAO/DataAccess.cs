@@ -715,6 +715,30 @@ namespace SHCourseGroupCodeAdmin.DAO
             return GPlanXml;
         }
 
+        // 轉換科目級別文字
+        private string ConvertSubjLevel(string level)
+        {
+            string lev = "";
+            if (level == "1")
+                lev = " I";
+
+            if (level == "2")
+                lev = " II";
+
+            if (level == "3")
+                lev = " III";
+
+            if (level == "4")
+                lev = " IV";
+
+            if (level == "5")
+                lev = " V";
+
+            if (level == "6")
+                lev = " VI";
+            return lev;
+        }
+
         private string SubjFullName(string SubjectName, int level)
         {
             string lev = "";
@@ -1745,72 +1769,72 @@ namespace SHCourseGroupCodeAdmin.DAO
                                             data.credit_period = Mco.credit_period;
                                             data.open_type = Mco.open_type;
                                             data.CourseCode = Mco.course_code;
-                                        }                                        
+                                        }
                                     }
                                 }
 
                                 #endregion
                             }
 
-                           
+
                         }
 
                         // 當沒有比對到課程代碼才需要處理
                         //if (string.IsNullOrEmpty(data.CourseCode))
                         //{
-                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
                             {
-                                if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    errItem.Remove("必修選修");
-                                    break;
-                                }
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("必修選修");
+                                break;
                             }
+                        }
 
-                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
                             {
-                                if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    errItem.Remove("部定校訂");
-                                    break;
-                                }
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("部定校訂");
+                                break;
                             }
+                        }
 
-                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
                             {
-                                if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    errItem.Remove("分項類別");
-                                    break;
-                                }
+                                errItem.Remove("科目名稱");
+                                errItem.Remove("分項類別");
+                                break;
                             }
+                        }
 
-                            foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        {
+                            if (data.SubjectName == Mco.subject_name)
                             {
-                                if (data.SubjectName == Mco.subject_name)
-                                {
-                                    errItem.Remove("科目名稱");
-                                    break;
-                                }
+                                errItem.Remove("科目名稱");
+                                break;
                             }
+                        }
 
-                            // 檢查學分數
-                            if (data.CheckCreditPass(mappingTable))
-                            {
-                                errItem.Remove("節數或學分數");
-                            }
+                        // 檢查學分數
+                        if (data.CheckCreditPass(mappingTable))
+                        {
+                            errItem.Remove("節數或學分數");
+                        }
 
 
-                            if (errItem.Count > 0)
-                            {
-                                foreach (string err in errItem)
-                                    data.ErrorMsgList.Add(err);
-                            }
+                        if (errItem.Count > 0)
+                        {
+                            foreach (string err in errItem)
+                                data.ErrorMsgList.Add(err);
+                        }
                         //}
-                        
+
                     }
                     else
                     {
@@ -2678,7 +2702,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     foreach (XElement subjElm in data.OpenSubjectSourceList)
                     {
                         // 檢查課程名稱是否存在
-                        string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value + " " + GetGradeSemester(data.GradeYear, Semester);
+                        string courseName = data.ClassName + " " + subjElm.Attribute("FullName").Value;
                         string chkName = courseName.Trim();
 
                         // 已存在跳過
@@ -2723,11 +2747,11 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                         string subjLevel = "";
 
-                        //if (subjElm.Attribute("Level") != null)
-                        //    subjLevel = subjElm.Attribute("Level").Value;
+                        if (subjElm.Attribute("Level") != null)
+                            subjLevel = subjElm.Attribute("Level").Value;
 
                         // 科目級別使用學期別
-                        subjLevel = GetGradeSemester(data.GradeYear, Semester);
+                        //subjLevel = GetGradeSemester(data.GradeYear, Semester);
 
                         string insStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value, subjElm.Attribute("NotIncludedInCalc").Value, subjElm.Attribute("NotIncludedInCredit").Value);
 
@@ -2748,7 +2772,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (data.SubjectBDict[subjName] == true)
                             {
                                 // 檢查課程名稱是否存在
-                                string courseName = data.ClassName + " " + subjElm.Attribute("SubjectName").Value + " " + GetGradeSemester(data.GradeYear, Semester); ;
+                                string courseName = data.ClassName + " " + subjElm.Attribute("FullName").Value;
+
                                 string chkName = courseName.Trim();
 
                                 // 已存在跳過
@@ -2792,11 +2817,11 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                                 string subjLevel = "";
 
-                                //if (subjElm.Attribute("Level") != null)
-                                //    subjLevel = subjElm.Attribute("Level").Value;
+                                if (subjElm.Attribute("Level") != null)
+                                    subjLevel = subjElm.Attribute("Level").Value;
 
-                                // 科目級別使用學期別
-                                subjLevel = GetGradeSemester(data.GradeYear, Semester);
+                                //// 科目級別使用學期別
+                                //subjLevel = GetGradeSemester(data.GradeYear, Semester);
 
                                 string inStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value, subjElm.Attribute("NotIncludedInCalc").Value, subjElm.Attribute("NotIncludedInCredit").Value);
 
@@ -3072,11 +3097,13 @@ namespace SHCourseGroupCodeAdmin.DAO
                         bool chkCourseName = true;
                         for (int i = 1; i <= subj.CourseCount; i++)
                         {
-                            // 科目級別使用學期別
+                            // 科目級別
                             string subjLevel = "";
-                            if (subj.SubjectXML.Attribute("GradeYear") != null)
+                            if (subj.SubjectXML.Attribute("Level") != null)
                             {
-                                subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
+                                //subjLevel = GetGradeSemester(subj.SubjectXML.Attribute("GradeYear").Value, Semester);
+                                //subjLevel = subj.SubjectXML.Attribute("Level").Value;
+                                subjLevel = ConvertSubjLevel(subj.SubjectXML.Attribute("Level").Value);
                             }
 
                             chkCourseName = false;
@@ -3122,7 +3149,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             else
                                 isReq = "0";
 
-                            string insStr = insertCourseSQL(courseName, subjLevel, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value);
+                            string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value);
 
                             if (!insertSQLList.Contains(insStr))
                                 insertSQLList.Add(insStr);

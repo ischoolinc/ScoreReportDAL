@@ -308,6 +308,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subjElm.SetAttributeValue("RequiredBy", data.require_by);
 
                     subjElm.SetAttributeValue("Semester", strSemester);
+                    
                     subjElm.SetAttributeValue("OfficialSubjectName", data.subject_name);
                     subjElm.SetAttributeValue("SubjectName", data.subject_name);
                     subjElm.SetAttributeValue("課程代碼", data.course_code);
@@ -671,6 +672,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                                     subj.OpenStatus = GetAttribute(elm, "開課方式");
                                     subj.open_type = GetAttribute(elm, "OpenType");
                                     subj.course_attr = GetAttribute(elm, "CourseAttr");
+                                    subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                                     subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                                     subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                                     elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
@@ -749,6 +751,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.OpenStatus = GetAttribute(elm, "開課方式");
                         subj.open_type = GetAttribute(elm, "OpenType");
                         subj.course_attr = GetAttribute(elm, "CourseAttr");
+                        subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                         subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                         subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                         elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
@@ -880,6 +883,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
                             subj.open_type = GetAttribute(elm, "OpenType");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+                            subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                             elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
@@ -914,6 +918,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
                             subj.open_type = GetAttribute(elm, "OpenType");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+                            subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.ProcessStatus = "刪除";
@@ -993,7 +998,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.credit_period = GetAttribute(elmMoe, "授課學期學分");
                             subj.open_type = GetAttribute(elmMoe, "OpenType");
 
+                            subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+                            subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
                             elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);

@@ -49,6 +49,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         bool _MainIsLoading = false;
         bool _MainIsFirstLoad = false;
         bool _MainOneSemesterHasDuplicateSubjectLevel = false;
+        bool _MainOneSemesterHasDuplicateSubjectName = false;
         List<DataGridViewRow> _MainRowList = new List<DataGridViewRow>();
         DataGridViewRow _MainSelectedRow = new DataGridViewRow();
         bool _IsMainDataDirty = false;
@@ -1181,7 +1182,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         if (gradeYearCreditDic[gradeYear][0] != gradeYearCreditDic[gradeYear][1])
                         {
                             mainRow.Cells[16].ErrorText = "同學年上下學期學分數不一致，需設定指定學年科目名稱。";
-                        } 
+                        }
                     }
                 }
 
@@ -1255,6 +1256,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             #endregion
             // 檢查單學期科目名稱及整張課程規畫表科目+級別是否重複
             CheckSubjectNameLevelDuplicate();
+
+            // 檢查單學期科目名稱及整張課程規畫表科目名稱是否重複
+            CheckSubjectNameDuplicate();
 
             // 如果有缺少報部科目名稱的科目，就需要詢問後補上
             if (_CourseInfoLostOfficialSubjectNameList.Count > 0)
@@ -1599,6 +1603,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     MessageBox.Show("同學期科目+級別不可重複");
                     return;
                 }
+
+                // 科目名稱錯誤無法儲存
+                if (_MainOneSemesterHasDuplicateSubjectName)
+                {
+                    MessageBox.Show("科目名稱不可重複");
+                    return;
+                }
+
 
                 // 回寫資料
                 _da.UpdateGPlanXML(SelectInfo.RefGPID, SelectInfo.RefGPContentXml.ToString());
@@ -2264,6 +2276,56 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
+        //// 檢查科目名稱資料是否正確
+        private void CheckSubjectNameDuplicate()
+        {
+            _MainOneSemesterHasDuplicateSubjectName = false;
+
+            Dictionary<string, List<DataGridViewCell>> SubjectNameDict = new Dictionary<string, List<DataGridViewCell>>();
+            Dictionary<string, Dictionary<string, List<DataGridViewCell>>> _MainSubjectLevelInSemester = new Dictionary<string, Dictionary<string, List<DataGridViewCell>>>(); // {Key = $"{GradeYear}_{Semester}", Value = {Key = $"{SubjectName}", Value = CourseInfo as DataGridViewCell}
+
+            int columnIndex = 14; // 科目名稱
+            foreach (DataGridViewRow row in _MainRowList)
+            {
+                if (row.Tag != null)
+                {
+                    GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)row.Tag;
+                    string subjectName = courseInfo.SubjectName;             
+
+                    // 重製總表表格檢查結果
+                    if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
+                    {
+                        row.Cells[columnIndex].ErrorText = "";
+                    }
+
+                    // 準備判斷科目名稱是否重複的資料
+                    if (!SubjectNameDict.ContainsKey(subjectName))
+                    {
+                        SubjectNameDict.Add(subjectName, new List<DataGridViewCell>());
+                    }
+
+                    SubjectNameDict[subjectName].Add(row.Cells[columnIndex]);
+
+                }
+
+            }
+
+            // 檢查同學期科目是否重複
+            foreach(string name in SubjectNameDict.Keys)
+            {
+                if (SubjectNameDict[name].Count > 1)
+                {
+                    foreach (DataGridViewCell cell in SubjectNameDict[name])
+                    {
+                        cell.ErrorText = "科目名稱重複，需修正科目名稱。";
+                        _MainOneSemesterHasDuplicateSubjectName = true;
+                    }
+                }
+            }            
+            
+        }
+
+
         //// 篩選
         private void LoadMainComboBoxData(object sender, EventArgs args)
         {
@@ -2749,6 +2811,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                         // 檢查科目級別資料是否正確
                         CheckSubjectNameLevelDuplicate();
+
+                        // 檢查科目名稱資料是否正確
+                        CheckSubjectNameDuplicate();
 
                         LoadMainDataGridViewData();
                         dgvMain.Rows[index].Selected = true;
