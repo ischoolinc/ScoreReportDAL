@@ -40,7 +40,6 @@
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.menuUpdateStatus = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnBatchModify = new DevComponents.DotNetBar.ButtonX();
-            this.lblUpdateLevelCount = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,7 +116,7 @@
             // 
             this.lblDelCount.BackgroundStyle.Class = "";
             this.lblDelCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblDelCount.Location = new System.Drawing.Point(342, 363);
+            this.lblDelCount.Location = new System.Drawing.Point(232, 363);
             this.lblDelCount.Name = "lblDelCount";
             this.lblDelCount.Size = new System.Drawing.Size(55, 21);
             this.lblDelCount.TabIndex = 4;
@@ -133,7 +132,7 @@
             // 
             this.lblNoChangeCount.BackgroundStyle.Class = "";
             this.lblNoChangeCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblNoChangeCount.Location = new System.Drawing.Point(438, 363);
+            this.lblNoChangeCount.Location = new System.Drawing.Point(328, 363);
             this.lblNoChangeCount.Name = "lblNoChangeCount";
             this.lblNoChangeCount.Size = new System.Drawing.Size(55, 21);
             this.lblNoChangeCount.TabIndex = 5;
@@ -203,29 +202,12 @@
             this.btnBatchModify.Text = "批次修改處理方式";
             this.btnBatchModify.Click += new System.EventHandler(this.btnBatchModify_Click);
             // 
-            // lblUpdateLevelCount
-            // 
-            this.lblUpdateLevelCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblUpdateLevelCount.AutoSize = true;
-            this.lblUpdateLevelCount.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.lblUpdateLevelCount.BackgroundStyle.Class = "";
-            this.lblUpdateLevelCount.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblUpdateLevelCount.Location = new System.Drawing.Point(219, 363);
-            this.lblUpdateLevelCount.Name = "lblUpdateLevelCount";
-            this.lblUpdateLevelCount.Size = new System.Drawing.Size(82, 21);
-            this.lblUpdateLevelCount.TabIndex = 4;
-            this.lblUpdateLevelCount.Text = "級別更新0筆";
-            // 
             // frmCreateGPlanItemSetup108
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(790, 398);
-            this.Controls.Add(this.lblUpdateLevelCount);
             this.Controls.Add(this.btnBatchModify);
             this.Controls.Add(this.dgData);
             this.Controls.Add(this.btnSave);
@@ -258,6 +240,5 @@
         private DevComponents.DotNetBar.Controls.DataGridViewX dgData;
         private System.Windows.Forms.ContextMenuStrip menuUpdateStatus;
         private DevComponents.DotNetBar.ButtonX btnBatchModify;
-        private DevComponents.DotNetBar.LabelX lblUpdateLevelCount;
     }
 }

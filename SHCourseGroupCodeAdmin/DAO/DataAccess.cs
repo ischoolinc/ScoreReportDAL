@@ -188,11 +188,41 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             DataTable dt = qh.Select(query);
 
+            Dictionary<string, string> mapDict = new Dictionary<string, string>();
+            mapDict.Add("1", "建教合作-輪調式");
+            mapDict.Add("2", "建教合作-階梯式");
+            mapDict.Add("3", "建教合作-實習式");
+            mapDict.Add("4", "建教合作-其他式");
+            mapDict.Add("5", "產學訓專班");
+            mapDict.Add("6", "雙軌旗艦計畫");
+            mapDict.Add("7", "產攜專班");
+
             foreach (DataRow dr in dt.Rows)
             {
                 string code = dr["group_code"] + "";
                 string name = dr["group_name"] + "";
                 string gpName = dr["gplan_name"] + "";
+
+                // 加這段主要處理當班群無法對照變成不分班群，和原本不分班群0會有重複名稱問題
+                // 取得第16碼班群碼
+                if (code.Length > 15)
+                {
+                    string classCode = code.Substring(15, 1);
+                    if (name.Contains("不分班群") && classCode != "0")
+                    {
+                        if (mapDict.ContainsKey(classCode))
+                        {                            
+                            name = name.Replace("不分班群", mapDict[classCode]);
+                            gpName = gpName.Replace("不分班群", mapDict[classCode]);
+                        }                            
+                        else
+                        {
+                            name = name + classCode;
+                            gpName = gpName + classCode;
+                        }
+                            
+                    }
+                }
 
                 if (!MOEGroupCodeDict.ContainsKey(code))
                     MOEGroupCodeDict.Add(code, name);
@@ -716,7 +746,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         }
 
         // 轉換科目級別文字
-        private string ConvertSubjLevel(string level)
+        public static string ConvertSubjLevel(string level)
         {
             string lev = "";
             if (level == "1")
@@ -736,6 +766,25 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             if (level == "6")
                 lev = " VI";
+
+            if (level == "7")
+                lev = " VII";
+
+            if (level == "8")
+                lev = " VIII";
+
+            if (level == "9")
+                lev = " IX";
+
+            if (level == "10")
+                lev = " X";
+
+            if (level == "11")
+                lev = " XI";
+
+            if (level == "12")
+                lev = " XII";
+
             return lev;
         }
 
@@ -759,6 +808,24 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             if (level == 6)
                 lev = " VI";
+
+            if (level == 7)
+                lev = " VII";
+
+            if (level == 8)
+                lev = " VIII";
+
+            if (level == 9)
+                lev = " IX";
+
+            if (level == 10)
+                lev = " X";
+
+            if (level == 11)
+                lev = " XI";
+
+            if (level == 12)
+                lev = " XII";
 
             string value = SubjectName + lev;
 

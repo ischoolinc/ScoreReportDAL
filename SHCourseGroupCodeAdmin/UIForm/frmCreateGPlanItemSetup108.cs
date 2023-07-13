@@ -19,11 +19,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
     {
         GPlanInfo108 _GPlanInfo;
         List<string> _ProcessList = new List<string>() { 
-            "新增"
-            , "更新"
-            , "級別更新"
-            , "略過"
-            , "刪除"};
+             "略過"};
         public frmCreateGPlanItemSetup108()
         {
             InitializeComponent();
@@ -74,9 +70,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (subj.ProcessStatus == "新增")
                     subj.OrderBy = 2;
                 if (subj.ProcessStatus == "刪除")
-                    subj.OrderBy = 3;
-                if (subj.ProcessStatus == "級別更新")
-                    subj.OrderBy = 4;
+                    subj.OrderBy = 3;               
             }
 
             _GPlanInfo.chkSubjectInfoList = _GPlanInfo.chkSubjectInfoList.OrderBy(x => x.OrderBy).ToList();
@@ -171,33 +165,39 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbDiffStatus.HeaderText = "差異狀態";
                 tbDiffStatus.ReadOnly = true;
 
-                DataGridViewComboBoxColumn cbProcStatus = new DataGridViewComboBoxColumn();
+                DataGridViewTextBoxColumn cbProcStatus = new DataGridViewTextBoxColumn();
                 cbProcStatus.Name = "處理方式";
                 cbProcStatus.Width = 90;
-                cbProcStatus.Width = 120;
                 cbProcStatus.HeaderText = "處理方式";
+                cbProcStatus.ReadOnly = true;
 
-                DataTable dtPitems = new DataTable();
-                dtPitems.Columns.Add("ITEM");
-                dtPitems.Columns.Add("VALUE");
+                //DataGridViewComboBoxColumn cbProcStatus = new DataGridViewComboBoxColumn();
+                //cbProcStatus.Name = "處理方式";
+                //cbProcStatus.Width = 90;
+                //cbProcStatus.Width = 120;
+                //cbProcStatus.HeaderText = "處理方式";
 
-                List<string> items = new List<string>();
-                foreach (string item in _ProcessList)
-                {
-                    items.Add(item);
-                }
+                //DataTable dtPitems = new DataTable();
+                //dtPitems.Columns.Add("ITEM");
+                //dtPitems.Columns.Add("VALUE");
 
-                foreach (string str in items)
-                {
-                    DataRow dr = dtPitems.NewRow();
-                    dr["ITEM"] = str;
-                    dr["VALUE"] = str;
-                    dtPitems.Rows.Add(dr);
-                }
+                //List<string> items = new List<string>();
+                //foreach (string item in _ProcessList)
+                //{
+                //    items.Add(item);
+                //}
 
-                cbProcStatus.DataSource = dtPitems;
-                cbProcStatus.DisplayMember = "ITEM";
-                cbProcStatus.ValueMember = "VALUE";
+                //foreach (string str in items)
+                //{
+                //    DataRow dr = dtPitems.NewRow();
+                //    dr["ITEM"] = str;
+                //    dr["VALUE"] = str;
+                //    dtPitems.Rows.Add(dr);
+                //}
+
+                //cbProcStatus.DataSource = dtPitems;
+                //cbProcStatus.DisplayMember = "ITEM";
+                //cbProcStatus.ValueMember = "VALUE";
 
 
                 DataGridViewTextBoxColumn tbDomain = new DataGridViewTextBoxColumn();
@@ -328,7 +328,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         /// </summary>
         private void dgDataCount()
         {
-            int addCount = 0, diffCount = 0, updateCount = 0, updateLevelCount = 0, delCount = 0, noChangeCount = 0;
+            int addCount = 0, diffCount = 0, updateCount = 0, delCount = 0, noChangeCount = 0;
 
             foreach (DataGridViewRow dr in dgData.Rows)
             {
@@ -349,16 +349,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (dr.Cells["處理方式"].Value.ToString() == "更新")
                         updateCount++;
 
-                    if (dr.Cells["處理方式"].Value.ToString() == "級別更新")
-                        updateLevelCount++;
                 }
             }
 
 
             lblDiffCount.Text = "差異科目數：" + diffCount;
             lblAddCount.Text = "新增" + addCount + "筆";
-            lblUpdateCount.Text = "更新" + updateCount + "筆";
-            lblUpdateLevelCount.Text = "級別更新" + updateLevelCount + "筆";
+            lblUpdateCount.Text = "更新" + updateCount + "筆";            
             lblDelCount.Text = "刪除" + delCount + "筆";
             lblNoChangeCount.Text = "略過" + noChangeCount + "筆";
         }

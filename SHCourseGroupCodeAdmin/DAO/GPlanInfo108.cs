@@ -60,6 +60,8 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// </summary>
         public List<DataRow> GPlanList = new List<DataRow>();
 
+        // 是否檢查科目級別
+        bool _CheckSubjectLevel { get; set; }
 
         public bool needUpdateEntryYear = false;
 
@@ -308,7 +310,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subjElm.SetAttributeValue("RequiredBy", data.require_by);
 
                     subjElm.SetAttributeValue("Semester", strSemester);
-                    
+
                     subjElm.SetAttributeValue("OfficialSubjectName", data.subject_name);
                     subjElm.SetAttributeValue("SubjectName", data.subject_name);
                     subjElm.SetAttributeValue("課程代碼", data.course_code);
@@ -929,6 +931,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                         }
                     }
 
+                    Dictionary<string, string> MOELevelDict = new Dictionary<string, string>();
+                    Dictionary<string, string> GPlanLevelDict = new Dictionary<string, string>();
+
+                    Dictionary<string, string> MOEStartLevelDict = new Dictionary<string, string>();
+                    Dictionary<string, string> GPlanStartLevelDict = new Dictionary<string, string>();
+
                     // 以大表為主，當課程代碼相同，比對裡面資料是否相同
                     foreach (string mCo in MOEDict.Keys)
                     {
@@ -962,15 +970,15 @@ namespace SHCourseGroupCodeAdmin.DAO
                                     }
                                 }
 
-                                // 複製級別設定
-                                if (graduationPlanEle.Attribute("Level") != null)
-                                {
-                                    string level = graduationPlanEle.Attribute("Level").Value.ToString();
-                                    if (!string.IsNullOrEmpty(level))
-                                    {
-                                        moeEle.SetAttributeValue("Level", level);
-                                    }
-                                }
+                                //// 複製級別設定
+                                //if (graduationPlanEle.Attribute("Level") != null)
+                                //{
+                                //    string level = graduationPlanEle.Attribute("Level").Value.ToString();
+                                //    if (!string.IsNullOrEmpty(level))
+                                //    {
+                                //        moeEle.SetAttributeValue("Level", level);
+                                //    }
+                                //}
 
                                 index++;
                             }
@@ -1006,6 +1014,87 @@ namespace SHCourseGroupCodeAdmin.DAO
                             elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
                             elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
 
+
+                            // 檢查開始級別與級別差異
+                            if (_CheckSubjectLevel)
+                            {
+                                MOELevelDict.Clear();
+                                GPlanLevelDict.Clear();
+                                MOEStartLevelDict.Clear();
+                                GPlanStartLevelDict.Clear();
+
+                                foreach (XElement elmM in MOEDict[mCo])
+                                {
+                                    // 級別
+                                    string key = GetAttribute(elmM, "GradeYear") + "_" + GetAttribute(elmM, "Semester");
+                                    string level = GetAttribute(elmM, "Level");
+                                    if (!MOELevelDict.ContainsKey(key))
+                                        MOELevelDict.Add(key, level);
+
+                                    // 開始級別
+                                    string startLevel = GetAttribute(elmM.Element("Grouping"), "startLevel");
+
+                                    if (!MOEStartLevelDict.ContainsKey(key))
+                                        MOEStartLevelDict.Add(key, startLevel);
+
+                                }
+
+
+                                foreach (XElement elmM in GPlanDict[mCo])
+                                {
+                                    // 級別
+                                    string key = GetAttribute(elmM, "GradeYear") + "_" + GetAttribute(elmM, "Semester");
+                                    string level = GetAttribute(elmM, "Level");
+                                    if (!GPlanLevelDict.ContainsKey(key))
+                                        GPlanLevelDict.Add(key, level);
+
+                                    // 開始級別
+                                    string startLevel = GetAttribute(elmM.Element("Grouping"), "startLevel");
+                                    if (!GPlanStartLevelDict.ContainsKey(key))
+                                        GPlanStartLevelDict.Add(key, startLevel);
+                                }
+
+                                // 比對差異
+                                foreach (string key in MOELevelDict.Keys)
+                                {
+                                    if (GPlanLevelDict.ContainsKey(key))
+                                    {
+                                        if (MOELevelDict[key] != GPlanLevelDict[key])
+                                        {
+                                            subj.DiffStatusList.Add("級別不同");
+                                            subj.DiffMessageList.Add("級別：課程代碼表「" + MOELevelDict[key] + "」、課程規劃表「" + GPlanLevelDict[key] + "」");
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        subj.DiffStatusList.Add("級別不同");
+                                        subj.DiffMessageList.Add("級別：課程代碼表「" + MOELevelDict[key] + "」、課程規劃表「」");
+                                        break;
+                                    }
+                                }
+
+                                foreach (string key in MOEStartLevelDict.Keys)
+                                {
+                                    if (GPlanStartLevelDict.ContainsKey(key))
+                                    {
+                                        if (MOEStartLevelDict[key] != GPlanStartLevelDict[key])
+                                        {
+                                            subj.DiffStatusList.Add("開始級別不同");
+                                            subj.DiffMessageList.Add("開始級別：課程代碼表「" + MOEStartLevelDict[key] + "」、課程規劃表「" + GPlanStartLevelDict[key] + "」");
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        subj.DiffStatusList.Add("開始級別不同");
+                                        subj.DiffMessageList.Add("開始級別：課程代碼表「" + MOEStartLevelDict[key] + "」、課程規劃表「」");
+                                        break;
+                                    }
+                                }
+
+
+                            }
 
                             if (MOEDict[mCo].Count != GPlanDict[mCo].Count)
                             {
@@ -1225,5 +1314,9 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
         }
 
+        public void SetCheckSubjectLevel(bool value)
+        {
+            _CheckSubjectLevel = value;
+        }
     }
 }

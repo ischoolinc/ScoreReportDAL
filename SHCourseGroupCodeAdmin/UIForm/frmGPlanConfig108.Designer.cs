@@ -79,8 +79,6 @@
             this.colMain2_2Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMain3_1Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMain3_2Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tbMainSchoolYearGroupName = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX14 = new DevComponents.DotNetBar.LabelX();
             this.btnMainCancel = new DevComponents.DotNetBar.ButtonX();
             this.btnMainSet = new DevComponents.DotNetBar.ButtonX();
             this.tbMainSubjectName = new DevComponents.DotNetBar.Controls.TextBoxX();
@@ -512,7 +510,7 @@
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 188F));
             this.tlpMain.Size = new System.Drawing.Size(1339, 703);
             this.tlpMain.TabIndex = 1;
             // 
@@ -767,8 +765,6 @@
             this.gpMainSetCourseData.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
             this.gpMainSetCourseData.Controls.Add(this.btnMainCalculateLevel);
             this.gpMainSetCourseData.Controls.Add(this.dgvMainLevel);
-            this.gpMainSetCourseData.Controls.Add(this.tbMainSchoolYearGroupName);
-            this.gpMainSetCourseData.Controls.Add(this.labelX14);
             this.gpMainSetCourseData.Controls.Add(this.btnMainCancel);
             this.gpMainSetCourseData.Controls.Add(this.btnMainSet);
             this.gpMainSetCourseData.Controls.Add(this.tbMainSubjectName);
@@ -776,9 +772,9 @@
             this.gpMainSetCourseData.Controls.Add(this.tbMainStartLevel);
             this.gpMainSetCourseData.Controls.Add(this.labelX5);
             this.gpMainSetCourseData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpMainSetCourseData.Location = new System.Drawing.Point(3, 536);
+            this.gpMainSetCourseData.Location = new System.Drawing.Point(3, 518);
             this.gpMainSetCourseData.Name = "gpMainSetCourseData";
-            this.gpMainSetCourseData.Size = new System.Drawing.Size(1333, 164);
+            this.gpMainSetCourseData.Size = new System.Drawing.Size(1333, 182);
             // 
             // 
             // 
@@ -816,7 +812,7 @@
             // 
             this.btnMainCalculateLevel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnMainCalculateLevel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnMainCalculateLevel.Location = new System.Drawing.Point(698, 7);
+            this.btnMainCalculateLevel.Location = new System.Drawing.Point(698, 8);
             this.btnMainCalculateLevel.Name = "btnMainCalculateLevel";
             this.btnMainCalculateLevel.Size = new System.Drawing.Size(90, 23);
             this.btnMainCalculateLevel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -855,15 +851,16 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvMainLevel.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMainLevel.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgvMainLevel.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.dgvMainLevel.Location = new System.Drawing.Point(30, 43);
+            this.dgvMainLevel.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dgvMainLevel.Location = new System.Drawing.Point(30, 37);
             this.dgvMainLevel.MultiSelect = false;
             this.dgvMainLevel.Name = "dgvMainLevel";
             this.dgvMainLevel.RowHeadersWidth = 80;
             this.dgvMainLevel.RowTemplate.Height = 24;
             this.dgvMainLevel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvMainLevel.Size = new System.Drawing.Size(657, 90);
+            this.dgvMainLevel.Size = new System.Drawing.Size(761, 117);
             this.dgvMainLevel.TabIndex = 19;
+            this.dgvMainLevel.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMainLevel_CellEnter);
             // 
             // colMain1_1Level
             // 
@@ -907,38 +904,11 @@
             this.colMain3_2Level.MinimumWidth = 50;
             this.colMain3_2Level.Name = "colMain3_2Level";
             // 
-            // tbMainSchoolYearGroupName
-            // 
-            // 
-            // 
-            // 
-            this.tbMainSchoolYearGroupName.Border.Class = "TextBoxBorder";
-            this.tbMainSchoolYearGroupName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbMainSchoolYearGroupName.Location = new System.Drawing.Point(568, 6);
-            this.tbMainSchoolYearGroupName.Name = "tbMainSchoolYearGroupName";
-            this.tbMainSchoolYearGroupName.Size = new System.Drawing.Size(119, 25);
-            this.tbMainSchoolYearGroupName.TabIndex = 17;
-            // 
-            // labelX14
-            // 
-            this.labelX14.AutoSize = true;
-            this.labelX14.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX14.BackgroundStyle.Class = "";
-            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX14.Location = new System.Drawing.Point(440, 8);
-            this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(127, 21);
-            this.labelX14.TabIndex = 16;
-            this.labelX14.Text = "指定學年科目名稱：";
-            // 
             // btnMainCancel
             // 
             this.btnMainCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnMainCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnMainCancel.Location = new System.Drawing.Point(801, 110);
+            this.btnMainCancel.Location = new System.Drawing.Point(916, 125);
             this.btnMainCancel.Name = "btnMainCancel";
             this.btnMainCancel.Size = new System.Drawing.Size(90, 23);
             this.btnMainCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -950,7 +920,7 @@
             // 
             this.btnMainSet.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnMainSet.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnMainSet.Location = new System.Drawing.Point(698, 110);
+            this.btnMainSet.Location = new System.Drawing.Point(813, 125);
             this.btnMainSet.Name = "btnMainSet";
             this.btnMainSet.Size = new System.Drawing.Size(90, 23);
             this.btnMainSet.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -1035,7 +1005,7 @@
             this.gpMainData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gpMainData.Location = new System.Drawing.Point(3, 158);
             this.gpMainData.Name = "gpMainData";
-            this.gpMainData.Size = new System.Drawing.Size(1333, 372);
+            this.gpMainData.Size = new System.Drawing.Size(1333, 354);
             // 
             // 
             // 
@@ -1118,7 +1088,7 @@
             this.dgvMain.ReadOnly = true;
             this.dgvMain.RowTemplate.Height = 24;
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(1327, 345);
+            this.dgvMain.Size = new System.Drawing.Size(1327, 327);
             this.dgvMain.TabIndex = 6;
             this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
             // 
@@ -3784,8 +3754,6 @@
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboMainRequiredBy;
         private DevComponents.DotNetBar.LabelX labelX1;
         private DevComponents.DotNetBar.Controls.GroupPanel gpMainSetCourseData;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbMainSchoolYearGroupName;
-        private DevComponents.DotNetBar.LabelX labelX14;
         private DevComponents.DotNetBar.ButtonX btnMainCancel;
         private DevComponents.DotNetBar.ButtonX btnMainSet;
         private DevComponents.DotNetBar.Controls.TextBoxX tbMainSubjectName;

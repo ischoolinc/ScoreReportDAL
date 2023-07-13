@@ -12,6 +12,7 @@ using SHCourseGroupCodeAdmin.DAO;
 using System.Xml.Linq;
 using FISCA.LogAgent;
 using System.IO;
+using System.Diagnostics.Eventing.Reader;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -20,6 +21,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
         BackgroundWorker _bgWorker;
         DataAccess _da;
         List<GPlanInfo108> _GPlanInfo108List;
+
+        int AddCount = 0, UpdateCount = 0, NoChangeCount = 0, SetDefaultCount = 0;
+
+        // 是否檢查科目開始級別與級別
+        bool _CheckSubjectLevel = false;
 
         public frmCreateGPlanMain108()
         {
@@ -66,7 +72,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         /// </summary>
         private void GPlanDataCount()
         {
-            int AddCount = 0, UpdateCount = 0, NoChangeCount = 0, UpdateLevelCount = 0;
+            AddCount = 0; UpdateCount = 0; NoChangeCount = 0; SetDefaultCount = 0;
 
             foreach (DataGridViewRow drv in dgData.Rows)
             {
@@ -81,8 +87,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (Status == "更新")
                     UpdateCount++;
 
-                if (Status == "級別更新")
-                    UpdateLevelCount++;
+                if (Status == "重置")
+                    SetDefaultCount++;
 
                 if (Status == "無變動")
                     NoChangeCount++;
@@ -91,7 +97,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lblGroupCount.Text = "群科班數" + _GPlanInfo108List.Count + "筆";
             lblAddCount.Text = "新增" + AddCount + "筆";
             lblUpdateCount.Text = "更新" + UpdateCount + "筆";
-            lblUpdateLevelCount.Text = "級別更新" + UpdateLevelCount + "筆";
+            lblSetDefaultCount.Text = "重置" + SetDefaultCount + "筆";
             lblNoChangeCount.Text = "無變動" + NoChangeCount + "筆";
         }
 
@@ -135,6 +141,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 //data.ParseRefGPContentXml();
 
+                data.SetCheckSubjectLevel(_CheckSubjectLevel);
+
                 data.CheckData();
 
                 foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
@@ -171,6 +179,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void frmCreateGPlanMain108_Load(object sender, EventArgs e)
         {
+            // 預設檢查科目開始級別與級別
+            _CheckSubjectLevel = chkStartLevel.Checked = false;
+
             ControlEnable(false);
             _bgWorker.RunWorkerAsync();
         }
@@ -180,6 +191,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
             ControlEnable(false);
             try
             {
+                bool isUpdateStartLevel = false;
+
+                if (chkStartLevel.Checked && UpdateCount > 0)
+                {
+                    if (MsgBox.Show("請問當課程代碼表比對課程規劃表後，科目開始級別、科目級別有不同，選「是」使用課程代碼表更新課程規畫表，選「否」不更新科目開始級別、科目級別? ", "更新開始級別與科目級別", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                    {
+                        isUpdateStartLevel = true;
+                    }
+                }
+
+
                 List<GPlanInfo108> insertDataList = new List<GPlanInfo108>();
                 List<GPlanInfo108> updateDataList = new List<GPlanInfo108>();
 
@@ -188,7 +210,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (data.Status == "新增")
                         insertDataList.Add(data);
 
-                    if (data.Status == "更新" || data.Status == "級別更新")
+                    if (data.Status == "更新" || data.Status == "重置")
                         updateDataList.Add(data);
                 }
 
@@ -198,6 +220,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     ControlEnable(true);
                     return;
                 }
+
+                // 存放舊課程規劃資料                
+                Dictionary<string, XElement> GPlanXmlDict = new Dictionary<string, XElement>();
 
                 // 更新資料
                 List<string> updateSQLList = new List<string>();
@@ -210,12 +235,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         StringBuilder sbUpd = new StringBuilder();
                         sbUpd.AppendLine("更新課程規劃表資料：");
 
+                        Dictionary<string, string> SubjNameDict = new Dictionary<string, string>();
+
                         foreach (GPlanInfo108 data in updateDataList)
                         {
                             XElement GPlanXml = new XElement("GraduationPlan");
                             foreach (chkSubjectInfo subj in data.chkSubjectInfoList)
                             {
-                                if (subj.ProcessStatus == "更新" || subj.ProcessStatus == "新增")
+                                if (subj.ProcessStatus == "重置" || subj.ProcessStatus == "新增")
                                 {
                                     foreach (XElement elm in subj.MOEXml)
                                     {
@@ -223,13 +250,45 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     }
                                 }
 
-                                if (subj.ProcessStatus == "級別更新")
+                                if (subj.ProcessStatus == "更新")
                                 {
+                                    GPlanXmlDict.Clear();
+                                    // 讀取原本資料鍵索引
                                     foreach (XElement element in subj.GPlanXml)
                                     {
-                                        Utility.CalculateSubjectLevel(element);
-                                        GPlanXml.Add(element);
+                                        string key = element.Attribute("GradeYear").Value + "_" + element.Attribute("Semester").Value;
+                                        
+                                        if (!GPlanXmlDict.ContainsKey(key))
+                                            GPlanXmlDict.Add(key, element);
                                     }
+
+                                    // 課程計畫資料
+                                    foreach (XElement elm in subj.MOEXml)
+                                    {
+                                        // 比對資料後覆蓋
+                                        string key = elm.Attribute("GradeYear").Value + "_" + elm.Attribute("Semester").Value;
+
+                                        // 需要保留資料
+                                        if (GPlanXmlDict.ContainsKey(key))
+                                        {
+                                            XElement elmGP = GPlanXmlDict[key];
+
+                                            // 科目名稱
+                                            elm.SetAttributeValue("SubjectName",elmGP.Attribute("SubjectName").Value);
+
+                                            // 需要保留開始級別與科目級別
+                                            if (isUpdateStartLevel== false)
+                                            {
+                                                elm.Element("Grouping").SetAttributeValue("startLevel", elmGP.Element("Grouping").Attribute("startLevel").Value);
+                                                elm.SetAttributeValue("Level", elmGP.Attribute("Level").Value);
+
+                                                elm.SetAttributeValue("FullName", elmGP.Attribute("FullName").Value);
+                                            }
+                                          
+                                        }
+                                        GPlanXml.Add(elm);
+                                    }   
+                                 
                                 }
 
                                 if (subj.ProcessStatus == "略過")
@@ -403,7 +462,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void ControlEnable(bool value)
         {
-            dgData.Enabled = btnCreate.Enabled = btnQueryAndSet.Enabled = value;
+            dgData.Enabled = btnCreate.Enabled = btnQueryAndSet.Enabled = chkStartLevel.Enabled = btnReload.Enabled = value;
         }
 
         private void btnQueryAndSet_Click(object sender, EventArgs e)
@@ -482,13 +541,26 @@ namespace SHCourseGroupCodeAdmin.UIForm
             foreach (DataGridViewRow row in dgData.SelectedRows)
             {
                 GPlanInfo108 gplanInfo = (GPlanInfo108)row.Tag;
-                gplanInfo.Status = "級別更新";
+                gplanInfo.Status = "重置";
                 row.Cells[colChangeDesc.Index].Value = gplanInfo.Status;
                 foreach (chkSubjectInfo subjectInfo in gplanInfo.chkSubjectInfoList)
                 {
-                    subjectInfo.ProcessStatus = "級別更新";
+                    subjectInfo.ProcessStatus = "重置";
                 }
             }
+            GPlanDataCount();
+        }
+
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            _CheckSubjectLevel = chkStartLevel.Checked;
+            ControlEnable(false);
+            _bgWorker.RunWorkerAsync();
+        }
+
+        private void chkStartLevel_CheckedChanged(object sender, EventArgs e)
+        {
+            _CheckSubjectLevel = chkStartLevel.Checked;
         }
     }
 }

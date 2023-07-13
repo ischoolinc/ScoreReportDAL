@@ -1055,6 +1055,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
             listViewEx1.ResumeLayout();
             #endregion
 
+            // 處理指定學年科目名稱不同顯示
+            List<string> SchoolYearGroupNameRowList = new List<string>();
+            List<string> levelRowList = new List<string>();
+
             #region 課程群組
             foreach (string index in dataDict.Keys)
             {
@@ -1102,8 +1106,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 mainRow.Cells[6].Value = courseInfo.OfficialSubjectName;
                 mainRow.Cells[13].Value = courseInfo.StartLevel;
                 mainRow.Cells[14].Value = courseInfo.SubjectName;
-                mainRow.Cells[15].Value = string.Join(",", courseInfo.CourseContentList.Select(x => Utility.NumberToRomanNumber(x.Attribute("Level").Value + "")).ToList());
-                mainRow.Cells[16].Value = courseInfo.SchoolYearGroupName;
+
+                levelRowList.Clear();
+                SchoolYearGroupNameRowList.Clear();
+
+                foreach (XElement elm in courseInfo.CourseContentList)
+                {
+                    if (elm.Attribute("Level") != null)
+                    {
+                        string level = Utility.NumberToRomanNumber(elm.Attribute("Level").Value);
+                        if (!levelRowList.Contains(level))
+                        {
+                            levelRowList.Add(level);
+                        }
+                        else
+                            levelRowList.Add("");
+                    }
+
+                    if (elm.Attribute("指定學年科目名稱") != null)
+                    {
+                        if (!SchoolYearGroupNameRowList.Contains(elm.Attribute("指定學年科目名稱").Value))
+                        {
+                            SchoolYearGroupNameRowList.Add(elm.Attribute("指定學年科目名稱").Value);
+                        }
+                    }
+                }
+
+                mainRow.Cells[15].Value = string.Join(",", levelRowList.ToArray());
+                mainRow.Cells[16].Value = string.Join(",", SchoolYearGroupNameRowList.ToArray());
 
                 foreach (XElement element in courseInfo.CourseContentList)
                 {
@@ -1607,8 +1637,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 科目名稱錯誤無法儲存
                 if (_MainOneSemesterHasDuplicateSubjectName)
                 {
-                    MessageBox.Show("科目名稱不可重複");
-                    return;
+                    // 當一進入課規更新報部科目名稱，科目名稱指提示
+                    if (_CourseInfoLostOfficialSubjectNameList.Count == 0)
+                    {
+                        MessageBox.Show("科目名稱不可重複");
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("科目名稱不可重複");
+                    }
+
                 }
 
 
@@ -2191,7 +2230,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
         // 總表用事件
         private void SetMainCellLevelStyle(XElement element, DataGridViewCell cell)
         {
-            string level = element.Attribute("Level").Value;
+            string level = "";
+            if (element.Attribute("Level") != null)
+                level = element.Attribute("Level").Value;
 
             // 依據級別調整學分字體顏色
             switch (level)
@@ -2237,7 +2278,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         string gradeYear = element.Attribute("GradeYear").Value;
                         string semester = element.Attribute("Semester").Value;
                         string subjectName = element.Attribute("SubjectName").Value;
-                        string level = element.Attribute("Level").Value;
+                        string level = "";
+                        if (element.Attribute("Level") != null)
+                            level = element.Attribute("Level").Value;
 
                         // 重製總表表格檢查結果
                         if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
@@ -2290,7 +2333,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (row.Tag != null)
                 {
                     GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)row.Tag;
-                    string subjectName = courseInfo.SubjectName;             
+                    string subjectName = courseInfo.SubjectName;
 
                     // 重製總表表格檢查結果
                     if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
@@ -2311,7 +2354,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
 
             // 檢查同學期科目是否重複
-            foreach(string name in SubjectNameDict.Keys)
+            foreach (string name in SubjectNameDict.Keys)
             {
                 if (SubjectNameDict[name].Count > 1)
                 {
@@ -2321,8 +2364,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         _MainOneSemesterHasDuplicateSubjectName = true;
                     }
                 }
-            }            
-            
+            }
+
         }
 
 
@@ -2509,7 +2552,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)row.Tag;
                     tbMainStartLevel.Text = courseInfo.StartLevel;
                     tbMainSubjectName.Text = courseInfo.SubjectName;
-                    tbMainSchoolYearGroupName.Text = courseInfo.SchoolYearGroupName;
+
 
                     dgvMainLevel.Rows.Clear();
                     DataGridViewRow creditRow = new DataGridViewRow();
@@ -2520,47 +2563,67 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     levelRow.CreateCells(dgvMainLevel);
                     levelRow.HeaderCell.Value = "級別";
 
+
+                    DataGridViewRow SchoolYearGroupNameRow = new DataGridViewRow();
+                    SchoolYearGroupNameRow.CreateCells(dgvMainLevel);
+                    SchoolYearGroupNameRow.HeaderCell.Value = "指定學年科目名稱";
+
+                    dgvMainLevel.RowHeadersWidth = 150;
+
                     foreach (XElement element in courseInfo.CourseContentList)
                     {
                         CreditInfo creditInfo = GetCreditAttr(element);
                         string credit = creditInfo.StringValue;
                         string level = element.Attribute("Level").Value.ToString();
+                        string SchoolYearGroupName = "";
+                        if (element.Attribute("指定學年科目名稱") != null)
+                        {
+                            SchoolYearGroupName = element.Attribute("指定學年科目名稱").Value;
+                        }
+
 
                         if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
                         {
                             creditRow.Cells[0].Value = credit;
                             levelRow.Cells[0].Value = level;
+                            SchoolYearGroupNameRow.Cells[0].Value = SchoolYearGroupName;
                         }
                         if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
                         {
                             creditRow.Cells[1].Value = credit;
                             levelRow.Cells[1].Value = level;
+                            SchoolYearGroupNameRow.Cells[1].Value = SchoolYearGroupName;
                         }
                         if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                         {
                             creditRow.Cells[2].Value = credit;
                             levelRow.Cells[2].Value = level;
+                            SchoolYearGroupNameRow.Cells[2].Value = SchoolYearGroupName;
                         }
                         if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                         {
                             creditRow.Cells[3].Value = credit;
                             levelRow.Cells[3].Value = level;
+                            SchoolYearGroupNameRow.Cells[3].Value = SchoolYearGroupName;
                         }
                         if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                         {
                             creditRow.Cells[4].Value = credit;
                             levelRow.Cells[4].Value = level;
+                            SchoolYearGroupNameRow.Cells[4].Value = SchoolYearGroupName;
                         }
                         if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
                         {
                             creditRow.Cells[5].Value = credit;
                             levelRow.Cells[5].Value = level;
+                            SchoolYearGroupNameRow.Cells[5].Value = SchoolYearGroupName;
                         }
                     }
 
                     dgvMainLevel.Rows.AddRange(
                         creditRow
                         , levelRow
+                        , SchoolYearGroupNameRow
                     );
 
                     _MainSelectedRow = row;
@@ -2755,6 +2818,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 int index = 0;
                 string rowIndex = courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex") == null ? "" : courseInfo.CourseContentList[0].Element("Grouping").Attribute("RowIndex").Value;
+
+                // 處理當指定科目名稱有不同時
+                List<string> SchoolYearGroupNameRowList = new List<string>();
+
                 if (Int32.TryParse(rowIndex, out index))
                 {
                     index -= 1;
@@ -2763,51 +2830,117 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     {
                         courseInfo.StartLevel = tbMainStartLevel.Text;
                         courseInfo.SubjectName = tbMainSubjectName.Text;
-                        courseInfo.SchoolYearGroupName = tbMainSchoolYearGroupName.Text;
+
                         foreach (XElement element in courseInfo.CourseContentList)
                         {
                             element.Element("Grouping").SetAttributeValue("startLevel", tbMainStartLevel.Text);
                             element.SetAttributeValue("SubjectName", tbMainSubjectName.Text);
-                            element.SetAttributeValue("指定學年科目名稱", tbMainSchoolYearGroupName.Text);
+                            //element.SetAttributeValue("指定學年科目名稱", tbMainSchoolYearGroupName.Text);
 
                             int columnIndex = -1;
                             if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "1")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[0, 1].Value);
                                 columnIndex = 7;
+
+                                if (dgvMainLevel[0, 2].Value != null)
+                                {
+                                    string SYName = dgvMainLevel[0, 2].Value + "";
+                                    if (!SchoolYearGroupNameRowList.Contains(SYName))
+                                    {
+                                        SchoolYearGroupNameRowList.Add(SYName);
+                                    }
+                                    element.SetAttributeValue("指定學年科目名稱", SYName);
+                                }
+
                             }
                             if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[1, 1].Value);
                                 columnIndex = 8;
+
+                                if (dgvMainLevel[1, 2].Value != null)
+                                {
+                                    string SYName = dgvMainLevel[1, 2].Value + "";
+                                    if (!SchoolYearGroupNameRowList.Contains(SYName))
+                                    {
+                                        SchoolYearGroupNameRowList.Add(SYName);
+                                    }
+                                    element.SetAttributeValue("指定學年科目名稱", SYName);
+                                }
                             }
                             if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[2, 1].Value);
                                 columnIndex = 9;
+
+                                if (dgvMainLevel[2, 2].Value != null)
+                                {
+                                    string SYName = dgvMainLevel[2, 2].Value + "";
+                                    if (!SchoolYearGroupNameRowList.Contains(SYName))
+                                    {
+                                        SchoolYearGroupNameRowList.Add(SYName);
+                                    }
+                                    element.SetAttributeValue("指定學年科目名稱", SYName);
+                                }
                             }
                             if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[3, 1].Value);
                                 columnIndex = 10;
+
+                                if (dgvMainLevel[3, 2].Value != null)
+                                {
+                                    string SYName = dgvMainLevel[3, 2].Value + "";
+                                    if (!SchoolYearGroupNameRowList.Contains(SYName))
+                                    {
+                                        SchoolYearGroupNameRowList.Add(SYName);
+                                    }
+                                    element.SetAttributeValue("指定學年科目名稱", SYName);
+                                }
                             }
                             if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[4, 1].Value);
                                 columnIndex = 11;
+
+                                if (dgvMainLevel[4, 2].Value != null)
+                                {
+                                    string SYName = dgvMainLevel[4, 2].Value + "";
+                                    if (!SchoolYearGroupNameRowList.Contains(SYName))
+                                    {
+                                        SchoolYearGroupNameRowList.Add(SYName);
+                                    }
+                                    element.SetAttributeValue("指定學年科目名稱", SYName);
+                                }
                             }
                             if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[5, 1].Value);
                                 columnIndex = 12;
+
+                                if (dgvMainLevel[5, 2].Value != null)
+                                {
+                                    string SYName = dgvMainLevel[5, 2].Value + "";
+                                    if (!SchoolYearGroupNameRowList.Contains(SYName))
+                                    {
+                                        SchoolYearGroupNameRowList.Add(SYName);
+                                    }
+                                    element.SetAttributeValue("指定學年科目名稱", SYName);
+                                }
                             }
+
+                            // 調整完整名稱 FullName，開課會使用
+                            element.SetAttributeValue("FullName", element.Attribute("SubjectName").Value + DataAccess.ConvertSubjLevel(element.Attribute("Level").Value));
 
                             SetMainCellLevelStyle(element, _MainSelectedRow.Cells[columnIndex]);
                         }
                         _MainRowList[index].Cells[13].Value = tbMainStartLevel.Text;
                         _MainRowList[index].Cells[14].Value = tbMainSubjectName.Text;
                         _MainRowList[index].Cells[15].Value = string.Join(",", courseInfo.CourseContentList.Select(x => Utility.NumberToRomanNumber(x.Attribute("Level").Value + "")).ToList());
-                        _MainRowList[index].Cells[16].Value = tbMainSchoolYearGroupName.Text;
+
+                        // 指定學年科目名稱
+                        _MainRowList[index].Cells[16].Value = string.Join(",", SchoolYearGroupNameRowList.ToArray());
 
                         // 檢查科目級別資料是否正確
                         CheckSubjectNameLevelDuplicate();
@@ -3507,6 +3640,33 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (e.Button == MouseButtons.Right)
             {
                 menuSetCourseGroupCol.Show(Cursor.Position.X, Cursor.Position.Y);
+            }
+        }
+
+        private void dgvMainLevel_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            // 控制輸入法
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                if (dgvMainLevel[e.ColumnIndex,0].Value != null && dgvMainLevel[e.ColumnIndex, 0].Value.ToString() != "")
+                {
+                    dgvMainLevel[e.ColumnIndex, 1].ReadOnly = false;
+                    dgvMainLevel[e.ColumnIndex, 2].ReadOnly = false;
+                }else
+                {
+                    dgvMainLevel[e.ColumnIndex, 1].ReadOnly = true;
+                    dgvMainLevel[e.ColumnIndex, 2].ReadOnly = true;
+                }
+
+                if (e.RowIndex == 2)
+                {
+                    // 當輸入指定學年科目名稱可以輸入中文
+                    dgvMainLevel.ImeMode = ImeMode.On;
+                }
+                else
+                {
+                    dgvMainLevel.ImeMode = ImeMode.Off;
+                }
             }
         }
 

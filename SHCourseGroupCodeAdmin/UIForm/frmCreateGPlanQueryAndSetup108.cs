@@ -246,33 +246,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbDiffStatus.HeaderText = "差異狀態";
                 tbDiffStatus.ReadOnly = true;
 
-                DataGridViewComboBoxColumn cbProcStatus = new DataGridViewComboBoxColumn();
+                DataGridViewTextBoxColumn cbProcStatus = new DataGridViewTextBoxColumn();
                 cbProcStatus.Name = "處理方式";
                 cbProcStatus.Width = 90;
                 cbProcStatus.Width = 120;
+                cbProcStatus.ReadOnly = true;
                 cbProcStatus.HeaderText = "處理方式";
 
-                DataTable dtPitems = new DataTable();
-                dtPitems.Columns.Add("ITEM");
-                dtPitems.Columns.Add("VALUE");
+                //DataTable dtPitems = new DataTable();
+                //dtPitems.Columns.Add("ITEM");
+                //dtPitems.Columns.Add("VALUE");
 
-                List<string> items = new List<string>();
-                items.Add("新增");
-                items.Add("更新");
-                items.Add("略過");
-                items.Add("刪除");
+                //List<string> items = new List<string>();
+                //items.Add("新增");
+                //items.Add("更新");
+                //items.Add("略過");
+                //items.Add("刪除");
 
-                foreach (string str in items)
-                {
-                    DataRow dr = dtPitems.NewRow();
-                    dr["ITEM"] = str;
-                    dr["VALUE"] = str;
-                    dtPitems.Rows.Add(dr);
-                }
+                //foreach (string str in items)
+                //{
+                //    DataRow dr = dtPitems.NewRow();
+                //    dr["ITEM"] = str;
+                //    dr["VALUE"] = str;
+                //    dtPitems.Rows.Add(dr);
+                //}
 
-                cbProcStatus.DataSource = dtPitems;
-                cbProcStatus.DisplayMember = "ITEM";
-                cbProcStatus.ValueMember = "VALUE";
+                //cbProcStatus.DataSource = dtPitems;
+                //cbProcStatus.DisplayMember = "ITEM";
+                //cbProcStatus.ValueMember = "VALUE";
 
 
                 DataGridViewTextBoxColumn tbDomain = new DataGridViewTextBoxColumn();
