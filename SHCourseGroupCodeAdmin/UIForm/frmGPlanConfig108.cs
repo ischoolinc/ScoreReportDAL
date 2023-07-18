@@ -641,7 +641,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             if (isDgDataChange || isUDDgDataChange || _IsMainDataDirty || _IsCourseGroupDataDirty)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
-                {
+                {                    
+                    advTree1.SelectedNode = _SelectItem;
+                    _SelectItem.Checked = true;
                     return;
                 }
 
@@ -3669,6 +3671,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
             }
         }
+
 
         private void menuItemSetCourseGroupCol1_CheckedChanged(object sender, EventArgs e)
         {
