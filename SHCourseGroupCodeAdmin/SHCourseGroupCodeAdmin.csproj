@@ -333,6 +333,12 @@
     <Compile Include="UIForm\frmGPlanConfig108.Designer.cs">
       <DependentUpon>frmGPlanConfig108.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIForm\frmGPlanConfig108_MergeSubject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmGPlanConfig108_MergeSubject.Designer.cs">
+      <DependentUpon>frmGPlanConfig108_MergeSubject.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIForm\frmInsertCourseGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -517,6 +523,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmGPlanConfig108.resx">
       <DependentUpon>frmGPlanConfig108.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmGPlanConfig108_MergeSubject.resx">
+      <DependentUpon>frmGPlanConfig108_MergeSubject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmInsertCourseGroup.resx">
       <DependentUpon>frmInsertCourseGroup.cs</DependentUpon>

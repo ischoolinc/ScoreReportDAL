@@ -242,7 +242,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void ReloadData()
         {
             advTree1.Nodes.Clear();
-            btnEditName.Enabled = btnUpdate.Enabled = btnDelete.Enabled = false;
+            btnMerge.Enabled = btnUpdate.Enabled = btnDelete.Enabled = false;
             tabItem1.Visible = tabItem2.Visible = tabItem4.Visible = tbiCourseGroupMain.Visible = tbiSetCourseGroup.Visible = false;
             _bgWorker.RunWorkerAsync();
 
@@ -633,15 +633,25 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void advTree1_Click(object sender, EventArgs e)
         {
-            btnEditName.Enabled = btnDelete.Enabled = false;
+            btnDelete.Enabled = false;
         }
 
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
         {
+            if (advTree1.SelectedNodes.Count > 1)
+            {
+                btnMerge.Enabled = true;
+            }
+            else
+            {
+                btnMerge.Enabled = false;
+            }
+
+
             if (isDgDataChange || isUDDgDataChange || _IsMainDataDirty || _IsCourseGroupDataDirty)
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
-                {                    
+                {
                     advTree1.SelectedNode = _SelectItem;
                     _SelectItem.Checked = true;
                     return;
@@ -708,7 +718,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 if (string.IsNullOrEmpty(SelectInfo.GDCCode))
                 {
-                    btnEditName.Enabled = btnDelete.Enabled = true;
+                    btnDelete.Enabled = true;
                     tabItem1.Visible = false;
                     tabItem2.Visible = tabItem4.Visible = true;
                     tbiCourseGroupMain.Visible = false;
@@ -723,7 +733,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     tbiCourseGroupMain.Visible = true;
                     tbiSetCourseGroup.Visible = true;
                     tabItem2.Visible = tabItem4.Visible = true;
-                    btnEditName.Enabled = btnDelete.Enabled = false;
+                    btnDelete.Enabled = false;
 
                     if (e != null)
                     {
@@ -1568,26 +1578,6 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 ReloadData();
             }
             btnCreate.Enabled = true;
-        }
-
-        private void btnEditName_Click(object sender, EventArgs e)
-        {
-            if (SelectInfo != null)
-            {
-                btnEditName.Enabled = false;
-
-                frmEditGPlanName fdg = new frmEditGPlanName();
-                fdg.SetGPlanInfo108(SelectInfo);
-                if (fdg.ShowDialog() == DialogResult.OK)
-                {
-                    ReloadData();
-                }
-                btnEditName.Enabled = true;
-            }
-            else
-            {
-                MsgBox.Show("請選擇課程規劃表");
-            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -3650,11 +3640,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 控制輸入法
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
-                if (dgvMainLevel[e.ColumnIndex,0].Value != null && dgvMainLevel[e.ColumnIndex, 0].Value.ToString() != "")
+                if (dgvMainLevel[e.ColumnIndex, 0].Value != null && dgvMainLevel[e.ColumnIndex, 0].Value.ToString() != "")
                 {
                     dgvMainLevel[e.ColumnIndex, 1].ReadOnly = false;
                     dgvMainLevel[e.ColumnIndex, 2].ReadOnly = false;
-                }else
+                }
+                else
                 {
                     dgvMainLevel[e.ColumnIndex, 1].ReadOnly = true;
                     dgvMainLevel[e.ColumnIndex, 2].ReadOnly = true;
@@ -3672,6 +3663,64 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
+        private void btnMerge_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 課程規劃合併功能
+                if (advTree1.SelectedNodes.Count > 1)
+                {
+                    btnMerge.Enabled = false;
+
+                    // 取得選取的課程規劃表
+                    Dictionary<string, GPlanInfo108> GPlanDict = new Dictionary<string, GPlanInfo108>();
+
+                    foreach (Node node in advTree1.SelectedNodes)
+                    {
+                        GPlanInfo108 gp = node.Tag as GPlanInfo108;
+                        if (gp != null)
+                        {
+                            if (!GPlanDict.ContainsKey(node.Name))
+                            {
+                                GPlanDict.Add(node.Name, gp);
+                            }
+                        }
+                    }
+
+                    if (GPlanDict.Count > 1)
+                    {
+                        frmGPlanConfig108_MergeSubject fg = new frmGPlanConfig108_MergeSubject();
+                        fg.SetGPlanDict(GPlanDict);
+                        if (fg.ShowDialog() == DialogResult.OK)
+                        {
+                            // 新增筆數
+                            int AddSubjectCount = fg.GetAddSubjectCount();
+
+                            GPlanInfo108 data = fg.GetTargetGPlanInfo();
+
+
+
+                            // 回寫資料
+                            _da.UpdateGPlanXML(data.RefGPID, data.RefGPContentXml.ToString());
+                            SelectInfo.RefGPContent = SelectInfo.RefGPContentXml.ToString();
+                            _SelectItem.Tag = SelectInfo;
+                            SetIsDirtyDisplay(false);
+                            MsgBox.Show("合併完成");
+                            advTree1_NodeClick(_SelectItem, null);
+
+                            ApplicationLog.Log("班級課程規劃表(108課綱適用)", "合併", $"合併 「{SelectInfo.RefGPName}」 課程規畫表資訊。");
+
+                        }
+                    }
+                }
+                btnMerge.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
 
         private void menuItemSetCourseGroupCol1_CheckedChanged(object sender, EventArgs e)
         {
