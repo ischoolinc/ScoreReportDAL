@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Aspose.Words.Saving;
 using DevComponents.DotNetBar;
 using FISCA.Presentation.Controls;
 using SHCourseGroupCodeAdmin.DAO;
@@ -71,15 +72,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 合併資料
                 // 取得 tagget 已有的課程代碼
                 List<string> TargetCourseCodeList = new List<string>();
+                List<string> TargerOfficialSubjectNameList = new List<string>();
 
                 // 最後一筆 RowIdx
                 int LastRowIdx = 0;
 
                 foreach (XElement elm in TargetGPlanInfo.RefGPContentXml.Elements("Subject"))
                 {
-                    string CourseCode = "";
+                    string CourseCode = "", OfficialSubjectName = "";
                     if (elm.Attribute("課程代碼") != null)
                         CourseCode = elm.Attribute("課程代碼").Value;
+
+                    if (elm.Attribute("OfficialSubjectName") != null)
+                        OfficialSubjectName = elm.Attribute("OfficialSubjectName").Value;
 
                     // rowIdx，找最後一筆
                     if (elm.Element("Grouping") != null)
@@ -98,6 +103,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     if (!TargetCourseCodeList.Contains(CourseCode))
                         TargetCourseCodeList.Add(CourseCode);
+
+                    if (!TargerOfficialSubjectNameList.Contains(OfficialSubjectName))
+                        TargerOfficialSubjectNameList.Add(OfficialSubjectName);
                 }
 
                 LastRowIdx++;
@@ -105,6 +113,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 List<XElement> AddSubjectList = new List<XElement>();
 
                 string strRowIdx = ""; // 比對 rowIdx使用
+                AddSubejctCount = 1;
 
                 foreach (string name in SelectedGPlanNameList)
                 {
@@ -115,28 +124,36 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         // 檢查這目前課程代碼是否已經有，沒有就加入
                         foreach (XElement elm in sourceGPlanInfo.RefGPContentXml.Elements("Subject"))
                         {
-                            string CourseCode = "";
+                            string CourseCode = "", OfficialSubjectName = "";
                             if (elm.Attribute("課程代碼") != null)
                                 CourseCode = elm.Attribute("課程代碼").Value;
 
+                            if (elm.Attribute("OfficialSubjectName") != null)
+                                OfficialSubjectName = elm.Attribute("OfficialSubjectName").Value;
+
+                            // 課程代碼不同
                             if (!TargetCourseCodeList.Contains(CourseCode))
                             {
-                                // 設定新的 rowIdx
-                                XElement NewElm = new XElement(elm);
-                                if (strRowIdx == "")
+                                // 檢查報部科目名稱如果目標課規不存在才會加入
+                                if (!TargerOfficialSubjectNameList.Contains(OfficialSubjectName))
                                 {
-                                    strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
+                                    // 設定新的 rowIdx
+                                    XElement NewElm = new XElement(elm);
+                                    if (strRowIdx == "")
+                                    {
+                                        strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
+                                    }
+
+                                    if (strRowIdx != NewElm.Element("Grouping").Attribute("RowIndex").Value)
+                                    {
+                                        LastRowIdx++;
+                                        strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
+                                        AddSubejctCount++;
+                                    }
+
+                                    NewElm.Element("Grouping").SetAttributeValue("RowIndex", LastRowIdx);
+                                    AddSubjectList.Add(NewElm);
                                 }
-
-                                if (strRowIdx != NewElm.Element("Grouping").Attribute("RowIndex").Value)
-                                {
-                                    LastRowIdx++;
-                                    strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
-                                }
-
-                                NewElm.Element("Grouping").SetAttributeValue("RowIndex", LastRowIdx);
-                                AddSubjectList.Add(NewElm);
-
                             }
                         }
                     }
@@ -144,8 +161,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 // 需要新增資料
                 if (AddSubjectList.Count > 0)
-                {
-                    AddSubejctCount = AddSubjectList.Count;
+                {                   
                     foreach (XElement elm in AddSubjectList)
                         TargetGPlanInfo.RefGPContentXml.Add(elm);
                 }

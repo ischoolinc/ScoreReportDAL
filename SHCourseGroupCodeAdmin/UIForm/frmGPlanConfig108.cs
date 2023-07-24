@@ -3705,10 +3705,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             SelectInfo.RefGPContent = SelectInfo.RefGPContentXml.ToString();
                             _SelectItem.Tag = SelectInfo;
                             SetIsDirtyDisplay(false);
-                            MsgBox.Show("合併完成");
+                            MsgBox.Show("合併完成，共新增" + AddSubjectCount + "筆科目。");
                             advTree1_NodeClick(_SelectItem, null);
 
-                            ApplicationLog.Log("班級課程規劃表(108課綱適用)", "合併", $"合併 「{SelectInfo.RefGPName}」 課程規畫表資訊。");
+                            ApplicationLog.Log("班級課程規劃表(108課綱適用)", "合併", $"合併 「{SelectInfo.RefGPName}」 課程規畫表資訊，共新增" + AddSubjectCount + "筆科目。");
 
                         }
                     }
