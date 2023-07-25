@@ -2821,7 +2821,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                         // 科目級別使用學期別
                         //subjLevel = GetGradeSemester(data.GradeYear, Semester);
 
-                        string insStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value, subjElm.Attribute("NotIncludedInCalc").Value, subjElm.Attribute("NotIncludedInCredit").Value);
+                        // 指定學年科目名稱
+                        string SpecifySubjectName = "";
+                        if (subjElm.Attribute("指定學年科目名稱") != null)
+                            SpecifySubjectName = subjElm.Attribute("指定學年科目名稱").Value;
+
+                        string insStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value, subjElm.Attribute("NotIncludedInCalc").Value, subjElm.Attribute("NotIncludedInCredit").Value, SpecifySubjectName);
 
                         if (!insertSQLList.Contains(insStr))
                             insertSQLList.Add(insStr);
@@ -2891,7 +2896,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 //// 科目級別使用學期別
                                 //subjLevel = GetGradeSemester(data.GradeYear, Semester);
 
-                                string inStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value, subjElm.Attribute("NotIncludedInCalc").Value, subjElm.Attribute("NotIncludedInCredit").Value);
+                                // 指定學年科目名稱
+                                string SpecifySubjectName = "";
+                                if (subjElm.Attribute("指定學年科目名稱") != null)
+                                    SpecifySubjectName = subjElm.Attribute("指定學年科目名稱").Value;
+
+                                string inStr = insertCourseSQL(courseName, subjLevel, subjElm.Attribute("SubjectName").Value, data.ClassID, SchoolYear, Semester, subjElm.Attribute("Credit").Value, subjElm.Attribute("Entry").Value, ReqBy, isReq, subjElm.Attribute("Credit").Value, subjElm.Attribute("Domain").Value, subjElm.Attribute("NotIncludedInCalc").Value, subjElm.Attribute("NotIncludedInCredit").Value, SpecifySubjectName);
 
                                 if (!insertSQLList.Contains(inStr))
                                     insertSQLList.Add(inStr);
@@ -3069,7 +3079,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         /// <param name="period"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain, string NotIncludedInCalc, string NotIncludedInCredit)
+        public string insertCourseSQL(string course_name, string subj_level, string subject, string ref_class_id, string school_year, string semester, string credit, string score_type, string c_required_by, string c_is_required, string period, string domain, string NotIncludedInCalc, string NotIncludedInCredit, string SpecifySubjectName)
         {
             string refClassStr = "null";
 
@@ -3111,6 +3121,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " 	,domain " +
 "   ,not_included_in_calc" +
 "   ,not_included_in_credit" +
+"   ,specify_subject_name" +
 " ) " +
 " VALUES ( " +
 " 	'" + course_name + "' " +
@@ -3127,6 +3138,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 " 	,'" + domain + "' " +
 " 	,'" + not_included_in_calc + "' " +
 " 	,'" + not_included_in_credit + "' " +
+" 	,'" + SpecifySubjectName + "' " +
 " ); ";
 
             return value;
@@ -3217,7 +3229,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                             else
                                 isReq = "0";
 
-                            string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value);
+                            // 指定學年科目名稱
+                            string SpecifySubjectName = "";
+                            if (subj.SubjectXML.Attribute("指定學年科目名稱") != null)
+                                SpecifySubjectName = subj.SubjectXML.Attribute("指定學年科目名稱").Value;
+
+                            string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value, SpecifySubjectName);
 
                             if (!insertSQLList.Contains(insStr))
                                 insertSQLList.Add(insStr);
