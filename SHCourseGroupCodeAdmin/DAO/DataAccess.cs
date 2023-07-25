@@ -189,13 +189,14 @@ namespace SHCourseGroupCodeAdmin.DAO
             DataTable dt = qh.Select(query);
 
             Dictionary<string, string> mapDict = new Dictionary<string, string>();
-            mapDict.Add("1", "建教合作-輪調式");
-            mapDict.Add("2", "建教合作-階梯式");
-            mapDict.Add("3", "建教合作-實習式");
-            mapDict.Add("4", "建教合作-其他式");
+            mapDict.Add("0", "不分班群");
+            mapDict.Add("1", "建教合作班-輪調式");
+            mapDict.Add("2", "建教合作班-階梯式");
+            mapDict.Add("3", "建教合作班-實習式");
+            mapDict.Add("4", "建教合作班-其他式");
             mapDict.Add("5", "產學訓專班");
-            mapDict.Add("6", "雙軌旗艦計畫");
-            mapDict.Add("7", "產攜專班");
+            mapDict.Add("6", "雙軌訓練旗艦計畫");
+            mapDict.Add("7", "產學攜手專班");
 
             foreach (DataRow dr in dt.Rows)
             {
@@ -211,16 +212,16 @@ namespace SHCourseGroupCodeAdmin.DAO
                     if (name.Contains("不分班群") && classCode != "0")
                     {
                         if (mapDict.ContainsKey(classCode))
-                        {                            
+                        {
                             name = name.Replace("不分班群", mapDict[classCode]);
                             gpName = gpName.Replace("不分班群", mapDict[classCode]);
-                        }                            
+                        }
                         else
                         {
                             name = name + classCode;
                             gpName = gpName + classCode;
                         }
-                            
+
                     }
                 }
 

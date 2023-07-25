@@ -634,7 +634,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                         if (hasGradeYear1)
                         {
-                            Console.WriteLine("已有資料。");
+                          //  Console.WriteLine("已有資料。");
                         }
                         else
                         {

@@ -50,6 +50,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         bool _MainIsFirstLoad = false;
         bool _MainOneSemesterHasDuplicateSubjectLevel = false;
         bool _MainOneSemesterHasDuplicateSubjectName = false;
+        bool _MainOneYearSubjectHasDiffCredit = false;
         List<DataGridViewRow> _MainRowList = new List<DataGridViewRow>();
         DataGridViewRow _MainSelectedRow = new DataGridViewRow();
         bool _IsMainDataDirty = false;
@@ -1137,10 +1138,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     if (elm.Attribute("指定學年科目名稱") != null)
                     {
-                        if (!SchoolYearGroupNameRowList.Contains(elm.Attribute("指定學年科目名稱").Value))
-                        {
-                            SchoolYearGroupNameRowList.Add(elm.Attribute("指定學年科目名稱").Value);
-                        }
+                        if (elm.Attribute("指定學年科目名稱").Value != "")
+                            if (!SchoolYearGroupNameRowList.Contains(elm.Attribute("指定學年科目名稱").Value))
+                            {
+                                SchoolYearGroupNameRowList.Add(elm.Attribute("指定學年科目名稱").Value);
+                            }
                     }
                 }
 
@@ -1215,18 +1217,34 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
                 _MainRowList.Add(mainRow);
 
-                //// 判斷同學年上下學期學分數是否一致
-                foreach (string gradeYear in gradeYearCreditDic.Keys)
-                {
-                    if (gradeYearCreditDic[gradeYear].Count == 2)
-                    {
-                        // 上下學期學分數不一致，需提醒使用者設定指定學年科目名稱
-                        if (gradeYearCreditDic[gradeYear][0] != gradeYearCreditDic[gradeYear][1])
-                        {
-                            mainRow.Cells[16].ErrorText = "同學年上下學期學分數不一致，需設定指定學年科目名稱。";
-                        }
-                    }
-                }
+                ////// 判斷同學年上下學期學分數是否一致
+                //foreach (string gradeYear in gradeYearCreditDic.Keys)
+                //{
+                //    if (gradeYearCreditDic[gradeYear].Count == 2)
+                //    {
+                //        // 上下學期學分數不一致，需提醒使用者設定指定學年科目名稱
+                //        if (gradeYearCreditDic[gradeYear][0] != gradeYearCreditDic[gradeYear][1])
+                //        {
+                //            string ErrorText = "同學年上下學期學分數不一致，需設定指定學年科目名稱。";
+
+                //            // 依年級將訊息填入相對位置
+                //            if (gradeYear == "1")
+                //            {
+                //                mainRow.Cells[16].ErrorText = mainRow.Cells[8].ErrorText = ErrorText;
+                //            }
+
+                //            if (gradeYear == "2")
+                //            {
+                //                mainRow.Cells[9].ErrorText = mainRow.Cells[10].ErrorText = ErrorText;
+                //            }
+
+                //            if (gradeYear == "3")
+                //            {
+                //                mainRow.Cells[11].ErrorText = mainRow.Cells[12].ErrorText = ErrorText;
+                //            }
+                //        }
+                //    }
+                //}
 
 
                 // 課程群組表格用
@@ -1301,6 +1319,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             // 檢查單學期科目名稱及整張課程規畫表科目名稱是否重複
             CheckSubjectNameDuplicate();
+
+            // 檢查科目同年學分數是否不同
+            CheckSubjectCreditDiff();
 
             // 如果有缺少報部科目名稱的科目，就需要詢問後補上
             if (_CourseInfoLostOfficialSubjectNameList.Count > 0)
@@ -1640,6 +1661,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         MessageBox.Show("科目名稱不可重複");
                     }
 
+                }
+
+                // 同年科目學分數不同
+                if (_MainOneYearSubjectHasDiffCredit)
+                {
+                    MessageBox.Show("同學年上下學期學分數不一致，需設定指定學年科目名稱。");
+                    return;
                 }
 
 
@@ -2277,7 +2305,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         // 重製總表表格檢查結果
                         if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
                         {
-                            row.Cells[columnIndex].ErrorText = "";
+                            if (row.Cells[columnIndex].ErrorText == "同學期科目名稱+級別重複，需修正科目名稱或級別。")
+                                row.Cells[columnIndex].ErrorText = "";
                         }
 
                         // 準備判斷同學期科目+級別是否重複的資料
@@ -2330,7 +2359,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     // 重製總表表格檢查結果
                     if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
                     {
-                        row.Cells[columnIndex].ErrorText = "";
+                        if (row.Cells[columnIndex].ErrorText == "科目名稱重複，需修正科目名稱。")
+                            row.Cells[columnIndex].ErrorText = "";
                     }
 
                     // 準備判斷科目名稱是否重複的資料
@@ -2358,6 +2388,102 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
             }
 
+        }
+
+
+        // 檢查科目同年學分數不同
+        private void CheckSubjectCreditDiff()
+        {
+            _MainOneYearSubjectHasDiffCredit = false;
+            // 學分
+            Dictionary<string, List<string>> gradeYearCreditDic = new Dictionary<string, List<string>>();
+
+            // 指定學年科目名稱
+            Dictionary<string, List<string>> gradeYearSubjectNameDic = new Dictionary<string, List<string>>();
+
+            // 判斷同學年上下學期學分數是否一致
+
+            foreach (DataGridViewRow mainRow in _MainRowList)
+            {
+                gradeYearCreditDic.Clear();
+                gradeYearSubjectNameDic.Clear();
+
+                for (int columnIndex = 7; columnIndex <= 12; columnIndex++)
+                {
+                    // 重製總表表格檢查結果
+                    if (!string.IsNullOrEmpty(mainRow.Cells[columnIndex].ErrorText))
+                    {
+                        if (mainRow.Cells[columnIndex].ErrorText == "同學年上下學期學分數不一致，需設定指定學年科目名稱。")
+                            mainRow.Cells[columnIndex].ErrorText = "";
+                    }
+
+                    if (mainRow.Cells[columnIndex].Tag != null)
+                    {
+                        XElement element = (XElement)mainRow.Cells[columnIndex].Tag;
+                        string gradeYear = element.Attribute("GradeYear").Value;
+                        string YearSubject = "";
+                        if (element.Attribute("指定學年科目名稱") != null)
+                            YearSubject = element.Attribute("指定學年科目名稱").Value;
+
+
+                        // 紀錄同學年上下學期學分數，用來後面進行學分數是否一致的判斷
+                        if (!gradeYearCreditDic.ContainsKey(gradeYear))
+                        {
+                            gradeYearCreditDic.Add(gradeYear, new List<string>());
+                        }
+                        gradeYearCreditDic[gradeYear].Add(element.Attribute("Credit").Value);
+
+                        // 檢查指定學年科目名稱
+                        if (!gradeYearSubjectNameDic.ContainsKey(gradeYear))
+                        {
+                            gradeYearSubjectNameDic.Add(gradeYear, new List<string>());
+                        }
+
+                        if (YearSubject != "")
+                            gradeYearSubjectNameDic[gradeYear].Add(YearSubject);
+                    }
+                }
+
+                foreach (string gradeYear in gradeYearCreditDic.Keys)
+                {
+                    if (gradeYearCreditDic[gradeYear].Count == 2)
+                    {
+                        // 上下學期學分數不一致，需提醒使用者設定指定學年科目名稱
+                        if (gradeYearCreditDic[gradeYear][0] != gradeYearCreditDic[gradeYear][1])
+                        {
+                            string ErrorText = "同學年上下學期學分數不一致，需設定指定學年科目名稱。";
+                            // 依年級將訊息填入相對位置
+                            if (gradeYear == "1")
+                            {
+                                if (gradeYearSubjectNameDic[gradeYear].Count != 2)
+                                {
+                                    _MainOneYearSubjectHasDiffCredit = true;
+                                    mainRow.Cells[7].ErrorText = mainRow.Cells[8].ErrorText = ErrorText;
+                                }
+                            }
+
+                            if (gradeYear == "2")
+                            {
+                                if (gradeYearSubjectNameDic[gradeYear].Count != 2)
+                                {
+                                    _MainOneYearSubjectHasDiffCredit = true;
+                                    mainRow.Cells[9].ErrorText = mainRow.Cells[10].ErrorText = ErrorText;
+                                }
+
+                            }
+
+                            if (gradeYear == "3")
+                            {
+                                if (gradeYearSubjectNameDic[gradeYear].Count != 2)
+                                {
+                                    _MainOneYearSubjectHasDiffCredit = true;
+                                    mainRow.Cells[11].ErrorText = mainRow.Cells[12].ErrorText = ErrorText;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -2844,6 +2970,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
                                 }
+                                else
+                                    element.SetAttributeValue("指定學年科目名稱", "");
 
                             }
                             if (element.Attribute("GradeYear").Value == "1" && element.Attribute("Semester").Value == "2")
@@ -2860,6 +2988,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
                                 }
+                                else
+                                    element.SetAttributeValue("指定學年科目名稱", "");
                             }
                             if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "1")
                             {
@@ -2875,7 +3005,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
                                 }
+                                else
+                                    element.SetAttributeValue("指定學年科目名稱", "");
                             }
+                            
                             if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[3, 1].Value);
@@ -2889,7 +3022,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         SchoolYearGroupNameRowList.Add(SYName);
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
-                                }
+                                }else
+                                    element.SetAttributeValue("指定學年科目名稱", "");
                             }
                             if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
                             {
@@ -2904,7 +3038,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         SchoolYearGroupNameRowList.Add(SYName);
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
-                                }
+                                }else
+                                    element.SetAttributeValue("指定學年科目名稱", "");
                             }
                             if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
                             {
@@ -2919,7 +3054,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         SchoolYearGroupNameRowList.Add(SYName);
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
-                                }
+                                }else
+                                    element.SetAttributeValue("指定學年科目名稱", "");
                             }
 
                             // 調整完整名稱 FullName，開課會使用
@@ -2931,6 +3067,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         _MainRowList[index].Cells[14].Value = tbMainSubjectName.Text;
                         _MainRowList[index].Cells[15].Value = string.Join(",", courseInfo.CourseContentList.Select(x => Utility.NumberToRomanNumber(x.Attribute("Level").Value + "")).ToList());
 
+                        // 移除空白
+                        SchoolYearGroupNameRowList.Remove("");
+
                         // 指定學年科目名稱
                         _MainRowList[index].Cells[16].Value = string.Join(",", SchoolYearGroupNameRowList.ToArray());
 
@@ -2939,6 +3078,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                         // 檢查科目名稱資料是否正確
                         CheckSubjectNameDuplicate();
+
+                        // 檢查科目同年學分數是否不同
+                        CheckSubjectCreditDiff();
 
                         LoadMainDataGridViewData();
                         dgvMain.Rows[index].Selected = true;
