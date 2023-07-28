@@ -1479,7 +1479,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             if (tabControl1.SelectedTabIndex == 0)
             {
-                if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
+                if (dgColIdx > 5 && dgColIdx < 12 && dgRowIdx > -1)
                 {
                     XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
                     if (elm != null)
@@ -1501,6 +1501,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             if (tabControl1.SelectedTabIndex == 1)
             {
+                // 自訂課程規劃表
                 if (dgUDColIdx > 4 && dgUDColIdx < 11 && dgUDRowIdx > -1)
                 {
                     XElement elm = dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Tag as XElement;
@@ -1522,7 +1523,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             if (tabControl1.SelectedTabIndex == 0)
             {
-                if (dgColIdx > 4 && dgColIdx < 11 && dgRowIdx > -1)
+                if (dgColIdx > 5 && dgColIdx < 12 && dgRowIdx > -1)
                 {
                     XElement elm = dgData.Rows[dgRowIdx].Cells[dgColIdx].Tag as XElement;
                     if (elm != null)
@@ -1542,6 +1543,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             if (tabControl1.SelectedTabIndex == 1)
             {
+                // 自訂課程規劃表
                 if (dgUDColIdx > 4 && dgUDColIdx < 11 && dgUDRowIdx > -1)
                 {
                     XElement elm = dgUDData.Rows[dgUDRowIdx].Cells[dgUDColIdx].Tag as XElement;
