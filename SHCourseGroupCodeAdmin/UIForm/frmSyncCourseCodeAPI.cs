@@ -35,9 +35,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         }
 
         private void frmSyncCourseCodeAPI_Load(object sender, EventArgs e)
-        {
-            cboSchoolYear.Enabled = false;
-
+        {            
             int sy;
             if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sy))
             {
@@ -74,8 +72,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 return;
             }
 
-            btnRun.Enabled = false;
-            cboSchoolYear.Enabled = false;
+            btnRun.Enabled = false;            
 
             try
             {

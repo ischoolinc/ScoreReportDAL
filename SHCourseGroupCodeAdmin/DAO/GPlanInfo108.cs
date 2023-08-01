@@ -945,6 +945,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                             int index = 0;
                             foreach (XElement graduationPlanEle in GPlanDict[mCo])
                             {
+                                if (index >= MOEDict[mCo].Count)
+                                    continue;
+                                
                                 XElement moeEle = MOEDict[mCo][index];
 
                                 // 複製原有課程規畫表群組設定

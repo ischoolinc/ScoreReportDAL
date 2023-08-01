@@ -1351,6 +1351,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             lbCacluateCredit_LinkClicked(null, null); // 計算學分
 
             btnUpdate.Enabled = false;
+
             isDgDataChange = false;
             isUDDgDataChange = false;
             _IsMainDataDirty = false;
@@ -1646,6 +1647,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (_MainOneSemesterHasDuplicateSubjectLevel)
                 {
                     MessageBox.Show("同學期科目+級別不可重複");
+                    btnUpdate.Enabled = true;
                     return;
                 }
 
@@ -1656,6 +1658,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (_CourseInfoLostOfficialSubjectNameList.Count == 0)
                     {
                         MessageBox.Show("科目名稱不可重複");
+                        btnUpdate.Enabled = true;
                         return;
                     }
                     else
@@ -1669,6 +1672,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (_MainOneYearSubjectHasDiffCredit)
                 {
                     MessageBox.Show("同學年上下學期學分數不一致，需設定指定學年科目名稱。");
+                    btnUpdate.Enabled = true;
                     return;
                 }
 
@@ -3010,7 +3014,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 else
                                     element.SetAttributeValue("指定學年科目名稱", "");
                             }
-                            
+
                             if (element.Attribute("GradeYear").Value == "2" && element.Attribute("Semester").Value == "2")
                             {
                                 element.SetAttributeValue("Level", dgvMainLevel[3, 1].Value);
@@ -3024,7 +3028,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         SchoolYearGroupNameRowList.Add(SYName);
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
-                                }else
+                                }
+                                else
                                     element.SetAttributeValue("指定學年科目名稱", "");
                             }
                             if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "1")
@@ -3040,7 +3045,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         SchoolYearGroupNameRowList.Add(SYName);
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
-                                }else
+                                }
+                                else
                                     element.SetAttributeValue("指定學年科目名稱", "");
                             }
                             if (element.Attribute("GradeYear").Value == "3" && element.Attribute("Semester").Value == "2")
@@ -3056,7 +3062,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         SchoolYearGroupNameRowList.Add(SYName);
                                     }
                                     element.SetAttributeValue("指定學年科目名稱", SYName);
-                                }else
+                                }
+                                else
                                     element.SetAttributeValue("指定學年科目名稱", "");
                             }
 
