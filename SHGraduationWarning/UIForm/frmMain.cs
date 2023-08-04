@@ -1846,34 +1846,49 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
-            if (string.IsNullOrEmpty(DeptID))
+            // 延修生，未分年級
+            if (SelectedGradeYearYear == NoGradeYearStr)
             {
-                List<string> DeptIDList = new List<string>();
-                foreach (ClassDeptInfo ci in ClassDeptInfoList)
-                {
-                    if (ci.GradeYear == SelectedGradeYearYear)
-                        if (!DeptIDList.Contains(ci.DeptID))
-                            DeptIDList.Add(ci.DeptID);
-                }
+                // 只有單一班級處理
+                // 單科 學生
+                ReportStudentList = DataAccess.GetReportStudentListN(SelectedGradeYearYear, DeptID, ClassID);
 
-                // 一個年級分科            
-                foreach (string id in DeptIDList)
-                {
-                    // 學生
-                    ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, id, ClassID));
-
-                    // 班級
-                    ReportClassList.AddRange(DataAccess.GetReportClassList(SelectedGradeYearYear, id, ClassID));
-                }
+                // 單科 班級
+                ReportClassList = DataAccess.GetReportClassListN(SelectedGradeYearYear, DeptID, ClassID);
             }
             else
             {
-                // 單科 學生
-                ReportStudentList = DataAccess.GetReportStudentList(SelectedGradeYearYear, DeptID, ClassID);
+                if (string.IsNullOrEmpty(DeptID))
+                {
+                    List<string> DeptIDList = new List<string>();
+                    foreach (ClassDeptInfo ci in ClassDeptInfoList)
+                    {
+                        if (ci.GradeYear == SelectedGradeYearYear)
+                            if (!DeptIDList.Contains(ci.DeptID))
+                                DeptIDList.Add(ci.DeptID);
+                    }
 
-                // 單科 班級
-                ReportClassList = DataAccess.GetReportClassList(SelectedGradeYearYear, DeptID, ClassID);
+                    // 一個年級分科            
+                    foreach (string id in DeptIDList)
+                    {
+                        // 學生
+                        ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, id, ClassID));
+
+                        // 班級
+                        ReportClassList.AddRange(DataAccess.GetReportClassList(SelectedGradeYearYear, id, ClassID));
+                    }
+                }
+                else
+                {
+                    // 單科 學生
+                    ReportStudentList = DataAccess.GetReportStudentList(SelectedGradeYearYear, DeptID, ClassID);
+
+                    // 單科 班級
+                    ReportClassList = DataAccess.GetReportClassList(SelectedGradeYearYear, DeptID, ClassID);
+                }
+
             }
+
 
             rpInt = 40;
             bgwDataGWLoad.ReportProgress(rpInt);

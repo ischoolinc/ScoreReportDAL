@@ -3360,6 +3360,89 @@ namespace SHGraduationWarning.DAO
             return value;
         }
 
+        // 取得報表用學生id(未分年級)
+        public static List<ReportStudentInfo> GetReportStudentListN(string GradeYear, string DeptID, string ClassID)
+        {
+            List<ReportStudentInfo> value = new List<ReportStudentInfo>();
+            try
+            {
+                string condition = @"
+			SELECT
+				" + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+				NULL :: INTEGER AS class_id,
+				NULL :: INTEGER AS dept_id
+		";
+
+
+                if (!string.IsNullOrEmpty(ClassID))
+                {
+                    condition = @"
+			SELECT                        
+				" + ClassID + " AS class_id," +
+                        "NULL :: INT AS dept_id," +
+                        "NULL :: INT AS grade_year ";
+                }
+
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+		 WITH row AS(
+		   {0}
+		),
+		target_student AS(
+			SELECT
+				student.id AS student_id,                        
+				class.id AS class_id,
+				class.class_name,
+				dept.id AS dept_id,
+				student.student_number,
+				student.seat_no,
+				student.name AS student_name,
+				dept.name AS dept_name
+			FROM
+				row
+				INNER JOIN class
+						   ON class.id = row.class_id 							
+				INNER JOIN student
+					ON student.ref_class_id = class.id
+					AND student.status IN (1, 2)
+				INNER JOIN dept
+					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+					AND (
+						row.dept_id IS NULL
+						 OR dept.id = row.dept_id
+					)                        
+		)
+		SELECT
+			*
+		FROM 
+			target_student 
+		ORDER BY 
+			class_name,seat_no;
+", condition);
+
+                DataTable dt = qh.Select(strSQL);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ReportStudentInfo sc = new ReportStudentInfo();
+                    sc.StudentID = dr["student_id"] + "";
+                    sc.ClassID = dr["class_id"] + "";
+                    sc.ClassName = dr["class_name"] + "";
+                    sc.DeptID = dr["dept_id"] + "";
+                    sc.DeptName = dr["dept_name"] + "";
+                    sc.StudentNumber = dr["student_number"] + "";
+                    sc.SeatNo = dr["seat_no"] + "";
+                    sc.StudentName = dr["student_name"] + "";
+                    value.Add(sc);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
 
         // 取得報表用班級id
         public static List<ReportClassInfo> GetReportClassList(string GradeYear, string DeptID, string ClassID)
@@ -3369,7 +3452,7 @@ namespace SHGraduationWarning.DAO
             {
                 // 取得科別對照
                 Dictionary<string, string> deptDict = GetDeptIDNameDict();
-
+                
                 string condition = @"
                     SELECT
                         " + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
@@ -3387,7 +3470,7 @@ namespace SHGraduationWarning.DAO
                     SELECT                        
                         NULL :: INTEGER AS class_id,
                         " + DeptID + " AS dept_id," +
-                        "" + GradeYear + " AS grade_year ";
+                        "" + GradeYear + "::INT AS grade_year ";
                 }
 
 
@@ -3397,7 +3480,7 @@ namespace SHGraduationWarning.DAO
                     SELECT                        
                         " + ClassID + " AS class_id," +
                         "" + DeptID + " AS dept_id," +
-                    "" + GradeYear + " AS grade_year ";
+                    "" + GradeYear + "::INT AS grade_year ";
                 }
 
                 QueryHelper qh = new QueryHelper();
@@ -3443,9 +3526,84 @@ namespace SHGraduationWarning.DAO
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    ReportClassInfo rc = new ReportClassInfo();                    
+                    ReportClassInfo rc = new ReportClassInfo();
                     rc.ClassID = dr["class_id"] + "";
-                    rc.ClassName = dr["class_name"] + "";                   
+                    rc.ClassName = dr["class_name"] + "";
+                    rc.TeacherName = dr["teacher_name"] + "";
+                    value.Add(rc);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+        public static List<ReportClassInfo> GetReportClassListN(string GradeYear, string DeptID, string ClassID)
+        {
+            List<ReportClassInfo> value = new List<ReportClassInfo>();
+            try
+            {
+
+                string condition = @"
+			SELECT
+				" + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+				NULL :: INTEGER AS class_id,
+				NULL :: INTEGER AS dept_id
+		";
+
+                if (!string.IsNullOrEmpty(ClassID))
+                {
+                    condition = @"
+			SELECT                        
+				" + ClassID + " AS class_id," +
+                        "NULL :: INT AS dept_id," +
+                        "NULL :: INT AS grade_year ";
+                }
+
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+		 WITH row AS(
+		   {0}
+		),
+		target_student AS(
+			SELECT DISTINCT                         
+				class.id AS class_id,
+				class.class_name,						
+				teacher.teacher_name 
+			FROM
+				row
+				INNER JOIN class
+						   ON class.id = row.class_id 
+						   
+				INNER JOIN student
+					ON student.ref_class_id = class.id
+					AND student.status IN (1, 2)
+				LEFT JOIN dept
+					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+					AND (
+						row.dept_id IS NULL
+						 OR dept.id = row.dept_id
+					) 
+				LEFT JOIN teacher 
+					ON class.ref_teacher_id = teacher.id
+		)
+		SELECT
+			*
+		FROM 
+			target_student 
+		ORDER BY 
+			class_name;
+", condition);
+
+                DataTable dt = qh.Select(strSQL);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ReportClassInfo rc = new ReportClassInfo();
+                    rc.ClassID = dr["class_id"] + "";
+                    rc.ClassName = dr["class_name"] + "";
                     rc.TeacherName = dr["teacher_name"] + "";
                     value.Add(rc);
                 }
