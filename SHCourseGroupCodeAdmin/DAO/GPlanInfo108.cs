@@ -345,7 +345,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                         if (strGradeYear == "3" && strSemester == "2")
                             opIdx = 5;
 
-                        if (ot[opIdx] == '0' || ot[opIdx] == 'A')
+                        // 調整只有代碼0，才是原班開課
+                        if (ot[opIdx] == '0')
                         {
                             chkOt = true;
                         }
