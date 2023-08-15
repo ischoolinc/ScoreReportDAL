@@ -2770,7 +2770,19 @@ namespace SHCourseGroupCodeAdmin.DAO
                     foreach (XElement subjElm in data.OpenSubjectSourceList)
                     {
                         // 檢查課程名稱是否存在
-                        string courseName = data.ClassName + " " + subjElm.Attribute("FullName").Value;
+                        string FullName = "";
+                        if (subjElm.Attribute("FullName") != null)
+                            FullName = subjElm.Attribute("FullName").Value;
+                        else
+                        {
+                            string level = "";
+                            if (subjElm.Attribute("Level") != null)
+                                level = " " + ConvertSubjLevel(subjElm.Attribute("Level").Value);
+
+                            FullName = subjElm.Attribute("SubjectName").Value + level;
+                        }
+
+                        string courseName = data.ClassName + " " + FullName;
                         string chkName = courseName.Trim();
 
                         // 已存在跳過
@@ -2845,7 +2857,17 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (data.SubjectBDict[subjName] == true)
                             {
                                 // 檢查課程名稱是否存在
-                                string courseName = data.ClassName + " " + subjElm.Attribute("FullName").Value;
+                                string FullName = "";
+                                if (subjElm.Attribute("FullName") != null)
+                                    FullName = subjElm.Attribute("FullName").Value;
+                                else
+                                {
+                                    string level = "";
+                                    if (subjElm.Attribute("Level") != null)
+                                        level = " " + ConvertSubjLevel(subjElm.Attribute("Level").Value);
+                                    FullName = subjElm.Attribute("SubjectName").Value + level;
+                                }
+                                string courseName = data.ClassName + " " + FullName;
 
                                 string chkName = courseName.Trim();
 
