@@ -405,24 +405,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             // log
                             sbIns.AppendLine("課程規劃表名稱：" + data.GDCName + "，群科班代碼：" + data.GDCCode + "。");
                         }
-                        uh.Execute(insertSQLList);
+                        //   uh.Execute(insertSQLList);
 
-                        //// debug
-                        //foreach (string str in insertSQLList)
-                        //{
-                        //    try
-                        //    {
-                        //        uh.Execute(str);
-                        //    }
-                        //    catch (Exception ex)
-                        //    {
-                        //        using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug.txt", false))
-                        //        {
-                        //            sw.WriteLine(str);
-                        //            sw.WriteLine(ex.Message);
-                        //        }
-                        //    }
-                        //}
+                        // debug
+                        foreach (string str in insertSQLList)
+                        {
+                            try
+                            {
+                                uh.Execute(str);
+                            }
+                            catch (Exception ex)
+                            {
+                                using (StreamWriter sw = new StreamWriter(Application.StartupPath + "\\debug.txt", false))
+                                {
+                                    sw.WriteLine(str);
+                                    sw.WriteLine(ex.Message);
+                                }
+                            }
+                        }
 
                         // log data
                         ApplicationLog.Log("課程規劃表.新增課程規劃表", sbIns.ToString());

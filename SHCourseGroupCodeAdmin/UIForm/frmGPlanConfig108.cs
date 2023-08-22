@@ -1658,13 +1658,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     // 當一進入課規更新報部科目名稱，科目名稱指提示
                     if (_CourseInfoLostOfficialSubjectNameList.Count == 0)
                     {
-                        MessageBox.Show("科目名稱不可重複");
+                        MessageBox.Show("科目名稱+級別不可重複");
                         btnUpdate.Enabled = true;
                         return;
                     }
                     else
                     {
-                        MessageBox.Show("科目名稱不可重複");
+                        MessageBox.Show("科目名稱+級別不可重複");
                     }
 
                 }
@@ -2347,7 +2347,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
         }
 
-        //// 檢查科目名稱資料是否正確
+        //// 檢查科目名稱+級別資料是否正確
         private void CheckSubjectNameDuplicate()
         {
             _MainOneSemesterHasDuplicateSubjectName = false;
@@ -2361,35 +2361,44 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (row.Tag != null)
                 {
                     GPlanCourseInfo108 courseInfo = (GPlanCourseInfo108)row.Tag;
-                    string subjectName = courseInfo.SubjectName;
+
+                    foreach (XElement elm in courseInfo.CourseContentList)
+                    {
+                        string sname = elm.Attribute("SubjectName").Value;
+                        string level = "";
+                        if (elm.Attribute("Level") != null)
+                            level = elm.Attribute("Level").Value;
+
+                        // 科目+級別不能重複
+                        string subjectName = sname + level;
+                        // 準備判斷科目名稱是否重複的資料
+                        if (!SubjectNameDict.ContainsKey(subjectName))
+                        {
+                            SubjectNameDict.Add(subjectName, new List<DataGridViewCell>());
+                        }
+
+                        SubjectNameDict[subjectName].Add(row.Cells[columnIndex]);
+                    }
 
                     // 重製總表表格檢查結果
                     if (!string.IsNullOrEmpty(row.Cells[columnIndex].ErrorText))
                     {
-                        if (row.Cells[columnIndex].ErrorText == "科目名稱重複，需修正科目名稱。")
+                        if (row.Cells[columnIndex].ErrorText == "科目名稱+級別重複，請修正科目名稱與級別。")
                             row.Cells[columnIndex].ErrorText = "";
                     }
-
-                    // 準備判斷科目名稱是否重複的資料
-                    if (!SubjectNameDict.ContainsKey(subjectName))
-                    {
-                        SubjectNameDict.Add(subjectName, new List<DataGridViewCell>());
-                    }
-
-                    SubjectNameDict[subjectName].Add(row.Cells[columnIndex]);
 
                 }
 
             }
 
-            // 檢查同學期科目是否重複
+            // 檢查同學期科目名稱+級別是否重複
             foreach (string name in SubjectNameDict.Keys)
             {
                 if (SubjectNameDict[name].Count > 1)
                 {
                     foreach (DataGridViewCell cell in SubjectNameDict[name])
                     {
-                        cell.ErrorText = "科目名稱重複，需修正科目名稱。";
+                        cell.ErrorText = "科目名稱+級別重複，請修正科目名稱與級別。";
                         _MainOneSemesterHasDuplicateSubjectName = true;
                     }
                 }
