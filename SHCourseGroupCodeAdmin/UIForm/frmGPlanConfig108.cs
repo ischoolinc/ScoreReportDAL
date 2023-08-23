@@ -2355,6 +2355,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
             Dictionary<string, List<DataGridViewCell>> SubjectNameDict = new Dictionary<string, List<DataGridViewCell>>();
             Dictionary<string, Dictionary<string, List<DataGridViewCell>>> _MainSubjectLevelInSemester = new Dictionary<string, Dictionary<string, List<DataGridViewCell>>>(); // {Key = $"{GradeYear}_{Semester}", Value = {Key = $"{SubjectName}", Value = CourseInfo as DataGridViewCell}
 
+            // 檢查科目名稱+級別，課程代碼不同。
+            Dictionary<string, List<string>> SubjectNameCourseCodeDict = new Dictionary<string, List<string>>();
+
             int columnIndex = 14; // 科目名稱
             foreach (DataGridViewRow row in _MainRowList)
             {
@@ -2366,18 +2369,31 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     {
                         string sname = elm.Attribute("SubjectName").Value;
                         string level = "";
+                        string CourseCode = "";
                         if (elm.Attribute("Level") != null)
                             level = elm.Attribute("Level").Value;
 
+                        if (elm.Attribute("課程代碼") != null)
+                            CourseCode = elm.Attribute("課程代碼").Value;
+
+
                         // 科目+級別不能重複
-                        string subjectName = sname + level;
+                        string SubjectName = sname + level;
+
+                        if (!SubjectNameCourseCodeDict.ContainsKey(SubjectName))
+                            SubjectNameCourseCodeDict.Add(SubjectName, new List<string>());
+
+                        if (!SubjectNameCourseCodeDict[SubjectName].Contains(CourseCode))
+                            SubjectNameCourseCodeDict[SubjectName].Add(CourseCode);
+
                         // 準備判斷科目名稱是否重複的資料
-                        if (!SubjectNameDict.ContainsKey(subjectName))
+                        if (!SubjectNameDict.ContainsKey(SubjectName))
                         {
-                            SubjectNameDict.Add(subjectName, new List<DataGridViewCell>());
+                            SubjectNameDict.Add(SubjectName, new List<DataGridViewCell>());
                         }
 
-                        SubjectNameDict[subjectName].Add(row.Cells[columnIndex]);
+                        // 科目+級別+課程代碼不同，不能重複。                     
+                        SubjectNameDict[SubjectName].Add(row.Cells[columnIndex]);
                     }
 
                     // 重製總表表格檢查結果
@@ -2396,10 +2412,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 if (SubjectNameDict[name].Count > 1)
                 {
-                    foreach (DataGridViewCell cell in SubjectNameDict[name])
+                    if (SubjectNameCourseCodeDict.ContainsKey(name))
                     {
-                        cell.ErrorText = "科目名稱+級別重複，請修正科目名稱與級別。";
-                        _MainOneSemesterHasDuplicateSubjectName = true;
+                        if (SubjectNameCourseCodeDict[name].Count > 1)
+                        {
+                            foreach (DataGridViewCell cell in SubjectNameDict[name])
+                            {
+                                cell.ErrorText = "科目名稱+級別重複，請修正科目名稱與級別。";
+                                _MainOneSemesterHasDuplicateSubjectName = true;
+                            }
+                        }
                     }
                 }
             }
