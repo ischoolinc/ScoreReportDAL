@@ -3256,7 +3256,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                             if (subj.SubjectXML.Attribute("指定學年科目名稱") != null)
                                 SpecifySubjectName = subj.SubjectXML.Attribute("指定學年科目名稱").Value;
 
-                            string insStr = insertCourseSQL(courseName, subj.SubjectXML.Attribute("Level").Value, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value, SpecifySubjectName);
+                            string Level = "";
+                            
+                            if(subj.SubjectXML.Attribute("Level") != null)
+                                Level = subj.SubjectXML.Attribute("Level").Value;
+
+                            string insStr = insertCourseSQL(courseName, Level, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value, SpecifySubjectName);
 
                             if (!insertSQLList.Contains(insStr))
                                 insertSQLList.Add(insStr);
