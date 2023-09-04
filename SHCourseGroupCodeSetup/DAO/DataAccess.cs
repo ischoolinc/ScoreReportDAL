@@ -221,6 +221,7 @@ namespace SHCourseGroupCodeSetup.DAO
             value.Add("n2.tcivs.tc.edu.tw", "193407");
             value.Add("n.tcivs.tc.edu.tw", "193407");
             value.Add("n.ylvs.chc.edu.tw", "070408");
+            value.Add("n2.ylvs.chc.edu.tw", "070408");
             value.Add("n.pthc.chc.edu.tw", "070415");
 
             return value;
