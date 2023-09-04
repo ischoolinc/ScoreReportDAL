@@ -175,16 +175,38 @@ namespace SHCourseGroupCodeAdmin.DAO
             string courseType = Utility.GetCourseCodeWhereCond();
 
             QueryHelper qh = new QueryHelper();
-            string query = "" +
-" SELECT DISTINCT group_code,(entry_year|| " +
-" (CASE WHEN length(course_type)>0 THEN '_'||course_type END) || " +
-" (CASE WHEN length(group_type)>0 THEN '_'||group_type END) || " +
-" (CASE WHEN length(subject_type)>0 THEN '_'||subject_type END) || " +
-" (CASE WHEN length(class_type)>0 THEN '_'||class_type END) " +
-" ) AS group_name" +
-" ,(entry_year||(CASE WHEN length(group_type)>0 THEN ''||group_type END)||(CASE WHEN length(subject_type)>0 THEN ''||subject_type END) || " +
-" (CASE WHEN length(class_type) > 0 THEN '' || class_type END)) AS gplan_name " +
-" FROM $moe.subjectcode " + courseType + " ORDER BY group_name DESC; ";
+            //            string query = "" +
+            //" SELECT DISTINCT group_code,(entry_year|| " +
+            //" (CASE WHEN length(course_type)>0 THEN '_'||course_type END) || " +
+            //" (CASE WHEN length(group_type)>0 THEN '_'||group_type END) || " +
+            //" (CASE WHEN length(subject_type)>0 THEN '_'||subject_type END) || " +
+            //" (CASE WHEN length(class_type)>0 THEN '_'||class_type END) " +
+            //" ) AS group_name" +
+            //" ,(entry_year||(CASE WHEN length(group_type)>0 THEN ''||group_type END)||(CASE WHEN length(subject_type)>0 THEN ''||subject_type END) || " +
+            //" (CASE WHEN length(class_type) > 0 THEN '' || class_type END)) AS gplan_name " +
+            //" FROM $moe.subjectcode " + courseType + " ORDER BY group_name DESC; ";
+
+            string query = string.Format(@"
+            SELECT DISTINCT 
+	             group_code,
+	             (entry_year|| '_' ||
+	             course_type || '_' ||
+	             group_type || '_' ||
+	             subject_type || '_' ||
+	             class_type 
+	             ) AS group_name 
+	             ,
+	             (entry_year || '_' ||
+                 course_type || '_' ||
+	             group_type || '_' ||
+	             subject_type || '_' ||
+	             class_type 
+             ) AS gplan_name
+	            FROM 
+             $moe.subjectcode {0} 
+	            ORDER BY group_name DESC
+
+", courseType);
 
             DataTable dt = qh.Select(query);
 
@@ -234,8 +256,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                 if (!MOEGPlanDict.ContainsKey(code))
                     MOEGPlanDict.Add(code, gpName);
 
-                if (!MOEGPlanGroupNameDict.ContainsKey(name))
-                    MOEGPlanGroupNameDict.Add(name, gpName);
+                if (!MOEGPlanGroupNameDict.ContainsKey(gpName))
+                    MOEGPlanGroupNameDict.Add(gpName, code);
             }
         }
 

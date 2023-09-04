@@ -26,7 +26,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         Dictionary<string, int> _ColIdxDict;
         CoureseCodeChecker ccChecker;
         List<CourseCodeRoot> _dataList = new List<CourseCodeRoot>();
-
+        Dictionary<string, string> _SchoolNDict;
         public frmCourseCodeSource()
         {
             InitializeComponent();
@@ -146,6 +146,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             _SchoolCode = K12.Data.School.Code;
             DSNS = DSAServices.AccessPoint;
+            
+            // 進校需要轉換日校學校代碼取得資料
+            _SchoolNDict = Utility.GetSchoolNMapping();
+
+            // 進校轉換日校
+            if (_SchoolNDict.ContainsKey(DSNS))
+            {
+                _SchoolCode = _SchoolNDict[DSNS];
+            }
+
+           
             ccChecker = new CoureseCodeChecker(_SchoolCode, DSNS);
 
             lblSchoolCode.Text = "學校代碼：" + _SchoolCode;
