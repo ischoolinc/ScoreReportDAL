@@ -147,7 +147,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             {
                 //   SchoolCode = "050401";
 
-                String targetUrl = @"https://courseid.cloud.ncnu.edu.tw/api/GetAllCourses/" + SchoolCode + "/" + SchoolYear;
+                String targetUrl = @"https://course.k12ea.gov.tw/CourseStorage/api/GetAllCourses/" + SchoolCode + "/" + SchoolYear;
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(targetUrl);
                 req.Method = "GET";
                 //req.ContentType = "application/json";
