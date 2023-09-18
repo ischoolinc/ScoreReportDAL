@@ -1734,48 +1734,61 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             try
             {
-                // 取得課程大表資料
-                Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+                //// 取得課程大表資料
+                //Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
                 List<string> errItem = new List<string>();
 
-                // 取得學分對照表
-                Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
+                //// 取得學分對照表
+                //Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
                 QueryHelper qh = new QueryHelper();
-                string query = "" +
-                    " SELECT  " +
-" student.id AS student_id " +
-" , student.name AS student_name " +
-" , student_number " +
-" , student.seat_no " +
-" , student.id_number " +
-" , student.birthdate " +
-" , class_name " +
-" , class.grade_year AS grade_year " +
-" , course.id AS course_id " +
-" , course_name " +
-" , subject " +
-" , subj_level " +
-" , course.ref_class_id AS c_ref_class_id " +
-" , course.credit " +
-" , course.period " +
-" , course.score_type " +
-" , course.school_year " +
-" , course.semester " +
-" , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
-" , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
-" , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
-" FROM course " +
-" 	INNER JOIN sc_attend " +
-"  ON course.id = sc_attend.ref_course_id  " +
-" 	INNER JOIN student  " +
-"  ON sc_attend.ref_student_id = student.id " +
-" 	INNER JOIN class " +
-" 	ON student.ref_class_id = class.id " +
-" WHERE  " +
-"  student.status IN(1,2) AND class.grade_year IN(" + strGrYear + ") " +
-" AND course.school_year = " + SchoolYear + " AND course.semester = " + Semester + " " +
-" ORDER BY class.grade_year DESC,class.display_order,class_name,seat_no,school_year,semester,course_name ";
+                string query = string.Format(@"
+                SELECT   
+                 student.id AS student_id  
+                 , student.name AS student_name  
+                 , student_number  
+                 , student.seat_no  
+                 , student.id_number  
+                 , student.birthdate  
+                 , class_name  
+                 , class.grade_year AS grade_year  
+                 , course.id AS course_id  
+                 , course_name  
+                 , subject  
+                 , subj_level  
+                 , course.ref_class_id AS c_ref_class_id  
+                 , course.credit  
+                 , course.period  
+                 , course.score_type  
+                 , course.school_year  
+                 , course.semester  
+                 , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by  
+                 , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required  
+                 , COALESCE(
+	                student.ref_graduation_plan_id,
+	                class.ref_graduation_plan_id
+                    ) AS graduation_plan_id
+                , sc_attend.subject_code
+                 FROM course  
+ 	                INNER JOIN sc_attend  
+                  ON course.id = sc_attend.ref_course_id   
+ 	                INNER JOIN student   
+                  ON sc_attend.ref_student_id = student.id  
+ 	                INNER JOIN class  
+ 	                ON student.ref_class_id = class.id  
+                 WHERE   
+                  student.status IN(1,2) AND class.grade_year IN({0})  
+                 AND course.school_year ={1} AND course.semester = {2} 
+	                ORDER BY 
+	                class.grade_year DESC
+	                ,class.display_order
+	                ,class_name
+	                ,seat_no
+	                ,school_year
+	                ,semester
+	                ,course_name ;
+
+", strGrYear, SchoolYear, Semester);
 
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
@@ -1809,14 +1822,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.Credit = dr["credit"] + "";
                     data.Period = dr["period"] + "";
                     data.ScoreType = dr["score_type"] + "";
-                    if (dr["gdc_code"] != null)
-                    {
-                        data.gdc_code = dr["gdc_code"] + "";
-                    }
-                    else
-                    {
-                        data.gdc_code = "";
-                    }
+                    // 修課紀錄上課程代碼
+                    data.SubjectCode = dr["subject_code"] + "";
 
 
                     // 比對大表資料

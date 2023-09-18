@@ -25,6 +25,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string Credit { get; set; }
         public string Period { get; set; }
         public string CourseCode { get; set; }
+
+        public string SubjectCode { get; set; } // 原本修課紀錄的科目代碼 subject_code
+
         public string credit_period { get; set; }
 
         public string entry_year { get; set; }
