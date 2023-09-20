@@ -54,6 +54,15 @@ namespace SHCourseGroupCodeAdmin.DAO
         // 因成績冊新增
         public bool CodePass = false;
 
+        // 課程規劃表ID
+        public string GraduationPlanID { get; set; }
+
+        // 課程規劃表名稱
+        public string GraduationPlanName { get; set; }
+
+        // 報部科目名稱
+        public string OfficialSubjectName { get; set; }
+
         /// <summary>
         /// 檢查學分數
         /// </summary>

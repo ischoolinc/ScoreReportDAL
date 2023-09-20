@@ -12,7 +12,7 @@ using FISCA.Presentation.Controls;
 using System.Xml.Linq;
 using Aspose.Cells;
 using System.IO;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -71,7 +71,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             if (_chkPrvScoreXls)
             {
-                if(_wbScoreXls != null)
+                if (_wbScoreXls != null)
                 {
                     Utility.ExprotXls("預檢成績名冊", _wbScoreXls);
                 }
@@ -95,7 +95,35 @@ namespace SHCourseGroupCodeAdmin.UIForm
             SCAttendCodeChkInfoNoList.Clear();
 
             // 取得使用者設定學年度學期修課紀錄  //2021-12-16 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊。
-            List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoList = da.GetGetStudentCourseInfoBySchoolYearSemester(_SchoolYear, _Semester, _StrGradeYear);
+
+            // 取得課程規劃表對照
+            Dictionary<string, chkGPlanInfo> chkGPlanInfoDict = da.GetchkGPlanInfoDictBySchoolYearSemester(_SchoolYear, _Semester, _StrGradeYear);
+
+            _bgWorker.ReportProgress(10);
+
+            // 取得課程代碼總表部分資料
+            Dictionary<string, chkMoeSujectInfo> ChkMoeSujectInfoDict = da.GetchkMoeSujectInfoDict();
+
+            // 檢查課程規劃表開課方式有缺少，使用課程代碼比對補上
+            foreach (string gpid in chkGPlanInfoDict.Keys)
+            {
+                foreach (string key in chkGPlanInfoDict[gpid].SubjectDict.Keys)
+                {
+                    if (string.IsNullOrEmpty(chkGPlanInfoDict[gpid].SubjectDict[key].open_type))
+                    {
+                        if (ChkMoeSujectInfoDict.ContainsKey(chkGPlanInfoDict[gpid].SubjectDict[key].CourseCode))
+                        {
+                            chkGPlanInfoDict[gpid].SubjectDict[key].open_type = ChkMoeSujectInfoDict[chkGPlanInfoDict[gpid].SubjectDict[key].CourseCode].OpenType;
+                        }
+                    }
+                }
+            }
+
+
+            _bgWorker.ReportProgress(15);
+
+            // 修改讀取學生課程規劃表比對
+            List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoList = da.GetGetStudentCourseInfoBySchoolYearSemester(_SchoolYear, _Semester, _StrGradeYear, chkGPlanInfoDict);
 
             Dictionary<string, List<string>> chkHasCourseCodeDict = new Dictionary<string, List<string>>();
 
@@ -120,21 +148,24 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             _bgWorker.ReportProgress(40);
 
-            // 取得課程大表資料
-            Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();
-            List<DataRow> haGDCCodeStudents = da.GetHasGDCCodeStudent(_StrGradeYear);
+            // 有課程規劃表學生
+            List<DataRow> hasGplanStudents = da.GetHasGPlanStudent(_StrGradeYear);
 
             // 這學期需要開課
-            List<MOECourseCodeInfo> thisCousreCodeList = new List<MOECourseCodeInfo>();
+            //List<MOECourseCodeInfo> thisCousreCodeList = new List<MOECourseCodeInfo>();
+            List<chkGPSubjectInfo> thisCousreCodeList = new List<chkGPSubjectInfo>();
 
-            // 有群科班代碼學生，每筆代表一位學生
-            foreach (DataRow dr in haGDCCodeStudents)
+            List<string> chkCourseCode = new List<string>();
+
+            // 有課程規劃學生，每筆代表一位學生
+            foreach (DataRow dr in hasGplanStudents)
             {
-                string sid = dr["student_id"] + "";
-                string gdc_code = dr["gdc_code"] + "";
                 thisCousreCodeList.Clear();
+                string sid = dr["student_id"] + "";
+                string graduation_plan_id = dr["ref_graduation_plan_id"] + "";
+
                 // 取得大表
-                if (MOECourseDict.ContainsKey(gdc_code))
+                if (chkGPlanInfoDict.ContainsKey(graduation_plan_id))
                 {
                     // 學生年級學期
                     string gr = dr["grade_year"] + "";
@@ -157,48 +188,68 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (gr == "3" && _Semester == 2)
                         idx = 5;
 
-
-                    foreach (MOECourseCodeInfo couInfo in MOECourseDict[gdc_code])
+                    chkCourseCode.Clear();
+                    foreach (string key in chkGPlanInfoDict[graduation_plan_id].SubjectDict.Keys)
                     {
-                        char[] cp = couInfo.open_type.ToArray();
-                        if (idx != -1 && idx < cp.Length)
+                        chkGPSubjectInfo subj = chkGPlanInfoDict[graduation_plan_id].SubjectDict[key];
+
+                        if (subj.open_type != null)
                         {
-                            // 需要開課
-                            if (cp[idx] != '-')
-                                thisCousreCodeList.Add(couInfo);
+                            char[] cp = subj.open_type.ToArray();
+
+                            if (idx != -1 && idx < cp.Length)
+                            {
+                                // 需要開課
+                                if (cp[idx] != '-')
+                                {
+                                    if (!chkCourseCode.Contains(subj.CourseCode))
+                                    {
+                                        thisCousreCodeList.Add(subj);
+                                        chkCourseCode.Add(subj.CourseCode);
+                                    }
+
+                                }
+                            }
                         }
+
                     }
 
-                    foreach (MOECourseCodeInfo coInfo in thisCousreCodeList)
+                    foreach (chkGPSubjectInfo subj in thisCousreCodeList)
                     {
-
+                        // 有課程代碼
                         if (chkHasCourseCodeDict.ContainsKey(sid))
                         {
-                            if (chkHasCourseCodeDict[sid].Contains(coInfo.course_code))
+                            if (chkHasCourseCodeDict[sid].Contains(subj.CourseCode))
                                 continue;
                         }
 
-                        rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
-                        data.StudentID = sid;
-                        data.ClassName = dr["class_name"] + "";
-                        data.SeatNo = dr["seat_no"] + "";
-                        data.GradeYear = gr;
-                        data.StudentNumber = dr["student_number"] + "";
-                        data.StudentName = dr["student_name"] + "";
-                        data.CourseCode = coInfo.course_code;
-                        data.credit_period = coInfo.credit_period;
-                        data.open_type = coInfo.open_type;
-                        data.gdc_code = gdc_code;
-                        data.IsRequired = coInfo.is_required;
-                        data.RequiredBy = coInfo.require_by;
-                        data.SubjectName = coInfo.subject_name;
-                        data.ScoreType = coInfo.score_type;
+                        // 沒有課程代碼
+                        try
+                        {
+                            rptSCAttendCodeChkInfo data = new rptSCAttendCodeChkInfo();
+                            data.StudentID = sid;
+                            data.ClassName = dr["class_name"] + "";
+                            data.SeatNo = dr["seat_no"] + "";
+                            data.GradeYear = gr;
+                            data.StudentNumber = dr["student_number"] + "";
+                            data.StudentName = dr["student_name"] + "";
+                            data.CourseCode = subj.CourseCode;
+                            data.credit_period = subj.credit_period;
+                            data.open_type = subj.open_type;
+                            data.IsRequired = subj.isRequired;
+                            data.RequiredBy = subj.RequiredBy;
+                            data.SubjectName = subj.SubjectName;
+                            data.ScoreType = subj.Entry;
+                            data.GraduationPlanName = chkGPlanInfoDict[graduation_plan_id].Name;
 
-                        //if (data.IsRequired == "必修")
-                        SCAttendCodeChkInfoNoList.Add(data);
+                            SCAttendCodeChkInfoNoList.Add(data);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
                     }
-
-
                 }
 
             }
@@ -249,7 +300,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSC.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSC.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);
-                wstSC.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
+                wstSC.Cells[rowIdx, GetColIndex("課程規劃表")].PutValue(data.GraduationPlanName);
+                wstSC.Cells[rowIdx, GetColIndex("報部科目名稱")].PutValue(data.OfficialSubjectName);
                 rowIdx++;
             }
 
@@ -282,15 +334,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCError.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);
-                wstSCError.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
-                if (data.ErrorMsgList.Contains("群科班代碼 不同"))
+                wstSCError.Cells[rowIdx, GetColIndex("課程規劃表")].PutValue(data.GraduationPlanName);
+                if (data.ErrorMsgList.Contains("課程規劃表 不同"))
                 {
                     wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + "");
                 }
                 else
                 {
                     // 科目名稱無法對照
-                    if (data.ErrorMsgList.Contains("科目名稱"))
+                    if (data.ErrorMsgList.Contains("科目名稱與級別"))
                     {
                         wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("沒有此科目名稱");
                     }
@@ -328,7 +380,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCNo.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCNo.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCNo.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);
-                wstSCNo.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
+                wstSCNo.Cells[rowIdx, GetColIndex("課程規劃表")].PutValue(data.GraduationPlanName);
                 rowIdx++;
             }
             wstSCNo.AutoFitColumns();
@@ -401,7 +453,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         wstSCx2.Cells[rIdx, 0].PutValue(data.IDNumber);
                         wstSCx2.Cells[rIdx, 1].PutValue(data.BirthDayString);
                         wstSCx2.Cells[rIdx, 2].PutValue(data.CourseCode);
-                        wstSCx2.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        // 先使用報部科目名稱
+                        if (string.IsNullOrEmpty(data.OfficialSubjectName))
+                        {
+                            wstSCx2.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        }
+                        else
+                        {
+                            wstSCx2.Cells[rIdx, 3].PutValue(data.OfficialSubjectName);
+                        }
                         wstSCx2.Cells[rIdx, 4].PutValue(data.GradeYear);
                         wstSCx2.Cells[rIdx, 5].PutValue(data.Credit);
                         rIdx++;
@@ -417,7 +477,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         wstSCx2_err.Cells[rIdx, 0].PutValue(data.IDNumber);
                         wstSCx2_err.Cells[rIdx, 1].PutValue(data.BirthDayString);
                         wstSCx2_err.Cells[rIdx, 2].PutValue(data.CourseCode);
-                        wstSCx2_err.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        // 先使用報部科目名稱
+                        if (string.IsNullOrEmpty(data.OfficialSubjectName))
+                        {
+                            wstSCx2_err.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        }
+                        else
+                        {
+                            wstSCx2_err.Cells[rIdx, 3].PutValue(data.OfficialSubjectName);
+                        }
+
                         wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
                         wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
                         rIdx++;
@@ -473,7 +542,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 Worksheet wstSCx1 = _wbScoreXls.Worksheets["封面"];
                 Worksheet wstSCx2 = _wbScoreXls.Worksheets["學期成績"];
                 Worksheet wstSCx2_err = _wbScoreXls.Worksheets["學期成績(缺)"];
-                Worksheet wstSCx3_err = _wbScoreXls.Worksheets["補考成績(缺)"]; 
+                Worksheet wstSCx3_err = _wbScoreXls.Worksheets["補考成績(缺)"];
                 Worksheet wstSCx4_err = _wbScoreXls.Worksheets["轉學轉科成績(缺)"];
 
 
@@ -494,7 +563,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         wstSCx2.Cells[rIdx, 0].PutValue(data.IDNumber);
                         wstSCx2.Cells[rIdx, 1].PutValue(data.BirthDayString);
                         wstSCx2.Cells[rIdx, 2].PutValue(data.CourseCode);
-                        wstSCx2.Cells[rIdx, 3].PutValue(data.SubjectName);
+
+                        // 先使用報部科目名稱
+                        if (string.IsNullOrEmpty(data.OfficialSubjectName))
+                        {
+                            wstSCx2.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        }
+                        else
+                        {
+                            wstSCx2.Cells[rIdx, 3].PutValue(data.OfficialSubjectName);
+                        }
                         wstSCx2.Cells[rIdx, 4].PutValue(data.GradeYear);
                         wstSCx2.Cells[rIdx, 5].PutValue(data.Credit);
                         rIdx++;
@@ -510,7 +588,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         wstSCx2_err.Cells[rIdx, 0].PutValue(data.IDNumber);
                         wstSCx2_err.Cells[rIdx, 1].PutValue(data.BirthDayString);
                         wstSCx2_err.Cells[rIdx, 2].PutValue(data.CourseCode);
-                        wstSCx2_err.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        // 先使用報部科目名稱
+                        if (string.IsNullOrEmpty(data.OfficialSubjectName))
+                        {
+                            wstSCx2_err.Cells[rIdx, 3].PutValue(data.SubjectName);
+                        }
+                        else
+                        {
+                            wstSCx2_err.Cells[rIdx, 3].PutValue(data.OfficialSubjectName);
+                        }
+
                         wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
                         wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
                         rIdx++;
@@ -541,7 +628,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.MaximumSize = this.MinimumSize = this.Size;
             try
             {
-                
+
                 chkPreScoreXls.Checked = false;
                 iptSchoolYear.IsInputReadOnly = true;
                 iptSemester.IsInputReadOnly = true;
@@ -566,14 +653,14 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 int sy, ss;
                 if (int.TryParse(K12.Data.School.DefaultSchoolYear, out sy))
                 {
-                   // if (sy <= iptSchoolYear.MaxValue && sy >= iptSchoolYear.MinValue)
-                        iptSchoolYear.Value = sy;
+                    // if (sy <= iptSchoolYear.MaxValue && sy >= iptSchoolYear.MinValue)
+                    iptSchoolYear.Value = sy;
                 }
 
                 if (int.TryParse(K12.Data.School.DefaultSemester, out ss))
                 {
-                  //  if (ss <= iptSemester.MaxValue && ss >= iptSemester.MinValue)
-                        iptSemester.Value = ss;
+                    //  if (ss <= iptSemester.MaxValue && ss >= iptSemester.MinValue)
+                    iptSemester.Value = ss;
                 }
 
                 // 2021/9/24 討論先固定110學年度第1學期
@@ -596,8 +683,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("說明：");
                 sb.AppendLine("1.學生狀態：一般、延修。");
-                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生修課紀錄，透過學生群科班代碼與課程代碼大表群科班代碼比對，");
-                sb.AppendLine("以科目名稱 +校訂部定+必選修，比對出課程代碼。");
+                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生修課紀錄，透過學生使用的課程規劃表與課程規劃表比對，");
+                sb.AppendLine("以科目名稱 + 科目級別，比對出課程代碼。");
                 sb.AppendLine("");
                 sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程代碼大表為主，與工作表:檢查修課學生課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
                 sb.AppendLine("");

@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Windows.Forms;
 using FISCA.LogAgent;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -1728,18 +1729,18 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
-        public List<rptSCAttendCodeChkInfo> GetGetStudentCourseInfoBySchoolYearSemester(int SchoolYear, int Semester, string strGrYear)
+        public List<rptSCAttendCodeChkInfo> GetGetStudentCourseInfoBySchoolYearSemester(int SchoolYear, int Semester, string strGrYear, Dictionary<string, chkGPlanInfo> chkGPlanInfoDict)
         {
+            // 修課檢核課程代碼使用
+
             List<rptSCAttendCodeChkInfo> value = new List<rptSCAttendCodeChkInfo>();
+
+            // 取得學分對照表
+            Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
             try
             {
-                //// 取得課程大表資料
-                //Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
                 List<string> errItem = new List<string>();
-
-                //// 取得學分對照表
-                //Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
                 QueryHelper qh = new QueryHelper();
                 string query = string.Format(@"
@@ -1794,11 +1795,12 @@ namespace SHCourseGroupCodeAdmin.DAO
                 foreach (DataRow dr in dt.Rows)
                 {
                     errItem.Clear();
-                    errItem.Add("科目名稱");
+                    errItem.Add("科目名稱與級別");
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
                     errItem.Add("分項類別");
                     errItem.Add("節數或學分數");
+                    //errItem.Add("課程代碼");
 
                     // 2022/10/13，調整判斷節數與學分數
 
@@ -1824,97 +1826,103 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.ScoreType = dr["score_type"] + "";
                     // 修課紀錄上課程代碼
                     data.SubjectCode = dr["subject_code"] + "";
+                    data.GraduationPlanID = dr["graduation_plan_id"] + "";
 
+                    // 使用科目名稱_科目級別 比對資料
+                    string key = data.SubjectName + "_" + data.SubjectLevel;
 
-                    // 比對大表資料
-                    if (MOECourseDict.ContainsKey(data.gdc_code))
+                    // 比對課程規劃表資料
+                    if (chkGPlanInfoDict.ContainsKey(data.GraduationPlanID))
                     {
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        data.GraduationPlanName = chkGPlanInfoDict[data.GraduationPlanID].Name;
+
+                        if (chkGPlanInfoDict[data.GraduationPlanID].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by && data.ScoreType == Mco.score_type)
+                            data.entry_year = chkGPlanInfoDict[data.GraduationPlanID].EntryYear;
+
+                            chkGPSubjectInfo subj = chkGPlanInfoDict[data.GraduationPlanID].SubjectDict[key];
+
+                            data.credit_period = subj.credit_period;
+                            data.open_type = subj.open_type;
+                            data.CourseCode = subj.CourseCode;
+                            data.OfficialSubjectName = subj.OfficialSubjectName;
+                        }
+
+
+                        if (chkGPlanInfoDict[data.GraduationPlanID].SubjectDict.ContainsKey(key))
+                        {
+                            try
                             {
-                                #region 2021-12-11 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
-
-                                int idx = -1;
-
-                                if (data.GradeYear == "1" && data.Semester == "1")
-                                    idx = 0;
-
-                                if (data.GradeYear == "1" && data.Semester == "2")
-                                    idx = 1;
-
-                                if (data.GradeYear == "2" && data.Semester == "1")
-                                    idx = 2;
-
-                                if (data.GradeYear == "2" && data.Semester == "2")
-                                    idx = 3;
-
-                                if (data.GradeYear == "3" && data.Semester == "1")
-                                    idx = 4;
-
-                                if (data.GradeYear == "3" && data.Semester == "2")
-                                    idx = 5;
-
-                                char[] cp = Mco.open_type.ToArray();
-                                if (idx != -1 && idx < cp.Length)
+                                if (data.IsRequired == chkGPlanInfoDict[data.GraduationPlanID].SubjectDict[key].isRequired)
                                 {
-                                    if (cp[idx] != '-')
-                                    {
-                                        if (data.CheckCreditPass(mappingTable))
-                                        {
-                                            data.entry_year = Mco.entry_year;
-                                            data.credit_period = Mco.credit_period;
-                                            data.open_type = Mco.open_type;
-                                            data.CourseCode = Mco.course_code;
-                                        }
-                                    }
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("必修選修");
                                 }
-
-                                #endregion
                             }
-
-
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                         }
 
-                        // 當沒有比對到課程代碼才需要處理
-                        //if (string.IsNullOrEmpty(data.CourseCode))
+                        if (chkGPlanInfoDict[data.GraduationPlanID].SubjectDict.ContainsKey(key))
+                        {
+                            try
+                            {
+                                if (data.RequiredBy == chkGPlanInfoDict[data.GraduationPlanID].SubjectDict[key].RequiredBy)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("部定校訂");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+
+                        if (chkGPlanInfoDict[data.GraduationPlanID].SubjectDict.ContainsKey(key))
+                        {
+                            try
+                            {
+                                if (data.ScoreType == chkGPlanInfoDict[data.GraduationPlanID].SubjectDict[key].Entry)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("分項類別");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+
+                        //if (chkGPlanInfoDict[data.GraduationPlanID].SubjectXMLDict.ContainsKey(key))
                         //{
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
-                            {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("必修選修");
-                                break;
-                            }
-                        }
+                        //    try
+                        //    {
+                        //        if (data.CourseCode == data.SubjectCode)
+                        //        {
+                        //            errItem.Remove("科目名稱與級別");
+                        //            errItem.Remove("課程代碼");
+                        //        }
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        Console.WriteLine(ex.Message);
+                        //    }
+                        //}
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (chkGPlanInfoDict[data.GraduationPlanID].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("部定校訂");
-                                break;
-                            }
-                        }
+                                errItem.Remove("科目名稱與級別");
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
-                            {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("分項類別");
-                                break;
                             }
-                        }
-
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name)
+                            catch (Exception ex)
                             {
-                                errItem.Remove("科目名稱");
-                                break;
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
@@ -1925,18 +1933,16 @@ namespace SHCourseGroupCodeAdmin.DAO
                         }
 
 
-                        if (errItem.Count > 0)
-                        {
-                            foreach (string err in errItem)
-                                data.ErrorMsgList.Add(err);
-                        }
-                        //}
-
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼 不同");
-                        //data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("課程規劃表 不同");
+                    }
+
+                    if (errItem.Count > 0)
+                    {
+                        foreach (string err in errItem)
+                            data.ErrorMsgList.Add(err);
                     }
 
                     value.Add(data);
@@ -1947,6 +1953,104 @@ namespace SHCourseGroupCodeAdmin.DAO
             {
                 Console.WriteLine(ex.Message);
             }
+
+            return value;
+        }
+
+        public Dictionary<string, chkMoeSujectInfo> GetchkMoeSujectInfoDict()
+        {
+            Dictionary<string, chkMoeSujectInfo> value = new Dictionary<string, chkMoeSujectInfo>();
+            QueryHelper qh = new QueryHelper();
+            string query = string.Format(@"
+                SELECT  course_code
+                    ,subject_name
+                    ,open_type
+                    ,course_attr
+                    ,credit_period 
+                FROM $moe.subjectcode 
+                    ORDER BY course_code");
+
+            DataTable dt = qh.Select(query);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                chkMoeSujectInfo data = new chkMoeSujectInfo();
+                data.CourseCode = dr["course_code"] + "";
+                data.SubjectName = dr["subject_name"] + "";
+                data.OpenType = dr["open_type"] + "";
+                data.CourseAttr = dr["course_attr"] + "";
+                data.CreditPeriod = dr["credit_period"] + "";
+
+                if (!value.ContainsKey(data.CourseCode))
+                {
+                    value.Add(data.CourseCode, data);
+                }
+            }
+            return value;
+        }
+
+        public Dictionary<string, chkGPlanInfo> GetchkGPlanInfoDictBySchoolYearSemester(int SchoolYear, int Semester, string GradeYear)
+        {
+            Dictionary<string, chkGPlanInfo> value = new Dictionary<string, chkGPlanInfo>();
+            QueryHelper qh = new QueryHelper();
+
+            string query = string.Format(@"
+
+            WITH student_gp_id AS (
+                SELECT
+                    DISTINCT COALESCE(
+                        student.ref_graduation_plan_id,
+                        class.ref_graduation_plan_id
+                    ) AS graduation_plan_id
+                FROM
+                    course
+                    INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id
+                    INNER JOIN student ON sc_attend.ref_student_id = student.id
+                    INNER JOIN class ON student.ref_class_id = class.id
+                WHERE
+                    course.school_year = {0}
+                    AND course.semester = {1}
+                    AND student.status IN(1, 2)
+		            AND class.grade_year IN({2}) 
+            ),
+            gp_data AS(
+                SELECT
+                    id,
+                    name,
+		            content   
+               FROM
+		            graduation_plan
+		            WHERE
+			            id IN(
+				            SELECT
+					            graduation_plan_id
+				            FROM
+					            student_gp_id
+			            )
+            )
+            SELECT
+                *
+            FROM
+                gp_data
+
+", SchoolYear, Semester, GradeYear);
+
+            DataTable dt = qh.Select(query);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                chkGPlanInfo data = new chkGPlanInfo();
+                data.ID = dr["id"] + "";
+                data.Name = dr["name"] + "";
+                // 解析 XML
+                data.ParseContentXML(dr["content"] + "");
+                // 建立科目名稱級別索引
+                data.ParseSubjectDict();
+
+                if (!value.ContainsKey(data.ID))
+                    value.Add(data.ID, data);
+            }
+
 
             return value;
         }
@@ -2020,6 +2124,43 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                     value.Add(data);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
+
+        // 有課程規劃表學生
+        public List<DataRow> GetHasGPlanStudent(string strGrYear)
+        {
+            List<DataRow> value = new List<DataRow>();
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = string.Format(@"
+                SELECT  
+	                student.id AS student_id 
+	                , student.name AS student_name 
+	                , student_number 
+	                , student.seat_no 
+	                , class_name 
+	                , class.grade_year AS grade_year 
+	                , COALESCE(student.ref_graduation_plan_id,class.ref_graduation_plan_id)  AS ref_graduation_plan_id 
+                 FROM student  
+	                INNER JOIN class 
+	                ON student.ref_class_id = class.id 
+                 WHERE  
+                  student.status IN(1,2) AND class.grade_year IN({0}) 
+                  AND COALESCE(student.ref_graduation_plan_id,class.ref_graduation_plan_id)  IS NOT NULL 
+                 ORDER BY class.grade_year DESC,class.display_order,class_name,seat_no ;
+                ", strGrYear);
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                    value.Add(dr);
+
             }
             catch (Exception ex)
             {
@@ -3286,8 +3427,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                                 SpecifySubjectName = subj.SubjectXML.Attribute("指定學年科目名稱").Value;
 
                             string Level = "";
-                            
-                            if(subj.SubjectXML.Attribute("Level") != null)
+
+                            if (subj.SubjectXML.Attribute("Level") != null)
                                 Level = subj.SubjectXML.Attribute("Level").Value;
 
                             string insStr = insertCourseSQL(courseName, Level, subj.SubjectXML.Attribute("SubjectName").Value, "", SchoolYear, Semester, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Entry").Value, ReqBy, isReq, subj.SubjectXML.Attribute("Credit").Value, subj.SubjectXML.Attribute("Domain").Value, subj.SubjectXML.Attribute("NotIncludedInCalc").Value, subj.SubjectXML.Attribute("NotIncludedInCredit").Value, SpecifySubjectName);

@@ -127,6 +127,9 @@
     <Compile Include="CourseCodeAPIKey.cs" />
     <Compile Include="DAO\CClassCourseInfo.cs" />
     <Compile Include="DAO\chkCourseInfo.cs" />
+    <Compile Include="DAO\chkGPlanInfo.cs" />
+    <Compile Include="DAO\chkGPSubjectInfo.cs" />
+    <Compile Include="DAO\chkMoeSujectInfo.cs" />
     <Compile Include="DAO\chkSubjectInfo.cs" />
     <Compile Include="DAO\ClassInfo.cs" />
     <Compile Include="DAO\CoureseCodeChecker.cs" />
