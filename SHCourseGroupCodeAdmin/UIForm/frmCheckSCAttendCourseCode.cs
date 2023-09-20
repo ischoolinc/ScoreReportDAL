@@ -683,7 +683,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("說明：");
                 sb.AppendLine("1.學生狀態：一般、延修。");
-                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生修課紀錄，透過學生使用的課程規劃表與課程規劃表比對，");
+                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生修課紀錄，透過學生使用的課程規劃表與學生修課紀錄比對，");
                 sb.AppendLine("以科目名稱 + 科目級別，比對出課程代碼。");
                 sb.AppendLine("");
                 sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程代碼大表為主，與工作表:檢查修課學生課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
