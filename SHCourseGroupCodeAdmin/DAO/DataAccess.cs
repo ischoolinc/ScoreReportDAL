@@ -2029,7 +2029,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 			            )
             )
             SELECT
-                *
+               DISTINCT *
             FROM
                 gp_data
 
@@ -2051,6 +2051,104 @@ namespace SHCourseGroupCodeAdmin.DAO
                     value.Add(data.ID, data);
             }
 
+
+            return value;
+        }
+
+        /// <summary>
+        /// 取得課程規劃表資料，透過課程規劃編號
+        /// </summary>
+        /// <param name="gpidList"></param>
+        /// <returns></returns>
+        public Dictionary<string, chkGPlanInfo> GetchkGPlanInfoDictByGPlanID(List<string> gpidList)
+        {
+            Dictionary<string, chkGPlanInfo> value = new Dictionary<string, chkGPlanInfo>();
+            QueryHelper qh = new QueryHelper();
+
+            string query = string.Format(@"
+
+            WITH gp_data AS(
+                SELECT
+                    id,
+                    name,
+		            content   
+               FROM
+		            graduation_plan
+		            WHERE
+			            id IN({0}) 
+            )
+            SELECT
+               DISTINCT *
+            FROM
+                gp_data
+
+", string.Join(",", gpidList.ToArray()));
+
+            DataTable dt = qh.Select(query);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                chkGPlanInfo data = new chkGPlanInfo();
+                data.ID = dr["id"] + "";
+                data.Name = dr["name"] + "";
+                // 解析 XML
+                data.ParseContentXML(dr["content"] + "");
+                // 建立科目名稱級別索引
+                data.ParseSubjectDict();
+
+                if (!value.ContainsKey(data.ID))
+                    value.Add(data.ID, data);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// 取得課程規劃表資料，透過群科班代碼
+        /// </summary>
+        /// <param name="GroupCodeList"></param>
+        /// <returns></returns>
+        public Dictionary<string, chkGPlanInfo> GetchkGPlanInfoDictByMOEGroupCode(List<string> GroupCodeList)
+        {
+            Dictionary<string, chkGPlanInfo> value = new Dictionary<string, chkGPlanInfo>();
+            QueryHelper qh = new QueryHelper();
+
+            string query = string.Format(@"
+
+            WITH gp_data AS(
+                SELECT
+                    id
+                    ,moe_group_code
+                    ,name
+		            ,content   
+               FROM
+		            graduation_plan
+		            WHERE
+			            moe_group_code IN('{0}') 
+            )
+            SELECT
+               DISTINCT *
+            FROM
+                gp_data
+
+", string.Join("','", GroupCodeList.ToArray()));
+
+            DataTable dt = qh.Select(query);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                chkGPlanInfo data = new chkGPlanInfo();
+                data.ID = dr["id"] + "";
+                data.MOEGroupCode = dr["moe_group_code"] + "";
+                data.Name = dr["name"] + "";
+                // 解析 XML
+                data.ParseContentXML(dr["content"] + "");
+                // 建立科目名稱級別索引
+                data.ParseSubjectDict();
+
+                if (!value.ContainsKey(data.ID))
+                    value.Add(data.ID, data);
+            }
 
             return value;
         }
@@ -2210,6 +2308,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             {
                 // 取得課程大表資料
                 Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+
                 List<string> errItem = new List<string>();
 
                 // 取得學分對照表
@@ -3690,96 +3789,139 @@ WHERE
             List<rptStudSemsScoreCodeChkInfo> value = new List<rptStudSemsScoreCodeChkInfo>();
             try
             {
-                // 取得課程大表資料
-                Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+                ////// 取得課程大表資料
+                //Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+
                 List<string> errItem = new List<string>();
 
                 // 取得學分對照表
                 Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
                 QueryHelper qh = new QueryHelper();
-                string query = "" +
-                    " WITH student_data AS (  " +
-"  	SELECT  " +
-"  	student.id AS student_id  " +
-"  	,student_number  " +
-"  	,class_name  " +
-"  	,student.seat_no  " +
-"  	,student.name AS student_name  " +
-"  	, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code  " +
-"  FROM student   " +
-"  INNER JOIN class ON student.ref_class_id = class.id   " +
-"  	WHERE student.status IN(1,2) AND class.grade_year  IN( " + GradeYear + " ) " +
-"  ),sems_score_data AS(  " +
-"  SELECT  " +
-"  	sems_subj_score_ext.ref_student_id  " +
-"  	, sems_subj_score_ext.grade_year  " +
-"  	, sems_subj_score_ext.semester  " +
-"  	, sems_subj_score_ext.school_year	  " +
-"  	, array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目  " +
-"  	, array_to_string(xpath('//Subject/@原始成績', subj_score_ele), '')::text AS 原始成績  " +
-"  	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別  " +
-"  	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	  " +
-"  	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修  " +
-"  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂	  " +
-"  	, array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別	  " +
-"  	, array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '')::text AS 不計學分	  " +
-"  	, array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '')::text AS 不需評分	  " +
-"  FROM (  " +
-"  		SELECT   " +
-"  			sems_subj_score.*  " +
-"  			, 	unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele  " +
-"  		FROM   " +
-"  			sems_subj_score   " +
-"  			INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id  " +
-"  	) as sems_subj_score_ext   " +
-"WHERE school_year = " + SchoolYear + " AND semester = " + Semester +
-"  ) , subject_order AS(" +
-@"SELECT
-	    array_to_string(xpath('//Subject/@Chinese', each_period.period), '')::text as subj_chinese_name
-	   -- , array_to_string(xpath('//Subject/@English', each_period.period), '')::text as subj_english_name
-	    , ROW_NUMBER() OVER () as order
-    FROM (
-	    SELECT 
-		    unnest(xpath('//Content/Subject', xmlparse(content content))) as period
-	    FROM list 
-	    WHERE name = '科目中英文對照表'
-    ) as each_period
-), score_result AS ( " +
-"  SELECT   " +
-"  student_id  " +
-"  ,student_number  " +
-"  ,class_name  " +
-"  ,seat_no  " +
-"  ,student_name  " +
-"  ,gdc_code  " +
-"  ,school_year  " +
-"  ,semester  " +
-"  ,grade_year  " +
-"  ,科目 AS subject " +
-"  ,原始成績 AS score" +
-"  ,科目級別 AS subj_level " +
-"  ,學分數 AS credit " +
-"  ,必選修 AS required " +
-"  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by  " +
-" , 分項類別 AS scoreType" +
-" , 不計學分 AS NCredit" +
-" , 不需評分 AS NScore" +
-"   FROM student_data " +
-"   INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
-"    ORDER BY class_name,seat_no,school_year, semester" +
-@") SELECT score_result.* 
-    FROM score_result
-    LEFT JOIN subject_order
-        ON score_result.subject = subject_order.subj_chinese_name
-    ORDER BY class_name,seat_no,school_year, semester, subject_order.order";
-
+                string query = string.Format(@"
+                WITH student_data AS (
+                    SELECT
+                        student.id AS student_id,
+                        student_number,
+                        class_name,
+                        student.seat_no,
+                        student.name AS student_name,
+                        COALESCE(
+                            student.ref_graduation_plan_id,
+                            class.ref_graduation_plan_id
+                        ) AS graduation_plan_id
+                    FROM
+                        student
+                        INNER JOIN class ON student.ref_class_id = class.id
+                    WHERE
+                        student.status IN(1, 2)
+                        AND class.grade_year IN({0})
+                ),
+                sems_score_data AS(
+                    SELECT
+                        sems_subj_score_ext.ref_student_id,
+                        sems_subj_score_ext.grade_year,
+                        sems_subj_score_ext.semester,
+                        sems_subj_score_ext.school_year,
+                        array_to_string(xpath('//Subject/@科目', subj_score_ele), '') :: text AS 科目,
+                        array_to_string(xpath('//Subject/@原始成績', subj_score_ele), '') :: text AS 原始成績,
+                        array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '') :: text AS 科目級別,
+                        array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '') :: text AS 學分數,
+                        array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '') :: text AS 必選修,
+                        array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '') :: text AS 校部訂,
+                        array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '') :: text AS 分項類別,
+                        array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '') :: text AS 不計學分,
+                        array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '') :: text AS 不需評分
+                    FROM
+                        (
+                            SELECT
+                                sems_subj_score.*,
+                                unnest(
+                                    xpath(
+                                        '//SemesterSubjectScoreInfo/Subject',
+                                        xmlparse(content score_info)
+                                    )
+                                ) AS subj_score_ele
+                            FROM
+                                sems_subj_score
+                                INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id
+                        ) AS sems_subj_score_ext
+                    WHERE
+                        school_year = {1}
+                        AND semester = {2}
+                ),
+                subject_order AS(
+                    @SELECT array_to_string(
+                        xpath('//Subject/@Chinese', each_period.period),
+                        ''
+                    ) :: text AS subj_chinese_name -- , array_to_string(xpath('//Subject/@English', each_period.period), '')::text as subj_english_name
+                ,
+                    ROW_NUMBER() OVER () AS order
+                    FROM
+                        (
+                            SELECT
+                                unnest(
+                                    xpath('//Content/Subject', xmlparse(content content))
+                                ) AS period
+                            FROM
+                                list
+                            WHERE
+                                name = '科目中英文對照表'
+                        ) AS each_period
+                ),
+                score_result AS (
+                    SELECT
+                        student_id,
+                        student_number,
+                        class_name,
+                        seat_no,
+                        student_name,
+                        graduation_plan_id,
+                        school_year,
+                        semester,
+                        grade_year,
+                        科目 AS subject,
+                        原始成績 AS score,
+                        科目級別 AS subj_level,
+                        學分數 AS credit,
+                        必選修 AS required,
+                        (
+                            CASE
+                                校部訂
+                                WHEN '部訂' THEN '部定'
+                                ELSE 校部訂
+                            END
+                        ) AS required_by,
+                        分項類別 AS scoreType,
+                        不計學分 AS NCredit,
+                        不需評分 AS NScore
+                    FROM
+                        student_data
+                        INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id
+                    ORDER BY
+                        class_name,
+                        seat_no,
+                        school_year,
+                        semester
+                )
+                SELECT
+                    score_result.*
+                FROM
+                    score_result
+                    LEFT JOIN subject_order ON score_result.subject = subject_order.subj_chinese_name
+                ORDER BY
+                    class_name,
+                    seat_no,
+                    school_year,
+                    semester,
+                    subject_order.order;
+    ", GradeYear, SchoolYear, Semester);
 
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
                 {
                     errItem.Clear();
-                    errItem.Add("科目名稱");
+                    errItem.Add("科目名稱與級別");
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
                     errItem.Add("學分數");
@@ -3810,66 +3952,127 @@ WHERE
                             data.Score = score;
                         }
 
-                    if (dr["gdc_code"] != null)
+                    if (dr["graduation_plan_id"] != null)
                     {
-                        data.gdc_code = dr["gdc_code"] + "";
+                        data.graduation_plan_id = dr["graduation_plan_id"] + "";
                     }
                     else
                     {
-                        data.gdc_code = "";
+                        data.graduation_plan_id = "";
                     }
+                    value.Add(data);
+                }
 
-
-                    // 比對大表資料
-                    if (MOECourseDict.ContainsKey(data.gdc_code))
+                // 取得學生課程規劃ID
+                List<string> GPlanIDList = new List<string>();
+                foreach (rptStudSemsScoreCodeChkInfo data in value)
+                {
+                    if (!GPlanIDList.Contains(data.graduation_plan_id))
                     {
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        GPlanIDList.Add(data.graduation_plan_id);
+                    }
+                }
+
+                // 取得課程規劃表
+                Dictionary<string, chkGPlanInfo> GPlanDict = GetchkGPlanInfoDictByGPlanID(GPlanIDList);
+
+                // 取得課程代碼總表部分資料
+                Dictionary<string, chkMoeSujectInfo> ChkMoeSujectInfoDict = GetchkMoeSujectInfoDict();
+
+                // 檢查課程規劃表開課方式有缺少，使用課程代碼比對補上
+                foreach (string gpid in GPlanDict.Keys)
+                {
+                    foreach (string key in GPlanDict[gpid].SubjectDict.Keys)
+                    {
+                        if (string.IsNullOrEmpty(GPlanDict[gpid].SubjectDict[key].open_type))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by && data.ScoreType == Mco.score_type)
+                            if (ChkMoeSujectInfoDict.ContainsKey(GPlanDict[gpid].SubjectDict[key].CourseCode))
                             {
-                                data.entry_year = Mco.entry_year;
-                                data.credit_period = Mco.credit_period;
-                                data.CourseCode = Mco.course_code;
-                                break;
+                                GPlanDict[gpid].SubjectDict[key].open_type = ChkMoeSujectInfoDict[GPlanDict[gpid].SubjectDict[key].CourseCode].OpenType;
+                            }
+                        }
+                    }
+                }
+
+                // 比對資料
+                foreach (rptStudSemsScoreCodeChkInfo data in value)
+                {
+                    // 比對課程規畫表
+                    if (GPlanDict.ContainsKey(data.graduation_plan_id))
+                    {
+                        // 使用科目名稱_科目級別 比對資料
+                        string key = data.SubjectName + "_" + data.SubjectLevel;
+
+                        data.GraduationPlanName = GPlanDict[data.graduation_plan_id].Name;
+
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
+                        {
+                            data.entry_year = GPlanDict[data.graduation_plan_id].EntryYear;
+
+                            chkGPSubjectInfo subj = GPlanDict[data.graduation_plan_id].SubjectDict[key];
+
+                            data.credit_period = subj.credit_period;
+                            data.CourseCode = subj.CourseCode;
+                            data.OfficialSubjectName = subj.OfficialSubjectName;
+                        }
+
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
+                        {
+                            try
+                            {
+                                if (data.IsRequired == GPlanDict[data.graduation_plan_id].SubjectDict[key].isRequired)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("必修選修");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("必修選修");
-                                break;
+                                if (data.RequiredBy == GPlanDict[data.graduation_plan_id].SubjectDict[key].RequiredBy)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("部定校訂");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("部定校訂");
-                                break;
+                                if (data.ScoreType == GPlanDict[data.graduation_plan_id].SubjectDict[key].Entry)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("分項類別");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("分項類別");
-                                break;
+                                errItem.Remove("科目名稱與級別");
                             }
-                        }
-
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name)
+                            catch (Exception ex)
                             {
-                                errItem.Remove("科目名稱");
-                                break;
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
@@ -3888,12 +4091,10 @@ WHERE
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼 不同");
-                        //data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("課程規劃表 不同");
                     }
-
-                    value.Add(data);
                 }
+
 
             }
             catch (Exception ex)
@@ -3916,100 +4117,146 @@ WHERE
             List<rptStudSemsScoreCodeChkInfo> value = new List<rptStudSemsScoreCodeChkInfo>();
             try
             {
-                // 取得課程大表資料
-                Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+                ////// 取得課程大表資料
+                //Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = GetCourseGroupCodeDict();
+
+
                 List<string> errItem = new List<string>();
 
                 // 取得學分對照表
                 Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
                 QueryHelper qh = new QueryHelper();
-                string query = @"
-WITH student_data AS (   
-  	SELECT   
-  	student.id AS student_id   
-  	,student_number
-	, class.grade_year
-  	,class_name
-	,class.display_order
-  	,student.seat_no   
-  	,student.name AS student_name   
-	, unnest(xpath('//root/History', xmlparse(content '<root>'||sems_history||'</root>'))) as history_xml
-  	, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code   
-  FROM student    
-  INNER JOIN class ON student.ref_class_id = class.id    
-  	WHERE student.status IN(1,2) AND class.grade_year  IN(   {0}   ) 
-  ) , ta_student_data AS(
- SELECT student_data.student_id
-            , student_data.student_name
-            , student_data.student_number
-			, student_data.grade_year
-            , class_name
-			, display_order
-            , seat_no
-			, gdc_code
-            , ('0'||array_to_string(xpath('//History/@SchoolYear', history_xml), '')::text)::integer as his_school_year
-            , ('0'||array_to_string(xpath('//History/@Semester', history_xml), '')::text)::integer as his_semester
-            , ('0'||array_to_string(xpath('//History/@GradeYear', history_xml), '')::text)::integer as his_gradeyear
-            FROM student_data
-            WHERE  ('0'||array_to_string(xpath('//History/@SchoolYear', history_xml), '')::text)::integer = {1}
-            AND ('0'||array_to_string(xpath('//History/@Semester', history_xml), '')::text)::integer = {2}
- ) , sems_score_data AS(   
-  SELECT   
-  	sems_subj_score_ext.ref_student_id   
-  	, sems_subj_score_ext.grade_year   AS sem_grade_year
-  	, sems_subj_score_ext.semester   
-  	, sems_subj_score_ext.school_year	   
-  	, array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目   
-  	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別   
-  	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	   
-  	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修   
-  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂
-    , array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別
-  FROM (   
-  		SELECT    
-  			sems_subj_score.*   
-  			, 	unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele   
-  		FROM    
-  			sems_subj_score    
-  			INNER JOIN ta_student_data ON sems_subj_score.ref_student_id = ta_student_data.student_id   
-  	) as sems_subj_score_ext    
-  )   
-  SELECT    
-  student_id   
-  ,student_number   
-  ,class_name
-  ,grade_year
-  ,seat_no   
-  ,student_name   
-  ,gdc_code   
-  ,school_year   
-  ,semester   
-  ,sem_grade_year
-  ,his_school_year
-  ,his_semester
-  ,his_gradeyear
-  ,科目 AS subject  
-  ,科目級別 AS subj_level  
-  ,學分數 AS credit  
-  ,必選修 AS required  
- , 分項類別 AS scoreType
-  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by   
-   FROM ta_student_data 
-   INNER JOIN sems_score_data 
-   		ON ta_student_data.student_id = sems_score_data.ref_student_id
-		AND ta_student_data.his_school_year=sems_score_data.school_year
-		AND ta_student_data.his_semester=sems_score_data.semester
-		AND ta_student_data.his_gradeyear=sems_score_data.sem_grade_year
-    ORDER BY grade_year DESC ,display_order, seat_no, school_year, semester
-";
+                string query = string.Format(@"
+                WITH student_data AS (
+                    SELECT
+                        student.id AS student_id,
+                        student_number,
+                        class.grade_year,
+                        class_name,
+                        class.display_order,
+                        student.seat_no,
+                        student.name AS student_name,
+                        unnest(
+                            xpath(
+                                '//root/History',
+                                xmlparse(content '<root>' || sems_history || '</root>')
+                            )
+                        ) AS history_xml,
+                        COALESCE(student.gdc_code, class.gdc_code) AS gdc_code
+                    FROM
+                        student
+                        INNER JOIN class ON student.ref_class_id = class.id
+                    WHERE
+                        student.status IN(1, 2)
+                        AND class.grade_year IN({0})
+                ),
+                ta_student_data AS(
+                    SELECT
+                        student_data.student_id,
+                        student_data.student_name,
+                        student_data.student_number,
+                        student_data.grade_year,
+                        class_name,
+                        display_order,
+                        seat_no,
+                        COALESCE(
+                            array_to_string(xpath('//History/@GDCCode', history_xml), '') :: text,
+                            student_data.gdc_code
+                        ) AS gdc_code,
+                        (
+                            '0' || array_to_string(xpath('//History/@SchoolYear', history_xml), '') :: text
+                        ) :: integer AS his_school_year,
+                        (
+                            '0' || array_to_string(xpath('//History/@Semester', history_xml), '') :: text
+                        ) :: integer AS his_semester,
+                        (
+                            '0' || array_to_string(xpath('//History/@GradeYear', history_xml), '') :: text
+                        ) :: integer AS his_gradeyear
+                    FROM
+                        student_data
+                    WHERE
+                        (
+                            '0' || array_to_string(xpath('//History/@SchoolYear', history_xml), '') :: text
+                        ) :: integer = {1}
+                        AND (
+                            '0' || array_to_string(xpath('//History/@Semester', history_xml), '') :: text
+                        ) :: integer = {2}
+                ),
+                sems_score_data AS(
+                    SELECT
+                        sems_subj_score_ext.ref_student_id,
+                        sems_subj_score_ext.grade_year AS sem_grade_year,
+                        sems_subj_score_ext.semester,
+                        sems_subj_score_ext.school_year,
+                        array_to_string(xpath('//Subject/@科目', subj_score_ele), '') :: text AS 科目,
+                        array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '') :: text AS 科目級別,
+                        array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '') :: text AS 學分數,
+                        array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '') :: text AS 必選修,
+                        array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '') :: text AS 校部訂,
+                        array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '') :: text AS 分項類別
+                    FROM
+                        (
+                            SELECT
+                                sems_subj_score.*,
+                                unnest(
+                                    xpath(
+                                        '//SemesterSubjectScoreInfo/Subject',
+                                        xmlparse(content score_info)
+                                    )
+                                ) AS subj_score_ele
+                            FROM
+                                sems_subj_score
+                                INNER JOIN ta_student_data ON sems_subj_score.ref_student_id = ta_student_data.student_id
+                        ) AS sems_subj_score_ext
+                )
+                SELECT
+                    student_id,
+                    student_number,
+                    class_name,
+                    grade_year,
+                    seat_no,
+                    student_name,
+                    gdc_code,
+                    school_year,
+                    semester,
+                    sem_grade_year,
+                    his_school_year,
+                    his_semester,
+                    his_gradeyear,
+                    科目 AS subject,
+                    科目級別 AS subj_level,
+                    學分數 AS credit,
+                    必選修 AS required,
+                    分項類別 AS scoreType,
+                    (
+                        CASE
+                            校部訂
+                            WHEN '部訂' THEN '部定'
+                            ELSE 校部訂
+                        END
+                    ) AS required_by
+                FROM
+                    ta_student_data
+                    INNER JOIN sems_score_data ON ta_student_data.student_id = sems_score_data.ref_student_id
+                    AND ta_student_data.his_school_year = sems_score_data.school_year
+                    AND ta_student_data.his_semester = sems_score_data.semester
+                    AND ta_student_data.his_gradeyear = sems_score_data.sem_grade_year
+                ORDER BY
+                    grade_year DESC,
+                    display_order,
+                    seat_no,
+                    school_year,
+                    semester
+            ", GradeYear, SchoolYear, Semester);
+
 
                 query = string.Format(query, GradeYear, SchoolYear, Semester);
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
                 {
                     errItem.Clear();
-                    errItem.Add("科目名稱");
+                    errItem.Add("科目名稱與級別");
                     errItem.Add("部定校訂");
                     errItem.Add("必修選修");
                     errItem.Add("學分數");
@@ -4045,88 +4292,138 @@ WITH student_data AS (
                     }
 
 
-                    // 比對大表資料
-                    if (MOECourseDict.ContainsKey(data.gdc_code))
+                    value.Add(data);
+                }
+
+                // 取得學生課程規劃ID
+                List<string> MoeGroupCodeList = new List<string>();
+                foreach (rptStudSemsScoreCodeChkInfo data in value)
+                {
+                    if (!MoeGroupCodeList.Contains(data.gdc_code))
                     {
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        MoeGroupCodeList.Add(data.gdc_code);
+                    }
+                }
+
+                // 取得課程規劃表
+                Dictionary<string, chkGPlanInfo> GPlanDict = GetchkGPlanInfoDictByMOEGroupCode(MoeGroupCodeList);
+
+                // 取得群科班代碼與課規規畫ID，回寫學生柯貴用
+                Dictionary<string, string> MoeGPIDDict = new Dictionary<string, string>();
+                foreach (chkGPlanInfo data in GPlanDict.Values)
+                {
+                    if (!MoeGPIDDict.ContainsKey(data.MOEGroupCode))
+                    {
+                        MoeGPIDDict.Add(data.MOEGroupCode, data.ID);
+                    }
+                }
+
+                // 透過已知群科班代碼寫入學生課程規畫表ID
+                foreach(rptStudSemsScoreCodeChkInfo data in value)
+                {
+                    if (MoeGPIDDict.ContainsKey(data.gdc_code))
+                    {
+                        data.graduation_plan_id = MoeGPIDDict[data.gdc_code];
+                    }
+                }
+
+                // 取得課程代碼總表部分資料
+                Dictionary<string, chkMoeSujectInfo> ChkMoeSujectInfoDict = GetchkMoeSujectInfoDict();
+
+                // 檢查課程規劃表開課方式有缺少，使用課程代碼比對補上
+                foreach (string gpid in GPlanDict.Keys)
+                {
+                    foreach (string key in GPlanDict[gpid].SubjectDict.Keys)
+                    {
+                        if (string.IsNullOrEmpty(GPlanDict[gpid].SubjectDict[key].open_type))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required && data.RequiredBy == Mco.require_by && data.ScoreType == Mco.score_type)
+                            if (ChkMoeSujectInfoDict.ContainsKey(GPlanDict[gpid].SubjectDict[key].CourseCode))
                             {
+                                GPlanDict[gpid].SubjectDict[key].open_type = ChkMoeSujectInfoDict[GPlanDict[gpid].SubjectDict[key].CourseCode].OpenType;
+                            }
+                        }
+                    }
+                }
 
-                                #region 2022-03-07 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊
+                // 比對資料
+                foreach (rptStudSemsScoreCodeChkInfo data in value)
+                {
+                    // 比對課程規畫表
+                    if (GPlanDict.ContainsKey(data.graduation_plan_id))
+                    {
+                        // 使用科目名稱_科目級別 比對資料
+                        string key = data.SubjectName + "_" + data.SubjectLevel;
 
-                                int idx = -1;
+                        data.GraduationPlanName = GPlanDict[data.graduation_plan_id].Name;
 
-                                if (data.GradeYear == "1" && data.Semester == "1")
-                                    idx = 0;
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
+                        {
+                            data.entry_year = GPlanDict[data.graduation_plan_id].EntryYear;
 
-                                if (data.GradeYear == "1" && data.Semester == "2")
-                                    idx = 1;
+                            chkGPSubjectInfo subj = GPlanDict[data.graduation_plan_id].SubjectDict[key];
 
-                                if (data.GradeYear == "2" && data.Semester == "1")
-                                    idx = 2;
+                            data.credit_period = subj.credit_period;
+                            data.CourseCode = subj.CourseCode;
+                            data.OfficialSubjectName = subj.OfficialSubjectName;
+                        }
 
-                                if (data.GradeYear == "2" && data.Semester == "2")
-                                    idx = 3;
-
-                                if (data.GradeYear == "3" && data.Semester == "1")
-                                    idx = 4;
-
-                                if (data.GradeYear == "3" && data.Semester == "2")
-                                    idx = 5;
-
-                                char[] cp = Mco.open_type.ToArray();
-                                if (idx != -1 && idx < cp.Length)
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
+                        {
+                            try
+                            {
+                                if (data.IsRequired == GPlanDict[data.graduation_plan_id].SubjectDict[key].isRequired)
                                 {
-                                    if (cp[idx] != '-')
-                                    {
-                                        data.entry_year = Mco.entry_year;
-                                        data.credit_period = Mco.credit_period;
-                                        data.CourseCode = Mco.course_code;
-                                    }
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("必修選修");
                                 }
-
-                                #endregion
-                                //break;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.IsRequired == Mco.is_required)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("必修選修");
-                                break;
+                                if (data.RequiredBy == GPlanDict[data.graduation_plan_id].SubjectDict[key].RequiredBy)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("部定校訂");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.RequiredBy == Mco.require_by)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("部定校訂");
-                                break;
+                                if (data.ScoreType == GPlanDict[data.graduation_plan_id].SubjectDict[key].Entry)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("分項類別");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
                         {
-                            if (data.SubjectName == Mco.subject_name && data.ScoreType == Mco.score_type)
+                            try
                             {
-                                errItem.Remove("科目名稱");
-                                errItem.Remove("分項類別");
-                                break;
+                                errItem.Remove("科目名稱與級別");
                             }
-                        }
-
-                        foreach (MOECourseCodeInfo Mco in MOECourseDict[data.gdc_code])
-                        {
-                            if (data.SubjectName == Mco.subject_name)
+                            catch (Exception ex)
                             {
-                                errItem.Remove("科目名稱");
-                                break;
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
@@ -4145,11 +4442,8 @@ WITH student_data AS (
                     }
                     else
                     {
-                        data.ErrorMsgList.Add("群科班代碼 不同");
-                        //data.ErrorMsgList.Add("群科班代碼無法對照");
+                        data.ErrorMsgList.Add("課程規劃表 不同");
                     }
-
-                    value.Add(data);
                 }
 
             }

@@ -17,6 +17,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         // 課程規劃表名稱
         public string Name { get; set; }
 
+        // 群科班代碼
+        public string MOEGroupCode { get; set; }
+
         // 入學年
         public string EntryYear { get; set; }
 

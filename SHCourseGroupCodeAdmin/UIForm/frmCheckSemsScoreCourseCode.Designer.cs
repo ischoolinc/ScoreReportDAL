@@ -96,6 +96,7 @@
             this.iptSemester.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSemester.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSemester.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptSemester.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.iptSemester.Location = new System.Drawing.Point(183, 58);
             this.iptSemester.MaxValue = 2;
             this.iptSemester.MinValue = 1;
@@ -129,6 +130,7 @@
             this.iptSchoolYear.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptSchoolYear.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.iptSchoolYear.Location = new System.Drawing.Point(53, 58);
             this.iptSchoolYear.MaxValue = 200;
             this.iptSchoolYear.MinValue = 108;

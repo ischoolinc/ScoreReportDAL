@@ -230,7 +230,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         data.RequiredBy = coInfo.require_by;
                         data.SubjectName = coInfo.subject_name;
                         data.ScoreType = coInfo.score_type;
-
+                        //data.GraduationPlanName = 
                         StudSemsScoreCodeChkInfoNoList.Add(data);
                     }
                 }
@@ -274,7 +274,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
                 wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSC.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
-                wstSC.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
+                wstSC.Cells[rowIdx, GetColIndex("課程規劃表名稱")].PutValue(data.GraduationPlanName);
                 rowIdx++;
             }
 
@@ -304,17 +304,17 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
                 wstSCError.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
-                wstSCError.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
-                if (data.ErrorMsgList.Contains("群科班代碼 不同"))
+                wstSCError.Cells[rowIdx, GetColIndex("課程規劃表名稱")].PutValue(data.GraduationPlanName);
+                if (data.ErrorMsgList.Contains("課程規劃表 不同"))
                 {
                     wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + "");
                 }
                 else
                 {
                     // 科目名稱無法對照
-                    if (data.ErrorMsgList.Contains("科目名稱"))
+                    if (data.ErrorMsgList.Contains("科目名稱與級別"))
                     {
-                        wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("沒有此科目名稱");
+                        wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("沒有此科目名稱與級別");
                     }
                     else
                     {
@@ -345,7 +345,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCNo.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
                 wstSCNo.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCNo.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
-                wstSCNo.Cells[rowIdx, GetColIndex("群科班代碼")].PutValue(data.gdc_code);
+                wstSCNo.Cells[rowIdx, GetColIndex("課程規劃表名稱")].PutValue(data.GraduationPlanName);
                 rowIdx++;
             }
             wstSCNo.AutoFitColumns();
@@ -385,11 +385,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("說明：");
                 sb.AppendLine("1.學生狀態：一般、延修。");
-                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生學期成績及學期對照表，透過學生群科班代碼與課程代碼大表群科班代碼比對，");
+                sb.AppendLine("2.讀取選擇學年度、學期、年級，學生學期成績及學期對照表，透過學生指定課程規畫表、群科班代碼與課程規畫表比對");
                 sb.AppendLine("若所選擇的學年度、學期與系統當前的學年度、學期不同，以學期對照表上的年級，找出當時的年級。");
-                sb.AppendLine("並以科目名稱 +校訂部定+必選修，比對出課程代碼。");
+                sb.AppendLine("並以科目名稱+科目級別，比對出課程代碼。");
                 sb.AppendLine("");
-                sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程代碼大表為主，與工作表:檢查學期成績課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
+                sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程規畫表為主，與工作表:檢查學期成績課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
 
                 txtDesc.Text = sb.ToString();
             }

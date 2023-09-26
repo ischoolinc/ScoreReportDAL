@@ -35,6 +35,15 @@ namespace SHCourseGroupCodeAdmin.DAO
 
         public string entry_year { get; set; }
 
+        // 課程規畫表ID
+        public string graduation_plan_id { get; set; }
+
+        // 課程規畫表名稱
+        public string GraduationPlanName { get; set; }
+
+        // 報部科目名稱
+        public string OfficialSubjectName { get; set; }
+
         public string gdc_code { get; set; }
         public List<string> ErrorMsgList = new List<string>();
 
