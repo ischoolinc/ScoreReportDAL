@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
-   public class rptStudSemsScoreCodeChkInfo
+    public class rptStudSemsScoreCodeChkInfo
     {
         public string StudentID { get; set; }
         public string StudentNumber { get; set; }
@@ -34,6 +34,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string ScoreType { get; set; }
 
         public string entry_year { get; set; }
+
+        // 學期成績課程代碼
+        public string SemsScoreCourseCode { get; set; }
 
         // 課程規畫表ID
         public string graduation_plan_id { get; set; }

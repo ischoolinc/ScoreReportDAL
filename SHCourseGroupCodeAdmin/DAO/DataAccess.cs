@@ -2300,6 +2300,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return value;
         }
+               
 
         public List<rptStudSemsScoreCodeChkInfo> GetStudentSemsScoreInfoByGradeYear(int GradeYear)
         {
@@ -3831,7 +3832,8 @@ WHERE
                         array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '') :: text AS 校部訂,
                         array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '') :: text AS 分項類別,
                         array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '') :: text AS 不計學分,
-                        array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '') :: text AS 不需評分
+                        array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '') :: text AS 不需評分,
+                        array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '') :: text AS 課程代碼
                     FROM
                         (
                             SELECT
@@ -3885,6 +3887,7 @@ WHERE
                         科目級別 AS subj_level,
                         學分數 AS credit,
                         必選修 AS required,
+                        課程代碼,
                         (
                             CASE
                                 校部訂
@@ -3926,6 +3929,7 @@ WHERE
                     errItem.Add("必修選修");
                     errItem.Add("學分數");
                     errItem.Add("分項類別");
+                    errItem.Add("課程代碼");
 
                     rptStudSemsScoreCodeChkInfo data = new rptStudSemsScoreCodeChkInfo();
                     data.StudentID = dr["student_id"] + "";
@@ -4068,6 +4072,22 @@ WHERE
                         {
                             try
                             {
+                                if (data.CourseCode == data.SemsScoreCourseCode)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("課程代碼");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
+                        {
+                            try
+                            {
                                 errItem.Remove("科目名稱與級別");
                             }
                             catch (Exception ex)
@@ -4194,7 +4214,8 @@ WHERE
                         array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '') :: text AS 學分數,
                         array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '') :: text AS 必選修,
                         array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '') :: text AS 校部訂,
-                        array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '') :: text AS 分項類別
+                        array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '') :: text AS 分項類別,
+                        array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '') :: text AS 課程代碼
                     FROM
                         (
                             SELECT
@@ -4229,6 +4250,7 @@ WHERE
                     學分數 AS credit,
                     必選修 AS required,
                     分項類別 AS scoreType,
+                    課程代碼,
                     (
                         CASE
                             校部訂
@@ -4261,6 +4283,7 @@ WHERE
                     errItem.Add("必修選修");
                     errItem.Add("學分數");
                     errItem.Add("分項類別");
+                    errItem.Add("課程代碼");
 
                     rptStudSemsScoreCodeChkInfo data = new rptStudSemsScoreCodeChkInfo();
                     data.StudentID = dr["student_id"] + "";
@@ -4290,7 +4313,8 @@ WHERE
                     {
                         data.gdc_code = "";
                     }
-
+                    data.SemsScoreCourseCode = dr["課程代碼"] + "";
+                    
 
                     value.Add(data);
                 }
@@ -4407,6 +4431,22 @@ WHERE
                                 {
                                     errItem.Remove("科目名稱與級別");
                                     errItem.Remove("分項類別");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+
+                        if (GPlanDict[data.graduation_plan_id].SubjectDict.ContainsKey(key))
+                        {
+                            try
+                            {
+                                if (data.CourseCode == data.SemsScoreCourseCode)
+                                {
+                                    errItem.Remove("科目名稱與級別");
+                                    errItem.Remove("課程代碼");
                                 }
                             }
                             catch (Exception ex)

@@ -134,8 +134,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
             }
             _bgWorker.ReportProgress(40);
+
+            // 處理應修未修
+            
             // 取得課程大表資料
-            Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();
+            Dictionary<string, List<MOECourseCodeInfo>> MOECourseDict = da.GetCourseGroupCodeDict();            
 
             List<DataRow> haGDCCodeStudents = new List<DataRow>();
 
@@ -240,7 +243,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _bgWorker.ReportProgress(70);
             // 填值到 Excel
             _wb = new Workbook(new MemoryStream(Properties.Resources.學期成績檢核課程代碼樣板));
-            Worksheet wstSC = _wb.Worksheets["檢查學期成績課程代碼"];
+             Worksheet wstSC = _wb.Worksheets["檢查學期成績課程代碼"];
             wstSC.Name = _GradeYear + "年級_檢查學期成績課程代碼";
 
             Worksheet wstSCError = _wb.Worksheets["檢查學期成績課程代碼(有差異)"];
@@ -389,7 +392,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 sb.AppendLine("若所選擇的學年度、學期與系統當前的學年度、學期不同，以學期對照表上的年級，找出當時的年級。");
                 sb.AppendLine("並以科目名稱+科目級別，比對出課程代碼。");
                 sb.AppendLine("");
-                sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程規畫表為主，與工作表:檢查學期成績課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
+                sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程代碼大表為主，與工作表:檢查學期成績課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
 
                 txtDesc.Text = sb.ToString();
             }
