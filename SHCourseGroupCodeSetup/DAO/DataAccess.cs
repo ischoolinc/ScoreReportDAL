@@ -180,10 +180,38 @@ namespace SHCourseGroupCodeSetup.DAO
             
             DataTable dt = qh.Select(query);
 
+            Dictionary<string, string> mapDict = new Dictionary<string, string>();
+            mapDict.Add("0", "不分班群");
+            mapDict.Add("1", "建教合作班-輪調式");
+            mapDict.Add("2", "建教合作班-階梯式");
+            mapDict.Add("3", "建教合作班-實習式");
+            mapDict.Add("4", "建教合作班-其他式");
+            mapDict.Add("5", "產學訓專班");
+            mapDict.Add("6", "雙軌訓練旗艦計畫");
+            mapDict.Add("7", "產學攜手專班");
+
             foreach (DataRow dr in dt.Rows)
             {
                 string code = dr["group_code"] + "";
                 string name = dr["group_name"] + "";
+
+                // 加這段主要處理當班群無法對照變成不分班群，和原本不分班群0會有重複名稱問題
+                // 取得第16碼班群碼
+                if (code.Length > 15)
+                {
+                    string classCode = code.Substring(15, 1);
+                    if (name.Contains("不分班群") && classCode != "0")
+                    {
+                        if (mapDict.ContainsKey(classCode))
+                        {
+                            name = name.Replace("不分班群", mapDict[classCode]);                          
+                        }
+                        else
+                        {
+                            name = name + classCode;                            
+                        }
+                    }
+                }
 
                 if (!MOEGroupCodeDict.ContainsKey(code))
                     MOEGroupCodeDict.Add(code, name);
