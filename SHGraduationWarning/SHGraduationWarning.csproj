@@ -127,6 +127,7 @@
     <Reference Include="SmartSchool.Evaluation.HS, Version=1.0.7.65, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\dev\高中畢業預警核心測試\SmartSchool.Evaluation.HS.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -179,6 +180,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UIForm\frmCheckStudGPlanSemsScoreCourseCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmCheckStudGPlanSemsScoreCourseCode.Designer.cs">
+      <DependentUpon>frmCheckStudGPlanSemsScoreCourseCode.cs</DependentUpon>
     </Compile>
     <Compile Include="UIForm\frmDesc.cs">
       <SubType>Form</SubType>
@@ -248,6 +255,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIForm\frmCheckStudGPlanSemsScoreCourseCode.resx">
+      <DependentUpon>frmCheckStudGPlanSemsScoreCourseCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmDesc.resx">
       <DependentUpon>frmDesc.cs</DependentUpon>

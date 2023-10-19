@@ -78,6 +78,19 @@ namespace SHGraduationWarning
 
 
 
+            Catalog ribbons1 = RoleAclSource.Instance["學生"]["功能按鈕"];
+            ribbons1.Add(new RibbonFeature("F2963209-300B-4C57-862F-A7E0374A5C3A", "檢查學生學期科目與課規課程代碼差異"));
+
+            K12.Presentation.NLDPanels.Student.ListPaneContexMenu["檢查學生學期科目與課規課程代碼差異"].Enable = FISCA.Permission.UserAcl.Current["F2963209-300B-4C57-862F-A7E0374A5C3A"].Executable;
+            K12.Presentation.NLDPanels.Student.ListPaneContexMenu["檢查學生學期科目與課規課程代碼差異"].Click += delegate {
+                if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
+                {
+                    UIForm.frmCheckStudGPlanSemsScoreCourseCode fc = new frmCheckStudGPlanSemsScoreCourseCode(K12.Presentation.NLDPanels.Student.SelectedSource);
+                    fc.ShowDialog();
+                }
+            };
+
+
             // 載入自訂驗證規則
             #region 自訂驗證規則
             FactoryProvider.RowFactory.Add(new ValidationRule.SemsScoreRowValidatorFactory());
