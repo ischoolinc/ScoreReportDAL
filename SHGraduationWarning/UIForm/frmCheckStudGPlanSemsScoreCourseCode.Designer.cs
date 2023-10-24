@@ -43,10 +43,10 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(30, 15);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(344, 109);
+            this.labelX1.Size = new System.Drawing.Size(358, 109);
             this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "說明：\r\n使用學生學期對照內群科班找出課程規畫表，依學期科目成績為主，使用(科目名稱+科目級別)比對課程規畫表與學生學期科目成績，找出課程代碼有差異，產生檔案可透" +
-    "過學生匯入學期科目成績功能，匯入更新課程代碼。";
+            this.labelX1.Text = "說明：\r\n透過學生學期對照的群科班代碼找出使用課程規畫表，依學生學期科目成績為主，使用(科目名稱+科目級別)比對使用課程規畫表，找出課程代碼有差異檔，檔案可透過匯" +
+    "入學期科目成績功能，匯入更新學期科目成績的課程代碼。";
             this.labelX1.TextLineAlignment = System.Drawing.StringAlignment.Near;
             this.labelX1.WordWrap = true;
             // 
@@ -55,7 +55,7 @@
             this.btnRun.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnRun.BackColor = System.Drawing.Color.Transparent;
             this.btnRun.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRun.Location = new System.Drawing.Point(203, 155);
+            this.btnRun.Location = new System.Drawing.Point(203, 141);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(75, 23);
             this.btnRun.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -68,7 +68,7 @@
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(299, 155);
+            this.btnExit.Location = new System.Drawing.Point(299, 141);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -80,7 +80,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 203);
+            this.ClientSize = new System.Drawing.Size(400, 177);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.labelX1);

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using FISCA.Data;
+using Aspose.Cells;
+using System.IO;
 
 namespace SHGraduationWarning.UIForm
 {
@@ -19,6 +21,9 @@ namespace SHGraduationWarning.UIForm
         Dictionary<int, List<string>> StudentIDDs;
         List<DataRow> DataList;
         BackgroundWorker bgWorker;
+        Workbook wb;
+        Dictionary<string, int> _ColIdxDict;
+
 
         public frmCheckStudGPlanSemsScoreCourseCode(List<string> StudentIDs)
         {
@@ -26,6 +31,8 @@ namespace SHGraduationWarning.UIForm
             StudentIDDs = new Dictionary<int, List<string>>();
             DataList = new List<DataRow>();
             bgWorker = new BackgroundWorker();
+            wb = new Workbook();
+            _ColIdxDict = new Dictionary<string, int>();
             bgWorker.DoWork += BgWorker_DoWork;
             bgWorker.RunWorkerCompleted += BgWorker_RunWorkerCompleted;
             bgWorker.ProgressChanged += BgWorker_ProgressChanged;
@@ -58,12 +65,34 @@ namespace SHGraduationWarning.UIForm
         private void BgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+
+            if (e.Error == null)
+            {
+                try
+                {
+                    Workbook wb1 = e.Result as Workbook;
+                    if (wb1 != null)
+                    {
+                        Utility.ExportXls2003("學生學期科目與課規課程代碼差異", wb1);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            else
+            {
+                MsgBox.Show(e.Error.Message);
+            }
+
+
             btnRun.Enabled = true;
         }
 
         private void BgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            int rp = 1;
+            int rp = 5;
             bgWorker.ReportProgress(rp);
 
             DataList.Clear();
@@ -138,6 +167,11 @@ namespace SHGraduationWarning.UIForm
                         sems_subj_score_ext.ref_student_id,
                         array_to_string(xpath('//Subject/@科目', subj_score_ele), '') :: text AS 科目,
                         array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '') :: text AS 科目級別,
+                        array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '') :: text AS 分項類別,
+                        array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '') :: text AS 校部訂,
+                        array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '') :: text AS 必選修,
+                        array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '') :: text AS 學分數,
+                        array_to_string(xpath('//Subject/@是否取得學分', subj_score_ele), '') :: text AS 取得學分,
                         array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '') :: text AS 課程代碼
                     FROM
                         (
@@ -201,6 +235,11 @@ namespace SHGraduationWarning.UIForm
                     sems_subj_score.semester AS 成績學期,
                     sems_subj_score.科目,
                     sems_subj_score.科目級別,
+                    sems_subj_score.分項類別,
+                    sems_subj_score.校部訂,
+                    sems_subj_score.必選修,
+                    sems_subj_score.學分數,
+                    sems_subj_score.取得學分,
                     sems_subj_score.課程代碼 AS 學期科目課程代碼,
                     gplan_data.課程代碼 AS 課程代碼,
                     gplan_data.name AS 課程規劃表名稱,
@@ -223,7 +262,7 @@ namespace SHGraduationWarning.UIForm
                 ", string.Join(",", ids.ToArray()));
 
                 DataTable dt = qh.Select(qry);
-                foreach(DataRow dr in dt.Rows)
+                foreach (DataRow dr in dt.Rows)
                     DataList.Add(dr);
 
 
@@ -231,6 +270,97 @@ namespace SHGraduationWarning.UIForm
                 if (rp > 95)
                     rp = 95;
             }
+
+            wb = new Workbook();
+            wb = new Workbook(new MemoryStream(Properties.Resources.學生學期科目與課規課程代碼差異樣板));
+            Worksheet wst = wb.Worksheets["學生學期科目與課規課程代碼"];
+            int rowIdx = 1;
+            _ColIdxDict.Clear();
+            // 讀取欄位與索引            
+            for (int co = 0; co <= wst.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wst.Cells[0, co].StringValue, co);
+            }
+
+            try
+            {
+                foreach (DataRow dr in DataList)
+                {
+                    // 學生系統編號
+                    wst.Cells[rowIdx, _ColIdxDict["學生系統編號"]].PutValue(dr["學生系統編號"] + "");
+
+                    // 學年度
+                    wst.Cells[rowIdx, _ColIdxDict["學年度"]].PutValue(dr["學年度"] + "");
+
+                    // 學期
+                    wst.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(dr["學期"] + "");
+
+                    // 學生年級
+                    wst.Cells[rowIdx, _ColIdxDict["學生年級"]].PutValue(dr["學生年級"] + "");
+
+                    // 班級
+                    wst.Cells[rowIdx, _ColIdxDict["班級"]].PutValue(dr["班級"] + "");
+
+                    // 座號
+                    wst.Cells[rowIdx, _ColIdxDict["座號"]].PutValue(dr["座號"] + "");
+
+                    // 姓名
+                    wst.Cells[rowIdx, _ColIdxDict["姓名"]].PutValue(dr["姓名"] + "");
+
+                    // 成績年級
+                    wst.Cells[rowIdx, _ColIdxDict["成績年級"]].PutValue(dr["成績年級"] + "");
+
+                    // 成績學期
+                    wst.Cells[rowIdx, _ColIdxDict["成績學期"]].PutValue(dr["成績學期"] + "");
+
+                    // 科目
+                    wst.Cells[rowIdx, _ColIdxDict["科目"]].PutValue(dr["科目"] + "");
+
+                    // 科目級別
+                    wst.Cells[rowIdx, _ColIdxDict["科目級別"]].PutValue(dr["科目級別"] + "");
+
+                    // 學期科目課程代碼                    
+                    wst.Cells[rowIdx, _ColIdxDict["學期科目課程代碼"]].PutValue(dr["學期科目課程代碼"] + "");
+
+                    // 課程代碼                    
+                    wst.Cells[rowIdx, _ColIdxDict["課程代碼"]].PutValue(dr["課程代碼"] + "");
+
+                    // 課程規劃表名稱                    
+                    wst.Cells[rowIdx, _ColIdxDict["課程規劃表名稱"]].PutValue(dr["課程規劃表名稱"] + "");
+
+                    // 分項類別                    
+                    wst.Cells[rowIdx, _ColIdxDict["分項類別"]].PutValue(dr["分項類別"] + "");
+
+                    
+                    string str = dr["校部訂"] + "";
+                    if (str == "部訂")
+                        str = "部定";
+
+                    // 校部訂   1                 
+                    wst.Cells[rowIdx, _ColIdxDict["校部訂"]].PutValue(str);
+
+                    // 必選修                    
+                    wst.Cells[rowIdx, _ColIdxDict["必選修"]].PutValue(dr["必選修"] + "");
+
+                    // 學分數                    
+                    wst.Cells[rowIdx, _ColIdxDict["學分數"]].PutValue(dr["學分數"] + "");
+
+                    // 取得學分                    
+                    wst.Cells[rowIdx, _ColIdxDict["取得學分"]].PutValue(dr["取得學分"] + "");
+
+
+
+                    rowIdx++;
+                }
+
+                wst.AutoFitColumns();
+                e.Result = wb;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
 
             bgWorker.ReportProgress(100);
         }
