@@ -153,6 +153,7 @@ namespace SHGraduationWarning.UIForm
                         seat_no,
                         student_name,
                         class_name,
+                        student_number,
                         COALESCE(sh_gdc_code, s_gdc_code) AS gdc_code
                     FROM
                         student_base
@@ -223,16 +224,16 @@ namespace SHGraduationWarning.UIForm
                         )
                 )
                 SELECT
-                    student_data.student_id AS 學生系統編號,
-                    student_data.school_year AS 學年度,
-                    student_data.semester AS 學期,
+                    student_data.student_id AS 學生系統編號,                    
                     student_data.grade_year AS 學生年級,
                     student_data.class_name AS 班級,
                     student_data.seat_no AS 座號,
                     student_data.student_name AS 姓名,
+                    student_data.student_number AS 學號,
                     sems_subj_score.id AS 成績系統編號,
-                    sems_subj_score.grade_year AS 成績年級,
-                    sems_subj_score.semester AS 成績學期,
+                    sems_subj_score.school_year AS 學年度,
+                    sems_subj_score.semester AS 學期,
+                    sems_subj_score.grade_year AS 成績年級,                    
                     sems_subj_score.科目,
                     sems_subj_score.科目級別,
                     sems_subj_score.分項類別,
@@ -254,7 +255,7 @@ namespace SHGraduationWarning.UIForm
                     AND sems_subj_score.科目 = gplan_data.科目
                     AND sems_subj_score.科目級別 = gplan_data.科目級別
                 WHERE
-                    sems_subj_score.課程代碼 = ''
+                    sems_subj_score.課程代碼 <> gplan_data.課程代碼 
                 ORDER BY
                     student_data.grade_year,
                     class_name,
@@ -288,13 +289,7 @@ namespace SHGraduationWarning.UIForm
                 {
                     // 學生系統編號
                     wst.Cells[rowIdx, _ColIdxDict["學生系統編號"]].PutValue(dr["學生系統編號"] + "");
-
-                    // 學年度
-                    wst.Cells[rowIdx, _ColIdxDict["學年度"]].PutValue(dr["學年度"] + "");
-
-                    // 學期
-                    wst.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(dr["學期"] + "");
-
+                    
                     // 學生年級
                     wst.Cells[rowIdx, _ColIdxDict["學生年級"]].PutValue(dr["學生年級"] + "");
 
@@ -310,8 +305,11 @@ namespace SHGraduationWarning.UIForm
                     // 成績年級
                     wst.Cells[rowIdx, _ColIdxDict["成績年級"]].PutValue(dr["成績年級"] + "");
 
+                    // 成績學年度
+                    wst.Cells[rowIdx, _ColIdxDict["學年度"]].PutValue(dr["學年度"] + "");
+
                     // 成績學期
-                    wst.Cells[rowIdx, _ColIdxDict["成績學期"]].PutValue(dr["成績學期"] + "");
+                    wst.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(dr["學期"] + "");
 
                     // 科目
                     wst.Cells[rowIdx, _ColIdxDict["科目"]].PutValue(dr["科目"] + "");
@@ -348,7 +346,11 @@ namespace SHGraduationWarning.UIForm
                     // 取得學分                    
                     wst.Cells[rowIdx, _ColIdxDict["取得學分"]].PutValue(dr["取得學分"] + "");
 
+                    // 取得學分                    
+                    wst.Cells[rowIdx, _ColIdxDict["取得學分"]].PutValue(dr["取得學分"] + "");
 
+                    // 學號                    
+                    wst.Cells[rowIdx, _ColIdxDict["學號"]].PutValue(dr["學號"] + "");
 
                     rowIdx++;
                 }

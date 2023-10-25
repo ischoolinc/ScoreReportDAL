@@ -45,8 +45,8 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(358, 109);
             this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "說明：\r\n透過學生學期對照的群科班代碼找出使用課程規畫表，依學生學期科目成績為主，使用(科目名稱+科目級別)比對使用課程規畫表，找出課程代碼有差異檔，檔案可透過匯" +
-    "入學期科目成績功能，匯入更新學期科目成績的課程代碼。";
+            this.labelX1.Text = "說明：\r\n透過學生學期對照表的群科班代碼找出使用課程規畫表，依學生學期科目成績為主，使用(科目名稱+科目級別)比對使用課程規畫表，找出課程代碼有差異檔，檔案可透過" +
+    "匯入學期科目成績功能，匯入更新學期科目成績的課程代碼。";
             this.labelX1.TextLineAlignment = System.Drawing.StringAlignment.Near;
             this.labelX1.WordWrap = true;
             // 
