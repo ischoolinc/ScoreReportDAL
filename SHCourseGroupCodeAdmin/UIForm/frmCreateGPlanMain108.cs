@@ -50,6 +50,26 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             dgData.Rows.Clear();
             FISCA.Presentation.MotherForm.SetStatusBarMessage("讀取完成。");
+
+            List<GPlanInfo108> removeList = new List<GPlanInfo108>();
+            // 過濾矯正學校第16碼為X的資料                
+            foreach (GPlanInfo108 data in _GPlanInfo108List)
+            {
+                if (data.GDCCode.Length == 16)
+                {
+                    if (data.GDCCode.Substring(15, 1) == "X")
+                        removeList.Add(data);
+                }
+            }
+
+            if (removeList.Count > 0)
+            {
+                foreach (GPlanInfo108 data in removeList)
+                {
+                    _GPlanInfo108List.Remove(data);
+                }
+            }
+
             _GPlanInfo108List = (from data in _GPlanInfo108List where int.Parse(data.EntrySchoolYear) > (currentSchoolYear - 3) orderby data.OrderByInt, data.EntrySchoolYear descending, data.GDCName select data).ToList();
 
             foreach (GPlanInfo108 data in _GPlanInfo108List)
@@ -74,6 +94,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             AddCount = 0; UpdateCount = 0; NoChangeCount = 0; SetDefaultCount = 0;
 
+            int rowCount = 0;
             foreach (DataGridViewRow drv in dgData.Rows)
             {
                 if (drv.IsNewRow)
@@ -92,9 +113,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 if (Status == "無變動")
                     NoChangeCount++;
+
+                rowCount++;
             }
 
-            lblGroupCount.Text = "群科班數" + _GPlanInfo108List.Count + "筆";
+            lblGroupCount.Text = "群科班數" + rowCount + "筆";
             lblAddCount.Text = "新增" + AddCount + "筆";
             lblUpdateCount.Text = "更新" + UpdateCount + "筆";
             lblSetDefaultCount.Text = "重置" + SetDefaultCount + "筆";

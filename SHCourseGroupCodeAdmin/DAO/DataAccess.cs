@@ -70,6 +70,14 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.open_type = dr["授課開課方式"] + "";
                     data.course_attr = dr["課程屬性"] + "";
 
+                    // 過濾矯正學校第16碼為X的資料                
+                    if (data.course_code.Length > 15)
+                    {
+                        if (data.course_code.Substring(15, 1).ToUpper() == "X")
+                            continue;
+                    }
+
+
                     // 透過課程屬性更新校部定
                     if (data.course_attr.Length > 0)
                     {
@@ -399,7 +407,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             List<MOECourseCodeInfo> coCodeList = GetCourseGroupCodeList();
             foreach (MOECourseCodeInfo co in coCodeList)
-            {
+            {              
                 if (!value.ContainsKey(co.group_code))
                     value.Add(co.group_code, new List<MOECourseCodeInfo>());
 
@@ -2590,7 +2598,8 @@ namespace SHCourseGroupCodeAdmin.DAO
                 foreach (DataRow dr in dt.Rows)
                 {
                     string moe_group_code = dr["moe_group_code"] + "";
-                    string gpid = dr["id"] + "";
+                    string gpid = dr["id"] + "";                   
+
                     if (!dtDict.ContainsKey(moe_group_code))
                         dtDict.Add(moe_group_code, new Dictionary<string, List<DataRow>>());
 
