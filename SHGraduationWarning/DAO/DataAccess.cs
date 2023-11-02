@@ -3452,7 +3452,7 @@ namespace SHGraduationWarning.DAO
             {
                 // 取得科別對照
                 Dictionary<string, string> deptDict = GetDeptIDNameDict();
-                
+
                 string condition = @"
                     SELECT
                         " + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
@@ -4648,6 +4648,40 @@ namespace SHGraduationWarning.DAO
                 Console.WriteLine(ex.Message);
             }
 
+            return value;
+        }
+
+        // 取得一般狀態的學生年級
+        public static List<string> GetStudentGradeYear12()
+        {
+            List<string> value = new List<string>();
+
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+                SELECT
+                    DISTINCT class.grade_year
+                FROM
+                    student
+                    INNER JOIN class ON student.ref_class_id = class.id
+                WHERE
+                    student.status IN(1, 2)
+                ORDER BY
+                    class.grade_year DESC
+                ");
+
+                DataTable dt = qh.Select(strSQL);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    value.Add(dr["grade_year"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return value;
         }
 

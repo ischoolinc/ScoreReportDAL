@@ -808,6 +808,7 @@ namespace SHGraduationWarning.UIForm
             ruColList.Add("通過標準");
             ruColList.Add("累計學分");
             ruColList1.Add("畢業差額");
+            ruColList1.Add("不足學分");
             ruColList1.Add("已修習");
             ruColList1.Add("已取得");
             ruColList1.Add("尚未開課");
@@ -982,9 +983,33 @@ namespace SHGraduationWarning.UIForm
                                         if (StudDT.Columns.Contains(key))
                                         {
                                             dr[key] = xmlRuleC.GetAttribute(ruCol);
+
+
+                                            // 計算不足學分
+                                            if (key.Contains("不足學分"))
+                                            {
+                                                if (Rule.Length > 2)
+                                                {
+                                                    int val1 = 0, val2 = 0;
+
+                                                    string strVal1 = xmlRule.GetAttribute("設定值");
+                                                    string strVal2 = xmlRuleC.GetAttribute("已取得");
+                                                    if (Rule.Substring(0, 2) == "應修")
+                                                    {
+                                                        strVal2 = xmlRuleC.GetAttribute("已修習");
+                                                    }
+
+                                                    int.TryParse(strVal1, out val1);
+                                                    int.TryParse(strVal2, out val2);
+
+                                                    dr[key] = val1 - val2;
+                                                }
+                                            }
+
                                         }
                                     }
                                 }
+
                             }
                             else
                             {
@@ -1016,6 +1041,7 @@ namespace SHGraduationWarning.UIForm
                                     }
                                 }
 
+
                                 // 處理 預警統計
                                 foreach (XmlElement xmlRuleC in xmlRule.SelectNodes("預警統計"))
                                 {
@@ -1025,9 +1051,32 @@ namespace SHGraduationWarning.UIForm
                                         if (StudDT.Columns.Contains(key))
                                         {
                                             dr[key] = xmlRuleC.GetAttribute(ruCol);
+
+
+                                            // 計算不足學分
+                                            if (key.Contains("不足學分"))
+                                            {
+                                                if (Rule.Length > 5)
+                                                {
+                                                    int val1 = 0, val2 = 0;
+
+                                                    string strVal1 = xmlRule.GetAttribute("設定值");
+                                                    string strVal2 = xmlRuleC.GetAttribute("已取得");
+                                                    if (Rule.Substring(0, 2) == "修課")
+                                                    {
+                                                        strVal2 = xmlRuleC.GetAttribute("已修習");
+                                                    }
+
+                                                    int.TryParse(strVal1, out val1);
+                                                    int.TryParse(strVal2, out val2);
+
+                                                    dr[key] = val1 - val2;
+                                                }
+                                            }
                                         }
                                     }
                                 }
+
                             }
 
 
@@ -2064,11 +2113,33 @@ namespace SHGraduationWarning.UIForm
             SelectedTabName = ChkEditTabName;
             LoadTabDesc();
 
-            comboGradeYear.Items.Add("3");
-            comboGradeYear.Items.Add("2");
-            comboGradeYear.Items.Add("1");
+            // 取得目前一般狀態學生的年級
+            try
+            {
+                List<string> grList = DataAccess.GetStudentGradeYear12();
+                if (grList.Count > 0)
+                {
+                    comboGradeYear.Items.Clear();
+                    foreach (string gr in grList)
+                    {
+                        comboGradeYear.Items.Add(gr);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            comboGradeYear.Text = "3";
+            // 預設選第一項
+            if (comboGradeYear.Items.Count > 0)
+                comboGradeYear.SelectedIndex = 0;
+
+            //comboGradeYear.Items.Add("3");
+            //comboGradeYear.Items.Add("2");
+            //comboGradeYear.Items.Add("1");
+
+            //comboGradeYear.Text = "3";
 
             comboGradeYear.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDept.DropDownStyle = ComboBoxStyle.DropDownList;
