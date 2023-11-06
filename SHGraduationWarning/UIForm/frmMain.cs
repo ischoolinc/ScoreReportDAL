@@ -983,29 +983,6 @@ namespace SHGraduationWarning.UIForm
                                         if (StudDT.Columns.Contains(key))
                                         {
                                             dr[key] = xmlRuleC.GetAttribute(ruCol);
-
-
-                                            // 計算不足學分
-                                            if (key.Contains("不足學分"))
-                                            {
-                                                if (Rule.Length > 2)
-                                                {
-                                                    int val1 = 0, val2 = 0;
-
-                                                    string strVal1 = xmlRule.GetAttribute("設定值");
-                                                    string strVal2 = xmlRuleC.GetAttribute("已取得");
-                                                    if (Rule.Substring(0, 2) == "應修")
-                                                    {
-                                                        strVal2 = xmlRuleC.GetAttribute("已修習");
-                                                    }
-
-                                                    int.TryParse(strVal1, out val1);
-                                                    int.TryParse(strVal2, out val2);
-
-                                                    dr[key] = val1 - val2;
-                                                }
-                                            }
-
                                         }
                                     }
                                 }
@@ -1051,28 +1028,6 @@ namespace SHGraduationWarning.UIForm
                                         if (StudDT.Columns.Contains(key))
                                         {
                                             dr[key] = xmlRuleC.GetAttribute(ruCol);
-
-
-                                            // 計算不足學分
-                                            if (key.Contains("不足學分"))
-                                            {
-                                                if (Rule.Length > 5)
-                                                {
-                                                    int val1 = 0, val2 = 0;
-
-                                                    string strVal1 = xmlRule.GetAttribute("設定值");
-                                                    string strVal2 = xmlRuleC.GetAttribute("已取得");
-                                                    if (Rule.Substring(0, 2) == "修課")
-                                                    {
-                                                        strVal2 = xmlRuleC.GetAttribute("已修習");
-                                                    }
-
-                                                    int.TryParse(strVal1, out val1);
-                                                    int.TryParse(strVal2, out val2);
-
-                                                    dr[key] = val1 - val2;
-                                                }
-                                            }
                                         }
                                     }
                                 }
