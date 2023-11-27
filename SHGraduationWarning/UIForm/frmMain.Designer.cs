@@ -30,8 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblMsg = new DevComponents.DotNetBar.LabelX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.btnQuery = new DevComponents.DotNetBar.ButtonX();
@@ -44,14 +45,17 @@
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
             this.comboDept = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.tabControl1 = new DevComponents.DotNetBar.TabControl();
-            this.tabControlPanel2 = new DevComponents.DotNetBar.TabControlPanel();
-            this.dgDataChkEdit = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.tbItemChkEdit = new DevComponents.DotNetBar.TabItem(this.components);
+            this.tabControlPanel4 = new DevComponents.DotNetBar.TabControlPanel();
+            this.dgDataCourse = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.tbItemCourse = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
             this.tbItemGW = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel3 = new DevComponents.DotNetBar.TabControlPanel();
             this.dgData2ChkEdit = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.tbItem2ChkEdit = new DevComponents.DotNetBar.TabItem(this.components);
+            this.tabControlPanel2 = new DevComponents.DotNetBar.TabControlPanel();
+            this.dgDataChkEdit = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.tbItemChkEdit = new DevComponents.DotNetBar.TabItem(this.components);
             this.btnReport = new DevComponents.DotNetBar.ButtonX();
             this.buttonLoadDesc = new DevComponents.DotNetBar.ButtonX();
             this.lnkSetReportTemplate = new System.Windows.Forms.LinkLabel();
@@ -62,11 +66,13 @@
             this.groupPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabControlPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgDataChkEdit)).BeginInit();
+            this.tabControlPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDataCourse)).BeginInit();
             this.tabControlPanel1.SuspendLayout();
             this.tabControlPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgData2ChkEdit)).BeginInit();
+            this.tabControlPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDataChkEdit)).BeginInit();
             this.SuspendLayout();
             // 
             // lblMsg
@@ -104,7 +110,7 @@
             this.btnQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuery.BackColor = System.Drawing.Color.Transparent;
             this.btnQuery.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnQuery.Location = new System.Drawing.Point(887, 752);
+            this.btnQuery.Location = new System.Drawing.Point(884, 752);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(75, 23);
             this.btnQuery.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -272,9 +278,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.BackColor = System.Drawing.Color.Transparent;
             this.tabControl1.CanReorderTabs = true;
+            this.tabControl1.Controls.Add(this.tabControlPanel4);
+            this.tabControl1.Controls.Add(this.tabControlPanel1);
             this.tabControl1.Controls.Add(this.tabControlPanel3);
             this.tabControl1.Controls.Add(this.tabControlPanel2);
-            this.tabControl1.Controls.Add(this.tabControlPanel1);
             this.tabControl1.Location = new System.Drawing.Point(17, 122);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
@@ -282,6 +289,7 @@
             this.tabControl1.Size = new System.Drawing.Size(1032, 606);
             this.tabControl1.TabIndex = 63;
             this.tabControl1.TabLayoutType = DevComponents.DotNetBar.eTabLayoutType.FixedWithNavigationBox;
+            this.tabControl1.Tabs.Add(this.tbItemCourse);
             this.tabControl1.Tabs.Add(this.tbItemChkEdit);
             this.tabControl1.Tabs.Add(this.tbItem2ChkEdit);
             this.tabControl1.Tabs.Add(this.tbItemGW);
@@ -289,53 +297,53 @@
             this.tabControl1.SelectedTabChanged += new DevComponents.DotNetBar.TabStrip.SelectedTabChangedEventHandler(this.tabControl1_SelectedTabChanged);
             this.tabControl1.Click += new System.EventHandler(this.tabControl1_Click);
             // 
-            // tabControlPanel2
+            // tabControlPanel4
             // 
-            this.tabControlPanel2.Controls.Add(this.dgDataChkEdit);
-            this.tabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel2.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel2.Name = "tabControlPanel2";
-            this.tabControlPanel2.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel2.Size = new System.Drawing.Size(1032, 577);
-            this.tabControlPanel2.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel2.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel2.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel2.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            this.tabControlPanel4.Controls.Add(this.dgDataCourse);
+            this.tabControlPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel4.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel4.Name = "tabControlPanel4";
+            this.tabControlPanel4.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel4.Size = new System.Drawing.Size(1032, 577);
+            this.tabControlPanel4.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel4.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel4.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel4.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel4.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
             | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel2.Style.GradientAngle = 90;
-            this.tabControlPanel2.TabIndex = 2;
-            this.tabControlPanel2.TabItem = this.tbItemChkEdit;
+            this.tabControlPanel4.Style.GradientAngle = 90;
+            this.tabControlPanel4.TabIndex = 4;
+            this.tabControlPanel4.TabItem = this.tbItemCourse;
             // 
-            // dgDataChkEdit
+            // dgDataCourse
             // 
-            this.dgDataChkEdit.AllowUserToAddRows = false;
-            this.dgDataChkEdit.AllowUserToDeleteRows = false;
-            this.dgDataChkEdit.BackgroundColor = System.Drawing.Color.White;
-            this.dgDataChkEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgDataChkEdit.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgDataChkEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgDataChkEdit.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgDataChkEdit.Location = new System.Drawing.Point(1, 1);
-            this.dgDataChkEdit.Name = "dgDataChkEdit";
-            this.dgDataChkEdit.RowTemplate.Height = 24;
-            this.dgDataChkEdit.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgDataChkEdit.Size = new System.Drawing.Size(1030, 575);
-            this.dgDataChkEdit.TabIndex = 58;
+            this.dgDataCourse.AllowUserToAddRows = false;
+            this.dgDataCourse.AllowUserToDeleteRows = false;
+            this.dgDataCourse.BackgroundColor = System.Drawing.Color.White;
+            this.dgDataCourse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDataCourse.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgDataCourse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgDataCourse.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgDataCourse.Location = new System.Drawing.Point(1, 1);
+            this.dgDataCourse.Name = "dgDataCourse";
+            this.dgDataCourse.RowTemplate.Height = 24;
+            this.dgDataCourse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgDataCourse.Size = new System.Drawing.Size(1030, 575);
+            this.dgDataCourse.TabIndex = 59;
             // 
-            // tbItemChkEdit
+            // tbItemCourse
             // 
-            this.tbItemChkEdit.AttachedControl = this.tabControlPanel2;
-            this.tbItemChkEdit.Name = "tbItemChkEdit";
-            this.tbItemChkEdit.Text = "資料合理檢查(科目級別)";
-            this.tbItemChkEdit.Click += new System.EventHandler(this.tbItemChkEdit_Click);
+            this.tbItemCourse.AttachedControl = this.tabControlPanel4;
+            this.tbItemCourse.Name = "tbItemCourse";
+            this.tbItemCourse.Text = "資料合理檢查(課程科目級別)";
+            this.tbItemCourse.Click += new System.EventHandler(this.tbItemCourse_Click);
             // 
             // tabControlPanel1
             // 
@@ -386,14 +394,14 @@
             this.dgData2ChkEdit.AllowUserToDeleteRows = false;
             this.dgData2ChkEdit.BackgroundColor = System.Drawing.Color.White;
             this.dgData2ChkEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData2ChkEdit.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData2ChkEdit.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgData2ChkEdit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgData2ChkEdit.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgData2ChkEdit.Location = new System.Drawing.Point(1, 1);
@@ -409,6 +417,54 @@
             this.tbItem2ChkEdit.Name = "tbItem2ChkEdit";
             this.tbItem2ChkEdit.Text = "資料合理檢查(科目屬性)";
             this.tbItem2ChkEdit.Click += new System.EventHandler(this.tbItem2ChkEdit_Click);
+            // 
+            // tabControlPanel2
+            // 
+            this.tabControlPanel2.Controls.Add(this.dgDataChkEdit);
+            this.tabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel2.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel2.Name = "tabControlPanel2";
+            this.tabControlPanel2.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel2.Size = new System.Drawing.Size(1032, 577);
+            this.tabControlPanel2.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel2.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel2.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel2.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel2.Style.GradientAngle = 90;
+            this.tabControlPanel2.TabIndex = 2;
+            this.tabControlPanel2.TabItem = this.tbItemChkEdit;
+            // 
+            // dgDataChkEdit
+            // 
+            this.dgDataChkEdit.AllowUserToAddRows = false;
+            this.dgDataChkEdit.AllowUserToDeleteRows = false;
+            this.dgDataChkEdit.BackgroundColor = System.Drawing.Color.White;
+            this.dgDataChkEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDataChkEdit.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgDataChkEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgDataChkEdit.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgDataChkEdit.Location = new System.Drawing.Point(1, 1);
+            this.dgDataChkEdit.Name = "dgDataChkEdit";
+            this.dgDataChkEdit.RowTemplate.Height = 24;
+            this.dgDataChkEdit.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgDataChkEdit.Size = new System.Drawing.Size(1030, 575);
+            this.dgDataChkEdit.TabIndex = 58;
+            // 
+            // tbItemChkEdit
+            // 
+            this.tbItemChkEdit.AttachedControl = this.tabControlPanel2;
+            this.tbItemChkEdit.Name = "tbItemChkEdit";
+            this.tbItemChkEdit.Text = "資料合理檢查(科目級別)";
+            this.tbItemChkEdit.Click += new System.EventHandler(this.tbItemChkEdit_Click);
             // 
             // btnReport
             // 
@@ -520,11 +576,13 @@
             this.groupPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabControlPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgDataChkEdit)).EndInit();
+            this.tabControlPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgDataCourse)).EndInit();
             this.tabControlPanel1.ResumeLayout(false);
             this.tabControlPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgData2ChkEdit)).EndInit();
+            this.tabControlPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgDataChkEdit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -558,5 +616,8 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX ChkNotUptoGStandard;
         private DevComponents.DotNetBar.ButtonX btnClassReport;
         private DevComponents.DotNetBar.ButtonX btnExport;
+        private DevComponents.DotNetBar.TabControlPanel tabControlPanel4;
+        private DevComponents.DotNetBar.Controls.DataGridViewX dgDataCourse;
+        private DevComponents.DotNetBar.TabItem tbItemCourse;
     }
 }

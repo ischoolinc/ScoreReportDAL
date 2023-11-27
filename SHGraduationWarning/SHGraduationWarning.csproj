@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Configure.cs" />
     <Compile Include="DAO\ClassDeptInfo.cs" />
+    <Compile Include="DAO\CourseInfo.cs" />
     <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\DataGridViewTextBoxColumnInfo.cs" />
     <Compile Include="DAO\GPlanInfo.cs" />
@@ -246,6 +247,7 @@
     <ProjectReference Include="..\..\SHEvaluation\SmartSchool.Evaluation.HS\SmartSchool.Evaluation.HS.csproj">
       <Project>{93f055e7-9422-4519-a359-524783e42a9f}</Project>
       <Name>SmartSchool.Evaluation.HS</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
