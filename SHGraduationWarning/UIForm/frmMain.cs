@@ -143,6 +143,8 @@ namespace SHGraduationWarning.UIForm
         List<CourseInfo> CourseInfoList;
         Dictionary<string, CourseInfo> hasErrorCourseInfoDict;
 
+        // 檢查課規有但是課程沒有的科目
+        List<DataRow> chkGPDataCourseList = new List<DataRow>();
 
         // 僅顯示未達畢業標準
         bool isChkNotUptoGStandard = false;
@@ -255,17 +257,156 @@ namespace SHGraduationWarning.UIForm
 
         private void bgwCourseReport_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("課程科目級別報表產生中...", e.ProgressPercentage);
         }
 
         private void bgwCourseReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            throw new NotImplementedException();
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("");
+            if (e.Error != null)
+            {
+                MsgBox.Show("課程科目級別報表發生錯誤!!\n" + e.Error.Message);
+                ControlEnable(true);
+                return;
+
+            }
+            else
+            {
+                try
+                {
+                    Workbook wb1 = e.Result as Workbook;
+                    if (wb1 != null)
+                    {
+                        Utility.ExportXls("課程與課規比對", wb1);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            ControlEnable(true);
+
         }
 
         private void bgwCourseReport_DoWork(object sender, DoWorkEventArgs e)
         {
-            throw new NotImplementedException();
+            // 處理報表填入 Excel
+            Workbook wb = new Workbook(new MemoryStream(Properties.Resources.課程與課規比對樣板));
+            Worksheet wst = wb.Worksheets["依課程為主比對課規不符合"];
+            bgwCourseReport.ReportProgress(10);
+            int rowIdx = 1;
+            _ColIdxDict.Clear();
+            // 讀取欄位與索引            
+            for (int co = 0; co <= wst.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wst.Cells[0, co].StringValue, co);
+            }
+
+            foreach (CourseInfo ci in hasErrorCourseInfoDict.Values)
+            {
+                // 課程系統編號
+                wst.Cells[rowIdx, _ColIdxDict["課程系統編號"]].PutValue(ci.CourseID);
+
+                // 學年度
+                wst.Cells[rowIdx, _ColIdxDict["學年度"]].PutValue(ci.SchoolYear);
+
+                // 學期
+                wst.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(ci.Semester);
+
+                // 課程名稱
+                wst.Cells[rowIdx, _ColIdxDict["課程名稱"]].PutValue(ci.CourseName);
+
+                // 領域
+                wst.Cells[rowIdx, _ColIdxDict["領域"]].PutValue(ci.Domain);
+
+                // 科目名稱
+                wst.Cells[rowIdx, _ColIdxDict["科目名稱"]].PutValue(ci.SubjectName);
+
+                // 科目級別
+                wst.Cells[rowIdx, _ColIdxDict["科目級別"]].PutValue(ci.SubjectLevel);
+
+                // 學分
+                wst.Cells[rowIdx, _ColIdxDict["學分"]].PutValue(ci.Credit);
+
+                // 分項類別
+                wst.Cells[rowIdx, _ColIdxDict["分項類別"]].PutValue(ci.Entry);
+
+                // 校部訂
+                wst.Cells[rowIdx, _ColIdxDict["校部訂"]].PutValue(ci.RequiredBy);
+
+                // 必選修
+                wst.Cells[rowIdx, _ColIdxDict["必選修"]].PutValue(ci.Required);
+
+                // 使用課規
+                wst.Cells[rowIdx, _ColIdxDict["使用課規"]].PutValue(ci.GraduationPlanName);
+
+                // 課程科目
+                wst.Cells[rowIdx, _ColIdxDict["新科目名稱"]].PutValue(ci.NewSubjectName);
+
+                // 課程科目級別
+                wst.Cells[rowIdx, _ColIdxDict["新科目級別"]].PutValue(ci.NewSubjectLevel);
+
+                // 問題說明                
+                wst.Cells[rowIdx, _ColIdxDict["問題說明"]].PutValue(ci.ErrorMessage);
+
+                rowIdx++;
+            }
+
+
+
+            bgwCourseReport.ReportProgress(60);
+            Worksheet wst1 = wb.Worksheets["依課規為主比對課程不符合"];
+            _ColIdxDict.Clear();
+            // 讀取欄位與索引            
+            for (int co = 0; co <= wst1.Cells.MaxDataColumn; co++)
+            {
+                _ColIdxDict.Add(wst1.Cells[0, co].StringValue, co);
+            }
+
+            // 填入報表
+            rowIdx = 1;
+            foreach (DataRow dr in chkGPDataCourseList)
+            {
+                // 使用課規                
+                wst1.Cells[rowIdx, _ColIdxDict["使用課程規劃表"]].PutValue(dr["使用課程規劃表"] + "");
+
+                // 年級
+                wst1.Cells[rowIdx, _ColIdxDict["年級"]].PutValue(dr["年級"] + "");
+
+                // 學期
+                wst1.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(dr["學期"] + "");
+
+                // 領域
+                wst1.Cells[rowIdx, _ColIdxDict["領域"]].PutValue(dr["領域"] + "");
+
+                // 分項類別
+                wst1.Cells[rowIdx, _ColIdxDict["分項類別"]].PutValue(dr["分項類別"] + "");
+
+                // 校部訂
+                wst1.Cells[rowIdx, _ColIdxDict["校部訂"]].PutValue(dr["校部訂"] + "");
+
+                // 必選修
+                wst1.Cells[rowIdx, _ColIdxDict["必選修"]].PutValue(dr["必選修"] + "");
+
+                // 學分
+                wst1.Cells[rowIdx, _ColIdxDict["學分"]].PutValue(dr["學分"] + "");
+
+                // 科目名稱
+                wst1.Cells[rowIdx, _ColIdxDict["科目名稱"]].PutValue(dr["科目名稱"] + "");
+
+                // 科目級別
+                wst1.Cells[rowIdx, _ColIdxDict["科目級別"]].PutValue(dr["科目級別"] + "");
+
+                rowIdx++;
+            }
+
+            wst.AutoFitColumns();
+            wst1.AutoFitColumns();
+
+            bgwCourseReport.ReportProgress(100);
+            e.Result = wb;
         }
 
         private void bgwDataChkCourseLoad_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -292,11 +433,9 @@ namespace SHGraduationWarning.UIForm
             int rpInt = 10;
             // 清除課程修課檢查資料
 
-            // 清除課規索引
-            GPlanDict.Clear();
-
             // 清除修課檢查有錯誤資料
             CourseInfoList.Clear();
+            chkGPDataCourseList.Clear();
             hasErrorCourseInfoDict.Clear();
             bgwDataChkCourseLoad.ReportProgress(rpInt);
 
@@ -315,6 +454,22 @@ namespace SHGraduationWarning.UIForm
             // 未分年級
             if (SelectedGradeYearYear == NoGradeYearStr)
             {
+                // 課程必對課規資料
+                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlanNoGr1(SelectedGradeYearYear, DeptID, ClassID);
+
+                // 處理有差異資料
+                foreach (CourseInfo ci in CourseInfoList)
+                {
+                    // 使用 course id 當 key
+                    if (!hasErrorCourseInfoDict.ContainsKey(ci.CourseID))
+                        hasErrorCourseInfoDict.Add(ci.CourseID, ci);
+
+                }
+
+                bgwDataChkCourseLoad.ReportProgress(60);
+
+                // 取得課規有課程沒有
+                chkGPDataCourseList = DataAccess.GetCourseSubjectLevelCheckGraduationPlanNoGr2(SelectedGradeYearYear, DeptID, ClassID);
 
             }
             else
@@ -330,8 +485,14 @@ namespace SHGraduationWarning.UIForm
                         hasErrorCourseInfoDict.Add(ci.CourseID, ci);
 
                 }
+
+                bgwDataChkCourseLoad.ReportProgress(60);
+
+                // 取得課規有課程沒有
+                chkGPDataCourseList = DataAccess.GetCourseSubjectLevelCheckGraduationPlan2(SelectedGradeYearYear, DeptID, ClassID);
+
             }
-            
+
             bgwDataChkCourseLoad.ReportProgress(100);
         }
 
@@ -2904,7 +3065,12 @@ namespace SHGraduationWarning.UIForm
             else if (SelectedTabName == ChkCourseTabName)
             {
                 // 資料合理檢查(課程科目級別)
-                msg = @"學生課程科目級別： ";
+                msg = @"學生修課的課程科目級別合理性檢查：
+1.檢查範圍：一般及延修狀態學生課程科目與級別。
+2.依年級、科別、班級條件，檢查範圍內學生學期成績進行合理性檢查。以學生修課課程之科目名稱+級別比對學生採用之課程規劃表產生2張工作表：
+    1.依課程為主比對課規不符合：列出與課規比對不符合的清單，並針對科目名稱比對的到的資料提供新的科目名稱和新的級別。
+    2.依課規為主比對課程不符合：列出與課規比對科目缺少的資料清單。
+";
             }
 
             return msg;
@@ -3024,6 +3190,13 @@ namespace SHGraduationWarning.UIForm
             {
                 btnReport.Enabled = false;
                 bgwDataChkEditReport.RunWorkerAsync();
+            }
+
+            // 課程科目級別檢查
+            if (SelectedTabName == ChkCourseTabName)
+            {
+                btnReport.Enabled = false;
+                bgwCourseReport.RunWorkerAsync();
             }
         }
 

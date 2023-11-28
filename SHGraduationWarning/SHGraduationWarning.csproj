@@ -257,6 +257,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UIForm\frmCheckStudGPlanSemsScoreCourseCode.resx">
       <DependentUpon>frmCheckStudGPlanSemsScoreCourseCode.cs</DependentUpon>
@@ -281,6 +282,7 @@
     <None Include="Template\班級預警報表樣板.xlsx" />
     <None Include="Template\畢業審查學生清單樣板.xlsx" />
     <None Include="Template\畢業預警通知單合併欄位總表.docx" />
+    <None Include="Template\課程與課規比對樣板.xlsx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Campus.DocumentValidator;
 using FISCA.Data;
 //using FISCA.LogAgent;
 
@@ -5100,12 +5102,19 @@ namespace SHGraduationWarning.DAO
                     課程名稱,
                     科目名稱
 ", condition);
+
+                //// debug
+                //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
+                //{
+                //    sw.WriteLine(strSQL);
+                //}
+
                 DataTable dt = qh.Select(strSQL);
                 List<string> errMsg = new List<string>();
                 foreach (DataRow dr in dt.Rows)
                 {
                     errMsg.Clear();
-                    
+
                     CourseInfo ci = new CourseInfo();
                     // 學年度
                     ci.SchoolYear = dr["學年度"] + "";
@@ -5151,7 +5160,7 @@ namespace SHGraduationWarning.DAO
                     }
                     if (errMsg.Count > 0)
                     {
-                        ci.ErrorMessage = string.Join(",", errMsg);                     
+                        ci.ErrorMessage = string.Join(",", errMsg);
                     }
                     value.Add(ci);
                 }
@@ -5169,9 +5178,1181 @@ namespace SHGraduationWarning.DAO
         public static List<DataRow> GetCourseSubjectLevelCheckGraduationPlan2(string GradeYear, string DeptID, string ClassID)
         {
             List<DataRow> value = new List<DataRow>();
+            try
+            {
+                // 取得科別對照
+                Dictionary<string, string> deptDict = GetDeptIDNameDict();
+
+                string condition = @"
+		SELECT
+			" + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+			NULL :: INTEGER AS class_id,
+			NULL :: INTEGER AS dept_id	";
+
+
+                // SELECT 3::INT AS grade_year -- NULL時為全部年級
+                //	           , NULL::TEXT AS dept_name--NULL時為全部科別
+
+                if (!string.IsNullOrEmpty(DeptID))
+                {
+                    condition = @"
+		SELECT                        
+			NULL :: INTEGER AS class_id,
+			" + DeptID + " AS dept_id," +
+                        "" + GradeYear + " AS grade_year ";
+                }
+
+
+                if (!string.IsNullOrEmpty(ClassID))
+                {
+                    if (string.IsNullOrEmpty(DeptID))
+                        DeptID = "NULL :: INTEGER";
+
+                    condition = @"
+		SELECT                        
+			" + ClassID + " AS class_id," +
+                        "" + DeptID + " AS dept_id," +
+                    "" + GradeYear + " AS grade_year ";
+                }
+
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+                -- 以課程規畫表為主比對課程
+                WITH ROW AS(
+                    {0} 
+                ),
+                target_student AS(
+                    SELECT
+                        student.id AS student_id,
+                        graduation_plan.id AS graduation_plan_id,
+                        graduation_plan.name AS graduation_plan_name,
+                        class.id AS class_id,
+                        class.class_name,
+                        dept.id AS dept_id,
+                        student.student_number,
+                        student.seat_no,
+                        student.name AS student_name,
+                        dept.name AS dept_name
+                    FROM
+                        ROW
+                        INNER JOIN class ON (
+                            class.grade_year = ROW.grade_year
+                            AND (
+                                ROW.class_id IS NULL
+                                OR class.id = ROW.class_id
+                            )
+                        )
+                        INNER JOIN student ON student.ref_class_id = class.id
+                        AND student.status IN (1, 2)
+                        INNER JOIN dept ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+                        AND (
+                            ROW.dept_id IS NULL
+                            OR dept.id = ROW.dept_id
+                        )
+                        INNER JOIN graduation_plan ON graduation_plan.id = COALESCE(
+                            student.ref_graduation_plan_id,
+                            class.ref_graduation_plan_id
+                        )
+                ),
+                target_student_with_sems_history AS(
+                    SELECT
+                        ref_student_id AS student_id,
+                        graduation_plan_id,
+                        grade_year :: SMALLINT,
+                        semester :: SMALLINT,
+                        MAX(course.school_year) AS school_year
+                    FROM
+                        sc_attend
+                        INNER JOIN target_student ON target_student.student_id = sc_attend.ref_student_id
+                        INNER JOIN course ON course.id = sc_attend.ref_course_id
+                    GROUP BY
+                        ref_student_id,
+                        graduation_plan_id,
+                        grade_year,
+                        semester
+                ),
+                graduation_plan_expand AS(
+                    SELECT
+                        graduation_plan_expand.graduation_plan_id,
+                        array_to_string(xpath('//Subject/@GradeYear', subject_ele), '') :: SMALLINT AS grade_year,
+                        array_to_string(xpath('//Subject/@Semester', subject_ele), '') :: SMALLINT AS semester,
+                        array_to_string(xpath('//Subject/@SubjectName', subject_ele), '') :: TEXT AS subject_name,
+                        array_to_string(xpath('//Subject/@Level', subject_ele), '') :: TEXT AS subject_level,
+                        array_to_string(xpath('//Subject/@Domain', subject_ele), '') :: TEXT AS domain,
+                        array_to_string(xpath('//Subject/@分組名稱', subject_ele), '') :: TEXT AS 分組名稱,
+                        (
+                            '0' || array_to_string(xpath('//Subject/@分組修課學分數', subject_ele), '')
+                        ) :: INTEGER AS 分組修課學分數,
+                        array_to_string(xpath('//Subject/@Entry', subject_ele), '') :: TEXT AS 分項類別,
+                        array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '') :: TEXT AS 校部訂,
+                        array_to_string(xpath('//Subject/@Required', subject_ele), '') :: TEXT AS 必選修,
+                        array_to_string(xpath('//Subject/@Credit', subject_ele), '') :: TEXT AS 學分
+                    FROM
+                        (
+                            SELECT
+                                target_graduation.graduation_plan_id,
+                                unnest(
+                                    xpath(
+                                        '//GraduationPlan/Subject',
+                                        xmlparse(content graduation_plan.content)
+                                    )
+                                ) AS subject_ele
+                            FROM
+                                (
+                                    SELECT
+                                        DISTINCT graduation_plan_id
+                                    FROM
+                                        target_student
+                                ) AS target_graduation
+                                INNER JOIN graduation_plan ON graduation_plan.id = target_graduation.graduation_plan_id
+                        ) AS graduation_plan_expand
+                ),
+                graduation_plan_expand_with_student AS(
+                    SELECT
+                        target_student_with_sems_history.student_id,
+                        graduation_plan_expand.*
+                    FROM
+                        graduation_plan_expand
+                        INNER JOIN target_student_with_sems_history ON target_student_with_sems_history.graduation_plan_id = graduation_plan_expand.graduation_plan_id
+                        AND target_student_with_sems_history.grade_year = graduation_plan_expand.grade_year
+                        AND target_student_with_sems_history.semester = graduation_plan_expand.semester
+                ),
+                course_expand AS(
+                    SELECT
+                        sc_attend.id AS sc_attend_id,
+                        sc_attend.ref_student_id AS student_id,
+                        target_student_with_sems_history.graduation_plan_id,
+                        target_student_with_sems_history.grade_year,
+                        course.school_year,
+                        course.semester,
+                        course.course_name,
+                        course.id AS course_id,
+                        course.subject AS subject_name,
+                        course.subj_level :: text AS subject_level,
+                        course.domain,
+                        course.score_type AS entry,
+                        course.credit AS credit,
+                        CASE
+                            not_included_in_credit
+                            WHEN '1' THEN '是'
+                            WHEN '0' THEN '否'
+                            ELSE ''
+                        END AS 不計學分,
+                        CASE
+                            not_included_in_calc
+                            WHEN '1' THEN '是'
+                            WHEN '0' THEN '否'
+                            ELSE ''
+                        END AS 不需評分,
+                        CASE
+                            c_required_by
+                            WHEN '1' THEN '部定'
+                            WHEN '2' THEN '校訂'
+                            ELSE ''
+                        END AS 校部訂,
+                        CASE
+                            c_is_required
+                            WHEN '1' THEN '必修'
+                            WHEN '0' THEN '選修'
+                            ELSE ''
+                        END AS 必選修
+                    FROM
+                        course
+                        INNER JOIN sc_attend ON sc_attend.ref_course_id = course.id
+                        INNER JOIN target_student_with_sems_history ON target_student_with_sems_history.student_id = sc_attend.ref_student_id
+                    WHERE
+                        course.school_year = target_student_with_sems_history.school_year
+                        AND course.semester = target_student_with_sems_history.semester 
+                        AND course.subject <> '' 
+                ),
+                target_data AS(
+                    SELECT
+                        course_expand.sc_attend_id,
+                        COALESCE(
+                            course_expand.student_id,
+                            graduation_plan_expand_with_student.student_id
+                        ) AS student_id,
+                        COALESCE(
+                            course_expand.graduation_plan_id,
+                            graduation_plan_expand_with_student.graduation_plan_id
+                        ) AS graduation_plan_id,
+                        COALESCE(
+                            course_expand.grade_year,
+                            graduation_plan_expand_with_student.grade_year
+                        ) AS grade_year,
+                        course_expand.school_year AS school_year,
+                        COALESCE(
+                            course_expand.semester,
+                            graduation_plan_expand_with_student.semester
+                        ) AS semester,
+                        COALESCE(
+                            course_expand.subject_name,
+                            graduation_plan_expand_with_student.subject_name
+                        ) AS subject_name,
+                        COALESCE(
+                            course_expand.subject_level,
+                            graduation_plan_expand_with_student.subject_level
+                        ) AS subject_level,
+                        course_expand.credit,
+                        course_expand.course_id AS course_id,
+                        course_expand.course_name,
+                        course_expand.不計學分,
+                        course_expand.不需評分,
+                        graduation_plan_expand_with_student.domain,
+                        graduation_plan_expand_with_student.分組名稱,
+                        graduation_plan_expand_with_student.分組修課學分數,
+                        suggest_graduation_plan.subject_name AS suggest_subject_name,
+                        suggest_graduation_plan.subject_level AS suggest_subject_level,
+                        graduation_plan_expand_with_student.分項類別 AS 新分項類別,
+                        graduation_plan_expand_with_student.必選修 AS 新必選修,
+                        graduation_plan_expand_with_student.校部訂 AS 新校部訂,
+                        graduation_plan_expand_with_student.學分 AS 新學分
+                    FROM
+                        course_expand FULL
+                        OUTER JOIN graduation_plan_expand_with_student ON course_expand.student_id = graduation_plan_expand_with_student.student_id
+                        AND course_expand.grade_year = graduation_plan_expand_with_student.grade_year
+                        AND course_expand.semester = graduation_plan_expand_with_student.semester
+                        AND course_expand.subject_name = graduation_plan_expand_with_student.subject_name
+                        AND course_expand.subject_level = graduation_plan_expand_with_student.subject_level FULL
+                        OUTER JOIN graduation_plan_expand_with_student AS suggest_graduation_plan ON course_expand.student_id = suggest_graduation_plan.student_id
+                        AND course_expand.grade_year = suggest_graduation_plan.grade_year
+                        AND course_expand.semester = suggest_graduation_plan.semester
+                        AND course_expand.subject_name = suggest_graduation_plan.subject_name
+                ),
+                target_match AS (
+                    --成績年級、學期、科目、級別比對到的資料
+                    SELECT
+                        target_data.student_id,
+                        target_data.grade_year,
+                        target_data.semester,
+                        target_data.school_year,
+                        target_data.course_name,
+                        target_data.subject_name,
+                        target_data.subject_level,
+                        target_data.分組名稱,
+                        target_data.分組修課學分數,
+                        target_data.credit
+                    FROM
+                        target_data
+                    WHERE
+                        target_data.student_id IS NOT NULL
+                        AND target_data.sc_attend_id IS NOT NULL
+                        AND target_data.分組名稱 IS NOT NULL
+                    ORDER BY
+                        student_id,
+                        grade_year,
+                        semester,
+                        subject_name,
+                        subject_level
+                ),
+                target_mismatch AS (
+                    --成績年級、學期、科目、級別比對到的資料
+                    SELECT
+                        target_data.student_id,
+                        target_data.grade_year,
+                        target_data.semester,
+                        target_data.school_year,
+                        target_data.subject_name,
+                        target_data.subject_level,
+                        target_data.credit,
+                        target_data.不計學分,
+                        target_data.不需評分
+                    FROM
+                        target_data
+                    WHERE
+                        target_data.student_id IS NOT NULL
+                        AND target_data.分組名稱 IS NULL
+                    ORDER BY
+                        student_id,
+                        grade_year,
+                        semester,
+                        subject_name,
+                        subject_level
+                ),
+                graduation_plan_mismatch_all AS(
+                    SELECT
+                        target_data.student_id,
+                        target_data.graduation_plan_id,
+                        target_data.grade_year,
+                        target_data.semester,
+                        target_data.domain,
+                        target_data.subject_name,
+                        target_data.subject_level,
+                        target_data.分組名稱,
+                        target_data.分組修課學分數,
+                        target_data.新分項類別,
+		                target_data.新必選修,
+		                target_data.新校部訂,
+                        target_data.新學分
+                    FROM
+                        target_data
+                    WHERE
+                        target_data.student_id IS NOT NULL
+                        AND target_data.sc_attend_id IS NULL
+                ),
+                graduation_plan_mismatch AS (
+                    --學生的課程規劃表有，卻沒有比對到的成績年級、學期、科目、級別  
+                    SELECT
+                        graduation_plan_mismatch_all.*
+                    FROM
+                        graduation_plan_mismatch_all
+                    WHERE
+                        分組名稱 = ''
+                ),
+                graduation_plan_subject_group_mismatch AS (
+                    --學生課程規劃表中，規劃該年級的課程群組中，在比對到的資料中學分總數不符合的
+                    /*
+                     -- 條件
+                     找出課程群組中的課程，用科目名稱+級別比對實際修課或成績的學分數是否符合群組設定的學分
+                     */
+                    SELECT
+                        target_data.student_id,
+                        target_data.graduation_plan_id,
+                        target_data.grade_year,
+                        target_data.semester,
+                        target_data.分組名稱,
+                        target_data.分組修課學分數,
+                        SUM(target_data.credit) AS sum_credit
+                    FROM
+                        target_data
+                    WHERE
+                        target_data.student_id IS NOT NULL
+                        AND target_data.分組名稱 <> ''
+                    GROUP BY
+                        target_data.student_id,
+                        target_data.graduation_plan_id,
+                        target_data.grade_year,
+                        target_data.semester,
+                        target_data.分組名稱,
+                        target_data.分組修課學分數
+                    HAVING
+                        SUM(target_data.credit) <> target_data.分組修課學分數
+                ) -- sheet2
+                SELECT
+                   DISTINCT target_student.graduation_plan_name AS 使用課程規劃表,
+                    graduation_plan_mismatch.grade_year AS 年級,
+                    graduation_plan_mismatch.semester AS 學期,
+                    graduation_plan_mismatch.domain AS 領域,
+                    graduation_plan_mismatch.subject_name AS 科目名稱,
+                    graduation_plan_mismatch.subject_level AS 科目級別,
+                    graduation_plan_mismatch.新分項類別 AS 分項類別,
+                    graduation_plan_mismatch.新必選修 AS 必選修,
+                    graduation_plan_mismatch.新校部訂 AS 校部訂,
+                    graduation_plan_mismatch.新學分 AS 學分
+                FROM
+                    graduation_plan_mismatch
+                    INNER JOIN target_student ON graduation_plan_mismatch.student_id = target_student.student_id
+	
+                ORDER BY    
+                    使用課程規劃表,                    
+                    年級,
+                    學期,
+                    科目名稱
+", condition);
+                //// debug
+                //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
+                //{
+                //    sw.WriteLine(strSQL);
+                //}
+
+                DataTable dt = qh.Select(strSQL);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    value.Add(dr);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
 
             return value;
         }
 
+        // 比對課程規畫表SQL(課程為主比對課規，未分年級)
+        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlanNoGr1(string GradeYear, string DeptID, string ClassID)
+        {
+            List<CourseInfo> value = new List<CourseInfo>();
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+
+        WITH ROW AS(
+		SELECT
+			NULL :: INTEGER AS grade_year,
+			-- 未分
+			NULL :: INTEGER AS class_id,
+			NULL :: INTEGER AS dept_id
+		),
+		target_student AS(
+			SELECT
+				student.id AS student_id,
+				graduation_plan.id AS graduation_plan_id,
+				graduation_plan.name AS graduation_plan_name,
+				class.id AS class_id,
+				class.class_name,
+				dept.id AS dept_id,
+				student.student_number,
+				student.seat_no,
+				student.name AS student_name,
+				dept.name AS dept_name
+			FROM
+				ROW
+				INNER JOIN class ON (
+					class.grade_year = ROW.grade_year
+					AND (
+						ROW.class_id IS NULL
+						OR class.id = ROW.class_id
+					)
+				)
+				INNER JOIN student ON student.ref_class_id = class.id
+				AND student.status IN (2)
+				INNER JOIN dept ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+				AND (
+					ROW.dept_id IS NULL
+					OR dept.id = ROW.dept_id
+				)
+				INNER JOIN graduation_plan ON graduation_plan.id = COALESCE(
+					student.ref_graduation_plan_id,
+					class.ref_graduation_plan_id
+				)
+		),
+		target_student_with_sems_history AS(
+			SELECT
+				ref_student_id AS student_id,
+				graduation_plan_id,
+				grade_year :: SMALLINT,
+				semester :: SMALLINT,
+				MAX(course.school_year) AS school_year
+			FROM
+				sc_attend
+				INNER JOIN target_student ON target_student.student_id = sc_attend.ref_student_id
+				INNER JOIN course ON course.id = sc_attend.ref_course_id
+			GROUP BY
+				ref_student_id,
+				graduation_plan_id,
+				grade_year,
+				semester
+		),
+		graduation_plan_expand AS(
+			SELECT
+				graduation_plan_expand.graduation_plan_id,
+				array_to_string(xpath('//Subject/@GradeYear', subject_ele), '') :: SMALLINT AS grade_year,
+				array_to_string(xpath('//Subject/@Semester', subject_ele), '') :: SMALLINT AS semester,
+				array_to_string(xpath('//Subject/@SubjectName', subject_ele), '') :: TEXT AS subject_name,
+				array_to_string(xpath('//Subject/@Level', subject_ele), '') :: TEXT AS subject_level,
+				array_to_string(xpath('//Subject/@Domain', subject_ele), '') :: TEXT AS domain,
+				array_to_string(xpath('//Subject/@分組名稱', subject_ele), '') :: TEXT AS 分組名稱,
+				(
+					'0' || array_to_string(xpath('//Subject/@分組修課學分數', subject_ele), '')
+				) :: INTEGER AS 分組修課學分數
+			FROM
+				(
+					SELECT
+						target_graduation.graduation_plan_id,
+						unnest(
+							xpath(
+								'//GraduationPlan/Subject',
+								xmlparse(content graduation_plan.content)
+							)
+						) AS subject_ele
+					FROM
+						(
+							SELECT
+								DISTINCT graduation_plan_id
+							FROM
+								target_student
+						) AS target_graduation
+						INNER JOIN graduation_plan ON graduation_plan.id = target_graduation.graduation_plan_id
+				) AS graduation_plan_expand
+		),
+		graduation_plan_expand_with_student AS(
+			SELECT
+				target_student_with_sems_history.student_id,
+				graduation_plan_expand.*
+			FROM
+				graduation_plan_expand
+				INNER JOIN target_student_with_sems_history ON target_student_with_sems_history.graduation_plan_id = graduation_plan_expand.graduation_plan_id
+				AND target_student_with_sems_history.grade_year = graduation_plan_expand.grade_year
+				AND target_student_with_sems_history.semester = graduation_plan_expand.semester
+		),
+		course_expand AS(
+			SELECT
+				sc_attend.id AS sc_attend_id,
+				sc_attend.ref_student_id AS student_id,
+				target_student_with_sems_history.graduation_plan_id,
+				target_student_with_sems_history.grade_year,
+				course.school_year,
+				course.semester,
+				course.course_name,
+				course.id AS course_id,
+				course.subject AS subject_name,
+				course.subj_level :: text AS subject_level,
+				course.domain,
+				course.score_type AS entry,
+				course.credit AS credit,
+				CASE
+					not_included_in_credit
+					WHEN '1' THEN '是'
+					WHEN '0' THEN '否'
+					ELSE ''
+				END AS 不計學分,
+				CASE
+					not_included_in_calc
+					WHEN '1' THEN '是'
+					WHEN '0' THEN '否'
+					ELSE ''
+				END AS 不需評分,
+				CASE
+					c_required_by
+					WHEN '1' THEN '部定'
+					WHEN '2' THEN '校訂'
+					ELSE ''
+				END AS 校部訂,
+				CASE
+					c_is_required
+					WHEN '1' THEN '必修'
+					WHEN '0' THEN '選修'
+					ELSE ''
+				END AS 必選修
+			FROM
+				course
+				INNER JOIN sc_attend ON sc_attend.ref_course_id = course.id
+				INNER JOIN target_student_with_sems_history ON target_student_with_sems_history.student_id = sc_attend.ref_student_id
+			WHERE
+				course.school_year = target_student_with_sems_history.school_year
+				AND course.semester = target_student_with_sems_history.semester
+				AND course.subject <> ''
+		),
+		target_data AS(
+			SELECT
+				course_expand.sc_attend_id,
+				COALESCE(
+					course_expand.student_id,
+					graduation_plan_expand_with_student.student_id
+				) AS student_id,
+				COALESCE(
+					course_expand.graduation_plan_id,
+					graduation_plan_expand_with_student.graduation_plan_id
+				) AS graduation_plan_id,
+				COALESCE(
+					course_expand.grade_year,
+					graduation_plan_expand_with_student.grade_year
+				) AS grade_year,
+				course_expand.school_year AS school_year,
+				COALESCE(
+					course_expand.semester,
+					graduation_plan_expand_with_student.semester
+				) AS semester,
+				COALESCE(
+					course_expand.subject_name,
+					graduation_plan_expand_with_student.subject_name
+				) AS subject_name,
+				COALESCE(
+					course_expand.subject_level,
+					graduation_plan_expand_with_student.subject_level
+				) AS subject_level,
+				course_expand.credit,
+				course_expand.course_id AS course_id,
+				course_expand.course_name,
+				course_expand.不計學分,
+				course_expand.不需評分,
+				graduation_plan_expand_with_student.domain,
+				graduation_plan_expand_with_student.分組名稱,
+				graduation_plan_expand_with_student.分組修課學分數,
+				suggest_graduation_plan.subject_name AS suggest_subject_name,
+				suggest_graduation_plan.subject_level AS suggest_subject_level,
+				course_expand.entry AS course_entry,
+				course_expand.domain AS course_domain,
+				course_expand.校部訂,
+				course_expand.必選修
+			FROM
+				course_expand FULL
+				OUTER JOIN graduation_plan_expand_with_student ON course_expand.student_id = graduation_plan_expand_with_student.student_id
+				AND course_expand.grade_year = graduation_plan_expand_with_student.grade_year
+				AND course_expand.semester = graduation_plan_expand_with_student.semester
+				AND course_expand.subject_name = graduation_plan_expand_with_student.subject_name
+				AND course_expand.subject_level = graduation_plan_expand_with_student.subject_level FULL
+				OUTER JOIN graduation_plan_expand_with_student AS suggest_graduation_plan ON course_expand.student_id = suggest_graduation_plan.student_id
+				AND course_expand.grade_year = suggest_graduation_plan.grade_year
+				AND course_expand.semester = suggest_graduation_plan.semester
+				AND course_expand.subject_name = suggest_graduation_plan.subject_name
+		),
+		target_match AS (
+			--成績年級、學期、科目、級別比對到的資料
+			SELECT
+				target_data.student_id,
+				target_data.grade_year,
+				target_data.semester,
+				target_data.school_year,
+				target_data.course_name,
+				target_data.subject_name,
+				target_data.subject_level,
+				target_data.分組名稱,
+				target_data.分組修課學分數,
+				target_data.credit
+			FROM
+				target_data
+			WHERE
+				target_data.student_id IS NOT NULL
+				AND target_data.sc_attend_id IS NOT NULL
+				AND target_data.分組名稱 IS NOT NULL
+			ORDER BY
+				student_id,
+				grade_year,
+				semester,
+				subject_name,
+				subject_level
+		),
+		target_mismatch AS (
+			--成績年級、學期、科目、級別比對到的資料
+			SELECT
+				target_data.student_id,
+				target_data.grade_year,
+				target_data.semester,
+				target_data.school_year,
+				target_data.subject_name,
+				target_data.subject_level,
+				target_data.credit,
+				target_data.不計學分,
+				target_data.不需評分
+			FROM
+				target_data
+			WHERE
+				target_data.student_id IS NOT NULL
+				AND target_data.分組名稱 IS NULL
+			ORDER BY
+				student_id,
+				grade_year,
+				semester,
+				subject_name,
+				subject_level
+		),
+		graduation_plan_mismatch_all AS(
+			SELECT
+				target_data.student_id,
+				target_data.graduation_plan_id,
+				target_data.grade_year,
+				target_data.semester,
+				target_data.domain,
+				target_data.subject_name,
+				target_data.subject_level,
+				target_data.分組名稱,
+				target_data.分組修課學分數
+			FROM
+				target_data
+			WHERE
+				target_data.student_id IS NOT NULL
+				AND target_data.sc_attend_id IS NULL
+		),
+		graduation_plan_mismatch AS (
+			--學生的課程規劃表有，卻沒有比對到的成績年級、學期、科目、級別  
+			SELECT
+				graduation_plan_mismatch_all.*
+			FROM
+				graduation_plan_mismatch_all
+			WHERE
+				分組名稱 = ''
+		),
+		graduation_plan_subject_group_mismatch AS (
+			--學生課程規劃表中，規劃該年級的課程群組中，在比對到的資料中學分總數不符合的
+			/*
+			 -- 條件
+			 找出課程群組中的課程，用科目名稱+級別比對實際修課或成績的學分數是否符合群組設定的學分
+			 */
+			SELECT
+				target_data.student_id,
+				target_data.graduation_plan_id,
+				target_data.grade_year,
+				target_data.semester,
+				target_data.分組名稱,
+				target_data.分組修課學分數,
+				SUM(target_data.credit) AS sum_credit
+			FROM
+				target_data
+			WHERE
+				target_data.student_id IS NOT NULL
+				AND target_data.分組名稱 <> ''
+			GROUP BY
+				target_data.student_id,
+				target_data.graduation_plan_id,
+				target_data.grade_year,
+				target_data.semester,
+				target_data.分組名稱,
+				target_data.分組修課學分數
+			HAVING
+				SUM(target_data.credit) <> target_data.分組修課學分數
+		) -- sheet1
+		SELECT
+			DISTINCT target_data.school_year AS 學年度,
+			target_data.semester AS 學期,
+			target_data.grade_year AS 年級,
+			target_data.course_id AS 課程系統編號,
+			target_data.course_name AS 課程名稱,
+			target_data.subject_name AS 科目名稱,
+			target_data.subject_level AS 科目級別,
+			target_data.credit AS 學分數,
+			target_data.course_domain AS 領域,
+			target_data.course_entry AS 分項類別,
+			target_data.校部訂,
+			target_data.必選修,
+			target_data.不計學分,
+			target_data.不需評分,
+			target_data.suggest_subject_name AS 新科目名稱,
+			target_data.suggest_subject_level AS 新科目級別,
+			target_student.graduation_plan_name AS 使用課程規劃表
+		FROM
+			target_data
+			INNER JOIN target_student ON target_data.student_id = target_student.student_id
+		WHERE
+			target_data.student_id IS NOT NULL
+			AND target_data.分組名稱 IS NULL
+		ORDER BY
+			學年度,
+			學期,
+			課程名稱,
+			科目名稱
+");
+
+                //// debug
+                //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
+                //{
+                //    sw.WriteLine(strSQL);
+                //}
+
+                DataTable dt = qh.Select(strSQL);
+                List<string> errMsg = new List<string>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    errMsg.Clear();
+
+                    CourseInfo ci = new CourseInfo();
+                    // 學年度
+                    ci.SchoolYear = dr["學年度"] + "";
+                    // 學期
+                    ci.Semester = dr["學期"] + "";
+
+                    // 課程系統編號
+                    ci.CourseID = dr["課程系統編號"] + "";
+                    // 課程名稱
+                    ci.CourseName = dr["課程名稱"] + "";
+                    // 科目名稱
+                    ci.SubjectName = dr["科目名稱"] + "";
+                    // 科目級別
+                    ci.SubjectLevel = dr["科目級別"] + "";
+                    // 學分數
+                    ci.Credit = dr["學分數"] + "";
+                    // 領域
+                    ci.Domain = dr["領域"] + "";
+                    // 分項類別
+                    ci.Entry = dr["分項類別"] + "";
+                    // 校部訂
+                    ci.RequiredBy = dr["校部訂"] + "";
+                    // 必選修
+                    ci.Required = dr["必選修"] + "";
+                    // 不計學分
+                    ci.NotIncludedInCredit = dr["不計學分"] + "";
+                    // 不需評分
+                    ci.NotIncludedInCalc = dr["不需評分"] + "";
+                    // 新科目名稱
+                    ci.NewSubjectName = dr["新科目名稱"] + "";
+                    // 新科目級別
+                    ci.NewSubjectLevel = dr["新科目級別"] + "";
+                    // 使用課程規劃表
+                    ci.GraduationPlanName = dr["使用課程規劃表"] + "";
+
+                    // 判斷差異
+                    if (ci.SubjectName != ci.NewSubjectName)
+                        errMsg.Add("課程有此科目，課規內沒有。");
+                    else
+                    {
+                        if (ci.SubjectLevel != ci.NewSubjectLevel)
+                            errMsg.Add("課程與課規內科目級別不同。");
+                    }
+                    if (errMsg.Count > 0)
+                    {
+                        ci.ErrorMessage = string.Join(",", errMsg);
+                    }
+                    value.Add(ci);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+        // 課程科目檢查依課規為主檢查課程(未分年級)
+        public static List<DataRow> GetCourseSubjectLevelCheckGraduationPlanNoGr2(string GradeYear, string DeptID, string ClassID)
+        {
+            List<DataRow> value = new List<DataRow>();
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string strSQL = string.Format(@"
+			-- 以課程規畫表為主比對課程
+			WITH ROW AS(                    
+			SELECT
+				NULL :: INTEGER  AS grade_year, -- NULL時為全部年級 
+				NULL :: INTEGER AS class_id,
+				NULL :: INTEGER AS dept_id	 
+			),
+			target_student AS(
+				SELECT
+					student.id AS student_id,
+					graduation_plan.id AS graduation_plan_id,
+					graduation_plan.name AS graduation_plan_name,
+					class.id AS class_id,
+					class.class_name,
+					dept.id AS dept_id,
+					student.student_number,
+					student.seat_no,
+					student.name AS student_name,
+					dept.name AS dept_name
+				FROM
+					ROW
+					INNER JOIN class ON (
+						class.grade_year = ROW.grade_year
+						AND (
+							ROW.class_id IS NULL
+							OR class.id = ROW.class_id
+						)
+					)
+					INNER JOIN student ON student.ref_class_id = class.id
+					AND student.status IN (2)
+					INNER JOIN dept ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+					AND (
+						ROW.dept_id IS NULL
+						OR dept.id = ROW.dept_id
+					)
+					INNER JOIN graduation_plan ON graduation_plan.id = COALESCE(
+						student.ref_graduation_plan_id,
+						class.ref_graduation_plan_id
+					)
+			),
+			target_student_with_sems_history AS(
+				SELECT
+					ref_student_id AS student_id,
+					graduation_plan_id,
+					grade_year :: SMALLINT,
+					semester :: SMALLINT,
+					MAX(course.school_year) AS school_year
+				FROM
+					sc_attend
+					INNER JOIN target_student ON target_student.student_id = sc_attend.ref_student_id
+					INNER JOIN course ON course.id = sc_attend.ref_course_id
+				GROUP BY
+					ref_student_id,
+					graduation_plan_id,
+					grade_year,
+					semester
+			),
+			graduation_plan_expand AS(
+				SELECT
+					graduation_plan_expand.graduation_plan_id,
+					array_to_string(xpath('//Subject/@GradeYear', subject_ele), '') :: SMALLINT AS grade_year,
+					array_to_string(xpath('//Subject/@Semester', subject_ele), '') :: SMALLINT AS semester,
+					array_to_string(xpath('//Subject/@SubjectName', subject_ele), '') :: TEXT AS subject_name,
+					array_to_string(xpath('//Subject/@Level', subject_ele), '') :: TEXT AS subject_level,
+					array_to_string(xpath('//Subject/@Domain', subject_ele), '') :: TEXT AS domain,
+					array_to_string(xpath('//Subject/@分組名稱', subject_ele), '') :: TEXT AS 分組名稱,
+					(
+						'0' || array_to_string(xpath('//Subject/@分組修課學分數', subject_ele), '')
+					) :: INTEGER AS 分組修課學分數,
+					array_to_string(xpath('//Subject/@Entry', subject_ele), '') :: TEXT AS 分項類別,
+					array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '') :: TEXT AS 校部訂,
+					array_to_string(xpath('//Subject/@Required', subject_ele), '') :: TEXT AS 必選修,
+					array_to_string(xpath('//Subject/@Credit', subject_ele), '') :: TEXT AS 學分
+				FROM
+					(
+						SELECT
+							target_graduation.graduation_plan_id,
+							unnest(
+								xpath(
+									'//GraduationPlan/Subject',
+									xmlparse(content graduation_plan.content)
+								)
+							) AS subject_ele
+						FROM
+							(
+								SELECT
+									DISTINCT graduation_plan_id
+								FROM
+									target_student
+							) AS target_graduation
+							INNER JOIN graduation_plan ON graduation_plan.id = target_graduation.graduation_plan_id
+					) AS graduation_plan_expand
+			),
+			graduation_plan_expand_with_student AS(
+				SELECT
+					target_student_with_sems_history.student_id,
+					graduation_plan_expand.*
+				FROM
+					graduation_plan_expand
+					INNER JOIN target_student_with_sems_history ON target_student_with_sems_history.graduation_plan_id = graduation_plan_expand.graduation_plan_id
+					AND target_student_with_sems_history.grade_year = graduation_plan_expand.grade_year
+					AND target_student_with_sems_history.semester = graduation_plan_expand.semester
+			),
+			course_expand AS(
+				SELECT
+					sc_attend.id AS sc_attend_id,
+					sc_attend.ref_student_id AS student_id,
+					target_student_with_sems_history.graduation_plan_id,
+					target_student_with_sems_history.grade_year,
+					course.school_year,
+					course.semester,
+					course.course_name,
+					course.id AS course_id,
+					course.subject AS subject_name,
+					course.subj_level :: text AS subject_level,
+					course.domain,
+					course.score_type AS entry,
+					course.credit AS credit,
+					CASE
+						not_included_in_credit
+						WHEN '1' THEN '是'
+						WHEN '0' THEN '否'
+						ELSE ''
+					END AS 不計學分,
+					CASE
+						not_included_in_calc
+						WHEN '1' THEN '是'
+						WHEN '0' THEN '否'
+						ELSE ''
+					END AS 不需評分,
+					CASE
+						c_required_by
+						WHEN '1' THEN '部定'
+						WHEN '2' THEN '校訂'
+						ELSE ''
+					END AS 校部訂,
+					CASE
+						c_is_required
+						WHEN '1' THEN '必修'
+						WHEN '0' THEN '選修'
+						ELSE ''
+					END AS 必選修
+				FROM
+					course
+					INNER JOIN sc_attend ON sc_attend.ref_course_id = course.id
+					INNER JOIN target_student_with_sems_history ON target_student_with_sems_history.student_id = sc_attend.ref_student_id
+				WHERE
+					course.school_year = target_student_with_sems_history.school_year
+					AND course.semester = target_student_with_sems_history.semester 
+					AND course.subject <> '' 
+			),
+			target_data AS(
+				SELECT
+					course_expand.sc_attend_id,
+					COALESCE(
+						course_expand.student_id,
+						graduation_plan_expand_with_student.student_id
+					) AS student_id,
+					COALESCE(
+						course_expand.graduation_plan_id,
+						graduation_plan_expand_with_student.graduation_plan_id
+					) AS graduation_plan_id,
+					COALESCE(
+						course_expand.grade_year,
+						graduation_plan_expand_with_student.grade_year
+					) AS grade_year,
+					course_expand.school_year AS school_year,
+					COALESCE(
+						course_expand.semester,
+						graduation_plan_expand_with_student.semester
+					) AS semester,
+					COALESCE(
+						course_expand.subject_name,
+						graduation_plan_expand_with_student.subject_name
+					) AS subject_name,
+					COALESCE(
+						course_expand.subject_level,
+						graduation_plan_expand_with_student.subject_level
+					) AS subject_level,
+					course_expand.credit,
+					course_expand.course_id AS course_id,
+					course_expand.course_name,
+					course_expand.不計學分,
+					course_expand.不需評分,
+					graduation_plan_expand_with_student.domain,
+					graduation_plan_expand_with_student.分組名稱,
+					graduation_plan_expand_with_student.分組修課學分數,
+					suggest_graduation_plan.subject_name AS suggest_subject_name,
+					suggest_graduation_plan.subject_level AS suggest_subject_level,
+					graduation_plan_expand_with_student.分項類別 AS 新分項類別,
+					graduation_plan_expand_with_student.必選修 AS 新必選修,
+					graduation_plan_expand_with_student.校部訂 AS 新校部訂,
+					graduation_plan_expand_with_student.學分 AS 新學分
+				FROM
+					course_expand FULL
+					OUTER JOIN graduation_plan_expand_with_student ON course_expand.student_id = graduation_plan_expand_with_student.student_id
+					AND course_expand.grade_year = graduation_plan_expand_with_student.grade_year
+					AND course_expand.semester = graduation_plan_expand_with_student.semester
+					AND course_expand.subject_name = graduation_plan_expand_with_student.subject_name
+					AND course_expand.subject_level = graduation_plan_expand_with_student.subject_level FULL
+					OUTER JOIN graduation_plan_expand_with_student AS suggest_graduation_plan ON course_expand.student_id = suggest_graduation_plan.student_id
+					AND course_expand.grade_year = suggest_graduation_plan.grade_year
+					AND course_expand.semester = suggest_graduation_plan.semester
+					AND course_expand.subject_name = suggest_graduation_plan.subject_name
+			),
+			target_match AS (
+				--成績年級、學期、科目、級別比對到的資料
+				SELECT
+					target_data.student_id,
+					target_data.grade_year,
+					target_data.semester,
+					target_data.school_year,
+					target_data.course_name,
+					target_data.subject_name,
+					target_data.subject_level,
+					target_data.分組名稱,
+					target_data.分組修課學分數,
+					target_data.credit
+				FROM
+					target_data
+				WHERE
+					target_data.student_id IS NOT NULL
+					AND target_data.sc_attend_id IS NOT NULL
+					AND target_data.分組名稱 IS NOT NULL
+				ORDER BY
+					student_id,
+					grade_year,
+					semester,
+					subject_name,
+					subject_level
+			),
+			target_mismatch AS (
+				--成績年級、學期、科目、級別比對到的資料
+				SELECT
+					target_data.student_id,
+					target_data.grade_year,
+					target_data.semester,
+					target_data.school_year,
+					target_data.subject_name,
+					target_data.subject_level,
+					target_data.credit,
+					target_data.不計學分,
+					target_data.不需評分
+				FROM
+					target_data
+				WHERE
+					target_data.student_id IS NOT NULL
+					AND target_data.分組名稱 IS NULL
+				ORDER BY
+					student_id,
+					grade_year,
+					semester,
+					subject_name,
+					subject_level
+			),
+			graduation_plan_mismatch_all AS(
+				SELECT
+					target_data.student_id,
+					target_data.graduation_plan_id,
+					target_data.grade_year,
+					target_data.semester,
+					target_data.domain,
+					target_data.subject_name,
+					target_data.subject_level,
+					target_data.分組名稱,
+					target_data.分組修課學分數,
+					target_data.新分項類別,
+					target_data.新必選修,
+					target_data.新校部訂,
+					target_data.新學分
+				FROM
+					target_data
+				WHERE
+					target_data.student_id IS NOT NULL
+					AND target_data.sc_attend_id IS NULL
+			),
+			graduation_plan_mismatch AS (
+				--學生的課程規劃表有，卻沒有比對到的成績年級、學期、科目、級別  
+				SELECT
+					graduation_plan_mismatch_all.*
+				FROM
+					graduation_plan_mismatch_all
+				WHERE
+					分組名稱 = ''
+			),
+			graduation_plan_subject_group_mismatch AS (
+				--學生課程規劃表中，規劃該年級的課程群組中，在比對到的資料中學分總數不符合的
+				/*
+				 -- 條件
+				 找出課程群組中的課程，用科目名稱+級別比對實際修課或成績的學分數是否符合群組設定的學分
+				 */
+				SELECT
+					target_data.student_id,
+					target_data.graduation_plan_id,
+					target_data.grade_year,
+					target_data.semester,
+					target_data.分組名稱,
+					target_data.分組修課學分數,
+					SUM(target_data.credit) AS sum_credit
+				FROM
+					target_data
+				WHERE
+					target_data.student_id IS NOT NULL
+					AND target_data.分組名稱 <> ''
+				GROUP BY
+					target_data.student_id,
+					target_data.graduation_plan_id,
+					target_data.grade_year,
+					target_data.semester,
+					target_data.分組名稱,
+					target_data.分組修課學分數
+				HAVING
+					SUM(target_data.credit) <> target_data.分組修課學分數
+			) -- sheet2
+			SELECT
+			   DISTINCT target_student.graduation_plan_name AS 使用課程規劃表,
+				graduation_plan_mismatch.grade_year AS 年級,
+				graduation_plan_mismatch.semester AS 學期,
+				graduation_plan_mismatch.domain AS 領域,
+				graduation_plan_mismatch.subject_name AS 科目名稱,
+				graduation_plan_mismatch.subject_level AS 科目級別,
+				graduation_plan_mismatch.新分項類別 AS 分項類別,
+				graduation_plan_mismatch.新必選修 AS 必選修,
+				graduation_plan_mismatch.新校部訂 AS 校部訂,
+				graduation_plan_mismatch.新學分 AS 學分
+			FROM
+				graduation_plan_mismatch
+				INNER JOIN target_student ON graduation_plan_mismatch.student_id = target_student.student_id
+
+			ORDER BY    
+				使用課程規劃表,                    
+				年級,
+				學期,
+				科目名稱
+");
+                //// debug
+                //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
+                //{
+                //    sw.WriteLine(strSQL);
+                //}
+
+                DataTable dt = qh.Select(strSQL);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    value.Add(dr);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            return value;
+        }
     }
 }
