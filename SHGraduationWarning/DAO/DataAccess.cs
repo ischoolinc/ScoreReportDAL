@@ -1837,6 +1837,10 @@ namespace SHGraduationWarning.DAO
             List<DataRow> value = new List<DataRow>();
             try
             {
+                if (string.IsNullOrEmpty(ClassID))
+                {
+                    ClassID = "NULL";
+                }
 
                 string condition = @"
                     SELECT
@@ -1872,7 +1876,7 @@ namespace SHGraduationWarning.DAO
 			                    )
 		                INNER JOIN student
 			                ON student.ref_class_id = class.id
-			                AND student.status IN (1, 2)
+			                AND student.status IN (2)
 		                LEFT JOIN dept
 			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 			                AND (
@@ -2234,6 +2238,11 @@ namespace SHGraduationWarning.DAO
             List<DataRow> value = new List<DataRow>();
             try
             {
+                if (string.IsNullOrEmpty(ClassID))
+                {
+                    ClassID = "NULL";
+                }
+
                 string condition = @"
                     SELECT
                         NULL::INT AS grade_year, -- NULL時為全部年級 
@@ -2268,7 +2277,7 @@ namespace SHGraduationWarning.DAO
 			                    )
 		                INNER JOIN student
 			                ON student.ref_class_id = class.id
-			                AND student.status IN (1, 2)
+			                AND student.status IN (2)
 		                LEFT JOIN dept
 			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 			                AND (
@@ -3369,22 +3378,24 @@ namespace SHGraduationWarning.DAO
             List<ReportStudentInfo> value = new List<ReportStudentInfo>();
             try
             {
-                string condition = @"
-			SELECT
-				" + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
-				NULL :: INTEGER AS class_id,
-				NULL :: INTEGER AS dept_id
-		";
+                string condition = "";
+                //	SELECT
+                //		" + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+                //		NULL :: INTEGER AS class_id,
+                //		NULL :: INTEGER AS dept_id
+                //";
 
 
-                if (!string.IsNullOrEmpty(ClassID))
+                if (string.IsNullOrEmpty(ClassID))
                 {
-                    condition = @"
-			SELECT                        
-				" + ClassID + " AS class_id," +
-                        "NULL :: INT AS dept_id," +
-                        "NULL :: INT AS grade_year ";
+                    ClassID = "NULL";
                 }
+                condition = @"
+			SELECT                        
+				" + ClassID + " :: INT AS class_id," +
+                    "NULL :: INT AS dept_id," +
+                    "NULL :: INT AS grade_year ";
+
 
                 QueryHelper qh = new QueryHelper();
                 string strSQL = string.Format(@"
@@ -3407,7 +3418,7 @@ namespace SHGraduationWarning.DAO
 						   ON class.id = row.class_id 							
 				INNER JOIN student
 					ON student.ref_class_id = class.id
-					AND student.status IN (1, 2)
+					AND student.status IN (2)
 				INNER JOIN dept
 					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 					AND (
@@ -3584,21 +3595,18 @@ namespace SHGraduationWarning.DAO
             try
             {
 
-                string condition = @"
-			SELECT
-				" + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
-				NULL :: INTEGER AS class_id,
-				NULL :: INTEGER AS dept_id
-		";
+                string condition = "";
 
-                if (!string.IsNullOrEmpty(ClassID))
+                if (string.IsNullOrEmpty(ClassID))
                 {
-                    condition = @"
-			SELECT                        
-				" + ClassID + " AS class_id," +
-                        "NULL :: INT AS dept_id," +
-                        "NULL :: INT AS grade_year ";
+                    ClassID = "NULL";
                 }
+                condition = @"
+			SELECT                        
+				" + ClassID + " :: INT AS class_id," +
+                    "NULL :: INT AS dept_id," +
+                    "NULL :: INT AS grade_year ";
+
 
                 QueryHelper qh = new QueryHelper();
                 string strSQL = string.Format(@"
@@ -3617,7 +3625,7 @@ namespace SHGraduationWarning.DAO
 						   
 				INNER JOIN student
 					ON student.ref_class_id = class.id
-					AND student.status IN (1, 2)
+					AND student.status IN (2)
 				LEFT JOIN dept
 					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 					AND (
@@ -3659,6 +3667,11 @@ namespace SHGraduationWarning.DAO
             List<StudSubjectInfo> value = new List<StudSubjectInfo>();
             try
             {
+                if (string.IsNullOrEmpty(ClassID))
+                {
+                    ClassID = "NULL";
+                }
+
                 string condition = @"
 			SELECT
 				NULL::INT AS grade_year, -- NULL時為全部年級 
@@ -3693,7 +3706,7 @@ namespace SHGraduationWarning.DAO
 						)
 				INNER JOIN student
 					ON student.ref_class_id = class.id
-					AND student.status IN (1, 2)
+					AND student.status IN (2)
 				LEFT JOIN dept
 					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 					AND (
@@ -4025,6 +4038,11 @@ namespace SHGraduationWarning.DAO
             List<DataRow> value = new List<DataRow>();
             try
             {
+                if (string.IsNullOrEmpty(ClassID))
+                {
+                    ClassID = "NULL";
+                }
+
                 string condition = @"
 			SELECT
 				NULL::INT AS grade_year, -- NULL時為全部年級 
@@ -4059,7 +4077,7 @@ namespace SHGraduationWarning.DAO
 						)
 				INNER JOIN student
 					ON student.ref_class_id = class.id
-					AND student.status IN (1, 2)
+					AND student.status IN (2)
 				LEFT JOIN dept
 					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 					AND (
@@ -4371,6 +4389,11 @@ namespace SHGraduationWarning.DAO
             List<DataRow> value = new List<DataRow>();
             try
             {
+                if (string.IsNullOrEmpty(ClassID))
+                {
+                    ClassID = "NULL";
+                }
+
                 string condition = @"
 				SELECT
 					NULL::INT AS grade_year, -- NULL時為全部年級 
@@ -4405,7 +4428,7 @@ namespace SHGraduationWarning.DAO
 							)
 					INNER JOIN student
 						ON student.ref_class_id = class.id
-						AND student.status IN (1, 2)
+						AND student.status IN (2)
 					LEFT JOIN dept
 						ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 						AND (
@@ -5579,13 +5602,19 @@ namespace SHGraduationWarning.DAO
             try
             {
                 QueryHelper qh = new QueryHelper();
+
+                if (string.IsNullOrEmpty(ClassID))
+                {
+                    ClassID = "null";
+                }                
+
                 string strSQL = string.Format(@"
 
         WITH ROW AS(
 		SELECT
 			NULL :: INTEGER AS grade_year,
 			-- 未分
-			NULL :: INTEGER AS class_id,
+			" + ClassID + @" :: INTEGER AS class_id,
 			NULL :: INTEGER AS dept_id
 		),
 		target_student AS(
@@ -5996,13 +6025,17 @@ namespace SHGraduationWarning.DAO
             try
             {
                 QueryHelper qh = new QueryHelper();
+
+                if (string.IsNullOrEmpty(ClassID))
+                    ClassID = "NULL";
+
                 string strSQL = string.Format(@"
 			-- 以課程規畫表為主比對課程
 			WITH ROW AS(                    
 			SELECT
 				NULL :: INTEGER  AS grade_year, -- NULL時為全部年級 
 				NULL :: INTEGER AS class_id,
-				NULL :: INTEGER AS dept_id	 
+				" + ClassID + @" :: INTEGER AS dept_id	 
 			),
 			target_student AS(
 				SELECT
