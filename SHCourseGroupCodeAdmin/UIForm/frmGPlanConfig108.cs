@@ -2008,7 +2008,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     lbMainGraduationPlanName.Text = SelectInfo.RefGPName + (isD ? " (<font color=\"Chocolate\">已變更</font>)" : "");
                     btnUpdate.Enabled = isD;
-                    _IsMainDataDirty = isD;
+                    _IsCourseGroupDataDirty = isD;
                 }
 
                 // 設定課程群組
@@ -3259,6 +3259,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             dgvMain.Rows[index].Selected = true;
                             dgvMain.FirstDisplayedScrollingRowIndex = index;
                             SetIsDirtyDisplay(true);
+                            _IsCourseGroupDataDirty = true;
                         }
                     }
                 }
@@ -3272,6 +3273,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void btnMainCancel_Click(object sender, EventArgs e)
         {
             dgvMain_SelectionChanged(null, null);
+            SetIsDirtyDisplay(false);
         }
 
         // 課程群組用事件
@@ -3960,7 +3962,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 控制輸入法
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
-                btnUpdate.Enabled = false;   // 有機會調整就先關閉儲存按鈕，用設定來管控
+                // btnUpdate.Enabled = false;   // 有機會調整就先關閉儲存按鈕，用設定來管控
                 if (dgvMainLevel[e.ColumnIndex, 0].Value != null && dgvMainLevel[e.ColumnIndex, 0].Value.ToString() != "")
                 {
                     dgvMainLevel[e.ColumnIndex, 1].ReadOnly = false;
