@@ -32,11 +32,17 @@ namespace SHCourseGroupCodeAdmin.DAO
         // 科目清單
         public Dictionary<string, chkGPSubjectInfo> SubjectDict = new Dictionary<string, chkGPSubjectInfo>();
 
+        // 科目名稱
+        public List<string> SubjectNameList = new List<string>();
+
+
         // 轉換科目
         public void ParseSubjectDict()
         {
             SubjectXMLDict.Clear();
             SubjectDict.Clear();
+            SubjectNameList.Clear();
+            
             if (ContentXML != null)
             {
                 foreach (XElement elm in ContentXML.Elements("Subject"))
@@ -46,7 +52,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                     string Level = "";
                     if (elm.Attribute("Level") != null)
                         Level = elm.Attribute("Level").Value;
-
+                    
+                    if (!SubjectNameList.Contains(SubjectName))
+                        SubjectNameList.Add(SubjectName);
 
                     string key = SubjectName + "_" + Level;
 

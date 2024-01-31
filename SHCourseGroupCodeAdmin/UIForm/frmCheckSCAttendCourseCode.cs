@@ -41,6 +41,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
         List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoErrorList = new List<rptSCAttendCodeChkInfo>();
         List<rptSCAttendCodeChkInfo> SCAttendCodeChkInfoNoList = new List<rptSCAttendCodeChkInfo>();
 
+        // 有差異資料
+        Dictionary<string, List<string>> CourseCodeErrDict = new Dictionary<string, List<string>>();
+
         public frmCheckSCAttendCourseCode()
         {
             InitializeComponent();
@@ -254,7 +257,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             }
 
-
+            CourseCodeErrDict.Clear();
 
             _bgWorker.ReportProgress(70);
             // 填值到 Excel
@@ -316,6 +319,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             }
             foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoErrorList)
             {
+
                 wstSCError.Cells[rowIdx, GetColIndex("學年度")].PutValue(data.SchoolYear);
                 wstSCError.Cells[rowIdx, GetColIndex("學期")].PutValue(data.Semester);
                 wstSCError.Cells[rowIdx, GetColIndex("年級")].PutValue(data.GradeYear);
@@ -335,21 +339,32 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSCError.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);
                 wstSCError.Cells[rowIdx, GetColIndex("課程規劃表")].PutValue(data.GraduationPlanName);
-                if (data.ErrorMsgList.Contains("課程規劃表 不同"))
+                if (data.ErrorMsgList.Contains("課程規劃表 不同") || data.ErrorMsgList.Contains("沒有課程規劃表"))
                 {
-                    wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + "");
+
+                    wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("沒有課程規畫表");
+                    AddCourseCodeErr(data.IDNumber, data.CourseID, "沒有課程規畫表");
+                }
+                else if (data.ErrorMsgList.Contains("科目名稱沒有在課程規畫表內"))
+                {
+                    // 課程規劃表有對到其他有問題
+                    wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("科目名稱沒有在課程規畫表內");
+                    AddCourseCodeErr(data.IDNumber, data.CourseID, "科目名稱沒有在課程規畫表內");
                 }
                 else
                 {
                     // 科目名稱無法對照
                     if (data.ErrorMsgList.Contains("科目名稱與級別"))
                     {
-                        wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("沒有此科目名稱");
+                        wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue("科目名稱+級別，沒有在課程規畫表內");
+                        AddCourseCodeErr(data.IDNumber, data.CourseID, "科目名稱+級別，沒有在課程規畫表內");
                     }
                     else
                     {
                         // 科目名稱有對到其他有問題
                         wstSCError.Cells[rowIdx, GetColIndex("說明")].PutValue(string.Join(",", data.ErrorMsgList.ToArray()) + " 不同");
+
+                        AddCourseCodeErr(data.IDNumber, data.CourseID, string.Join(",", data.ErrorMsgList.ToArray()) + " 不同");
                     }
                 }
 
@@ -489,6 +504,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                         wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
                         wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
+                        string key = data.IDNumber + "_" + data.CourseID;
+                        if (CourseCodeErrDict.ContainsKey(key))
+                        {
+                            wstSCx2_err.Cells[rIdx, 18].PutValue(string.Join(",", CourseCodeErrDict[key].ToArray()));
+                        }
                         rIdx++;
                     }
                 }
@@ -496,6 +516,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 刪除沒有使用到的缺資料工作表
                 if (wstSCx2_err.Cells.MaxDataRow == 0)
                     _wbScoreXls.Worksheets.RemoveAt(wstSCx2_err.Index);
+                else
+                {
+                    wstSCx2_err.Cells[0, 18].PutValue("說明");
+                }
 
                 if (wstSCx3_err.Cells.MaxDataRow == 0)
                     _wbScoreXls.Worksheets.RemoveAt(wstSCx3_err.Index);
@@ -600,6 +624,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                         wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
                         wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
+
+                        string key = data.IDNumber + "_" + data.CourseID;
+                        if (CourseCodeErrDict.ContainsKey(key))
+                        {
+                            wstSCx2_err.Cells[rIdx, 18].PutValue(string.Join(",", CourseCodeErrDict[key].ToArray()));
+                        }
+
                         rIdx++;
                     }
                 }
@@ -607,6 +638,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 刪除沒有使用到的缺資料工作表
                 if (wstSCx2_err.Cells.MaxDataRow == 0)
                     _wbScoreXls.Worksheets.RemoveAt(wstSCx2_err.Index);
+                else
+                {
+                    wstSCx2_err.Cells[0, 18].PutValue("說明");
+                }
 
                 if (wstSCx3_err.Cells.MaxDataRow == 0)
                     _wbScoreXls.Worksheets.RemoveAt(wstSCx3_err.Index);
@@ -621,6 +656,16 @@ namespace SHCourseGroupCodeAdmin.UIForm
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        public void AddCourseCodeErr(string IDNumber, string Coid, string Msg)
+        {
+            string key = IDNumber + "_" + Coid;
+            if (!CourseCodeErrDict.ContainsKey(key))
+                CourseCodeErrDict.Add(key, new List<string>());
+
+            if (!CourseCodeErrDict[key].Contains(Msg))
+                CourseCodeErrDict[key].Add(Msg);
         }
 
         private void frmCheckSCAttendCourseCode_Load(object sender, EventArgs e)

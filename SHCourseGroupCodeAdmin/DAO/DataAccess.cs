@@ -407,7 +407,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             List<MOECourseCodeInfo> coCodeList = GetCourseGroupCodeList();
             foreach (MOECourseCodeInfo co in coCodeList)
-            {              
+            {
                 if (!value.ContainsKey(co.group_code))
                     value.Add(co.group_code, new List<MOECourseCodeInfo>());
 
@@ -1953,6 +1953,22 @@ namespace SHCourseGroupCodeAdmin.DAO
                             data.ErrorMsgList.Add(err);
                     }
 
+                    // 檢查沒有課程規畫表
+                    if (string.IsNullOrEmpty(data.GraduationPlanID))
+                    {
+                        data.ErrorMsgList.Add("沒有課程規劃表");
+                    }
+
+                    // 檢查科目名稱是否在課規內
+                    if (chkGPlanInfoDict.ContainsKey(data.GraduationPlanID))
+                    {
+                        if (!chkGPlanInfoDict[data.GraduationPlanID].SubjectNameList.Contains(data.SubjectName))
+                        {
+                            data.ErrorMsgList.Add("科目名稱沒有在課程規畫表內。");
+                        }
+                    }
+
+
                     value.Add(data);
                 }
 
@@ -2308,7 +2324,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             }
             return value;
         }
-               
+
 
         public List<rptStudSemsScoreCodeChkInfo> GetStudentSemsScoreInfoByGradeYear(int GradeYear)
         {
@@ -2598,7 +2614,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 foreach (DataRow dr in dt.Rows)
                 {
                     string moe_group_code = dr["moe_group_code"] + "";
-                    string gpid = dr["id"] + "";                   
+                    string gpid = dr["id"] + "";
 
                     if (!dtDict.ContainsKey(moe_group_code))
                         dtDict.Add(moe_group_code, new Dictionary<string, List<DataRow>>());
@@ -4323,7 +4339,7 @@ WHERE
                         data.gdc_code = "";
                     }
                     data.SemsScoreCourseCode = dr["課程代碼"] + "";
-                    
+
 
                     value.Add(data);
                 }
@@ -4352,7 +4368,7 @@ WHERE
                 }
 
                 // 透過已知群科班代碼寫入學生課程規畫表ID
-                foreach(rptStudSemsScoreCodeChkInfo data in value)
+                foreach (rptStudSemsScoreCodeChkInfo data in value)
                 {
                     if (MoeGPIDDict.ContainsKey(data.gdc_code))
                     {
