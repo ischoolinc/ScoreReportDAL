@@ -123,7 +123,7 @@
     </Reference>
     <Reference Include="SmartSchool.Customization.Data">
       <HintPath>D:\ischool_test\t_高中第六學期學期修課記錄\modules\SHSchoolLoader\SmartSchool.Customization.Data.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -243,6 +243,9 @@
     <Content Include="Library\K12.Data.xml" />
     <Content Include="Library\K12.Presentation.dll" />
     <Content Include="Library\K12.Presentation.xml" />
+    <Content Include="Library\SmartSchool.Customization.Data.dll" />
+    <Content Include="Library\SmartSchool.Customization.Data.pdb" />
+    <Content Include="Library\SmartSchool.Customization.Data.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SHEvaluation\SmartSchool.Evaluation.HS\SmartSchool.Evaluation.HS.csproj">

@@ -141,7 +141,8 @@ namespace SHGraduationWarning.UIForm
 
         // 檢查課程資料--科目級別有問題
         List<CourseInfo> CourseInfoList;
-        Dictionary<string, CourseInfo> hasErrorCourseInfoDict;
+        //Dictionary<string, CourseInfo> hasErrorCourseInfoDict;
+        Dictionary<string, List<CourseInfo>> hasErrorCourseInfoDict;
 
         // 檢查課規有但是課程沒有的科目
         List<DataRow> chkGPDataCourseList = new List<DataRow>();
@@ -163,7 +164,7 @@ namespace SHGraduationWarning.UIForm
             ReportClassList = new List<ReportClassInfo>();
             ReportClassDict = new Dictionary<string, ReportClassInfo>();
             SelectedReportStudentList = new List<ReportStudentInfo>();
-            hasErrorCourseInfoDict = new Dictionary<string, CourseInfo>();
+            hasErrorCourseInfoDict = new Dictionary<string, List<CourseInfo>>();
             CourseInfoList = new List<CourseInfo>();
 
             wb = new Workbook();
@@ -304,55 +305,56 @@ namespace SHGraduationWarning.UIForm
                 _ColIdxDict.Add(wst.Cells[0, co].StringValue, co);
             }
 
-            foreach (CourseInfo ci in hasErrorCourseInfoDict.Values)
-            {
-                // 課程系統編號
-                wst.Cells[rowIdx, _ColIdxDict["課程系統編號"]].PutValue(ci.CourseID);
+            foreach (string coid in hasErrorCourseInfoDict.Keys)
+                foreach (CourseInfo ci in hasErrorCourseInfoDict[coid])
+                {
+                    // 課程系統編號
+                    wst.Cells[rowIdx, _ColIdxDict["課程系統編號"]].PutValue(ci.CourseID);
 
-                // 學年度
-                wst.Cells[rowIdx, _ColIdxDict["學年度"]].PutValue(ci.SchoolYear);
+                    // 學年度
+                    wst.Cells[rowIdx, _ColIdxDict["學年度"]].PutValue(ci.SchoolYear);
 
-                // 學期
-                wst.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(ci.Semester);
+                    // 學期
+                    wst.Cells[rowIdx, _ColIdxDict["學期"]].PutValue(ci.Semester);
 
-                // 課程名稱
-                wst.Cells[rowIdx, _ColIdxDict["課程名稱"]].PutValue(ci.CourseName);
+                    // 課程名稱
+                    wst.Cells[rowIdx, _ColIdxDict["課程名稱"]].PutValue(ci.CourseName);
 
-                // 領域
-                wst.Cells[rowIdx, _ColIdxDict["領域"]].PutValue(ci.Domain);
+                    // 領域
+                    wst.Cells[rowIdx, _ColIdxDict["領域"]].PutValue(ci.Domain);
 
-                // 科目名稱
-                wst.Cells[rowIdx, _ColIdxDict["科目名稱"]].PutValue(ci.SubjectName);
+                    // 科目名稱
+                    wst.Cells[rowIdx, _ColIdxDict["科目名稱"]].PutValue(ci.SubjectName);
 
-                // 科目級別
-                wst.Cells[rowIdx, _ColIdxDict["科目級別"]].PutValue(ci.SubjectLevel);
+                    // 科目級別
+                    wst.Cells[rowIdx, _ColIdxDict["科目級別"]].PutValue(ci.SubjectLevel);
 
-                // 學分
-                wst.Cells[rowIdx, _ColIdxDict["學分"]].PutValue(ci.Credit);
+                    // 學分
+                    wst.Cells[rowIdx, _ColIdxDict["學分"]].PutValue(ci.Credit);
 
-                // 分項類別
-                wst.Cells[rowIdx, _ColIdxDict["分項類別"]].PutValue(ci.Entry);
+                    // 分項類別
+                    wst.Cells[rowIdx, _ColIdxDict["分項類別"]].PutValue(ci.Entry);
 
-                // 校部訂
-                wst.Cells[rowIdx, _ColIdxDict["校部訂"]].PutValue(ci.RequiredBy);
+                    // 校部訂
+                    wst.Cells[rowIdx, _ColIdxDict["校部訂"]].PutValue(ci.RequiredBy);
 
-                // 必選修
-                wst.Cells[rowIdx, _ColIdxDict["必選修"]].PutValue(ci.Required);
+                    // 必選修
+                    wst.Cells[rowIdx, _ColIdxDict["必選修"]].PutValue(ci.Required);
 
-                // 使用課規
-                wst.Cells[rowIdx, _ColIdxDict["使用課規"]].PutValue(ci.GraduationPlanName);
+                    // 使用課規
+                    wst.Cells[rowIdx, _ColIdxDict["使用課規"]].PutValue(ci.GraduationPlanName);
 
-                // 課程科目
-                wst.Cells[rowIdx, _ColIdxDict["新科目名稱"]].PutValue(ci.NewSubjectName);
+                    // 課程科目
+                    wst.Cells[rowIdx, _ColIdxDict["新科目名稱"]].PutValue(ci.NewSubjectName);
 
-                // 課程科目級別
-                wst.Cells[rowIdx, _ColIdxDict["新科目級別"]].PutValue(ci.NewSubjectLevel);
+                    // 課程科目級別
+                    wst.Cells[rowIdx, _ColIdxDict["新科目級別"]].PutValue(ci.NewSubjectLevel);
 
-                // 問題說明                
-                wst.Cells[rowIdx, _ColIdxDict["問題說明"]].PutValue(ci.ErrorMessage);
+                    // 問題說明                
+                    wst.Cells[rowIdx, _ColIdxDict["問題說明"]].PutValue(ci.ErrorMessage);
 
-                rowIdx++;
-            }
+                    rowIdx++;
+                }
 
 
 
@@ -462,8 +464,9 @@ namespace SHGraduationWarning.UIForm
                 {
                     // 使用 course id 當 key
                     if (!hasErrorCourseInfoDict.ContainsKey(ci.CourseID))
-                        hasErrorCourseInfoDict.Add(ci.CourseID, ci);
+                        hasErrorCourseInfoDict.Add(ci.CourseID, new List<CourseInfo>());
 
+                    hasErrorCourseInfoDict[ci.CourseID].Add(ci);
                 }
 
                 bgwDataChkCourseLoad.ReportProgress(60);
@@ -482,7 +485,9 @@ namespace SHGraduationWarning.UIForm
                 {
                     // 使用 course id 當 key
                     if (!hasErrorCourseInfoDict.ContainsKey(ci.CourseID))
-                        hasErrorCourseInfoDict.Add(ci.CourseID, ci);
+                        hasErrorCourseInfoDict.Add(ci.CourseID, new List<CourseInfo>());
+
+                    hasErrorCourseInfoDict[ci.CourseID].Add(ci);
 
                 }
 
@@ -1439,6 +1444,15 @@ namespace SHGraduationWarning.UIForm
                 // 合併
                 if (this.configure != null)
                 {
+
+                    ////  debug
+                    //StringBuilder sb = new StringBuilder();
+                    //foreach (DataColumn dc in StudDT.Columns)
+                    //{
+                    //    sb.AppendLine(dc.ColumnName + ":" + StudDT.Rows[0][dc.ColumnName]+"");
+                    //}
+                    //System.IO.File.WriteAllText(System.Windows.Forms.Application.StartupPath + "\\debug.txt", sb.ToString());
+
                     bgwGrandCheckReport.ReportProgress(50);
                     Document doc = configure.Template.Clone();
                     doc.MailMerge.Execute(StudDT);
@@ -3065,7 +3079,7 @@ namespace SHGraduationWarning.UIForm
             else if (SelectedTabName == ChkCourseTabName)
             {
                 // 資料合理檢查(課程科目級別)
-                msg = @"學生修課的課程科目級別合理性檢查：
+                msg = @"學生修課的課程科目級別合理性檢查：(需要有學期科目成績才可使用，因為年級使用學期科目成績的成績年級。)
 1.檢查範圍：一般及延修狀態學生課程科目與級別。
 2.依年級、科別、班級條件，檢查範圍內學生學期成績進行合理性檢查。以學生修課課程之科目名稱+級別比對學生採用之課程規劃表產生2張工作表：
     1.依課程為主比對課規不符合：列出與課規比對不符合的清單，並針對科目名稱比對的到的資料提供新的科目名稱和新的級別。
@@ -3523,23 +3537,25 @@ namespace SHGraduationWarning.UIForm
                 //
                 foreach (string cid in hasErrorCourseInfoDict.Keys)
                 {
-                    CourseInfo ci = hasErrorCourseInfoDict[cid];
-                    int idx = dgDataCourse.Rows.Add();
-                    dgDataCourse.Rows[idx].Cells["學年度"].Value = ci.SchoolYear;
-                    dgDataCourse.Rows[idx].Cells["學期"].Value = ci.Semester;
-                    dgDataCourse.Rows[idx].Cells["課程名稱"].Value = ci.CourseName;
-                    dgDataCourse.Rows[idx].Cells["領域"].Value = ci.Domain;
-                    dgDataCourse.Rows[idx].Cells["分項類別"].Value = ci.Entry;
-                    dgDataCourse.Rows[idx].Cells["校部定"].Value = ci.RequiredBy;
-                    dgDataCourse.Rows[idx].Cells["必選修"].Value = ci.Required;
-                    dgDataCourse.Rows[idx].Cells["學分數"].Value = ci.Credit;
-                    dgDataCourse.Rows[idx].Cells["科目名稱"].Value = ci.SubjectName;
-                    dgDataCourse.Rows[idx].Cells["科目級別"].Value = ci.SubjectLevel;
-                    dgDataCourse.Rows[idx].Cells["新科目名稱"].Value = ci.NewSubjectName;
-                    dgDataCourse.Rows[idx].Cells["新科目級別"].Value = ci.NewSubjectLevel;
-                    dgDataCourse.Rows[idx].Cells["使用課規"].Value = ci.GraduationPlanName;
-                    dgDataCourse.Rows[idx].Cells["問題說明"].Value = ci.ErrorMessage;
-                    rowCount++;
+                    foreach (CourseInfo ci in hasErrorCourseInfoDict[cid])
+                    {
+                        int idx = dgDataCourse.Rows.Add();
+                        dgDataCourse.Rows[idx].Cells["學年度"].Value = ci.SchoolYear;
+                        dgDataCourse.Rows[idx].Cells["學期"].Value = ci.Semester;
+                        dgDataCourse.Rows[idx].Cells["課程名稱"].Value = ci.CourseName;
+                        dgDataCourse.Rows[idx].Cells["領域"].Value = ci.Domain;
+                        dgDataCourse.Rows[idx].Cells["分項類別"].Value = ci.Entry;
+                        dgDataCourse.Rows[idx].Cells["校部定"].Value = ci.RequiredBy;
+                        dgDataCourse.Rows[idx].Cells["必選修"].Value = ci.Required;
+                        dgDataCourse.Rows[idx].Cells["學分數"].Value = ci.Credit;
+                        dgDataCourse.Rows[idx].Cells["科目名稱"].Value = ci.SubjectName;
+                        dgDataCourse.Rows[idx].Cells["科目級別"].Value = ci.SubjectLevel;
+                        dgDataCourse.Rows[idx].Cells["新科目名稱"].Value = ci.NewSubjectName;
+                        dgDataCourse.Rows[idx].Cells["新科目級別"].Value = ci.NewSubjectLevel;
+                        dgDataCourse.Rows[idx].Cells["使用課規"].Value = ci.GraduationPlanName;
+                        dgDataCourse.Rows[idx].Cells["問題說明"].Value = ci.ErrorMessage;
+                        rowCount++;
+                    }
                 }
             }
             lblMsg.Text = "共" + rowCount + "筆";

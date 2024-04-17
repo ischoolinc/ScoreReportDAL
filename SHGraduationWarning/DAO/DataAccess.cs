@@ -4802,12 +4802,13 @@ namespace SHGraduationWarning.DAO
                         graduation_plan.id AS graduation_plan_id,
                         graduation_plan.name AS graduation_plan_name,
                         class.id AS class_id,
-                        class.class_name,
+                        class.class_name,                        
                         dept.id AS dept_id,
                         student.student_number,
                         student.seat_no,
                         student.name AS student_name,
-                        dept.name AS dept_name
+                        dept.name AS dept_name,
+                        sems_history
                     FROM
                         ROW
                         INNER JOIN class ON (
@@ -4831,20 +4832,31 @@ namespace SHGraduationWarning.DAO
                 ),
                 target_student_with_sems_history AS(
                     SELECT
-                        ref_student_id AS student_id,
-                        graduation_plan_id,
-                        grade_year :: SMALLINT,
-                        semester :: SMALLINT,
-                        MAX(course.school_year) AS school_year
-                    FROM
-                        sc_attend
-                        INNER JOIN target_student ON target_student.student_id = sc_attend.ref_student_id
-                        INNER JOIN course ON course.id = sc_attend.ref_course_id
-                    GROUP BY
-                        ref_student_id,
-                        graduation_plan_id,
-                        grade_year,
-                        semester
+                        DISTINCT
+                            student_id
+                            , graduation_plan_id
+                            , MAX(school_year) OVER(PARTITION BY student_id, grade_year, semester) AS school_year
+                            , grade_year
+                            , semester
+                    FROM(
+                        SELECT
+                            student_sems_history.student_id
+                            , student_sems_history.graduation_plan_id
+                            , ('0' || array_to_string(xpath('//History/@SchoolYear', history_xml), '')::TEXT)::INTEGER AS school_year
+                            , ('0' || array_to_string(xpath('//History/@GradeYear', history_xml), '')::TEXT)::INTEGER AS grade_year
+                            , ('0' || array_to_string(xpath('//History/@Semester', history_xml), '')::TEXT)::INTEGER AS semester
+                        FROM(
+                            SELECT
+                                student_id
+                                , graduation_plan_id
+                                , unnest(xpath('//root/History', xmlparse(content '<root>' || sems_history || '</root>'))) AS history_xml
+                            FROM
+                                target_student
+                        ) AS student_sems_history
+                    ) student_sems_history_expand
+                    ORDER BY
+                        student_id
+                        , grade_year
                 ),
                 graduation_plan_expand AS(
                     SELECT
@@ -5251,11 +5263,13 @@ namespace SHGraduationWarning.DAO
                         graduation_plan.name AS graduation_plan_name,
                         class.id AS class_id,
                         class.class_name,
+                        class.grade_year,
                         dept.id AS dept_id,
                         student.student_number,
                         student.seat_no,
                         student.name AS student_name,
-                        dept.name AS dept_name
+                        dept.name AS dept_name,
+                        sems_history
                     FROM
                         ROW
                         INNER JOIN class ON (
@@ -5278,21 +5292,32 @@ namespace SHGraduationWarning.DAO
                         )
                 ),
                 target_student_with_sems_history AS(
-                    SELECT
-                        ref_student_id AS student_id,
-                        graduation_plan_id,
-                        grade_year :: SMALLINT,
-                        semester :: SMALLINT,
-                        MAX(course.school_year) AS school_year
-                    FROM
-                        sc_attend
-                        INNER JOIN target_student ON target_student.student_id = sc_attend.ref_student_id
-                        INNER JOIN course ON course.id = sc_attend.ref_course_id
-                    GROUP BY
-                        ref_student_id,
-                        graduation_plan_id,
-                        grade_year,
-                        semester
+                     SELECT
+                        DISTINCT
+                            student_id
+                            , graduation_plan_id
+                            , MAX(school_year) OVER(PARTITION BY student_id, grade_year, semester) AS school_year
+                            , grade_year
+                            , semester
+                    FROM(
+                        SELECT
+                            student_sems_history.student_id
+                            , student_sems_history.graduation_plan_id
+                            , ('0' || array_to_string(xpath('//History/@SchoolYear', history_xml), '')::TEXT)::INTEGER AS school_year
+                            , ('0' || array_to_string(xpath('//History/@GradeYear', history_xml), '')::TEXT)::INTEGER AS grade_year
+                            , ('0' || array_to_string(xpath('//History/@Semester', history_xml), '')::TEXT)::INTEGER AS semester
+                        FROM(
+                            SELECT
+                                student_id
+                                , graduation_plan_id
+                                , unnest(xpath('//root/History', xmlparse(content '<root>' || sems_history || '</root>'))) AS history_xml
+                            FROM
+                                target_student
+                        ) AS student_sems_history
+                    ) student_sems_history_expand
+                    ORDER BY
+                        student_id
+                        , grade_year
                 ),
                 graduation_plan_expand AS(
                     SELECT
