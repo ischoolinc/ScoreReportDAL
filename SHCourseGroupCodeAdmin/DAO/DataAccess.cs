@@ -3878,7 +3878,7 @@ WHERE
                         AND semester = {2}
                 ),
                 subject_order AS(
-                    @SELECT array_to_string(
+                    SELECT array_to_string(
                         xpath('//Subject/@Chinese', each_period.period),
                         ''
                     ) :: text AS subj_chinese_name -- , array_to_string(xpath('//Subject/@English', each_period.period), '')::text as subj_english_name
