@@ -1523,7 +1523,8 @@ namespace SHGraduationWarning.DAO
                         array_to_string(xpath('//Subject/@Entry', subject_ele), '') :: TEXT AS 分項類別,
                         array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '') :: TEXT AS 校部訂,
                         array_to_string(xpath('//Subject/@Required', subject_ele), '') :: TEXT AS 必選修,
-                        array_to_string(xpath('//Subject/@OfficialSubjectName', subject_ele), '') :: TEXT AS 報部科目名稱
+                        array_to_string(xpath('//Subject/@OfficialSubjectName', subject_ele), '') :: TEXT AS 報部科目名稱,
+                        ('0' || array_to_string(xpath('//Subject/@Credit', subject_ele), '')) :: INTEGER AS g_credit
                     FROM
                         (
                             SELECT
@@ -1615,6 +1616,7 @@ namespace SHGraduationWarning.DAO
                         COALESCE(subject_expand.subject_name, graduation_plan_expand_with_student.subject_name) AS subject_name,
                         COALESCE(subject_expand.subject_level, graduation_plan_expand_with_student.subject_level) AS subject_level,
                         subject_expand.credit,
+                        graduation_plan_expand_with_student.g_credit,
                         subject_expand.不計學分,
                         subject_expand.不需評分,
                         graduation_plan_expand_with_student.domain,
@@ -1661,6 +1663,7 @@ namespace SHGraduationWarning.DAO
 		                target_data.分組名稱,
 		                target_data.分組修課學分數,
 		                target_data.credit,
+                        target_data.g_credit,
 		                target_data.領域,
 		                target_data.指定學年科目名稱,
 		                target_data.課程代碼,
@@ -1698,6 +1701,7 @@ namespace SHGraduationWarning.DAO
 		            target_data.subject_name,
 		            target_data.subject_level,
 		            target_data.credit,
+                    target_data.g_credit,
 		            target_data.不計學分,
 		            target_data.不需評分
                     FROM
@@ -1780,6 +1784,7 @@ namespace SHGraduationWarning.DAO
 		                target_match.subject_name AS 科目名稱,
 		                target_match.subject_level AS 科目級別,
 		                target_match.credit AS 學分數,
+                        target_match.g_credit AS 新學分數,
 		                target_match.領域,
 		                target_match.新領域,
 		                target_match.指定學年科目名稱,
@@ -1805,7 +1810,8 @@ namespace SHGraduationWarning.DAO
 			                OR (分項類別 <> 新分項類別) 
 			                OR (校部訂 <> 新校部訂)
 			                OR (必選修 <> 新必選修)			
-			                OR (報部科目名稱 <> 新報部科目名稱)
+			                OR (報部科目名稱 <> 新報部科目名稱) 
+                            OR (credit <> g_credit) 
 	                ORDER BY
 			                班級,
 			                座號,
@@ -1923,7 +1929,8 @@ namespace SHGraduationWarning.DAO
                         array_to_string(xpath('//Subject/@Entry', subject_ele), '') :: TEXT AS 分項類別,
                         array_to_string(xpath('//Subject/@RequiredBy', subject_ele), '') :: TEXT AS 校部訂,
                         array_to_string(xpath('//Subject/@Required', subject_ele), '') :: TEXT AS 必選修,
-                        array_to_string(xpath('//Subject/@OfficialSubjectName', subject_ele), '') :: TEXT AS 報部科目名稱
+                        array_to_string(xpath('//Subject/@OfficialSubjectName', subject_ele), '') :: TEXT AS 報部科目名稱,
+                        ('0' || array_to_string(xpath('//Subject/@Credit', subject_ele), '')) :: INTEGER AS g_credit
                     FROM
                         (
                             SELECT
@@ -2015,6 +2022,7 @@ namespace SHGraduationWarning.DAO
                         COALESCE(subject_expand.subject_name, graduation_plan_expand_with_student.subject_name) AS subject_name,
                         COALESCE(subject_expand.subject_level, graduation_plan_expand_with_student.subject_level) AS subject_level,
                         subject_expand.credit,
+                        graduation_plan_expand_with_student.g_credit,
                         subject_expand.不計學分,
                         subject_expand.不需評分,
                         graduation_plan_expand_with_student.domain,
@@ -2061,6 +2069,7 @@ namespace SHGraduationWarning.DAO
 		                target_data.分組名稱,
 		                target_data.分組修課學分數,
 		                target_data.credit,
+                        target_data.g_credit,
 		                target_data.領域,
 		                target_data.指定學年科目名稱,
 		                target_data.課程代碼,
@@ -2098,6 +2107,7 @@ namespace SHGraduationWarning.DAO
 		            target_data.subject_name,
 		            target_data.subject_level,
 		            target_data.credit,
+                    target_data.g_credit,
 		            target_data.不計學分,
 		            target_data.不需評分
                     FROM
@@ -2180,6 +2190,7 @@ namespace SHGraduationWarning.DAO
 		                target_match.subject_name AS 科目名稱,
 		                target_match.subject_level AS 科目級別,
 		                target_match.credit AS 學分數,
+                        target_match.g_credit AS 新學分數,
 		                target_match.領域,
 		                target_match.新領域,
 		                target_match.指定學年科目名稱,
@@ -2205,7 +2216,8 @@ namespace SHGraduationWarning.DAO
 			                OR (分項類別 <> 新分項類別) 
 			                OR (校部訂 <> 新校部訂)
 			                OR (必選修 <> 新必選修)			
-			                OR (報部科目名稱 <> 新報部科目名稱)
+			                OR (報部科目名稱 <> 新報部科目名稱) 
+                            OR (credit <> g_credit) 
 	                ORDER BY
 			                班級,
 			                座號,

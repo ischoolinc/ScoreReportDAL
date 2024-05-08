@@ -125,6 +125,11 @@
       <HintPath>D:\ischool_test\t_高中第六學期學期修課記錄\modules\SHSchoolLoader\SmartSchool.Customization.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SmartSchool.Evaluation.HS, Version=1.0.7.71, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\SmartSchool.Evaluation.HS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -246,13 +251,8 @@
     <Content Include="Library\SmartSchool.Customization.Data.dll" />
     <Content Include="Library\SmartSchool.Customization.Data.pdb" />
     <Content Include="Library\SmartSchool.Customization.Data.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SHEvaluation\SmartSchool.Evaluation.HS\SmartSchool.Evaluation.HS.csproj">
-      <Project>{93f055e7-9422-4519-a359-524783e42a9f}</Project>
-      <Name>SmartSchool.Evaluation.HS</Name>
-      <Private>True</Private>
-    </ProjectReference>
+    <Content Include="Library\SmartSchool.Evaluation.HS.dll" />
+    <Content Include="Library\SmartSchool.Evaluation.HS.pdb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ConfigForm.resx">
