@@ -289,7 +289,7 @@ namespace SHGraduationWarning.DAO
 
 
         // 比對課程規畫表SQL(學期科目成績為主比對課規)
-        public static List<StudSubjectInfo> GetSemsSubjectLevelCheckGraduationPlan1(string GradeYear, string DeptID, string ClassID)
+        public static List<StudSubjectInfo> GetSemsSubjectLevelCheckGraduationPlan1(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
             List<StudSubjectInfo> value = new List<StudSubjectInfo>();
             try
@@ -632,7 +632,8 @@ namespace SHGraduationWarning.DAO
                         ON target_data.student_id = target_student.student_id
                 WHERE
 	                target_data.student_id IS NOT NULL
-                    AND target_data.分組名稱 IS NULL
+                    AND target_data.分組名稱 IS NULL 
+                    {1} 
                 ORDER BY
                     班級,
                     座號,
@@ -641,7 +642,7 @@ namespace SHGraduationWarning.DAO
                     學期,
                     科目名稱
 
-", condition);
+", condition, CurrentSemester);
 
                 //    Utility.ExportText("sql1", strSQL);
 
@@ -1408,7 +1409,7 @@ namespace SHGraduationWarning.DAO
         }
 
         // 取得學期成績與課規以科目名稱+級別比對相同，領域、指定學年科目名稱、課程代碼、報部科目名稱不同，不同。
-        public static List<DataRow> GetSemsSubjectLevelCheckGraduationPlan4(string GradeYear, string DeptID, string ClassID)
+        public static List<DataRow> GetSemsSubjectLevelCheckGraduationPlan4(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
             List<DataRow> value = new List<DataRow>();
             try
@@ -1804,14 +1805,15 @@ namespace SHGraduationWarning.DAO
 			                INNER JOIN target_student
 			                ON target_match.student_id = target_student.student_id
 		                WHERE 
-			                (領域 <> 新領域) 
+			                ((領域 <> 新領域) 
 			                OR (指定學年科目名稱 <> 新指定學年科目名稱)
 			                OR (課程代碼 <> 新課程代碼) 
 			                OR (分項類別 <> 新分項類別) 
 			                OR (校部訂 <> 新校部訂)
 			                OR (必選修 <> 新必選修)			
 			                OR (報部科目名稱 <> 新報部科目名稱) 
-                            OR (credit <> g_credit) 
+                            OR (credit <> g_credit))
+                            {1} 
 	                ORDER BY
 			                班級,
 			                座號,
@@ -1819,7 +1821,7 @@ namespace SHGraduationWarning.DAO
 			                學年度,
 			                學期,
 			                科目名稱 
-", condition);
+", condition, CurrentSemester);
 
                 // Utility.ExportText("sql4", strSQL);
 
@@ -1838,7 +1840,7 @@ namespace SHGraduationWarning.DAO
             return value;
         }
 
-        public static List<DataRow> GetSemsSubjectLevelCheckGraduationPlan4NoGradeYear(string GradeYear, string DeptID, string ClassID)
+        public static List<DataRow> GetSemsSubjectLevelCheckGraduationPlan4NoGradeYear(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
             List<DataRow> value = new List<DataRow>();
             try
@@ -2210,14 +2212,15 @@ namespace SHGraduationWarning.DAO
 			                INNER JOIN target_student
 			                ON target_match.student_id = target_student.student_id
 		                WHERE 
-			                (領域 <> 新領域) 
+			                ((領域 <> 新領域) 
 			                OR (指定學年科目名稱 <> 新指定學年科目名稱)
 			                OR (課程代碼 <> 新課程代碼) 
 			                OR (分項類別 <> 新分項類別) 
 			                OR (校部訂 <> 新校部訂)
 			                OR (必選修 <> 新必選修)			
 			                OR (報部科目名稱 <> 新報部科目名稱) 
-                            OR (credit <> g_credit) 
+                            OR (credit <> g_credit))
+                            {1}                             
 	                ORDER BY
 			                班級,
 			                座號,
@@ -2225,7 +2228,7 @@ namespace SHGraduationWarning.DAO
 			                學年度,
 			                學期,
 			                科目名稱 
-", condition);
+", condition, CurrentSemester);
 
                 // Utility.ExportText("sql4", strSQL);
 
@@ -3674,7 +3677,7 @@ namespace SHGraduationWarning.DAO
         }
 
         // 比對課程規畫表SQL(學期科目成績為主比對課規)(未分年級)
-        public static List<StudSubjectInfo> GetSemsSubjectLevelCheckGraduationPlan1NoGradeYear(string GradeYear, string DeptID, string ClassID)
+        public static List<StudSubjectInfo> GetSemsSubjectLevelCheckGraduationPlan1NoGradeYear(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
             List<StudSubjectInfo> value = new List<StudSubjectInfo>();
             try
@@ -3994,7 +3997,8 @@ namespace SHGraduationWarning.DAO
 				ON target_data.student_id = target_student.student_id
 		WHERE
 			target_data.student_id IS NOT NULL
-			AND target_data.分組名稱 IS NULL
+			AND target_data.分組名稱 IS NULL 
+            {1} 
 		ORDER BY
 			班級,
 			座號,
@@ -4003,7 +4007,7 @@ namespace SHGraduationWarning.DAO
 			學期,
 			科目名稱
 
-", condition);
+", condition, CurrentSemester);
 
 
 
@@ -4763,7 +4767,7 @@ namespace SHGraduationWarning.DAO
 
 
         // 比對課程規畫表SQL(課程為主比對課規)
-        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlan1(string GradeYear, string DeptID, string ClassID)
+        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlan1(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
             List<CourseInfo> value = new List<CourseInfo>();
             try
@@ -5142,13 +5146,14 @@ namespace SHGraduationWarning.DAO
                     INNER JOIN target_student ON target_data.student_id = target_student.student_id
                 WHERE
                     target_data.student_id IS NOT NULL
-                    AND target_data.分組名稱 IS NULL
+                    AND target_data.分組名稱 IS NULL 
+                    {1} 
                 ORDER BY
                     學年度,
                     學期,
                     課程名稱,
                     科目名稱
-", condition);
+", condition, CurrentSemester);
 
                 //// debug
                 //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
@@ -5633,7 +5638,7 @@ namespace SHGraduationWarning.DAO
         }
 
         // 比對課程規畫表SQL(課程為主比對課規，未分年級)
-        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlanNoGr1(string GradeYear, string DeptID, string ClassID)
+        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlanNoGr1(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
             List<CourseInfo> value = new List<CourseInfo>();
             try
@@ -5643,7 +5648,7 @@ namespace SHGraduationWarning.DAO
                 if (string.IsNullOrEmpty(ClassID))
                 {
                     ClassID = "null";
-                }                
+                }
 
                 string strSQL = string.Format(@"
 
@@ -5976,13 +5981,14 @@ namespace SHGraduationWarning.DAO
 			INNER JOIN target_student ON target_data.student_id = target_student.student_id
 		WHERE
 			target_data.student_id IS NOT NULL
-			AND target_data.分組名稱 IS NULL
+			AND target_data.分組名稱 IS NULL 
+            {0} 
 		ORDER BY
 			學年度,
 			學期,
 			課程名稱,
 			科目名稱
-");
+", CurrentSemester);
 
                 //// debug
                 //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
@@ -6424,5 +6430,15 @@ namespace SHGraduationWarning.DAO
 
             return value;
         }
+
+
+        // 取得目前系統學年度學期組成 SQL 條件至串 
+        public static string GetCurrentSchoolYearSemesterStr1()
+        {
+            string value = $" AND school_year = {K12.Data.School.DefaultSchoolYear} AND semester = {K12.Data.School.DefaultSemester} ";
+
+            return value;
+        }
+
     }
 }

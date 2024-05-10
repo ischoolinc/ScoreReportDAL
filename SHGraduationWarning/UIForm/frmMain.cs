@@ -41,7 +41,6 @@ namespace SHGraduationWarning.UIForm
         string ChkEditTabName2 = "資料合理檢查_科目屬性";
         string ChkCourseTabName = "資料合理檢查_課程科目級別";
 
-
         Workbook wb;
         Dictionary<string, int> _ColIdxDict;
 
@@ -149,6 +148,11 @@ namespace SHGraduationWarning.UIForm
 
         // 僅顯示未達畢業標準
         bool isChkNotUptoGStandard = false;
+
+        // 只檢查本學期
+        bool isChkDataCurrentSemester = false;
+
+
         public frmMain()
         {
 
@@ -343,7 +347,7 @@ namespace SHGraduationWarning.UIForm
                     wst.Cells[rowIdx, _ColIdxDict["必選修"]].PutValue(ci.Required);
 
                     // 使用課規
-                    wst.Cells[rowIdx, _ColIdxDict["使用課規"]].PutValue(ci.GraduationPlanName);                  
+                    wst.Cells[rowIdx, _ColIdxDict["使用課規"]].PutValue(ci.GraduationPlanName);
 
                     // 問題說明                
                     wst.Cells[rowIdx, _ColIdxDict["問題說明"]].PutValue(ci.ErrorMessage);
@@ -447,12 +451,18 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
+            string CurrentSemester = "";
+
+            // 只檢查本學期
+            if (isChkDataCurrentSemester)
+                CurrentSemester = DataAccess.GetCurrentSchoolYearSemesterStr1();
+
             // 選擇未分年級
             // 未分年級
             if (SelectedGradeYearYear == NoGradeYearStr)
             {
                 // 課程必對課規資料
-                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlanNoGr1(SelectedGradeYearYear, DeptID, ClassID);
+                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlanNoGr1(SelectedGradeYearYear, DeptID, ClassID, CurrentSemester);
 
                 // 處理有差異資料
                 foreach (CourseInfo ci in CourseInfoList)
@@ -473,7 +483,7 @@ namespace SHGraduationWarning.UIForm
             else
             {
                 // 課程必對課規資料
-                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlan1(SelectedGradeYearYear, DeptID, ClassID);
+                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlan1(SelectedGradeYearYear, DeptID, ClassID, CurrentSemester);
 
                 // 處理有差異資料
                 foreach (CourseInfo ci in CourseInfoList)
@@ -1360,7 +1370,7 @@ namespace SHGraduationWarning.UIForm
                             // 處理科目可補修、可重修
                             foreach (XmlElement xmlRuleS in xmlRule.SelectNodes("科目"))
                             {
-                                if (xmlRuleS.GetAttribute("狀態") == "可補修" || xmlRuleS.GetAttribute("狀態") == "可重修")
+                                if (xmlRuleS.GetAttribute("狀態") == "尚未補修" || xmlRuleS.GetAttribute("狀態") == "可重修")
                                 {
                                     // 當不計學分跳過，判斷：學分數=0
                                     if (xmlRuleS.GetAttribute("學分數") == "0")
@@ -1440,13 +1450,13 @@ namespace SHGraduationWarning.UIForm
                 if (this.configure != null)
                 {
 
-                    //  debug
-                    StringBuilder sb = new StringBuilder();
-                    foreach (DataColumn dc in StudDT.Columns)
-                    {
-                        sb.AppendLine(dc.ColumnName + ":" + StudDT.Rows[0][dc.ColumnName] + "");
-                    }
-                    System.IO.File.WriteAllText(System.Windows.Forms.Application.StartupPath + "\\debug.txt", sb.ToString());
+                    ////  debug
+                    //StringBuilder sb = new StringBuilder();
+                    //foreach (DataColumn dc in StudDT.Columns)
+                    //{
+                    //    sb.AppendLine(dc.ColumnName + ":" + StudDT.Rows[0][dc.ColumnName] + "");
+                    //}
+                    //System.IO.File.WriteAllText(System.Windows.Forms.Application.StartupPath + "\\debug.txt", sb.ToString());
 
                     bgwGrandCheckReport.ReportProgress(50);
                     Document doc = configure.Template.Clone();
@@ -1844,6 +1854,16 @@ namespace SHGraduationWarning.UIForm
             FISCA.Presentation.MotherForm.SetStatusBarMessage("");
             dgData2ChkEdit.Rows.Clear();
 
+            List<string> chkItemlList = new List<string>();
+            chkItemlList.Add("領域");
+            chkItemlList.Add("校部訂");
+            chkItemlList.Add("必選修");
+            chkItemlList.Add("指定學年科目名稱");
+            chkItemlList.Add("課程代碼");
+            chkItemlList.Add("報部科目名稱");
+            chkItemlList.Add("分項類別");
+            chkItemlList.Add("學分數");
+
             // 取得學期成績與課規以科目名稱+級別比對相同，分項類別、領域、校部訂、必選修、指定學年科目名稱、課程代碼、報部科目名稱，不同。
             if (chkDataReport4.Count > 0)
             {
@@ -1896,6 +1916,23 @@ namespace SHGraduationWarning.UIForm
                     dgData2ChkEdit.Rows[rowIdx].Cells["新必選修"].Value = dr["新必選修"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["報部科目名稱"].Value = dr["報部科目名稱"] + "";
                     dgData2ChkEdit.Rows[rowIdx].Cells["新報部科目名稱"].Value = dr["新報部科目名稱"] + "";
+
+                    // 處理資料差異顏色變化
+                    foreach (string item in chkItemlList)
+                    {
+                        if (dr[item] + "" != dr["新" + item] + "")
+                        {
+                            dgData2ChkEdit.Rows[rowIdx].Cells[item].Style.BackColor = Color.Yellow;
+                            dgData2ChkEdit.Rows[rowIdx].Cells["新" + item].Style.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            dgData2ChkEdit.Rows[rowIdx].Cells[item].Style.BackColor = Color.White;
+                            dgData2ChkEdit.Rows[rowIdx].Cells["新" + item].Style.BackColor = Color.White;
+                        }
+                    }
+
+
                 }
             }
 
@@ -1918,12 +1955,18 @@ namespace SHGraduationWarning.UIForm
             if (ClassNameIDDic.ContainsKey(SelectedClassName))
                 ClassID = ClassNameIDDic[SelectedClassName];
 
+            string CurrentSemester = "";
+
+            // 只檢查本學期
+            if (isChkDataCurrentSemester)
+                CurrentSemester = DataAccess.GetCurrentSchoolYearSemesterStr1();
+
             // 取得學期成績與課規以科目名稱+級別比對相同，領域、指定學年科目名稱、課程代碼、分項、校部定、必選修、報部科目，不同。
 
             // 處理未分年級
             if (SelectedGradeYearYear == NoGradeYearStr)
             {
-                chkDataReport4 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan4NoGradeYear(SelectedGradeYearYear, "", ClassID);
+                chkDataReport4 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan4NoGradeYear(SelectedGradeYearYear, "", ClassID, CurrentSemester);
 
                 rpInt = 80;
                 bgwDataChkEditLoad2.ReportProgress(rpInt);
@@ -1947,13 +1990,13 @@ namespace SHGraduationWarning.UIForm
                     chkDataReport4.Clear();
                     foreach (string id in DeptIDList)
                     {
-                        chkDataReport4.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, id, ClassID));
+                        chkDataReport4.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, id, ClassID, CurrentSemester));
                     }
                 }
                 else
                 {
                     // 單科
-                    chkDataReport4 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, DeptID, ClassID);
+                    chkDataReport4 = DataAccess.GetSemsSubjectLevelCheckGraduationPlan4(SelectedGradeYearYear, DeptID, ClassID, CurrentSemester);
                 }
 
 
@@ -2004,10 +2047,6 @@ namespace SHGraduationWarning.UIForm
                         dgDataChkEdit.Rows[rowIdx].Cells["成績年級"].Value = ss.GradeYear;
                         dgDataChkEdit.Rows[rowIdx].Cells["科目名稱"].Value = ss.SubjectName;
                         dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Value = ss.SubjectLevel;
-                        if (ss.IsSubjectLevelChanged)
-                            dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.Yellow;
-                        else
-                            dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.White;
                         dgDataChkEdit.Rows[rowIdx].Cells["新科目名稱"].Value = ss.SubjectNameNew;
                         dgDataChkEdit.Rows[rowIdx].Cells["新科目級別"].Value = ss.SubjectLevelNew;
                         //dgDataChkEdit.Rows[rowIdx].Cells["分項"].Value = ss.Entry;
@@ -2020,6 +2059,30 @@ namespace SHGraduationWarning.UIForm
                         dgDataChkEdit.Rows[rowIdx].Cells["問題說明"].Value = string.Join(",", ss.ErrorMsgList.ToArray());
                         //if (ss.IsSubjectLevelChanged && ss.SubjectLevelNew != "")
                         //    dgDataChkEdit.Rows[rowIdx].Cells["勾選"].Value = "是";
+
+                        // 處理差異標顏色
+                        if (ss.SubjectName != ss.SubjectNameNew)
+                        {
+                            dgDataChkEdit.Rows[rowIdx].Cells["科目名稱"].Style.BackColor = Color.Yellow;
+                            dgDataChkEdit.Rows[rowIdx].Cells["新科目名稱"].Style.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            dgDataChkEdit.Rows[rowIdx].Cells["科目名稱"].Style.BackColor = Color.White;
+                            dgDataChkEdit.Rows[rowIdx].Cells["新科目名稱"].Style.BackColor = Color.White;
+                        }
+
+                        if (ss.SubjectLevel != ss.SubjectLevelNew)
+                        {
+                            dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.Yellow;
+                            dgDataChkEdit.Rows[rowIdx].Cells["新科目級別"].Style.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            dgDataChkEdit.Rows[rowIdx].Cells["科目級別"].Style.BackColor = Color.White;
+                            dgDataChkEdit.Rows[rowIdx].Cells["新科目級別"].Style.BackColor = Color.White;
+                        }
+
                     }
                 }
 
@@ -2047,6 +2110,12 @@ namespace SHGraduationWarning.UIForm
             string DeptID = "";
             string ClassID = "";
 
+            string CurrentSemester = "";
+
+            // 只檢查本學期
+            if (isChkDataCurrentSemester)
+                CurrentSemester = DataAccess.GetCurrentSchoolYearSemesterStr1();
+
             if (DeptNameIDDic.ContainsKey(SelectedDeptName))
                 DeptID = DeptNameIDDic[SelectedDeptName];
 
@@ -2059,7 +2128,7 @@ namespace SHGraduationWarning.UIForm
             {
                 // 一般處理
                 // 檢查學期成績與課規比對
-                StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan1NoGradeYear(SelectedGradeYearYear, "", ClassID));
+                StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan1NoGradeYear(SelectedGradeYearYear, "", ClassID, CurrentSemester));
                 rpInt = 30;
                 bgwDataChkEditLoad.ReportProgress(rpInt);
 
@@ -2084,7 +2153,7 @@ namespace SHGraduationWarning.UIForm
             {
                 // 一般處理
                 // 檢查學期成績與課規比對
-                StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan1(SelectedGradeYearYear, DeptID, ClassID));
+                StudSubjectInfoList.AddRange(DataAccess.GetSemsSubjectLevelCheckGraduationPlan1(SelectedGradeYearYear, DeptID, ClassID, CurrentSemester));
                 rpInt = 30;
                 bgwDataChkEditLoad.ReportProgress(rpInt);
 
@@ -2352,6 +2421,7 @@ namespace SHGraduationWarning.UIForm
 
             ControlEnable(false);
             lnkSetReportTemplate.Visible = false;
+            ChkDataCurrentSemester.Visible = true;
             ChkNotUptoGStandard.Visible = false;
             btnExport.Visible = btnClassReport.Visible = false;
 
@@ -2971,6 +3041,7 @@ namespace SHGraduationWarning.UIForm
             if (SelectedTabName == ChkEditTabName)
             {
                 ControlEnable(false);
+                isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
                 bgwDataChkEditLoad.RunWorkerAsync();
             }
 
@@ -2978,6 +3049,7 @@ namespace SHGraduationWarning.UIForm
             if (SelectedTabName == ChkEditTabName2)
             {
                 ControlEnable(false);
+                isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
                 bgwDataChkEditLoad2.RunWorkerAsync();
             }
 
@@ -2985,6 +3057,7 @@ namespace SHGraduationWarning.UIForm
             if (SelectedTabName == ChkCourseTabName)
             {
                 ControlEnable(false);
+                isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
                 bgwDataChkCourseLoad.RunWorkerAsync();
             }
         }
@@ -3039,6 +3112,7 @@ namespace SHGraduationWarning.UIForm
             LoadTabDesc();
             lblMsg.Text = "共0筆";
             lnkSetReportTemplate.Visible = true;
+            ChkDataCurrentSemester.Visible = false;
             btnReport.Enabled = false;
             btnExport.Visible = btnClassReport.Visible = true;
             btnExport.Enabled = btnClassReport.Enabled = false;
@@ -3052,6 +3126,7 @@ namespace SHGraduationWarning.UIForm
             LoadTabDesc();
             lblMsg.Text = "共" + dgDataChkEdit.Rows.Count + "筆";
             lnkSetReportTemplate.Visible = false;
+            ChkDataCurrentSemester.Visible = true;
             ChkNotUptoGStandard.Visible = false;
             btnExport.Visible = btnClassReport.Visible = false;
         }
@@ -3117,6 +3192,7 @@ namespace SHGraduationWarning.UIForm
             LoadTabDesc();
             //lblMsg.Text = "共" + dgData2ChkEdit.Rows.Count + "筆";
             lnkSetReportTemplate.Visible = false;
+            ChkDataCurrentSemester.Visible = true;
             ChkNotUptoGStandard.Visible = false;
             btnExport.Visible = btnClassReport.Visible = false;
         }
@@ -3422,6 +3498,7 @@ namespace SHGraduationWarning.UIForm
             LoadTabDesc();
             lblMsg.Text = "共" + dgDataCourse.Rows.Count + "筆";
             lnkSetReportTemplate.Visible = false;
+            ChkDataCurrentSemester.Visible = true;
             ChkNotUptoGStandard.Visible = false;
             btnExport.Visible = btnClassReport.Visible = false;
 
@@ -3570,6 +3647,31 @@ namespace SHGraduationWarning.UIForm
                         dgDataCourse.Rows[idx].Cells["新科目級別"].Value = ci.NewSubjectLevel;
                         dgDataCourse.Rows[idx].Cells["使用課規"].Value = ci.GraduationPlanName;
                         dgDataCourse.Rows[idx].Cells["問題說明"].Value = ci.ErrorMessage;
+
+                        // 資料有差異標黃色
+                        if (ci.SubjectName != ci.NewSubjectName)
+                        {
+                            dgDataCourse.Rows[idx].Cells["科目名稱"].Style.BackColor = Color.Yellow;
+                            dgDataCourse.Rows[idx].Cells["新科目名稱"].Style.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            dgDataCourse.Rows[idx].Cells["科目名稱"].Style.BackColor = Color.White;
+                            dgDataCourse.Rows[idx].Cells["新科目名稱"].Style.BackColor = Color.White;
+                        }
+
+                        if (ci.SubjectLevel != ci.NewSubjectLevel)
+                        {
+                            dgDataCourse.Rows[idx].Cells["科目級別"].Style.BackColor = Color.Yellow;
+                            dgDataCourse.Rows[idx].Cells["新科目級別"].Style.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            dgDataCourse.Rows[idx].Cells["科目級別"].Style.BackColor = Color.White;
+                            dgDataCourse.Rows[idx].Cells["新科目級別"].Style.BackColor = Color.White;
+                        }
+
+
                         rowCount++;
                     }
                 }
