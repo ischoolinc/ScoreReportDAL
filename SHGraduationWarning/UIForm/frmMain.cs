@@ -150,7 +150,7 @@ namespace SHGraduationWarning.UIForm
         bool isChkNotUptoGStandard = false;
 
         // 只檢查本學期
-        bool isChkDataCurrentSemester = false;
+        bool isChkDataCurrentSemester = true;
 
 
         public frmMain()
@@ -2424,6 +2424,7 @@ namespace SHGraduationWarning.UIForm
             ChkDataCurrentSemester.Visible = true;
             ChkNotUptoGStandard.Visible = false;
             btnExport.Visible = btnClassReport.Visible = false;
+            ChkDataCurrentSemester.Checked = true;
 
             ClearClassDept();
             // 預設值

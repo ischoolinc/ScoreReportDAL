@@ -26,12 +26,24 @@ namespace SHGraduationWarning
             InitializeComponent();
             checkBoxX1.CheckedChanged += new EventHandler(SetupTemplate);
             checkBoxX2.CheckedChanged += new EventHandler(UploadTemplate);
+            chkTemplate02.CheckedChanged += new EventHandler(SetupTemplate2);
+
         }
+
+        private void SetupTemplate2(object sender, EventArgs e)
+        {
+            // 設定技術型高中樣板
+            if (chkTemplate02.Checked)
+            {
+                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+            }
+        }
+
         private void SetupTemplate(object sender, EventArgs e)
         {
             if (checkBoxX1.Checked)
             {
-                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣版));
+                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣板));
             }
         }
         private void UploadTemplate(object sender, EventArgs e)
@@ -66,7 +78,7 @@ namespace SHGraduationWarning
                 ready = false;
             else
                 ConfigName = txtName.Text;
-            if (!checkBoxX1.Checked && !checkBoxX2.Checked)
+            if (!checkBoxX1.Checked && !checkBoxX2.Checked && !chkTemplate02.Checked)                
             {
                 ready = false;
             }
@@ -100,7 +112,7 @@ namespace SHGraduationWarning
 
             try
             {
-                Document document = new Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣版));
+                Document document = new Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣板));
                 document.Save(path, Aspose.Words.SaveFormat.Docx);
                 System.Diagnostics.Process.Start(path);
             }
@@ -114,7 +126,7 @@ namespace SHGraduationWarning
                 {
                     try
                     {
-                        Document document = new Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣版));
+                        Document document = new Document(new MemoryStream(Properties.Resources.普通高中個人畢業預警通知書樣板));
                         document.Save(path, Aspose.Words.SaveFormat.Docx);
 
                     }
@@ -188,5 +200,66 @@ namespace SHGraduationWarning
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             Close();
         }
+
+        private void lnkTemplate02_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            #region 儲存檔案
+
+            string reportName = "技術型高中個人畢業預警通知書樣板";
+
+            string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            path = Path.Combine(path, reportName + ".docx");
+
+            if (File.Exists(path))
+            {
+                int i = 1;
+                while (true)
+                {
+                    string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
+                    if (!File.Exists(newPath))
+                    {
+                        path = newPath;
+                        break;
+                    }
+                }
+            }
+
+            try
+            {
+                Document document = new Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+                document.Save(path, Aspose.Words.SaveFormat.Docx);
+                System.Diagnostics.Process.Start(path);
+            }
+            catch
+            {
+                System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
+                sd.Title = "另存新檔";
+                sd.FileName = reportName + ".docx";
+                sd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
+                if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    try
+                    {
+                        Document document = new Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+                        document.Save(path, Aspose.Words.SaveFormat.Docx);
+
+                    }
+                    catch
+                    {
+                        FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+            #endregion
+        }
+
+        private void NewConfigure_Load(object sender, EventArgs e)
+        {
+
+        }
+               
     }
 }

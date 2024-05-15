@@ -39,6 +39,8 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.lnkTemplate02 = new System.Windows.Forms.LinkLabel();
+            this.chkTemplate02 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.SuspendLayout();
             // 
             // labelX1
@@ -75,7 +77,7 @@
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(243, 297);
+            this.btnCancel.Location = new System.Drawing.Point(243, 327);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -88,7 +90,7 @@
             this.btnSubmit.BackColor = System.Drawing.Color.Transparent;
             this.btnSubmit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSubmit.Enabled = false;
-            this.btnSubmit.Location = new System.Drawing.Point(162, 297);
+            this.btnSubmit.Location = new System.Drawing.Point(162, 327);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -139,7 +141,7 @@
             this.checkBoxX2.BackgroundStyle.Class = "";
             this.checkBoxX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX2.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.checkBoxX2.Location = new System.Drawing.Point(13, 190);
+            this.checkBoxX2.Location = new System.Drawing.Point(13, 220);
             this.checkBoxX2.Name = "checkBoxX2";
             this.checkBoxX2.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -179,7 +181,7 @@
             // 
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel2.Location = new System.Drawing.Point(134, 192);
+            this.linkLabel2.Location = new System.Drawing.Point(134, 222);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(112, 17);
             this.linkLabel2.TabIndex = 6;
@@ -195,12 +197,42 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(32, 217);
+            this.labelX2.Location = new System.Drawing.Point(32, 247);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(286, 74);
             this.labelX2.TabIndex = 5;
             this.labelX2.Text = "透過自訂樣板可以將報表設定成最符合使用情境的樣貌。但樣板中合併欄位非常的多，建議從合併欄位總表中，利用複製貼上的方式填入您的樣板，如此將可保障樣板的正確性。";
             this.labelX2.WordWrap = true;
+            // 
+            // lnkTemplate02
+            // 
+            this.lnkTemplate02.AutoSize = true;
+            this.lnkTemplate02.BackColor = System.Drawing.Color.Transparent;
+            this.lnkTemplate02.Location = new System.Drawing.Point(160, 193);
+            this.lnkTemplate02.Name = "lnkTemplate02";
+            this.lnkTemplate02.Size = new System.Drawing.Size(60, 17);
+            this.lnkTemplate02.TabIndex = 8;
+            this.lnkTemplate02.TabStop = true;
+            this.lnkTemplate02.Text = "檢視樣板";
+            this.lnkTemplate02.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkTemplate02_LinkClicked);
+            // 
+            // chkTemplate02
+            // 
+            this.chkTemplate02.AutoSize = true;
+            this.chkTemplate02.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkTemplate02.BackgroundStyle.Class = "";
+            this.chkTemplate02.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkTemplate02.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.chkTemplate02.Location = new System.Drawing.Point(13, 191);
+            this.chkTemplate02.Name = "chkTemplate02";
+            this.chkTemplate02.Size = new System.Drawing.Size(147, 21);
+            this.chkTemplate02.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkTemplate02.TabIndex = 7;
+            this.chkTemplate02.Text = "使用職業類成績樣版";
+            this.chkTemplate02.CheckedChanged += new System.EventHandler(this.checkReady);
             // 
             // NewConfigure
             // 
@@ -208,7 +240,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(330, 328);
+            this.ClientSize = new System.Drawing.Size(330, 357);
+            this.Controls.Add(this.lnkTemplate02);
+            this.Controls.Add(this.chkTemplate02);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.labelX2);
@@ -223,6 +257,7 @@
             this.DoubleBuffered = true;
             this.Name = "NewConfigure";
             this.Text = "新增列印樣板";
+            this.Load += new System.EventHandler(this.NewConfigure_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,5 +276,7 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private DevComponents.DotNetBar.LabelX labelX2;
+        private System.Windows.Forms.LinkLabel lnkTemplate02;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkTemplate02;
     }
 }
