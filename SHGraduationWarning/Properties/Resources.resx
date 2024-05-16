@@ -133,9 +133,6 @@
   <data name="學生學期科目與課規課程代碼差異樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\學生學期科目與課規課程代碼差異樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="技術型高中個人畢業預警通知書樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\template\技術型高中個人畢業預警通知書樣版.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="普通高中個人畢業預警通知書樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\普通高中個人畢業預警通知書樣板.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -144,6 +141,9 @@
   </data>
   <data name="畢業審查學生清單樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\畢業審查學生清單樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="畢業預警報表樣板_職業類科預設樣板_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\畢業預警報表樣板(職業類科預設樣板).docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="畢業預警通知單合併欄位總表" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\畢業預警通知單合併欄位總表.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

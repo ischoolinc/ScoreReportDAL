@@ -284,10 +284,10 @@
     <None Include="Template\學期成績匯入檔樣板1.xlsx" />
     <None Include="Template\學期成績與課規比對樣板.xlsx" />
     <None Include="Template\學生學期科目與課規課程代碼差異樣板.xlsx" />
-    <None Include="Template\技術型高中個人畢業預警通知書樣版.docx" />
     <None Include="Template\普通高中個人畢業預警通知書樣板.docx" />
     <None Include="Template\班級預警報表樣板.xlsx" />
     <None Include="Template\畢業審查學生清單樣板.xlsx" />
+    <None Include="Template\畢業預警報表樣板%28職業類科預設樣板%29.docx" />
     <None Include="Template\畢業預警通知單合併欄位總表.docx" />
     <None Include="Template\課程與課規比對樣板.xlsx" />
   </ItemGroup>

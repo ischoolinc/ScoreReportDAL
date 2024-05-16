@@ -35,7 +35,7 @@ namespace SHGraduationWarning
             // 設定技術型高中樣板
             if (chkTemplate02.Checked)
             {
-                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.畢業預警報表樣板_職業類科預設樣板_));
             }
         }
 
@@ -228,7 +228,7 @@ namespace SHGraduationWarning
 
             try
             {
-                Document document = new Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+                Document document = new Document(new MemoryStream(Properties.Resources.畢業預警報表樣板_職業類科預設樣板_));
                 document.Save(path, Aspose.Words.SaveFormat.Docx);
                 System.Diagnostics.Process.Start(path);
             }
@@ -242,7 +242,7 @@ namespace SHGraduationWarning
                 {
                     try
                     {
-                        Document document = new Document(new MemoryStream(Properties.Resources.技術型高中個人畢業預警通知書樣版));
+                        Document document = new Document(new MemoryStream(Properties.Resources.畢業預警報表樣板_職業類科預設樣板_));
                         document.Save(path, Aspose.Words.SaveFormat.Docx);
 
                     }
