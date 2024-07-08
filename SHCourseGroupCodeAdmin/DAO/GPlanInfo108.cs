@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Data;
+using K12.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SHCourseGroupCodeAdmin.DAO
 {
@@ -303,6 +305,30 @@ namespace SHCourseGroupCodeAdmin.DAO
                     subjElm.SetAttributeValue("NotIncludedInCalc", CheckNotIncludedInCredit(data.course_code));
                     subjElm.SetAttributeValue("NotIncludedInCredit", CheckNotIncludedInCredit(data.course_code));
 
+
+                    // 2024/7/5，會議針對9D,9C 處理
+                    if (data.course_code.Length > 22)
+                    {
+                        if (data.course_code.Substring(16, 1) == "9")
+                        {
+                            //  9D
+                            if (data.course_code.Substring(18, 1).ToUpper() == "D")
+                            {
+                                //  9d 課程- 不須評分、計學分；
+                                subjElm.SetAttributeValue("NotIncludedInCalc", "True");
+                                subjElm.SetAttributeValue("NotIncludedInCredit", "False");
+
+                            }
+                            // 9C
+                            if (data.course_code.Substring(18, 1).ToUpper() == "C")
+                            {
+                                //9c課程 - 不須評分、不計學分
+                                subjElm.SetAttributeValue("NotIncludedInCalc", "True");
+                                subjElm.SetAttributeValue("NotIncludedInCredit", "True");
+                            }
+                        }
+                    }
+
                     subjElm.SetAttributeValue("Required", data.is_required);
                     if (data.require_by == "部定")
                         subjElm.SetAttributeValue("RequiredBy", "部訂");
@@ -554,6 +580,7 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
+
         /// <summary>
         /// 解析目前課程規劃 ToXML
         /// </summary>
@@ -635,7 +662,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 
                         if (hasGradeYear1)
                         {
-                          //  Console.WriteLine("已有資料。");
+                            //  Console.WriteLine("已有資料。");
                         }
                         else
                         {
@@ -678,6 +705,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                                     subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                                     subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                                     subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+                                    
+                                    // 2024/7/5，會議針對9D,9C 處理
+                                    subj = ParseCourseCode9D9C(subj);                                    
+
                                     elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
                                     elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
 
@@ -757,6 +788,11 @@ namespace SHCourseGroupCodeAdmin.DAO
                         subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                         subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                         subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+
+
+                        // 2024/7/5，會議針對9D,9C 處理
+                        subj = ParseCourseCode9D9C(subj);
+
                         elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
                         elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
 
@@ -889,6 +925,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+                            
+                            // 2024/7/5，會議針對9D,9C 處理
+                            subj = ParseCourseCode9D9C(subj);
+
                             elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
                             elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
                             subj.ProcessStatus = "新增";
@@ -921,9 +961,14 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OpenStatus = GetAttribute(elm, "開課方式");
                             subj.open_type = GetAttribute(elm, "OpenType");
                             subj.course_attr = GetAttribute(elm, "CourseAttr");
+
                             subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+
+                            // 2024/7/5，會議針對9D,9C 處理
+                            subj = ParseCourseCode9D9C(subj);
+
                             subj.ProcessStatus = "刪除";
                             subj.DiffStatusList.Add("多");
                             subj.GPlanXml = GPlanDict[mCo];
@@ -948,7 +993,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                             {
                                 if (index >= MOEDict[mCo].Count)
                                     continue;
-                                
+
                                 XElement moeEle = MOEDict[mCo][index];
 
                                 // 複製原有課程規畫表群組設定
@@ -1015,6 +1060,10 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.OfficialSubjectName = GetAttribute(elm, "OfficialSubjectName");
                             subj.NotIncludedInCalc = CheckNotIncludedInCredit(subj.CourseCode);
                             subj.NotIncludedInCredit = CheckNotIncludedInCredit(subj.CourseCode);
+
+                            // 2024/7/5，會議針對9D,9C 處理
+                            subj = ParseCourseCode9D9C(subj);
+                            
                             elm.SetAttributeValue("NotIncludedInCalc", subj.NotIncludedInCalc);
                             elm.SetAttributeValue("NotIncludedInCredit", subj.NotIncludedInCredit);
 
@@ -1246,6 +1295,35 @@ namespace SHCourseGroupCodeAdmin.DAO
 
             return value;
         }
+
+        // 處理課程代碼 9D 9C
+        private chkSubjectInfo ParseCourseCode9D9C(chkSubjectInfo subj)
+        {
+            // 2024/7/5，會議針對9D,9C 處理
+            if (subj.CourseCode.Length > 22)
+            {
+                if (subj.CourseCode.Substring(16, 1) == "9")
+                {
+                    //  9D
+                    if (subj.CourseCode.Substring(18, 1).ToUpper() == "D")
+                    {
+                        //  9d 課程- 不須評分、計學分；
+                        subj.NotIncludedInCalc = "True";
+                        subj.NotIncludedInCredit = "False";
+
+                    }
+                    // 9C
+                    if (subj.CourseCode.Substring(18, 1).ToUpper() == "C")
+                    {
+                        //9c課程 - 不須評分、不計學分
+                        subj.NotIncludedInCalc = "True";
+                        subj.NotIncludedInCredit = "True";
+                    }
+                }
+            }
+            return subj;
+        }
+
 
         public Dictionary<string, List<XElement>> GetUserDefSubjectDict()
         {

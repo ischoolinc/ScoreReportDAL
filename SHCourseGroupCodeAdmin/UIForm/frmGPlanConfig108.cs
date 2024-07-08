@@ -33,6 +33,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         bool isDgDataChange = false;
         bool isUDDgDataChange = false;
         bool isLoadUDDataFinish = true;
+        bool isLoadDataFinish = true;
         bool isUDRowSelect = false;
 
         // 檢查科目是否重複
@@ -346,6 +347,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbGS32.ReadOnly = true;
                 tbGS32.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+                // 調整成使用可以設定是否
                 DataGridViewTextBoxColumn tbNotIncludedInCalc = new DataGridViewTextBoxColumn();
                 tbNotIncludedInCalc.Name = "不需評分";
                 tbNotIncludedInCalc.Width = 40;
@@ -359,6 +361,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbNotIncludedInCredit.HeaderText = "不計學分";
                 tbNotIncludedInCredit.ReadOnly = true;
                 tbNotIncludedInCredit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
 
 
                 DataGridViewTextBoxColumn tbOpenStatus = new DataGridViewTextBoxColumn();
@@ -693,6 +696,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 初始化
             isUDRowSelect = false;
             isLoadUDDataFinish = false;
+            isLoadDataFinish = false;
             this.lblGroupName.Text = "";
             lblUDGroupName.Text = "";
             dgUDData.Rows.Clear();
@@ -1358,6 +1362,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _IsMainDataDirty = false;
             _IsCourseGroupDataDirty = false;
             isLoadUDDataFinish = true;
+            isLoadDataFinish = true;
         }
 
         private void TabItem2_Click(object sender, EventArgs e)
@@ -1630,6 +1635,13 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 btnUpdate.Enabled = false;
 
+
+                // 取得課程規劃表資料
+                foreach (DataGridViewRow row in dgData.Rows)
+                {
+
+                }
+
                 // 檢查使用這自訂科目資料
                 if (CheckUDDataGridData() == false)
                 {
@@ -1654,7 +1666,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                 // 不同列科目名稱+級別重複無法儲存
                 if (_MainOneSemesterHasDuplicateSubjectName)
-                {                   
+                {
                     MessageBox.Show("科目名稱+級別不可重複");
                     btnUpdate.Enabled = true;
                     return;
@@ -2354,7 +2366,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             // 檢查科目名稱+級別，課程代碼不同。
             Dictionary<string, List<string>> SubjectNameCourseCodeDict = new Dictionary<string, List<string>>();
 
-            
+
             foreach (DataGridViewRow row in _MainRowList)
             {
                 if (row.Tag != null)
@@ -2391,7 +2403,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             row.Cells[col].ErrorText = "";
                     }
             }
-                      
+
 
             List<string> rowKeyList = RowSubjectNameDict.Keys.ToList();
             // 檢查每列是否科目名稱+級別有重複
@@ -2430,11 +2442,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                             cell.ErrorText = "科目名稱+級別重複，請修正科目名稱與級別。";
                                             _MainOneSemesterHasDuplicateSubjectName = true;
                                         }
-                                    }                                    
+                                    }
                                 }
 
                                 foreach (DataGridViewCell cell in _MainRowList[r2].Cells)
-                                {                                 
+                                {
                                     XElement element = (XElement)cell.Tag;
                                     if (element != null)
                                     {
@@ -2447,8 +2459,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                             cell.ErrorText = "科目名稱+級別重複，請修正科目名稱與級別。";
                                             _MainOneSemesterHasDuplicateSubjectName = true;
                                         }
-                                    }                                    
-                                }                               
+                                    }
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -4042,6 +4054,19 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 Console.WriteLine(ex.Message);
             }
+
+        }
+
+        private void dgData_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgData.IsCurrentCellDirty)
+            {
+                dgData.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dgData_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
 
