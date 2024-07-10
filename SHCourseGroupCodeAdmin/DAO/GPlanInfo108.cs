@@ -306,25 +306,20 @@ namespace SHCourseGroupCodeAdmin.DAO
                     subjElm.SetAttributeValue("NotIncludedInCredit", CheckNotIncludedInCredit(data.course_code));
 
 
-                    // 2024/7/5，會議針對9D,9C 處理
+                    // 2024/7/5，會議針對9D,9 處理
                     if (data.course_code.Length > 22)
                     {
                         if (data.course_code.Substring(16, 1) == "9")
                         {
+                            //  9 課程- 不須評分、不計學分；
+                            subjElm.SetAttributeValue("NotIncludedInCalc", "True");
+                            subjElm.SetAttributeValue("NotIncludedInCredit", "True");
+
                             //  9D
                             if (data.course_code.Substring(18, 1).ToUpper() == "D")
                             {
                                 //  9d 課程- 不須評分、計學分；
-                                subjElm.SetAttributeValue("NotIncludedInCalc", "True");
                                 subjElm.SetAttributeValue("NotIncludedInCredit", "False");
-
-                            }
-                            // 9C
-                            if (data.course_code.Substring(18, 1).ToUpper() == "C")
-                            {
-                                //9c課程 - 不須評分、不計學分
-                                subjElm.SetAttributeValue("NotIncludedInCalc", "True");
-                                subjElm.SetAttributeValue("NotIncludedInCredit", "True");
                             }
                         }
                     }
@@ -1296,28 +1291,23 @@ namespace SHCourseGroupCodeAdmin.DAO
             return value;
         }
 
-        // 處理課程代碼 9D 9C
+        // 處理課程代碼 9D 9
         private chkSubjectInfo ParseCourseCode9D9C(chkSubjectInfo subj)
         {
-            // 2024/7/5，會議針對9D,9C 處理
+            // 2024/7/5，會議針對9D,9 處理
             if (subj.CourseCode.Length > 22)
             {
                 if (subj.CourseCode.Substring(16, 1) == "9")
                 {
+                    //9課程 - 不須評分、不計學分
+                    subj.NotIncludedInCalc = "True";
+                    subj.NotIncludedInCredit = "True";
+
                     //  9D
                     if (subj.CourseCode.Substring(18, 1).ToUpper() == "D")
                     {
-                        //  9d 課程- 不須評分、計學分；
-                        subj.NotIncludedInCalc = "True";
+                        //  9d 課程- 不須評分、計學分；                        
                         subj.NotIncludedInCredit = "False";
-
-                    }
-                    // 9C
-                    if (subj.CourseCode.Substring(18, 1).ToUpper() == "C")
-                    {
-                        //9c課程 - 不須評分、不計學分
-                        subj.NotIncludedInCalc = "True";
-                        subj.NotIncludedInCredit = "True";
                     }
                 }
             }
