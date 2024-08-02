@@ -265,6 +265,7 @@ namespace SHCourseGroupCodeSetup.DAO
             value.Add("n.ylvs.chc.edu.tw", "070408");
             value.Add("n2.ylvs.chc.edu.tw", "070408");
             value.Add("n.pthc.chc.edu.tw", "070415");
+            value.Add("n.ltcvs.ilc.edu.tw", "020404");
 
             return value;
         }
