@@ -145,10 +145,22 @@
   <data name="畢業預警報表樣板_職業類科預設樣板_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\畢業預警報表樣板(職業類科預設樣板).docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="畢業預警說明" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\畢業預警說明.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="畢業預警通知單合併欄位總表" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\畢業預警通知單合併欄位總表.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="課程與課規比對樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\課程與課規比對樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="資料合理性檢查_科目屬性_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\資料合理性檢查(科目屬性).txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="資料合理性檢查_科目級別_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\資料合理性檢查(科目級別).txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="資料合理性檢查_課程科目級別_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\資料合理性檢查(課程科目級別).txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

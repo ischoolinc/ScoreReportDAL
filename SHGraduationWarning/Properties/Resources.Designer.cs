@@ -165,6 +165,23 @@ namespace SHGraduationWarning.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 畢業預警
+        ///本功能依學生成績計算規則中的畢業成績計算規則進行畢業預警作業。
+        ///目的：確認學生是否符合畢業資格。
+        ///請依「年級」、「科別」、「班級」選取欲進行檢查之學生，待檢查完畢後，您可利用「產生報表」功能查看檢核結果。
+        ///
+        ///報表說明：
+        ///「匯出清單」：可直接產出畢業審查結果。
+        ///「產生班級報表」：依班級產生班級報表。
+        ///「產生報表」：可選取單/多筆學生產生個人報表。.
+        /// </summary>
+        internal static string 畢業預警說明 {
+            get {
+                return ResourceManager.GetString("畢業預警說明", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] 畢業預警通知單合併欄位總表 {
@@ -181,6 +198,55 @@ namespace SHGraduationWarning.Properties {
             get {
                 object obj = ResourceManager.GetObject("課程與課規比對樣板", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 資料合理性檢查(科目屬性)
+        ///本功能依學生學期科目成績及採用課程規劃進行資料合理性檢查。
+        ///目的：確認學生修習科目屬性是否正確。
+        ///請依「年級」、「科別」、「班級」選取欲進行檢查之學生，待檢查完畢後，您可利用「產生報表」功能查看檢核結果。
+        ///
+        ///工作表說明：
+        ///「學期科目成績匯入檔」：若有差異，可直接用匯入學期科目成績功能匯入修改。.
+        /// </summary>
+        internal static string 資料合理性檢查_科目屬性_ {
+            get {
+                return ResourceManager.GetString("資料合理性檢查_科目屬性_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 資料合理性檢查(科目級別)
+        ///本功能依學生學期科目成績及採用課程規劃進行資料合理性檢查。
+        ///目的：確認學生修習科目級別是否正確。
+        ///請依「年級」、「科別」、「班級」選取欲進行檢查之學生，待檢查完畢後，您可利用「產生報表」功能查看檢核結果。
+        ///
+        ///工作表說明：
+        ///「依學期成績為主比對課規不符合」：學生學期導目成績中，若科目級別與課程規劃不一致，則「新科目級別」欄位顯示課規上所規範之科目級別。
+        ///「依課規為主比對學期成績不符合」：課程規劃之課程，但學生無成績記錄之科目。
+        ///「依課規比對課程群組學分總數不符合」.
+        /// </summary>
+        internal static string 資料合理性檢查_科目級別_ {
+            get {
+                return ResourceManager.GetString("資料合理性檢查_科目級別_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 資料合理性檢查(課程科目級別)
+        ///本功能依學生修課記錄及採用課程規劃進行資料合理性檢查。
+        ///目的：確認開課及課程規劃表是否一致。
+        ///檢查學生狀態：一般生、延修生。
+        ///請依「年級」、「科別」、「班級」選取欲進行檢查之學生，待檢查完畢後，您可利用「產生報表」功能查看檢核結果。
+        ///
+        ///工作表說明：
+        ///「依課程為主比對課規不符合」：所開設之課程不在課程規劃中。
+        ///「依課規為主比對課程不符合」：課程規劃之課程查無開設記錄。.
+        /// </summary>
+        internal static string 資料合理性檢查_課程科目級別_ {
+            get {
+                return ResourceManager.GetString("資料合理性檢查_課程科目級別_", resourceCulture);
             }
         }
     }

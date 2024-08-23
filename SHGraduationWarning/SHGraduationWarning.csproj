@@ -253,6 +253,10 @@
     <Content Include="Library\SmartSchool.Customization.Data.xml" />
     <Content Include="Library\SmartSchool.Evaluation.HS.dll" />
     <Content Include="Library\SmartSchool.Evaluation.HS.pdb" />
+    <Content Include="Template\畢業預警說明.txt" />
+    <Content Include="Template\資料合理性檢查%28科目屬性%29.txt" />
+    <Content Include="Template\資料合理性檢查%28科目級別%29.txt" />
+    <Content Include="Template\資料合理性檢查%28課程科目級別%29.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ConfigForm.resx">
