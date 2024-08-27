@@ -300,7 +300,7 @@ namespace SHGraduationWarning.UIForm
         {
             // 處理報表填入 Excel
             Workbook wb = new Workbook(new MemoryStream(Properties.Resources.課程與課規比對樣板));
-            Worksheet wst = wb.Worksheets["依課程為主比對課規不符合"];
+            Worksheet wst = wb.Worksheets["開課課程比對"];
             bgwCourseReport.ReportProgress(10);
             int rowIdx = 1;
             _ColIdxDict.Clear();
@@ -358,7 +358,7 @@ namespace SHGraduationWarning.UIForm
 
 
             bgwCourseReport.ReportProgress(60);
-            Worksheet wst1 = wb.Worksheets["依課規為主比對課程不符合"];
+            Worksheet wst1 = wb.Worksheets["課程規劃比對"];
             _ColIdxDict.Clear();
             // 讀取欄位與索引            
             for (int co = 0; co <= wst1.Cells.MaxDataColumn; co++)
@@ -462,7 +462,7 @@ namespace SHGraduationWarning.UIForm
             if (SelectedGradeYearYear == NoGradeYearStr)
             {
                 // 課程必對課規資料
-                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlanNoGr1(SelectedGradeYearYear, DeptID, ClassID, CurrentSemester);
+                CourseInfoList = DataAccess.GetCourseSubjectLevelCheckGraduationPlanNoGr1(SelectedGradeYearYear, DeptID, ClassID);
 
                 // 處理有差異資料
                 foreach (CourseInfo ci in CourseInfoList)
@@ -499,7 +499,7 @@ namespace SHGraduationWarning.UIForm
                 bgwDataChkCourseLoad.ReportProgress(60);
 
                 // 取得課規有課程沒有
-                chkGPDataCourseList = DataAccess.GetCourseSubjectLevelCheckGraduationPlan2(SelectedGradeYearYear, DeptID, ClassID);
+                chkGPDataCourseList = DataAccess.GetCourseSubjectLevelCheckGraduationPlan2(SelectedGradeYearYear, DeptID, ClassID, CurrentSemester);
 
             }
 
@@ -1545,14 +1545,14 @@ namespace SHGraduationWarning.UIForm
                     bgwDataChkEditReport.ReportProgress(1);
                     // 填值到 Excel
                     wb = new Workbook(new MemoryStream(Properties.Resources.學期成績與課規比對樣板));
-                    Worksheet wstSC = wb.Worksheets["依學期成績為主比對課規不符合"];
-                    wstSC.Name = "依學期成績為主比對課規不符合";
+                    Worksheet wstSC = wb.Worksheets["學期科目成績比對"];
+                    wstSC.Name = "學期科目成績比對";
 
-                    Worksheet wstSC2 = wb.Worksheets["依課規為主比對學期成績不符合"];
-                    wstSC2.Name = "依課規為主比對學期成績不符合";
+                    Worksheet wstSC2 = wb.Worksheets["課程規劃比對"];
+                    wstSC2.Name = "課程規劃比對";
 
-                    Worksheet wstSC3 = wb.Worksheets["依課規比對課程群組學分總數不符合"];
-                    wstSC3.Name = "依課規比對課程群組學分總數不符合";
+                    //Worksheet wstSC3 = wb.Worksheets["依課規比對課程群組學分總數不符合"];
+                    //wstSC3.Name = "依課規比對課程群組學分總數不符合";
 
                     int rowIdx = 1;
                     _ColIdxDict.Clear();
@@ -1630,33 +1630,33 @@ namespace SHGraduationWarning.UIForm
                     wstSC2.AutoFitColumns();
                     bgwDataChkEditReport.ReportProgress(70);
 
-                    rowIdx = 1;
-                    _ColIdxDict.Clear();
-                    // 讀取欄位與索引            
-                    for (int co = 0; co <= wstSC3.Cells.MaxDataColumn; co++)
-                    {
-                        _ColIdxDict.Add(wstSC3.Cells[0, co].StringValue, co);
-                    }
+                    //rowIdx = 1;
+                    //_ColIdxDict.Clear();
+                    //// 讀取欄位與索引            
+                    //for (int co = 0; co <= wstSC3.Cells.MaxDataColumn; co++)
+                    //{
+                    //    _ColIdxDict.Add(wstSC3.Cells[0, co].StringValue, co);
+                    //}
 
-                    if (chkDataReport3.Count > 0)
-                    {
-                        foreach (DataRow dr in chkDataReport3)
-                        {
-                            wstSC3.Cells[rowIdx, GetColIndex("學號")].PutValue(dr["學號"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("科別")].PutValue(dr["科別名稱"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("班級")].PutValue(dr["班級"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("座號")].PutValue(dr["座號"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("姓名")].PutValue(dr["姓名"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("使用課程規劃表")].PutValue(dr["使用課程規劃表"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("成績年級")].PutValue(dr["成績年級"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("學期")].PutValue(dr["學期"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("分組名稱")].PutValue(dr["分組名稱"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("分組修課學分數")].PutValue(dr["分組修課學分數"] + "");
-                            wstSC3.Cells[rowIdx, GetColIndex("成績累計學分數")].PutValue(dr["成績累計學分數"] + "");
-                            rowIdx++;
-                        }
-                    }
-                    wstSC3.AutoFitColumns();
+                    //if (chkDataReport3.Count > 0)
+                    //{
+                    //    foreach (DataRow dr in chkDataReport3)
+                    //    {
+                    //        wstSC3.Cells[rowIdx, GetColIndex("學號")].PutValue(dr["學號"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("科別")].PutValue(dr["科別名稱"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("班級")].PutValue(dr["班級"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("座號")].PutValue(dr["座號"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("姓名")].PutValue(dr["姓名"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("使用課程規劃表")].PutValue(dr["使用課程規劃表"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("成績年級")].PutValue(dr["成績年級"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("學期")].PutValue(dr["學期"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("分組名稱")].PutValue(dr["分組名稱"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("分組修課學分數")].PutValue(dr["分組修課學分數"] + "");
+                    //        wstSC3.Cells[rowIdx, GetColIndex("成績累計學分數")].PutValue(dr["成績累計學分數"] + "");
+                    //        rowIdx++;
+                    //    }
+                    //}
+                    //wstSC3.AutoFitColumns();
                     bgwDataChkEditReport.ReportProgress(100);
                 }
                 catch (Exception ex)
@@ -3027,40 +3027,87 @@ namespace SHGraduationWarning.UIForm
         private void btnQuery_Click(object sender, EventArgs e)
         {
 
-            // 畢業預警
-            if (SelectedTabName == GWTabName)
+            // 檢查學生是否都設定課程規畫表
+            ControlEnable(false);
+
+            bool chkPass = false;
+
+            string DeptID = "";
+            string ClassID = "";
+
+            // 沒有設定課程規劃表學生系統編號
+            List<string> NoGraduationPlanStudentIDList = new List<string>();
+
+
+            if (DeptNameIDDic.ContainsKey(SelectedDeptName))
+                DeptID = DeptNameIDDic[SelectedDeptName];
+
+            if (ClassNameIDDic.ContainsKey(SelectedClassName))
+                ClassID = ClassNameIDDic[SelectedClassName];
+
+            // 延修生，未分年級
+            if (SelectedGradeYearYear == NoGradeYearStr)
             {
-                ControlEnable(false);
-
-                // 檢查僅顯示未達設定
-                isChkNotUptoGStandard = ChkNotUptoGStandard.Checked;
-
-                bgwDataGWLoad.RunWorkerAsync();
+                NoGraduationPlanStudentIDList = DataAccess.GetNoGraduationPlanStudentIDList(SelectedGradeYearYear);
+            }
+            else
+            {
+                NoGraduationPlanStudentIDList = DataAccess.GetNoGraduationPlanStudentIDList(SelectedGradeYearYear);
             }
 
-            // 資料合理檢查
-            if (SelectedTabName == ChkEditTabName)
+            if (NoGraduationPlanStudentIDList.Count > 0)
             {
-                ControlEnable(false);
-                isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
-                bgwDataChkEditLoad.RunWorkerAsync();
+                chkPass = false;
+                // 顯示沒有設定課程規劃表學生
+                frmNoGraduationPlanStudent frm = new frmNoGraduationPlanStudent();
+                frm.SetNoGraduationPlanStudentList(NoGraduationPlanStudentIDList);
+                frm.ShowDialog();
+                ControlEnable(true);
             }
+            else
+            {
+                chkPass = true;
+            }
+           
+            
+            if (chkPass)
+            {
+                // 畢業預警
+                if (SelectedTabName == GWTabName)
+                {
+                    ControlEnable(false);
 
-            // 資料合理檢查-科目屬性
-            if (SelectedTabName == ChkEditTabName2)
-            {
-                ControlEnable(false);
-                isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
-                bgwDataChkEditLoad2.RunWorkerAsync();
-            }
+                    // 檢查僅顯示未達設定
+                    isChkNotUptoGStandard = ChkNotUptoGStandard.Checked;
 
-            // 資料合理檢查-課程科目級別
-            if (SelectedTabName == ChkCourseTabName)
-            {
-                ControlEnable(false);
-                isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
-                bgwDataChkCourseLoad.RunWorkerAsync();
+                    bgwDataGWLoad.RunWorkerAsync();
+                }
+
+                // 資料合理檢查
+                if (SelectedTabName == ChkEditTabName)
+                {
+                    ControlEnable(false);
+                    isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
+                    bgwDataChkEditLoad.RunWorkerAsync();
+                }
+
+                // 資料合理檢查-科目屬性
+                if (SelectedTabName == ChkEditTabName2)
+                {
+                    ControlEnable(false);
+                    isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
+                    bgwDataChkEditLoad2.RunWorkerAsync();
+                }
+
+                // 資料合理檢查-課程科目級別
+                if (SelectedTabName == ChkCourseTabName)
+                {
+                    ControlEnable(false);
+                    isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
+                    bgwDataChkCourseLoad.RunWorkerAsync();
+                }
             }
+            ControlEnable(true);
         }
 
         private void tabControl1_SelectedTabChanged(object sender, DevComponents.DotNetBar.TabStripTabChangedEventArgs e)

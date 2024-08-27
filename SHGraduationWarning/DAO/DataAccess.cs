@@ -5227,8 +5227,9 @@ namespace SHGraduationWarning.DAO
         }
 
         // 比對課程規畫表SQL(課規為主比對課程)
-        public static List<DataRow> GetCourseSubjectLevelCheckGraduationPlan2(string GradeYear, string DeptID, string ClassID)
+        public static List<DataRow> GetCourseSubjectLevelCheckGraduationPlan2(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
         {
+
             List<DataRow> value = new List<DataRow>();
             try
             {
@@ -5428,7 +5429,7 @@ namespace SHGraduationWarning.DAO
                     WHERE
                         course.school_year = target_student_with_sems_history.school_year
                         AND course.semester = target_student_with_sems_history.semester 
-                        AND course.subject <> '' 
+                        AND course.subject <> ''                         
                 ),
                 target_data AS(
                     SELECT
@@ -5606,14 +5607,13 @@ namespace SHGraduationWarning.DAO
                     graduation_plan_mismatch.新學分 AS 學分
                 FROM
                     graduation_plan_mismatch
-                    INNER JOIN target_student ON graduation_plan_mismatch.student_id = target_student.student_id
-	
+                    INNER JOIN target_student ON graduation_plan_mismatch.student_id = target_student.student_id	            
                 ORDER BY    
                     使用課程規劃表,                    
                     年級,
                     學期,
                     科目名稱
-", condition);
+", condition, CurrentSemester);
                 //// debug
                 //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
                 //{
@@ -5638,7 +5638,7 @@ namespace SHGraduationWarning.DAO
         }
 
         // 比對課程規畫表SQL(課程為主比對課規，未分年級)
-        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlanNoGr1(string GradeYear, string DeptID, string ClassID, string CurrentSemester)
+        public static List<CourseInfo> GetCourseSubjectLevelCheckGraduationPlanNoGr1(string GradeYear, string DeptID, string ClassID)
         {
             List<CourseInfo> value = new List<CourseInfo>();
             try
@@ -5988,7 +5988,7 @@ namespace SHGraduationWarning.DAO
 			學期,
 			課程名稱,
 			科目名稱
-", CurrentSemester);
+");
 
                 //// debug
                 //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
@@ -6400,14 +6400,13 @@ namespace SHGraduationWarning.DAO
 				graduation_plan_mismatch.新學分 AS 學分
 			FROM
 				graduation_plan_mismatch
-				INNER JOIN target_student ON graduation_plan_mismatch.student_id = target_student.student_id
-
+				INNER JOIN target_student ON graduation_plan_mismatch.student_id = target_student.student_id             
 			ORDER BY    
 				使用課程規劃表,                    
 				年級,
 				學期,
 				科目名稱
-");
+            ");
                 //// debug
                 //using (StreamWriter sw = new StreamWriter(@"e:\debug1.txt"))
                 //{
@@ -6440,5 +6439,71 @@ namespace SHGraduationWarning.DAO
             return value;
         }
 
+        // 傳入年級
+        public static List<string> GetNoGraduationPlanStudentIDList(string gradeYear)
+        {
+            List<string> value = new List<string>();
+
+            //  Console.WriteLine(gradeYear + "_" + deptID + "_" + classID);
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string strSQL = "";
+                if (gradeYear == "未分年級")
+                {
+                    strSQL = string.Format(@"
+                SELECT
+                    student.id AS student_id
+                FROM
+                    student
+                    LEFT JOIN class ON student.ref_class_id = class.id
+                WHERE
+                    student.status IN(1, 2)
+                    AND class.grade_year IS NULL  
+                    AND (
+                        COALESCE(
+                            student.ref_graduation_plan_id,
+                            class.ref_graduation_plan_id
+                        ) IS NULL
+                    )
+                    ");
+                }
+                else
+                {
+                    strSQL = string.Format(@"
+                SELECT
+                    student.id AS student_id
+                FROM
+                    student
+                    INNER JOIN class ON student.ref_class_id = class.id
+                WHERE
+                    student.status IN(1, 2)
+                    AND class.grade_year = {0} 
+                    AND (
+                        COALESCE(
+                            student.ref_graduation_plan_id,
+                            class.ref_graduation_plan_id
+                        ) IS NULL
+                    )             
+                    ", gradeYear);
+                }              
+
+                DataTable dt = qh.Select(strSQL);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["student_id"] + "";
+                    if (!value.Contains(sid))
+                        value.Add(sid);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetNoGraduationPlanStudentIDList," + ex.Message);
+            }
+
+            return value;
+        }
     }
 }
