@@ -3027,87 +3027,93 @@ namespace SHGraduationWarning.UIForm
         private void btnQuery_Click(object sender, EventArgs e)
         {
 
-            // 檢查學生是否都設定課程規畫表
-            ControlEnable(false);
-
-            bool chkPass = false;
-
-            string DeptID = "";
-            string ClassID = "";
-
-            // 沒有設定課程規劃表學生系統編號
-            List<string> NoGraduationPlanStudentIDList = new List<string>();
-
-
-            if (DeptNameIDDic.ContainsKey(SelectedDeptName))
-                DeptID = DeptNameIDDic[SelectedDeptName];
-
-            if (ClassNameIDDic.ContainsKey(SelectedClassName))
-                ClassID = ClassNameIDDic[SelectedClassName];
-
-            // 延修生，未分年級
-            if (SelectedGradeYearYear == NoGradeYearStr)
+            try
             {
-                NoGraduationPlanStudentIDList = DataAccess.GetNoGraduationPlanStudentIDList(SelectedGradeYearYear);
-            }
-            else
-            {
-                NoGraduationPlanStudentIDList = DataAccess.GetNoGraduationPlanStudentIDList(SelectedGradeYearYear);
-            }
+                // 檢查學生是否都設定課程規畫表
+                ControlEnable(false);
 
-            if (NoGraduationPlanStudentIDList.Count > 0)
-            {
-                chkPass = false;
-                // 顯示沒有設定課程規劃表學生
-                frmNoGraduationPlanStudent frm = new frmNoGraduationPlanStudent();
-                frm.SetNoGraduationPlanStudentList(NoGraduationPlanStudentIDList);
-                frm.ShowDialog();
-                ControlEnable(true);
-            }
-            else
-            {
-                chkPass = true;
-            }
-           
-            
-            if (chkPass)
-            {
-                // 畢業預警
-                if (SelectedTabName == GWTabName)
+                bool chkPass = false;
+
+                string DeptID = "";
+                string ClassID = "";
+
+                // 沒有設定課程規劃表學生系統編號
+                List<string> NoGraduationPlanStudentIDList = new List<string>();
+
+
+                if (DeptNameIDDic.ContainsKey(SelectedDeptName))
+                    DeptID = DeptNameIDDic[SelectedDeptName];
+
+                if (ClassNameIDDic.ContainsKey(SelectedClassName))
+                    ClassID = ClassNameIDDic[SelectedClassName];
+
+                // 延修生，未分年級
+                if (SelectedGradeYearYear == NoGradeYearStr)
                 {
-                    ControlEnable(false);
-
-                    // 檢查僅顯示未達設定
-                    isChkNotUptoGStandard = ChkNotUptoGStandard.Checked;
-
-                    bgwDataGWLoad.RunWorkerAsync();
+                    NoGraduationPlanStudentIDList = DataAccess.GetNoGraduationPlanStudentIDList(SelectedGradeYearYear);
+                }
+                else
+                {
+                    NoGraduationPlanStudentIDList = DataAccess.GetNoGraduationPlanStudentIDList(SelectedGradeYearYear);
                 }
 
-                // 資料合理檢查
-                if (SelectedTabName == ChkEditTabName)
+                if (NoGraduationPlanStudentIDList.Count > 0)
                 {
-                    ControlEnable(false);
-                    isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
-                    bgwDataChkEditLoad.RunWorkerAsync();
+                    chkPass = false;
+                    // 顯示沒有設定課程規劃表學生
+                    frmNoGraduationPlanStudent frm = new frmNoGraduationPlanStudent();
+                    frm.SetNoGraduationPlanStudentList(NoGraduationPlanStudentIDList);
+                    frm.ShowDialog();
+                    ControlEnable(true);
+                }
+                else
+                {
+                    chkPass = true;
                 }
 
-                // 資料合理檢查-科目屬性
-                if (SelectedTabName == ChkEditTabName2)
-                {
-                    ControlEnable(false);
-                    isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
-                    bgwDataChkEditLoad2.RunWorkerAsync();
-                }
 
-                // 資料合理檢查-課程科目級別
-                if (SelectedTabName == ChkCourseTabName)
+                if (chkPass)
                 {
-                    ControlEnable(false);
-                    isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
-                    bgwDataChkCourseLoad.RunWorkerAsync();
-                }
+                    // 畢業預警
+                    if (SelectedTabName == GWTabName)
+                    {
+                        ControlEnable(false);
+
+                        // 檢查僅顯示未達設定
+                        isChkNotUptoGStandard = ChkNotUptoGStandard.Checked;
+
+                        bgwDataGWLoad.RunWorkerAsync();
+                    }
+
+                    // 資料合理檢查
+                    if (SelectedTabName == ChkEditTabName)
+                    {
+                        ControlEnable(false);
+                        isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
+                        bgwDataChkEditLoad.RunWorkerAsync();
+                    }
+
+                    // 資料合理檢查-科目屬性
+                    if (SelectedTabName == ChkEditTabName2)
+                    {
+                        ControlEnable(false);
+                        isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
+                        bgwDataChkEditLoad2.RunWorkerAsync();
+                    }
+
+                    // 資料合理檢查-課程科目級別
+                    if (SelectedTabName == ChkCourseTabName)
+                    {
+                        ControlEnable(false);
+                        isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
+                        bgwDataChkCourseLoad.RunWorkerAsync();
+                    }
+                }                
             }
-            ControlEnable(true);
+            catch (Exception ex)
+            {
+                MsgBox.Show("執行發生錯誤，" + ex.Message);
+            }
         }
 
         private void tabControl1_SelectedTabChanged(object sender, DevComponents.DotNetBar.TabStripTabChangedEventArgs e)
