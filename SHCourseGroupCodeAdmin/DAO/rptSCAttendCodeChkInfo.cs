@@ -76,8 +76,12 @@ namespace SHCourseGroupCodeAdmin.DAO
             // 2022-03-23 Cynthia 先找 科目名稱、校部定、必選修、分項類別後，才會找到credit_period，
             // 所以當找不到 credit_period = null，也無法判斷學分數是否正確，那就不要出現學分數錯誤的提示，
             // 故直接return true，當成是正確來判斷。
+            //if (credit_period == null)
+            //    return true;
+
+            // 需要讓使用者知道有問題，所以改成 false
             if (credit_period == null)
-                return true;
+                return false;            
 
             char[] ret = credit_period.ToCharArray();
 
@@ -112,11 +116,18 @@ namespace SHCourseGroupCodeAdmin.DAO
                 {
                     idx = 5;
                 }
+           
 
                 // 學分數相等
                 if (idx > -1 && idx < ret.Count())
                 {
                     string x = ret[idx] + "";
+
+                    // 空或0，不需要開
+                    if (x == "" || x == "0")
+                    {
+                        return false;
+                    }
 
                     // 加入使用節數來判斷，主要某些匯入課程只有節數沒有學分數
                     if (x == Period)
@@ -152,6 +163,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         }
                     }
                 }
+           
             }
 
             return value;
