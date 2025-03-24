@@ -31,11 +31,11 @@ namespace SHGraduationWarning.DAO
                 class.id AS class_id,
                 class.grade_year
             FROM
-                class
-                LEFT JOIN dept ON class.ref_dept_id = dept.id
-                INNER JOIN student ON class.id = student.ref_class_id
+                class                
+                INNER JOIN student ON class.id = student.ref_class_id 
+                LEFT JOIN dept ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id) 
             WHERE
-                student.status IN(1, 2)
+                student.status <> 256
             GROUP BY
                 dept_id,
                 dept_name,
@@ -168,7 +168,7 @@ namespace SHGraduationWarning.DAO
                     student
                     LEFT JOIN class ON student.ref_class_id = class.id
                 WHERE
-                    student.status IN(1,2,4)
+                    student.status IN(1,2,4,8,16)
             ),
             student_base AS (
                 SELECT
@@ -3291,78 +3291,129 @@ namespace SHGraduationWarning.DAO
                 // 取得科別對照
                 Dictionary<string, string> deptDict = GetDeptIDNameDict();
 
+                //                string condition = @"
+                //                    SELECT
+                //                        " + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
+                //                        NULL :: INTEGER AS class_id,
+                //                        NULL :: INTEGER AS dept_id
+                //                ";
+
+
+                //                // SELECT 3::INT AS grade_year -- NULL時為全部年級
+                //                //	           , NULL::TEXT AS dept_name--NULL時為全部科別
+
+                //                if (!string.IsNullOrEmpty(DeptID))
+                //                {
+                //                    condition = @"
+                //                    SELECT                        
+                //                        NULL :: INTEGER AS class_id,
+                //                        " + DeptID + " AS dept_id," +
+                //                        "" + GradeYear + " AS grade_year ";
+                //                }
+
+
+                //                if (!string.IsNullOrEmpty(ClassID))
+                //                {
+                //                    condition = @"
+                //                    SELECT                        
+                //                        " + ClassID + " AS class_id," +
+                //                        "" + DeptID + " AS dept_id," +
+                //                    "" + GradeYear + " AS grade_year ";
+                //                }
+
+                //                QueryHelper qh = new QueryHelper();
+                //                string strSQL = string.Format(@"
+                //                 WITH row AS(
+                //	               {0}
+                //                ),
+                //                target_student AS(
+                //	                SELECT
+                //                        student.id AS student_id,                        
+                //		                class.id AS class_id,
+                //		                class.class_name,
+                //		                dept.id AS dept_id,
+                //		                student.student_number,
+                //		                student.seat_no,
+                //		                student.name AS student_name,
+                //                        dept.name AS dept_name
+                //	                FROM
+                //		                row
+                //		                INNER JOIN class
+                //			                       ON (
+                //                                   class.grade_year = row.grade_year 
+                //				                   AND ( 
+                //                                        row.class_id is null 
+                //                                        OR class.id = row.class_id
+                //                                    )   
+                //			                    )
+                //		                INNER JOIN student
+                //			                ON student.ref_class_id = class.id
+                //			                AND student.status IN (1, 2)
+                //		                LEFT JOIN dept
+                //			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
+                //			                AND (
+                //				                row.dept_id IS NULL
+                //				                 OR dept.id = row.dept_id
+                //			                )                        
+                //                )
+                //                SELECT
+                //                    *
+                //                FROM 
+                //                    target_student 
+                //                ORDER BY 
+                //                    class_name,seat_no;
+                //", condition);
+
+                // 基本條件
                 string condition = @"
-                    SELECT
-                        " + GradeYear + @"::INT AS grade_year, -- NULL時為全部年級 
-                        NULL :: INTEGER AS class_id,
-                        NULL :: INTEGER AS dept_id
-                ";
-
-
-                // SELECT 3::INT AS grade_year -- NULL時為全部年級
-                //	           , NULL::TEXT AS dept_name--NULL時為全部科別
-
-                if (!string.IsNullOrEmpty(DeptID))
-                {
-                    condition = @"
-                    SELECT                        
-                        NULL :: INTEGER AS class_id,
-                        " + DeptID + " AS dept_id," +
-                        "" + GradeYear + " AS grade_year ";
-                }
-
-
-                if (!string.IsNullOrEmpty(ClassID))
-                {
-                    condition = @"
-                    SELECT                        
-                        " + ClassID + " AS class_id," +
-                        "" + DeptID + " AS dept_id," +
-                    "" + GradeYear + " AS grade_year ";
-                }
+            SELECT
+                " + (string.IsNullOrEmpty(GradeYear) ? "NULL :: INTEGER" : GradeYear) + @" AS grade_year,
+                " + (string.IsNullOrEmpty(ClassID) ? "NULL :: INTEGER" : ClassID) + @" AS class_id,
+                " + (string.IsNullOrEmpty(DeptID) ? "NULL :: INTEGER" : DeptID) + @" AS dept_id
+        ";
 
                 QueryHelper qh = new QueryHelper();
                 string strSQL = string.Format(@"
-                 WITH row AS(
-	               {0}
-                ),
-                target_student AS(
-	                SELECT
-                        student.id AS student_id,                        
-		                class.id AS class_id,
-		                class.class_name,
-		                dept.id AS dept_id,
-		                student.student_number,
-		                student.seat_no,
-		                student.name AS student_name,
-                        dept.name AS dept_name
-	                FROM
-		                row
-		                INNER JOIN class
-			                       ON (
-                                   class.grade_year = row.grade_year 
-				                   AND ( 
-                                        row.class_id is null 
-                                        OR class.id = row.class_id
-                                    )   
-			                    )
-		                INNER JOIN student
-			                ON student.ref_class_id = class.id
-			                AND student.status IN (1, 2)
-		                INNER JOIN dept
-			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
-			                AND (
-				                row.dept_id IS NULL
-				                 OR dept.id = row.dept_id
-			                )                        
-                )
+            WITH row AS (
+                {0}
+            ),
+            target_student AS (
                 SELECT
-                    *
-                FROM 
-                    target_student 
-                ORDER BY 
-                    class_name,seat_no;
-", condition);
+                    student.id AS student_id,                        
+                    class.id AS class_id,
+                    class.class_name,
+                    dept.id AS dept_id,
+                    student.student_number,
+                    student.seat_no,
+                    student.name AS student_name,
+                    dept.name AS dept_name
+                FROM
+                    row
+                    INNER JOIN class
+                        ON (
+                            (row.grade_year IS NULL OR class.grade_year = row.grade_year)
+                            AND ( 
+                                row.class_id IS NULL 
+                                OR class.id = row.class_id
+                            )   
+                        )
+                    INNER JOIN student
+                        ON student.ref_class_id = class.id
+                        AND student.status IN (1, 2)
+                    INNER JOIN dept
+                        ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)  -- 優先 student.ref_dept_id，否則用 class.ref_dept_id
+                        AND (
+                            row.dept_id IS NULL
+                            OR dept.id = row.dept_id
+                        )                        
+            )
+            SELECT
+                *
+            FROM 
+                target_student 
+            ORDER BY 
+                class_name, seat_no;
+        ", condition);
 
                 DataTable dt = qh.Select(strSQL);
                 foreach (DataRow dr in dt.Rows)
@@ -3433,8 +3484,8 @@ namespace SHGraduationWarning.DAO
 						   ON class.id = row.class_id 							
 				INNER JOIN student
 					ON student.ref_class_id = class.id
-					AND student.status IN (2)
-				INNER JOIN dept
+					AND student.status IN(2)  
+				LEFT JOIN dept
 					ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 					AND (
 						row.dept_id IS NULL
@@ -3535,16 +3586,23 @@ namespace SHGraduationWarning.DAO
                         " + DeptID + " AS dept_id," +
                         "" + GradeYear + "::INT AS grade_year ";
                 }
-
-
-                if (!string.IsNullOrEmpty(ClassID))
-                {
+                else if (!string.IsNullOrEmpty(ClassID))
+                {// 如果 DeptID 為空，且 ClassID 不為空，以 ClassID 為主
                     condition = @"
-                    SELECT                        
-                        " + ClassID + " AS class_id," +
-                        "" + DeptID + " AS dept_id," +
-                    "" + GradeYear + "::INT AS grade_year ";
+            SELECT                        
+                " + ClassID + " AS class_id,NULL::INTEGER AS dept_id," +  // 不限制科系
+                "" + GradeYear + "::INT AS grade_year ";
                 }
+
+
+                //if (!string.IsNullOrEmpty(ClassID))
+                //{
+                //    condition = @"
+                //    SELECT                        
+                //        " + ClassID + " AS class_id," +
+                //        "" + DeptID + " AS dept_id," +
+                //    "" + GradeYear + "::INT AS grade_year ";
+                //}
 
                 QueryHelper qh = new QueryHelper();
                 string strSQL = string.Format(@"
@@ -3569,7 +3627,7 @@ namespace SHGraduationWarning.DAO
 		                INNER JOIN student
 			                ON student.ref_class_id = class.id
 			                AND student.status IN (1, 2)
-		                INNER JOIN dept
+		                LEFT JOIN dept
 			                ON dept.id = COALESCE(student.ref_dept_id, class.ref_dept_id)
 			                AND (
 				                row.dept_id IS NULL

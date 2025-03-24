@@ -2222,33 +2222,66 @@ namespace SHGraduationWarning.UIForm
             }
             else
             {
+                List<string> DeptIDList = new List<string>();
+                foreach (ClassDeptInfo ci in ClassDeptInfoList)
+                {
+                    if (ci.GradeYear == SelectedGradeYearYear)
+                        if (!DeptIDList.Contains(ci.DeptID))
+                            DeptIDList.Add(ci.DeptID);
+                }
+
                 if (string.IsNullOrEmpty(DeptID))
                 {
-                    List<string> DeptIDList = new List<string>();
-                    foreach (ClassDeptInfo ci in ClassDeptInfoList)
-                    {
-                        if (ci.GradeYear == SelectedGradeYearYear)
-                            if (!DeptIDList.Contains(ci.DeptID))
-                                DeptIDList.Add(ci.DeptID);
-                    }
 
-                    // 一個年級分科            
-                    foreach (string id in DeptIDList)
+                    if (string.IsNullOrEmpty(ClassID))
                     {
+                        // 一個年級分科            
+                        foreach (string id in DeptIDList)
+                        {
+                            // 學生
+                            ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, id, ClassID));
+
+                            // 班級
+                            ReportClassList.AddRange(DataAccess.GetReportClassList(SelectedGradeYearYear, id, ClassID));
+                        }
+                    }
+                    else
+                    {
+
                         // 學生
-                        ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, id, ClassID));
+                        ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, "", ClassID));
 
                         // 班級
-                        ReportClassList.AddRange(DataAccess.GetReportClassList(SelectedGradeYearYear, id, ClassID));
+                        ReportClassList.AddRange(DataAccess.GetReportClassList(SelectedGradeYearYear, "", ClassID));
+
                     }
+
                 }
                 else
                 {
-                    // 單科 學生
-                    ReportStudentList = DataAccess.GetReportStudentList(SelectedGradeYearYear, DeptID, ClassID);
+                    if (string.IsNullOrEmpty(ClassID))
+                    {                       
+                        // 一個年級分科            
+                        foreach (string id in DeptIDList)
+                        {
+                            if (DeptID == id)
+                            {
+                                // 學生
+                                ReportStudentList.AddRange(DataAccess.GetReportStudentList(SelectedGradeYearYear, id, ClassID));
 
-                    // 單科 班級
-                    ReportClassList = DataAccess.GetReportClassList(SelectedGradeYearYear, DeptID, ClassID);
+                                // 班級
+                                ReportClassList.AddRange(DataAccess.GetReportClassList(SelectedGradeYearYear, id, ClassID));
+                            }                          
+                        }
+                    }
+                    else
+                    {
+                        // 單科 學生
+                        ReportStudentList = DataAccess.GetReportStudentList(SelectedGradeYearYear, DeptID, ClassID);
+
+                        // 單科 班級
+                        ReportClassList = DataAccess.GetReportClassList(SelectedGradeYearYear, DeptID, ClassID);
+                    }
                 }
 
             }
@@ -3108,7 +3141,7 @@ namespace SHGraduationWarning.UIForm
                         isChkDataCurrentSemester = ChkDataCurrentSemester.Checked;
                         bgwDataChkCourseLoad.RunWorkerAsync();
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
