@@ -12,10 +12,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string StudentNumber { get; set; }
         public string ClassName { get; set; }
         public string SeatNo { get; set; }
-        public string GradeYear { get; set; }
-
-        // 課程系統編號
-        public string CourseID { get; set; }
+        public string GradeYear { get; set; }     
 
         /// <summary>
         /// 成績年級

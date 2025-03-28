@@ -152,7 +152,7 @@ namespace SHCourseGroupCodeAdmin.Report
             {
                 foreach (rptStudSemsScoreCodeChkInfo sem in StudSemsScoreCodeChkInfoList)
                 {
-                    if (StudSCAttendCodeInfoList[i].StudentID == sem.StudentID
+                    if (StudSCAttendCodeInfoList[i].StudentID == sem.StudentID                      
                         && StudSCAttendCodeInfoList[i].SubjectName == sem.SubjectName
                         && StudSCAttendCodeInfoList[i].IsRequired == sem.IsRequired
                         && StudSCAttendCodeInfoList[i].RequiredBy == sem.RequiredBy)
@@ -177,12 +177,12 @@ namespace SHCourseGroupCodeAdmin.Report
 
             foreach (rptStudSemsScoreCodeChkInfo data in ResultList)
             {
-                if (data.CourseID != null)
+                if (data.CourseCode != null)
                 {
-                    if (!courseStudentCountDic.ContainsKey(data.CourseID))
-                        courseStudentCountDic[data.CourseID] = 1;
+                    if (!courseStudentCountDic.ContainsKey(data.CourseCode))
+                        courseStudentCountDic[data.CourseCode] = 1;
                     else
-                        courseStudentCountDic[data.CourseID]++;
+                        courseStudentCountDic[data.CourseCode]++;
                 }
             }
             #endregion
@@ -340,8 +340,8 @@ namespace SHCourseGroupCodeAdmin.Report
                                 row["單科成績排名百分比" + index] = data.Rank + "%";
 
                             // 動態查詢修課人數
-                            if (data.CourseID != null && courseStudentCountDic.ContainsKey(data.CourseID))
-                                row["修課人數" + index] = courseStudentCountDic[data.CourseID];
+                            if (data.CourseCode != null && courseStudentCountDic.ContainsKey(data.CourseCode))
+                                row["修課人數" + index] = courseStudentCountDic[data.CourseCode];
                             
                             index++;
                         }
