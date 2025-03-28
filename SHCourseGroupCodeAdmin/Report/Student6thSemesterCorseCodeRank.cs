@@ -97,6 +97,7 @@ namespace SHCourseGroupCodeAdmin.Report
             #region 計算排名百分比
             //key=CourseCode; Value=Score
             Dictionary<string, List<decimal>> rankDic = new Dictionary<string, List<decimal>>();
+            
             foreach (rptStudSemsScoreCodeChkInfo data in StudSemsScoreCodeChkInfoList)
             {
                 if (data.CourseCode != null && data.Score.HasValue)
@@ -104,12 +105,14 @@ namespace SHCourseGroupCodeAdmin.Report
                     {
                         rankDic.Add(data.CourseCode, new List<decimal>());
                         rankDic[data.CourseCode].Add(data.Score.Value);
+                       
                     }
                     else
                     {
                         rankDic[data.CourseCode].Add(data.Score.Value);
+                      
                     }
-            }
+            }                      
 
             bgWorkerReport.ReportProgress(40);
 
@@ -168,6 +171,23 @@ namespace SHCourseGroupCodeAdmin.Report
 
             bgWorkerReport.ReportProgress(60);
 
+            #region 計算修課人數
+            // 新增字典儲存修課人數
+            Dictionary<string, int> courseStudentCountDic = new Dictionary<string, int>();
+
+            foreach (rptStudSemsScoreCodeChkInfo data in ResultList)
+            {
+                if (data.CourseID != null)
+                {
+                    if (!courseStudentCountDic.ContainsKey(data.CourseID))
+                        courseStudentCountDic[data.CourseID] = 1;
+                    else
+                        courseStudentCountDic[data.CourseID]++;
+                }
+            }
+            #endregion
+
+
             #region 群科班對照表設定(暫時不用)
             //群科班對照表設定
             //Dictionary<string, string> MappingTag1 = new Dictionary<string, string>();
@@ -208,8 +228,13 @@ namespace SHCourseGroupCodeAdmin.Report
             //    //errorMsgList.Add(ex.Message);
             //}
             #endregion
-            bool skipLoop=false;
+            bool skipLoop =false;
             bgWorkerReport.ReportProgress(70);
+            // 計算列印日期（民國年）
+            DateTime now = DateTime.Now;
+            int rocYear = now.Year - 1911; // 轉換為民國年
+            string printDate = $"列印日期：{rocYear}年{now.Month}月{now.Day}日{now.Hour:00}:{now.Minute:00}";
+
             // 整理資料，填入 DataTable
             foreach (StudentInfo si in StudentInfoList)
             {
@@ -230,12 +255,14 @@ namespace SHCourseGroupCodeAdmin.Report
                 dtTable.Columns.Add("姓名");
                 dtTable.Columns.Add("科別");
                 dtTable.Columns.Add("學期學業成績總平均");
+                dtTable.Columns.Add("列印日期");
                 for (int i = 1; i <= 60; i++)
                 {
                     dtTable.Columns.Add("科目名稱" + i);
                     dtTable.Columns.Add("單科學分數" + i);
                     dtTable.Columns.Add("單科成績" + i);
                     dtTable.Columns.Add("單科成績排名百分比" + i);
+                    dtTable.Columns.Add("修課人數" + i); // 新增修課人數欄位
                 }
                 #endregion
 
@@ -251,6 +278,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 row["姓名"] = si.Name;
                 row["科別"] = si.Dept;
                 row["學期學業成績總平均"] = si.EntryScore;
+                row["列印日期"] = printDate; // 填入列印日期
                 //學期學業成績總平均
 
                 int index = 1;
@@ -311,6 +339,10 @@ namespace SHCourseGroupCodeAdmin.Report
                             if (data.Rank.HasValue)
                                 row["單科成績排名百分比" + index] = data.Rank + "%";
 
+                            // 動態查詢修課人數
+                            if (data.CourseID != null && courseStudentCountDic.ContainsKey(data.CourseID))
+                                row["修課人數" + index] = courseStudentCountDic[data.CourseID];
+                            
                             index++;
                         }
                     }

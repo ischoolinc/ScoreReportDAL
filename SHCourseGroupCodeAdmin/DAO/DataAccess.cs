@@ -2087,6 +2087,10 @@ namespace SHCourseGroupCodeAdmin.DAO
         public Dictionary<string, chkGPlanInfo> GetchkGPlanInfoDictByGPlanID(List<string> gpidList)
         {
             Dictionary<string, chkGPlanInfo> value = new Dictionary<string, chkGPlanInfo>();
+
+            if (gpidList.Count == 0)
+                return value;
+
             QueryHelper qh = new QueryHelper();
 
             string query = string.Format(@"
@@ -2217,7 +2221,7 @@ namespace SHCourseGroupCodeAdmin.DAO
 "  INNER JOIN class " +
 "  ON student.ref_class_id = class.id " +
 " WHERE  " +
-"  student.status IN(1,2) AND class.grade_year IN(" + strGrYear + ") " +
+"  student.status IN(1) AND class.grade_year IN(" + strGrYear + ") " +
 " AND course.school_year = " + SchoolYear + " AND course.semester = " + Semester + " " +
 " ORDER BY class.grade_year DESC,class.display_order,class_name,seat_no,school_year,semester,course_name ";
 
@@ -2226,6 +2230,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                 {
                     rptStudSemsScoreCodeChkInfo data = new rptStudSemsScoreCodeChkInfo();
                     data.StudentID = dr["student_id"] + "";
+                    data.CourseID = dr["course_id"] + "";
                     data.StudentName = dr["student_name"] + "";
                     data.StudentNumber = dr["student_number"] + "";
                     data.ClassName = dr["class_name"] + "";
@@ -3840,7 +3845,7 @@ WHERE
                         student
                         INNER JOIN class ON student.ref_class_id = class.id
                     WHERE
-                        student.status IN(1, 2)
+                        student.status IN(1)
                         AND class.grade_year IN({0})
                 ),
                 sems_score_data AS(

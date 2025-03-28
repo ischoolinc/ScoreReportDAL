@@ -97,6 +97,11 @@ namespace SHCourseGroupCodeAdmin
             builder.InsertCell();
             builder.InsertField("MERGEFIELD " + "學期學業成績總平均" + " \\* MERGEFORMAT ", "«" + "學期學業成績總平均" + "»");
             builder.EndRow();
+            
+            builder.InsertCell(); builder.Write("列印日期");
+            builder.InsertCell();
+            builder.InsertField("MERGEFIELD " + "列印日期" + " \\* MERGEFORMAT ", "«" + "列印日期" + "»");
+            builder.EndRow();
 
             builder.EndTable();
 
@@ -107,7 +112,7 @@ namespace SHCourseGroupCodeAdmin
             builder.InsertCell(); builder.Write("單科學分數");
             builder.InsertCell(); builder.Write("單科成績");
             builder.InsertCell(); builder.Write("單科成績排名百分比");
-
+            builder.InsertCell(); builder.Write("修課人數");
             builder.EndRow();
 
             for (int i = 1; i <= 60; i++)
@@ -120,6 +125,9 @@ namespace SHCourseGroupCodeAdmin
                 builder.InsertField("MERGEFIELD " + "單科成績" + i + " \\* MERGEFORMAT ", "«" + "S" + i + "»");
                 builder.InsertCell();
                 builder.InsertField("MERGEFIELD " + "單科成績排名百分比" + i + " \\* MERGEFORMAT ", "«" + "R" + i + "»");
+
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD " + "修課人數" + i + " \\* MERGEFORMAT ", "«" + "P" + i + "»");
 
                 builder.EndRow();
             }

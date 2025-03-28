@@ -14,6 +14,9 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string SeatNo { get; set; }
         public string GradeYear { get; set; }
 
+        // 課程系統編號
+        public string CourseID { get; set; }
+
         /// <summary>
         /// 成績年級
         /// </summary>
