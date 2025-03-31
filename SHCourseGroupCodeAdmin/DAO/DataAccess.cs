@@ -3979,7 +3979,7 @@ WHERE
                     data.ScoreType = dr["scoreType"] + "";
                     data.NCredit = dr["NCredit"] + "";
                     data.NScore = dr["NScore"] + "";
-
+                    data.SemsScoreCourseCode = dr["課程代碼"] + "";
                     decimal score;
                     if (dr["score"].ToString() != "")
                         if (decimal.TryParse(dr["score"].ToString(), out score))
@@ -4046,7 +4046,7 @@ WHERE
 
                             chkGPSubjectInfo subj = GPlanDict[data.graduation_plan_id].SubjectDict[key];
 
-                            data.credit_period = subj.credit_period;
+                            data.credit_period = subj.credit_period;            
                             data.CourseCode = subj.CourseCode;
                             data.OfficialSubjectName = subj.OfficialSubjectName;
                         }

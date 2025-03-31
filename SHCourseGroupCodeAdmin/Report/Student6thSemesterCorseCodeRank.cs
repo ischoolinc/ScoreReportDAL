@@ -154,8 +154,8 @@ namespace SHCourseGroupCodeAdmin.Report
                 {
                     if (StudSCAttendCodeInfoList[i].StudentID == sem.StudentID                      
                         && StudSCAttendCodeInfoList[i].SubjectName == sem.SubjectName
-                        && StudSCAttendCodeInfoList[i].IsRequired == sem.IsRequired
-                        && StudSCAttendCodeInfoList[i].RequiredBy == sem.RequiredBy)
+                        && StudSCAttendCodeInfoList[i].CourseCode == sem.CourseCode
+                        )
                     {
                         StudSCAttendCodeInfoList.Remove(StudSCAttendCodeInfoList[i]);
                         //Console.WriteLine("StuID:" + StudSCAttendCodeInfoList[i].StudentID);
@@ -288,10 +288,16 @@ namespace SHCourseGroupCodeAdmin.Report
                     if (data.StudentID == si.StudentID)
                     {
                         // Modify by Jackie Wang 20230510 增加是否列出不計學分及不須評分的判斷
-
+                                                
                         // 沒有課程代碼不出現
                         if (string.IsNullOrEmpty(data.CourseCode))
                             continue;
+
+                        if (StudSCAttendCodeInfoList.Count == 0 && string.IsNullOrEmpty(data.SemsScoreCourseCode))
+                        {
+                            continue;
+                        }
+
 
                         /*if (data.NCredit == "是" && data.NScore == "是")
                             continue; //不計學分也不須評分 跳過 */
