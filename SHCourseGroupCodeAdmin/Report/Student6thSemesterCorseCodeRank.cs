@@ -233,7 +233,8 @@ namespace SHCourseGroupCodeAdmin.Report
             // 計算列印日期（民國年）
             DateTime now = DateTime.Now;
             int rocYear = now.Year - 1911; // 轉換為民國年
-            string printDate = $"列印日期：{rocYear}年{now.Month}月{now.Day}日{now.Hour:00}:{now.Minute:00}";
+            // 列印日期：
+            string printDate = $"{rocYear}年{now.Month}月{now.Day}日{now.Hour:00}:{now.Minute:00}";
 
             // 整理資料，填入 DataTable
             foreach (StudentInfo si in StudentInfoList)
@@ -288,10 +289,14 @@ namespace SHCourseGroupCodeAdmin.Report
                     {
                         // Modify by Jackie Wang 20230510 增加是否列出不計學分及不須評分的判斷
 
+                        // 沒有課程代碼不出現
+                        if (string.IsNullOrEmpty(data.CourseCode))
+                            continue;
+
                         /*if (data.NCredit == "是" && data.NScore == "是")
                             continue; //不計學分也不須評分 跳過 */
-                        
-                        if(data.NCredit == "是" && data.NScore == "是")
+
+                        if (data.NCredit == "是" && data.NScore == "是")
                         {
                             if (chkNCredit.Checked && chkNScore.Checked) skipLoop = false;
                             if (chkNCredit.Checked && !chkNScore.Checked) skipLoop = true;
