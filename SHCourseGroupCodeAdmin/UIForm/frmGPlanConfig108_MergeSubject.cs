@@ -72,7 +72,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 // 合併資料
                 // 取得 tagget 已有的課程代碼
                 List<string> TargetCourseCodeList = new List<string>();
-                List<string> TargerOfficialSubjectNameList = new List<string>();
+                //List<string> TargerOfficialSubjectNameList = new List<string>();
 
                 // 最後一筆 RowIdx
                 int LastRowIdx = 0;
@@ -104,8 +104,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (!TargetCourseCodeList.Contains(CourseCode))
                         TargetCourseCodeList.Add(CourseCode);
 
-                    if (!TargerOfficialSubjectNameList.Contains(OfficialSubjectName))
-                        TargerOfficialSubjectNameList.Add(OfficialSubjectName);
+                    //if (!TargerOfficialSubjectNameList.Contains(OfficialSubjectName))
+                    //    TargerOfficialSubjectNameList.Add(OfficialSubjectName);
                 }
 
                 LastRowIdx++;
@@ -134,9 +134,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             // 課程代碼不同
                             if (!TargetCourseCodeList.Contains(CourseCode))
                             {
-                                // 檢查報部科目名稱如果目標課規不存在才會加入
-                                if (!TargerOfficialSubjectNameList.Contains(OfficialSubjectName))
-                                {
+                                //// 檢查報部科目名稱如果目標課規不存在才會加入
+                                //if (!TargerOfficialSubjectNameList.Contains(OfficialSubjectName))
+                                //{
                                     // 設定新的 rowIdx
                                     XElement NewElm = new XElement(elm);
                                     if (strRowIdx == "")
@@ -153,7 +153,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                                     NewElm.Element("Grouping").SetAttributeValue("RowIndex", LastRowIdx);
                                     AddSubjectList.Add(NewElm);
-                                }
+                                //}
                             }
                         }
                     }
