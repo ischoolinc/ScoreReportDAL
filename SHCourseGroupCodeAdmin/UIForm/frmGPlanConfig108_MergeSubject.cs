@@ -111,9 +111,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 LastRowIdx++;
                 // 需要新增科目
                 List<XElement> AddSubjectList = new List<XElement>();
+                // 用來記錄新增的 RowIndex，避免相同 RowIndex 被計算多次
+                HashSet<int> newRowIndexSet = new HashSet<int>();
 
                 string strRowIdx = ""; // 比對 rowIdx使用
-                AddSubejctCount = 1;
+                AddSubejctCount = 0;
 
                 foreach (string name in SelectedGPlanNameList)
                 {
@@ -144,20 +146,26 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                         strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
                                     }
 
-                                    if (strRowIdx != NewElm.Element("Grouping").Attribute("RowIndex").Value)
+                                    else if (strRowIdx != NewElm.Element("Grouping").Attribute("RowIndex").Value)
                                     {
                                         LastRowIdx++;
                                         strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
-                                        AddSubejctCount++;
                                     }
 
+                                    // 新增科目加入清單
                                     NewElm.Element("Grouping").SetAttributeValue("RowIndex", LastRowIdx);
                                     AddSubjectList.Add(NewElm);
+                                    // 記錄此 RowIndex（同一 RowIndex 只會存在一次）
+                                    newRowIndexSet.Add(LastRowIdx);
                                 //}
                             }
                         }
                     }
                 }
+
+                // 修正：新增筆數改以 unique RowIndex 個數為準
+                // 避免同一 RowIndex 下的多筆 Subject 被重複計算
+                AddSubejctCount = newRowIndexSet.Count;
 
                 // 需要新增資料
                 if (AddSubjectList.Count > 0)
