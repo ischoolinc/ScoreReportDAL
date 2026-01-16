@@ -20,6 +20,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
         Dictionary<string, string> _CourseIDNameDict;
         List<string> _SCAttendIDList;
 
+        // 課程調代課對應筆數（key: course_id, value: count）
+        private Dictionary<string, int> _CourseBindCountDict = new Dictionary<string, int>();
+
+        // 是否存在任何調代課資料
+        private bool _HasCourseBindData = false;
+
         BackgroundWorker _bgWorker;
         BackgroundWorker _bgWorkerDel;
 
@@ -64,6 +70,56 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             K12.Data.UpdateHelper uh = new K12.Data.UpdateHelper();
             _bgWorkerDel.ReportProgress(1);
+
+            // 取得預計刪除筆數（僅當 _HasCourseBindData）
+            int delBindCount = 0;
+
+            if (_HasCourseBindData)
+            {
+                try
+                {
+                    QueryHelper qh = new QueryHelper();
+                    string countSQL = @"
+                        SELECT COUNT(*)
+                        FROM dc_bind_key
+                        WHERE ref_course_id IN (" + string.Join(",", _SelectIDList.ToArray()) + ")";
+                    DataTable dt = qh.Select(countSQL);
+
+                    if (dt != null && dt.Rows.Count > 0)
+                        delBindCount = Convert.ToInt32(dt.Rows[0][0]);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("取得調代課刪除筆數失敗," + ex.Message);
+                }
+            }
+
+            // 刪除 dc_bind_key（僅當 _HasCourseBindData）
+            if (_HasCourseBindData)
+            {
+                try
+                {
+                    string delBindSQL = @"
+                        DELETE FROM dc_bind_key
+                        WHERE ref_course_id IN (" + string.Join(",", _SelectIDList.ToArray()) + ")";
+                    uh.Execute(delBindSQL);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("刪除課程調代課對應資料失敗," + ex.Message);
+                }
+            }
+
+            // ApplicationLog 記錄刪除筆數（delBindCount > 0 才記錄）
+            if (delBindCount > 0)
+            {
+                StringBuilder sbBind = new StringBuilder();
+                sbBind.AppendLine("刪除課程調代課對應資料(dc_bind_key)：");
+                sbBind.AppendLine("刪除筆數：" + delBindCount);
+
+                ApplicationLog.Log("課程.刪除課程與修課學生", sbBind.ToString());
+            }
+
             // 檢查是否刪除修課相關
             if (_SCAttendIDList.Count > 0)
             {
@@ -131,7 +187,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             FISCA.Presentation.MotherForm.SetStatusBarMessage("課程資料讀取完成.");
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("刪除課程時會一併刪除【修課紀錄】及【評量成績】，成績刪除後將無法恢復。請確認是否要刪除 " + _CourseIDNameDict.Keys.Count + " 筆課程 ? ");
+            sb.AppendLine("刪除課程時會一併刪除【修課紀錄】、【評量成績】及【調代課對應】，成績、調代課對應刪除後將無法恢復。請確認是否要刪除 " + _CourseIDNameDict.Keys.Count + " 筆課程 ? ");
             //if (_SCAttendIDList.Count > 0)
             //{
             //    sb.AppendLine("這些課程包含 " + _SCAttendIDList.Count + " 筆修課學生也會一起刪除。");
@@ -162,6 +218,43 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
 
                 _bgWorker.ReportProgress(50);
+
+                // 取得課程調代課對應資料
+                _CourseBindCountDict.Clear();
+                _HasCourseBindData = false;
+
+                try
+                {
+                    string bindSQL = @"
+                        SELECT ref_course_id, COUNT(*) AS cnt
+                        FROM dc_bind_key
+                        WHERE ref_course_id IN (" + string.Join(",", _SelectIDList.ToArray()) + @")
+                        GROUP BY ref_course_id;
+                    ";
+
+                    DataTable dtBind = qh.Select(bindSQL);
+
+                    // 預設 -1（未取得）
+                    foreach (string cid in _SelectIDList)
+                        _CourseBindCountDict[cid] = -1;
+
+                    if (dtBind != null)
+                    {
+                        foreach (DataRow dr in dtBind.Rows)
+                        {
+                            string cid = dr["ref_course_id"].ToString();
+                            int cnt = Convert.ToInt32(dr["cnt"]);
+
+                            _CourseBindCountDict[cid] = cnt;
+                            if (cnt > 0)
+                                _HasCourseBindData = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("取得課程調代課對應資料失敗：" + ex.Message);
+                }
 
                 // 取得修科紀錄     
                 string sc_attSQL = "SELECT sc_attend.id FROM sc_attend WHERE ref_course_id IN(" + string.Join(",", _SelectIDList.ToArray()) + ");";
