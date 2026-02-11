@@ -16,7 +16,7 @@ namespace SHCourseGroupCodeAdmin.DAO
         public string Entry { get; set; }
         public string Domain { get; set; }
         public string isRequired { get; set; }
-        public string RequiredBy { get; set; }    
+        public string RequiredBy { get; set; }
         public string Credit { get; set; }
         public string credit_period { get; set; }
         //public string course_attr { get; set; }
@@ -24,5 +24,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 
         // 報部科目名稱
         public string OfficialSubjectName { get; set; }
+
+        // 科目級別
+        public string SubjectLevel { get; set; }
     }
 }

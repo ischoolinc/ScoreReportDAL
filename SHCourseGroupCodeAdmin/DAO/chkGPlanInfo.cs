@@ -35,6 +35,12 @@ namespace SHCourseGroupCodeAdmin.DAO
         // 科目名稱
         public List<string> SubjectNameList = new List<string>();
 
+        // 特殊需求領域：科目名稱_級別(key) 清單
+        public List<string> SubjectSpecNameList = new List<string>();
+
+        // 分組科目：Key=分組名稱，Value=科目名稱_級別(key) 清單
+        public Dictionary<string, List<string>> SubjectGroupDict = new Dictionary<string, List<string>>();
+
 
         // 轉換科目
         public void ParseSubjectDict()
@@ -42,7 +48,9 @@ namespace SHCourseGroupCodeAdmin.DAO
             SubjectXMLDict.Clear();
             SubjectDict.Clear();
             SubjectNameList.Clear();
-            
+            SubjectSpecNameList.Clear();
+            SubjectGroupDict.Clear();
+
             if (ContentXML != null)
             {
                 foreach (XElement elm in ContentXML.Elements("Subject"))
@@ -52,11 +60,30 @@ namespace SHCourseGroupCodeAdmin.DAO
                     string Level = "";
                     if (elm.Attribute("Level") != null)
                         Level = elm.Attribute("Level").Value;
-                    
+
                     if (!SubjectNameList.Contains(SubjectName))
                         SubjectNameList.Add(SubjectName);
 
                     string key = SubjectName + "_" + Level;
+
+                    // 檢查是否為特殊需求領域
+                    string subjectAttribute = elm.Attribute("科目屬性")?.Value ?? "";
+                    if (subjectAttribute == "特殊需求領域")
+                    {
+                        if (!SubjectSpecNameList.Contains(key))
+                            SubjectSpecNameList.Add(key);
+                    }
+
+                    // 檢查分組名稱
+                    string groupName = elm.Attribute("分組名稱")?.Value ?? "";
+                    if (!string.IsNullOrWhiteSpace(groupName))
+                    {
+                        if (!SubjectGroupDict.ContainsKey(groupName))
+                            SubjectGroupDict.Add(groupName, new List<string>());
+
+                        if (!SubjectGroupDict[groupName].Contains(key))
+                            SubjectGroupDict[groupName].Add(key);
+                    }
 
                     if (!SubjectXMLDict.ContainsKey(key))
                         SubjectXMLDict.Add(key, elm);
@@ -74,13 +101,15 @@ namespace SHCourseGroupCodeAdmin.DAO
                             subj.RequiredBy = "部定";
                         subj.Credit = elm.Attribute("Credit").Value;
                         subj.credit_period = elm.Attribute("授課學期學分").Value;
-                        
+
                         if (elm.Attribute("OpenType") != null)
                             subj.open_type = elm.Attribute("OpenType").Value;
 
                         if (elm.Attribute("OfficialSubjectName") != null)
                             subj.OfficialSubjectName = elm.Attribute("OfficialSubjectName").Value;
 
+                        if (elm.Attribute("Level") != null)
+                            subj.SubjectLevel = elm.Attribute("Level").Value;
 
                         if (!SubjectDict.ContainsKey(key))
                             SubjectDict.Add(key, subj);

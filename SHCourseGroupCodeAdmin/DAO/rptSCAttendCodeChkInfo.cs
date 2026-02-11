@@ -63,6 +63,12 @@ namespace SHCourseGroupCodeAdmin.DAO
         // 報部科目名稱
         public string OfficialSubjectName { get; set; }
 
+        // course.not_included_in_calc
+        public string NotIncludedInCalc { get; set; }
+
+        // course.not_included_in_credit
+        public string NotIncludedInCredit { get; set; }
+
         /// <summary>
         /// 檢查學分數
         /// </summary>

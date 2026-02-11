@@ -1778,6 +1778,8 @@ namespace SHCourseGroupCodeAdmin.DAO
 	                class.ref_graduation_plan_id
                     ) AS graduation_plan_id
                 , sc_attend.subject_code
+                 , course.not_included_in_calc
+                 , course.not_included_in_credit
                  FROM course  
  	                INNER JOIN sc_attend  
                   ON course.id = sc_attend.ref_course_id   
@@ -1788,6 +1790,9 @@ namespace SHCourseGroupCodeAdmin.DAO
                  WHERE   
                   student.status IN(1,2) AND class.grade_year IN({0})  
                  AND course.school_year ={1} AND course.semester = {2} 
+                 AND COALESCE(TRIM(course.subject), '') <> ''
+                 AND COALESCE(course.not_included_in_calc, '0') <> '1'
+                 AND COALESCE(course.not_included_in_credit, '0') <> '1'
 	                ORDER BY 
 	                class.grade_year DESC
 	                ,class.display_order
@@ -1835,6 +1840,15 @@ namespace SHCourseGroupCodeAdmin.DAO
                     // 修課紀錄上課程代碼
                     data.SubjectCode = dr["subject_code"] + "";
                     data.GraduationPlanID = dr["graduation_plan_id"] + "";
+
+                    // 讀旗標
+                    data.NotIncludedInCalc = dr["not_included_in_calc"] + "";
+                    data.NotIncludedInCredit = dr["not_included_in_credit"] + "";
+
+                    // 排除科目名稱空白、不需評分、不計學分
+                    if (string.IsNullOrWhiteSpace(data.SubjectName)) continue;
+                    if (data.NotIncludedInCalc == "1") continue;
+                    if (data.NotIncludedInCredit == "1") continue;
 
                     // 使用科目名稱_科目級別 比對資料
                     string key = data.SubjectName + "_" + data.SubjectLevel;
@@ -1934,13 +1948,19 @@ namespace SHCourseGroupCodeAdmin.DAO
                             }
                         }
 
-                        // 檢查學分數
-                        if (data.CheckCreditPass(mappingTable))
+                        if (chkGPlanInfoDict[data.GraduationPlanID].SubjectSpecNameList.Contains(key))
                         {
-                            errItem.Remove("節數或學分數");
+                            // 不檢查
+                            Console.WriteLine("不檢查");
                         }
-
-
+                        else
+                        {
+                            // 檢查學分數
+                            if (data.CheckCreditPass(mappingTable))
+                            {
+                                errItem.Remove("節數或學分數");
+                            }
+                        }
                     }
                     else
                     {
@@ -4046,7 +4066,7 @@ WHERE
 
                             chkGPSubjectInfo subj = GPlanDict[data.graduation_plan_id].SubjectDict[key];
 
-                            data.credit_period = subj.credit_period;            
+                            data.credit_period = subj.credit_period;
                             data.CourseCode = subj.CourseCode;
                             data.OfficialSubjectName = subj.OfficialSubjectName;
                         }
@@ -4828,5 +4848,69 @@ ORDER BY grade_year, display_order, class_name, seat_no, student_name
             }
             return value;
         }
+
+        /// <summary>
+        /// 依 subject+level+年級+學期 取得 course 旗標
+        /// </summary>
+        /// <param name="schoolYear">學年度</param>
+        /// <param name="semester">學期</param>
+        /// <param name="gradeYear">年級</param>
+        /// <param name="subject">科目名稱</param>
+        /// <param name="subjLevel">科目級別</param>
+        /// <returns>CourseFlags</returns>
+        public CourseFlags GetCourseFlags(int schoolYear, int semester, string gradeYear, string subject, string subjLevel)
+        {
+            CourseFlags flags = new CourseFlags
+            {
+                Found = false,
+                NotIncludedInCalc = false,
+                NotIncludedInCredit = false
+            };
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = string.Format(@"
+                    SELECT 
+                        course.not_included_in_calc,
+                        course.not_included_in_credit
+                    FROM course
+                    INNER JOIN class ON course.ref_class_id = class.id
+                    WHERE 
+                        course.school_year = {0}
+                        AND course.semester = {1}
+                        AND class.grade_year = '{2}'
+                        AND course.subject = '{3}'
+                        AND course.subj_level::text = '{4}'
+                    LIMIT 1;
+                ", schoolYear, semester, gradeYear, subject.Replace("'", "''"), subjLevel.Replace("'", "''"));
+
+                DataTable dt = qh.Select(query);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    flags.Found = true;
+                    string notIncludedInCalc = dt.Rows[0]["not_included_in_calc"] + "";
+                    string notIncludedInCredit = dt.Rows[0]["not_included_in_credit"] + "";
+                    flags.NotIncludedInCalc = (notIncludedInCalc == "1");
+                    flags.NotIncludedInCredit = (notIncludedInCredit == "1");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("取得 course 旗標失敗：" + ex.Message);
+            }
+
+            return flags;
+        }
+    }
+
+    /// <summary>
+    /// 課程旗標資訊
+    /// </summary>
+    public class CourseFlags
+    {
+        public bool Found { get; set; }
+        public bool NotIncludedInCalc { get; set; }
+        public bool NotIncludedInCredit { get; set; }
     }
 }

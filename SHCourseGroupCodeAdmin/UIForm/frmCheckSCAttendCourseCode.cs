@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using Aspose.Cells;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using Aspose.Cells.Pivot;
 
 namespace SHCourseGroupCodeAdmin.UIForm
 {
@@ -99,7 +100,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             // 取得使用者設定學年度學期修課紀錄  //2021-12-16 Cynthia 增加年級+學期條件比對大表中的open_type，取得課程代碼等資訊。
 
-            // 取得課程規劃表對照
+            // 取得課程規劃表對照(目前系統在校生)
             Dictionary<string, chkGPlanInfo> chkGPlanInfoDict = da.GetchkGPlanInfoDictBySchoolYearSemester(_SchoolYear, _Semester, _StrGradeYear);
 
             _bgWorker.ReportProgress(10);
@@ -130,14 +131,20 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             Dictionary<string, List<string>> chkHasCourseCodeDict = new Dictionary<string, List<string>>();
 
+            // 檢查學生修課課程代碼是否存在
             foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
             {
-                if (!string.IsNullOrEmpty(data.CourseCode))
+                if (!string.IsNullOrEmpty(data.SubjectCode))
                 {
                     if (!chkHasCourseCodeDict.ContainsKey(data.StudentID))
                         chkHasCourseCodeDict.Add(data.StudentID, new List<string>());
 
-                    chkHasCourseCodeDict[data.StudentID].Add(data.CourseCode);
+                    chkHasCourseCodeDict[data.StudentID].Add(data.SubjectCode);
+                }
+
+                if (string.IsNullOrWhiteSpace(data.SubjectCode))
+                {
+                    data.ErrorMsgList.Add("修課課程代碼空白");
                 }
 
                 if (data.ErrorMsgList.Count > 0)
@@ -153,9 +160,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             // 有課程規劃表學生
             List<DataRow> hasGplanStudents = da.GetHasGPlanStudent(_StrGradeYear);
-
-            // 這學期需要開課
-            //List<MOECourseCodeInfo> thisCousreCodeList = new List<MOECourseCodeInfo>();
+                
             List<chkGPSubjectInfo> thisCousreCodeList = new List<chkGPSubjectInfo>();
 
             List<string> chkCourseCode = new List<string>();
@@ -192,6 +197,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         idx = 5;
 
                     chkCourseCode.Clear();
+
+
+                  
+
+
                     foreach (string key in chkGPlanInfoDict[graduation_plan_id].SubjectDict.Keys)
                     {
                         chkGPSubjectInfo subj = chkGPlanInfoDict[graduation_plan_id].SubjectDict[key];
@@ -217,8 +227,96 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
                     }
 
+                    // ===== 群組判斷：建立查表結構 =====
+                    // Step 1: 建立 subjectKeyToGroupMap（SubjectName_SubjectLevel -> groupName）
+                    var subjectKeyToGroupMap = new Dictionary<string, string>(StringComparer.Ordinal);
+                    var subjectGroupDict = chkGPlanInfoDict[graduation_plan_id].SubjectGroupDict; // Dictionary<string, List<string>>
+
+                    if (subjectGroupDict != null)
+                    {
+                        foreach (var g in subjectGroupDict)
+                        {
+                            string groupName = g.Key ?? "";
+                            if (g.Value == null) continue;
+
+                            foreach (var subjectKey in g.Value)
+                            {
+                                if (string.IsNullOrWhiteSpace(subjectKey)) continue;
+
+                                // 若同一 subjectKey 出現在多個 group：先採用第一個（避免不確定性擴散）
+                                if (!subjectKeyToGroupMap.ContainsKey(subjectKey))
+                                    subjectKeyToGroupMap.Add(subjectKey, groupName);
+                            }
+                        }
+                    }
+
+                    // Step 2: 建立 courseCodeToSubjectKeyMap（CourseCode -> SubjectName_SubjectLevel）
+                    var courseCodeToSubjectKeyMap = new Dictionary<string, string>(StringComparer.Ordinal);
+
+                    foreach (string key in chkGPlanInfoDict[graduation_plan_id].SubjectDict.Keys)
+                    {
+                        var s = chkGPlanInfoDict[graduation_plan_id].SubjectDict[key];
+                        if (s == null) continue;
+
+                        string cc = (s.CourseCode ?? "").Trim();
+                        if (cc == "") continue;
+
+                        string subjName = (s.SubjectName ?? "").Trim();
+                        string subjLevel = (s.SubjectLevel ?? "").Trim();
+                        string subjectKey = subjName + "_" + subjLevel;
+
+                        // 同一 CourseCode 重複：先採用第一個
+                        if (!courseCodeToSubjectKeyMap.ContainsKey(cc))
+                            courseCodeToSubjectKeyMap.Add(cc, subjectKey);
+                    }
+
+                    // Step 3: 計算該學生 passedGroupSet（只要同組任一科修到）
+                    var passedGroupSet = new HashSet<string>(StringComparer.Ordinal);
+                    var studentSubjectKeySet = new HashSet<string>(StringComparer.Ordinal);
+
+                    // 依學生已修課程代碼 → 推導出 SubjectName_SubjectLevel keys
+                    if (chkHasCourseCodeDict.ContainsKey(sid))
+                    {
+                        foreach (var cc in chkHasCourseCodeDict[sid])
+                        {
+                            string courseCode = (cc ?? "").Trim();
+                            if (courseCode == "") continue;
+
+                            if (courseCodeToSubjectKeyMap.TryGetValue(courseCode, out string sk)
+                                && !string.IsNullOrWhiteSpace(sk))
+                            {
+                                studentSubjectKeySet.Add(sk);
+                            }
+                        }
+                    }
+
+                    // subjectKey 若存在於 group，代表該 group 通過
+                    foreach (var sk in studentSubjectKeySet)
+                    {
+                        if (subjectKeyToGroupMap.TryGetValue(sk, out string groupName)
+                            && !string.IsNullOrWhiteSpace(groupName))
+                        {
+                            passedGroupSet.Add(groupName);
+                        }
+                    }
+                    // ===== 群組判斷查表結構建立完成 =====
+
+                    // 檢查學生應修課程代碼未修
                     foreach (chkGPSubjectInfo subj in thisCousreCodeList)
                     {
+                        // ===== 群組判斷（同組任一科已修 → 同組其他科 continue）=====
+                        string subjName = (subj.SubjectName ?? "").Trim();
+                        string subjLevel = (subj.SubjectLevel ?? "").Trim();
+                        string subjectKey = subjName + "_" + subjLevel;
+
+                        if (subjectKeyToGroupMap.TryGetValue(subjectKey, out string groupName)
+                            && !string.IsNullOrWhiteSpace(groupName))
+                        {
+                            if (passedGroupSet.Contains(groupName))
+                                continue;
+                        }
+                        // ===== 群組判斷 End =====
+
                         // 有課程代碼
                         if (chkHasCourseCodeDict.ContainsKey(sid))
                         {
@@ -243,6 +341,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             data.RequiredBy = subj.RequiredBy;
                             data.SubjectName = subj.SubjectName;
                             data.ScoreType = subj.Entry;
+                            data.SubjectLevel = subj.SubjectLevel;
                             data.GraduationPlanName = chkGPlanInfoDict[graduation_plan_id].Name;
 
                             SCAttendCodeChkInfoNoList.Add(data);
@@ -262,6 +361,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _bgWorker.ReportProgress(70);
             // 填值到 Excel
             _wb = new Workbook(new MemoryStream(Properties.Resources.修課檢核課程代碼樣板));
+
+            _wb.Settings.CalcMode = CalcModeType.Manual;
+          
+
+
             Worksheet wstSC = _wb.Worksheets["檢查修課學生課程代碼"];
             //wstSC.Name = _GradeYear + "年級_檢查修課學生課程代碼";
             wstSC.Name = "檢查修課學生課程代碼";
@@ -298,13 +402,28 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSC.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
                 wstSC.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
-                wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
+                // 學分數改為數值型態寫入
+                if (TryParseCredit(data.Credit, out double creditValue))
+                {
+                    wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(creditValue);
+                }
+                else
+                {
+                    wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue("");
+                }
                 wstSC.Cells[rowIdx, GetColIndex("節數")].PutValue(data.Period);
-                wstSC.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
+                wstSC.Cells[rowIdx, GetColIndex("修課課程代碼")].PutValue(data.SubjectCode);
                 wstSC.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
                 wstSC.Cells[rowIdx, GetColIndex("開課方式")].PutValue(data.open_type);
                 wstSC.Cells[rowIdx, GetColIndex("課程規劃表")].PutValue(data.GraduationPlanName);
                 wstSC.Cells[rowIdx, GetColIndex("報部科目名稱")].PutValue(data.OfficialSubjectName);
+
+                // 檢查與課規有差異
+                if (data.SubjectCode != data.CourseCode)
+                {
+                    wstSC.Cells[rowIdx, GetColIndex("與課規課程代碼有差異")].PutValue(data.CourseCode);
+                }
+
                 rowIdx++;
             }
 
@@ -333,7 +452,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSCError.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSCError.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
                 wstSCError.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
-                wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue(data.Credit);
+                // 學分數改為數值型態寫入
+                if (TryParseCredit(data.Credit, out double creditValueErr))
+                {
+                    wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue(creditValueErr);
+                }
+                else
+                {
+                    wstSCError.Cells[rowIdx, GetColIndex("學分數")].PutValue("");
+                }
                 wstSCError.Cells[rowIdx, GetColIndex("節數")].PutValue(data.Period);
                 wstSCError.Cells[rowIdx, GetColIndex("課程代碼")].PutValue(data.CourseCode);
                 wstSCError.Cells[rowIdx, GetColIndex("授課學期學分節數")].PutValue(data.credit_period);
@@ -416,7 +543,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
                 {
-                    if (string.IsNullOrWhiteSpace(data.CourseCode))
+                    // 改使用學生修課課程代碼為主
+                    if (string.IsNullOrWhiteSpace(data.SubjectCode))
                         data.hasCourseCode = false;
                     else
                         data.hasCourseCode = true;
@@ -478,7 +606,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             wstSCx2.Cells[rIdx, 3].PutValue(data.OfficialSubjectName);
                         }
                         wstSCx2.Cells[rIdx, 4].PutValue(data.GradeYear);
-                        wstSCx2.Cells[rIdx, 5].PutValue(data.Credit);
+                        // 學分數改為數值型態寫入（預檢成績名冊-日）
+                        if (TryParseCredit(data.Credit, out double creditValue1))
+                        {
+                            wstSCx2.Cells[rIdx, 5].PutValue(creditValue1);
+                        }
+                        else
+                        {
+                            wstSCx2.Cells[rIdx, 5].PutValue("");
+                        }
                         rIdx++;
                     }
                 }
@@ -503,7 +639,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         }
 
                         wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
-                        wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
+                        // 學分數改為數值型態寫入（預檢成績名冊-日，缺）
+                        if (TryParseCredit(data.Credit, out double creditValue2))
+                        {
+                            wstSCx2_err.Cells[rIdx, 5].PutValue(creditValue2);
+                        }
+                        else
+                        {
+                            wstSCx2_err.Cells[rIdx, 5].PutValue("");
+                        }
                         string key = data.IDNumber + "_" + data.CourseID;
                         if (CourseCodeErrDict.ContainsKey(key))
                         {
@@ -534,7 +678,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
             {
                 foreach (rptSCAttendCodeChkInfo data in SCAttendCodeChkInfoList)
                 {
-                    if (string.IsNullOrWhiteSpace(data.CourseCode))
+                    // 改使用學生修課課程代碼為主
+                    if (string.IsNullOrWhiteSpace(data.SubjectCode))
                         data.hasCourseCode = false;
                     else
                         data.hasCourseCode = true;
@@ -598,7 +743,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                             wstSCx2.Cells[rIdx, 3].PutValue(data.OfficialSubjectName);
                         }
                         wstSCx2.Cells[rIdx, 4].PutValue(data.GradeYear);
-                        wstSCx2.Cells[rIdx, 5].PutValue(data.Credit);
+                        // 學分數改為數值型態寫入（預檢成績名冊-進）
+                        if (TryParseCredit(data.Credit, out double creditValue3))
+                        {
+                            wstSCx2.Cells[rIdx, 5].PutValue(creditValue3);
+                        }
+                        else
+                        {
+                            wstSCx2.Cells[rIdx, 5].PutValue("");
+                        }
                         rIdx++;
                     }
                 }
@@ -623,7 +776,15 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         }
 
                         wstSCx2_err.Cells[rIdx, 4].PutValue(data.GradeYear);
-                        wstSCx2_err.Cells[rIdx, 5].PutValue(data.Credit);
+                        // 學分數改為數值型態寫入（預檢成績名冊-進，缺）
+                        if (TryParseCredit(data.Credit, out double creditValue4))
+                        {
+                            wstSCx2_err.Cells[rIdx, 5].PutValue(creditValue4);
+                        }
+                        else
+                        {
+                            wstSCx2_err.Cells[rIdx, 5].PutValue("");
+                        }
 
                         string key = data.IDNumber + "_" + data.CourseID;
                         if (CourseCodeErrDict.ContainsKey(key))
@@ -647,9 +808,21 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     _wbScoreXls.Worksheets.RemoveAt(wstSCx3_err.Index);
 
                 if (wstSCx4_err.Cells.MaxDataRow == 0)
-                    _wbScoreXls.Worksheets.RemoveAt(wstSCx4_err.Index);
+                    _wbScoreXls.Worksheets.RemoveAt(wstSCx4_err.Index);         
 
             }
+
+            Worksheet wsStat = _wb.Worksheets["檢查修課學生課程代碼_統計"];
+
+            foreach (PivotTable pt in wsStat.PivotTables)
+            {
+                pt.RefreshData();
+                pt.CalculateData();
+                DisableSubtotalsForField(pt, "部定校訂");
+            }           
+
+            _wb.Settings.CalcMode = CalcModeType.Automatic;
+            _wb.CalculateFormula();
             _bgWorker.ReportProgress(100);
         }
 
@@ -657,6 +830,48 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             this.Close();
         }
+
+         void DisableSubtotalsForField(PivotTable pt, string fieldName)
+        {
+
+            for (int i = 0; i < pt.RowFields.Count; i++)
+            {
+                PivotField pf = pt.RowFields[i];
+
+                if (string.Equals(pf.Name, "部定校訂", StringComparison.OrdinalIgnoreCase))
+                {
+                    DisableAllSubtotals(pf);
+                    break;
+                }
+            }
+
+            for (int i = 0; i < pt.ColumnFields.Count; i++)
+            {
+                PivotField pf = pt.ColumnFields[i];
+
+                if (string.Equals(pf.Name, "部定校訂", StringComparison.OrdinalIgnoreCase))
+                {
+                    DisableAllSubtotals(pf);
+                    break;
+                }
+            }
+        }
+
+        void DisableAllSubtotals(PivotField pf)
+        {
+            // 把常見小計全部關掉（等同「不要小計」）
+            pf.SetSubtotals(PivotFieldSubtotalType.Sum, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Count, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Average, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Max, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Min, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Product, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.CountNums, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Var, false);
+            pf.SetSubtotals(PivotFieldSubtotalType.Varp, false);
+        }
+
+
 
         public void AddCourseCodeErr(string IDNumber, string Coid, string Msg)
         {
@@ -769,6 +984,35 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 value = _ColIdxDict[name];
 
             return value;
+        }
+
+        /// <summary>
+        /// 嘗試將學分數轉換為數值型態
+        /// </summary>
+        /// <param name="value">學分數值（可能為 string、null、空白等）</param>
+        /// <param name="credit">輸出：轉換後的數值（若成功）</param>
+        /// <returns>是否成功轉換為數值</returns>
+        private bool TryParseCredit(object value, out double credit)
+        {
+            credit = 0;
+
+            // null / 空白 / 只有空白字元 → 回傳 false
+            if (value == null)
+                return false;
+
+            string strValue = value.ToString().Trim();
+            if (string.IsNullOrEmpty(strValue))
+                return false;
+
+            // 嘗試解析為數字（含小數）
+            if (double.TryParse(strValue, out double result))
+            {
+                credit = result;
+                return true;
+            }
+
+            // 不可解析（例如："-", "N/A"）→ 回傳 false（保持空白，不要丟例外）
+            return false;
         }
 
 
