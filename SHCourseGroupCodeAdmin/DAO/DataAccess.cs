@@ -1951,7 +1951,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                         if (chkGPlanInfoDict[data.GraduationPlanID].SubjectSpecNameList.Contains(key))
                         {
                             // 不檢查
-                            Console.WriteLine("不檢查");
+                            //Console.WriteLine("不檢查");
                         }
                         else
                         {

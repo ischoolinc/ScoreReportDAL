@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -160,7 +160,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             // 有課程規劃表學生
             List<DataRow> hasGplanStudents = da.GetHasGPlanStudent(_StrGradeYear);
-                
+
             List<chkGPSubjectInfo> thisCousreCodeList = new List<chkGPSubjectInfo>();
 
             List<string> chkCourseCode = new List<string>();
@@ -199,7 +199,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     chkCourseCode.Clear();
 
 
-                  
+
 
 
                     foreach (string key in chkGPlanInfoDict[graduation_plan_id].SubjectDict.Keys)
@@ -363,7 +363,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _wb = new Workbook(new MemoryStream(Properties.Resources.修課檢核課程代碼樣板));
 
             _wb.Settings.CalcMode = CalcModeType.Manual;
-          
+
 
 
             Worksheet wstSC = _wb.Worksheets["檢查修課學生課程代碼"];
@@ -423,6 +423,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 {
                     wstSC.Cells[rowIdx, GetColIndex("與課規課程代碼有差異")].PutValue(data.CourseCode);
                 }
+                else
+                    wstSC.Cells[rowIdx, GetColIndex("與課規課程代碼有差異")].PutValue("無");
 
                 rowIdx++;
             }
@@ -808,18 +810,45 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     _wbScoreXls.Worksheets.RemoveAt(wstSCx3_err.Index);
 
                 if (wstSCx4_err.Cells.MaxDataRow == 0)
-                    _wbScoreXls.Worksheets.RemoveAt(wstSCx4_err.Index);         
+                    _wbScoreXls.Worksheets.RemoveAt(wstSCx4_err.Index);
 
             }
 
-            Worksheet wsStat = _wb.Worksheets["檢查修課學生課程代碼_統計"];
+            // === 動態更新 Pivot 來源（Named Range）===
+            // Pivot 的資料來源使用 Named Range：ptSrc_CheckSCAttendCourseCode；每次輸出只更新 RefersTo 即可動態調整 Pivot 來源範圍。
+            const string PivotSourceName = "ptSrc_CheckSCAttendCourseCode";
 
+            // 以 A 欄判斷最後資料列，避免 MaxDataRow 受格式/空白列影響
+            int lastRow = GetLastDataRowByColumnA(wstSC, headerRowIndex: 0);
+            if (lastRow < 1)
+                return;
+
+            // 轉成 Excel 1-based 行號；固定欄位 A~U
+            int endRow = lastRow + 1;
+            string refersTo = $"='{wstSC.Name}'!A1:U{endRow}";
+
+            // 取得/建立 Named Range 後更新 RefersTo（不要 Remove/重建，避免破壞 Pivot 指向該 name 的關聯）
+            int nameIdx = -1;
+            for (int i = 0; i < _wb.Worksheets.Names.Count; i++)
+            {
+                if (string.Equals(_wb.Worksheets.Names[i].Text, PivotSourceName, StringComparison.Ordinal))
+                {
+                    nameIdx = i;
+                    break;
+                }
+            }
+            if (nameIdx == -1)
+                nameIdx = _wb.Worksheets.Names.Add(PivotSourceName);
+            _wb.Worksheets.Names[nameIdx].RefersTo = refersTo;
+
+            // === 刷新 Pivot ===
+            Worksheet wsStat = _wb.Worksheets["檢查修課學生課程代碼_統計"];
             foreach (PivotTable pt in wsStat.PivotTables)
             {
                 pt.RefreshData();
                 pt.CalculateData();
                 DisableSubtotalsForField(pt, "部定校訂");
-            }           
+            }
 
             _wb.Settings.CalcMode = CalcModeType.Automatic;
             _wb.CalculateFormula();
@@ -831,7 +860,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
             this.Close();
         }
 
-         void DisableSubtotalsForField(PivotTable pt, string fieldName)
+        void DisableSubtotalsForField(PivotTable pt, string fieldName)
         {
 
             for (int i = 0; i < pt.RowFields.Count; i++)
@@ -892,6 +921,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 chkPreScoreXls.Checked = false;
                 iptSchoolYear.IsInputReadOnly = true;
                 iptSemester.IsInputReadOnly = true;
+                chkPreScoreXlsN.Checked = chkPreScoreXls.Checked = false;
+
+                chkPreScoreXls.Visible = chkPreScoreXlsN.Visible = false;
                 // 先註解之後再使用
                 //iptSchoolYear.Value = iptSchoolYear.MinValue;
                 //iptSemester.Value = iptSemester.MinValue;
@@ -1013,6 +1045,25 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
             // 不可解析（例如："-", "N/A"）→ 回傳 false（保持空白，不要丟例外）
             return false;
+        }
+
+        /// <summary>
+        /// 以 A 欄判斷最後一筆資料列（0-based），避免 MaxDataRow 受殘留格式/空白列影響。
+        /// </summary>
+        /// <param name="ws">工作表</param>
+        /// <param name="headerRowIndex">標題列索引（0-based），預設 0</param>
+        /// <returns>最後一列有資料的列索引；若僅有標題或無資料則回傳 -1</returns>
+        private int GetLastDataRowByColumnA(Worksheet ws, int headerRowIndex = 0)
+        {
+            int maxRow = ws.Cells.MaxDataRow;
+            if (maxRow < headerRowIndex)
+                return -1;
+            for (int r = maxRow; r >= headerRowIndex; r--)
+            {
+                if (!string.IsNullOrWhiteSpace(ws.Cells[r, 0].StringValue))
+                    return r;
+            }
+            return -1;
         }
 
 
