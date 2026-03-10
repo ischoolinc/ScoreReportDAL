@@ -1948,18 +1948,20 @@ namespace SHCourseGroupCodeAdmin.DAO
                             }
                         }
 
+                        // 學分數檢查
+                        bool pass = false;
                         if (chkGPlanInfoDict[data.GraduationPlanID].SubjectSpecNameList.Contains(key))
                         {
-                            // 不檢查
-                            //Console.WriteLine("不檢查");
+                            pass = true; // 特殊需求領域不檢查
                         }
                         else
                         {
-                            // 檢查學分數
-                            if (data.CheckCreditPass(mappingTable))
-                            {
-                                errItem.Remove("節數或學分數");
-                            }
+                            pass = data.CheckCreditPass(mappingTable);
+                        }
+
+                        if (pass)
+                        {
+                            errItem.Remove("節數或學分數");
                         }
                     }
                     else
