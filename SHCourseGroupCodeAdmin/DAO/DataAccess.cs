@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1788,11 +1788,19 @@ namespace SHCourseGroupCodeAdmin.DAO
  	                INNER JOIN class  
  	                ON student.ref_class_id = class.id  
                  WHERE   
-                  student.status IN(1,2) AND class.grade_year IN({0})  
-                 AND course.school_year ={1} AND course.semester = {2} 
-                 AND COALESCE(TRIM(course.subject), '') <> ''
-                 AND COALESCE(course.not_included_in_calc, '0') <> '1'
-                 AND COALESCE(course.not_included_in_credit, '0') <> '1'
+                  student.status IN (1,2)
+                 AND class.grade_year IN({0})
+                 AND course.school_year = {1}
+                 AND course.semester = {2}
+                 AND char_length(COALESCE(sc_attend.subject_code,'')) = 23
+                 AND COALESCE(course.not_included_in_credit,'0') = '0'
+                 AND (
+                       COALESCE(course.not_included_in_calc,'0') = '0'
+                    OR (
+                          COALESCE(course.not_included_in_calc,'0') = '1'
+                          AND upper(substring(sc_attend.subject_code from 17 for 2)) = '9D'
+                       )
+                 )
 	                ORDER BY 
 	                class.grade_year DESC
 	                ,class.display_order
@@ -1846,9 +1854,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.NotIncludedInCredit = dr["not_included_in_credit"] + "";
 
                     // 排除科目名稱空白、不需評分、不計學分
-                    if (string.IsNullOrWhiteSpace(data.SubjectName)) continue;
-                    if (data.NotIncludedInCalc == "1") continue;
-                    if (data.NotIncludedInCredit == "1") continue;
+                    if (string.IsNullOrWhiteSpace(data.SubjectName)) continue;                 
 
                     // 使用科目名稱_科目級別 比對資料
                     string key = data.SubjectName + "_" + data.SubjectLevel;
