@@ -1792,15 +1792,6 @@ namespace SHCourseGroupCodeAdmin.DAO
                  AND class.grade_year IN({0})
                  AND course.school_year = {1}
                  AND course.semester = {2}
-                 AND char_length(COALESCE(sc_attend.subject_code,'')) = 23
-                 AND COALESCE(course.not_included_in_credit,'0') = '0'
-                 AND (
-                       COALESCE(course.not_included_in_calc,'0') = '0'
-                    OR (
-                          COALESCE(course.not_included_in_calc,'0') = '1'
-                          AND upper(substring(sc_attend.subject_code from 17 for 2)) = '9D'
-                       )
-                 )
 	                ORDER BY 
 	                class.grade_year DESC
 	                ,class.display_order

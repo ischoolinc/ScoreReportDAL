@@ -402,8 +402,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 wstSC.Cells[rowIdx, GetColIndex("部定校訂")].PutValue(data.RequiredBy);
                 wstSC.Cells[rowIdx, GetColIndex("必修選修")].PutValue(data.IsRequired);
                 wstSC.Cells[rowIdx, GetColIndex("分項類別")].PutValue(data.ScoreType);
-                // 學分數改為數值型態寫入
-                if (TryParseCredit(data.Credit, out double creditValue))
+                // 不計學分 → 學分數強制為 0
+                if (data.NotIncludedInCredit == "1")
+                {
+                    wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(0);
+                }
+                else if (TryParseCredit(data.Credit, out double creditValue))
                 {
                     wstSC.Cells[rowIdx, GetColIndex("學分數")].PutValue(creditValue);
                 }
@@ -980,7 +984,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 sb.AppendLine("");
                 sb.AppendLine("3.工作表:檢查學生應修課程代碼未修，依課程代碼大表為主，與工作表:檢查修課學生課程代碼，透過課程代碼進行比對，該學年度學期沒有修課科目會被列出。");
                 sb.AppendLine("");
-                sb.AppendLine("4.勾選產生預檢成績名冊，在執行時一併產生國教署需要預檢成績名冊檔案，會填入資料：身分證號, 出生日期, 課程代碼, 科目名稱, 開課年級, 修課學分。");
+                sb.AppendLine("4.工作表：檢查修課學生課程代碼_統計，依「檢查修課學生課程代碼」工作表進行樞紐分析，欄為部定校訂、必修選修，列為班級、座號、姓名，數值為學分數加總。當課程屬性為「不計學分 = 是」時，學分數視為 0，因此不會納入學分數加總計算。");
 
 
                 txtDesc.Text = sb.ToString();

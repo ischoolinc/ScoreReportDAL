@@ -49,7 +49,7 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.Location = new System.Drawing.Point(281, 322);
+            this.btnCancel.Location = new System.Drawing.Point(296, 353);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -63,7 +63,7 @@
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.BackColor = System.Drawing.Color.Transparent;
             this.btnRun.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRun.Location = new System.Drawing.Point(200, 322);
+            this.btnRun.Location = new System.Drawing.Point(215, 353);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(75, 25);
             this.btnRun.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -174,7 +174,7 @@
             this.txtDesc.Location = new System.Drawing.Point(19, 58);
             this.txtDesc.Multiline = true;
             this.txtDesc.Name = "txtDesc";
-            this.txtDesc.Size = new System.Drawing.Size(344, 241);
+            this.txtDesc.Size = new System.Drawing.Size(344, 275);
             this.txtDesc.TabIndex = 20;
             // 
             // chkPreScoreXls
@@ -187,7 +187,7 @@
             // 
             this.chkPreScoreXls.BackgroundStyle.Class = "";
             this.chkPreScoreXls.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkPreScoreXls.Location = new System.Drawing.Point(13, 308);
+            this.chkPreScoreXls.Location = new System.Drawing.Point(13, 339);
             this.chkPreScoreXls.Name = "chkPreScoreXls";
             this.chkPreScoreXls.Size = new System.Drawing.Size(156, 21);
             this.chkPreScoreXls.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -205,7 +205,7 @@
             // 
             this.chkPreScoreXlsN.BackgroundStyle.Class = "";
             this.chkPreScoreXlsN.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkPreScoreXlsN.Location = new System.Drawing.Point(13, 333);
+            this.chkPreScoreXlsN.Location = new System.Drawing.Point(13, 364);
             this.chkPreScoreXlsN.Name = "chkPreScoreXlsN";
             this.chkPreScoreXlsN.Size = new System.Drawing.Size(156, 21);
             this.chkPreScoreXlsN.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -217,7 +217,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 361);
+            this.ClientSize = new System.Drawing.Size(392, 392);
             this.Controls.Add(this.chkPreScoreXlsN);
             this.Controls.Add(this.chkPreScoreXls);
             this.Controls.Add(this.txtDesc);
