@@ -1,4 +1,5 @@
-﻿using Aspose.Words;
+using Aspose.Pdf.Facades;
+using Aspose.Words;
 using FISCA.Presentation;
 using FISCA.Presentation.Controls;
 using FISCA.UDT;
@@ -11,7 +12,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -40,6 +43,11 @@ namespace SHCourseGroupCodeAdmin.Report
         /// </summary>
         bool IsAccordingToClass = false;
         Dictionary<string, string> StudentClassFolderDict = new Dictionary<string, string>();
+
+        private List<rptStudSemsScoreCodeChkInfo> _ResultList = new List<rptStudSemsScoreCodeChkInfo>();
+        private Dictionary<string, int> _CourseStudentCountDic = new Dictionary<string, int>();
+        /// <summary>修課紀錄移除與學期成績重複後剩餘筆數（對應 MailMerge 條件）。</summary>
+        private int _StudSCAttendRemainderCount;
 
         public Student6thSemesterCorseCodeRank()
         {
@@ -90,7 +98,8 @@ namespace SHCourseGroupCodeAdmin.Report
             //List<rptStudSemsScoreCodeChkInfo> StudSCAttendCodeInfoList = da.GetStudentCourseInfoBySchoolYearSemesterFor6thRank(109, 1, "3");
 
             //最後要產出的學期成績&修課紀錄合併
-            List<rptStudSemsScoreCodeChkInfo> ResultList = new List<rptStudSemsScoreCodeChkInfo>();
+            _ResultList.Clear();
+            _CourseStudentCountDic.Clear();
 
             bgWorkerReport.ReportProgress(30);
 
@@ -164,25 +173,24 @@ namespace SHCourseGroupCodeAdmin.Report
                     }
                 }
             }
+            _StudSCAttendRemainderCount = StudSCAttendCodeInfoList.Count;
             //合併剩餘的修課紀錄和學期成績
-            ResultList.AddRange(StudSemsScoreCodeChkInfoList);
-            ResultList.AddRange(StudSCAttendCodeInfoList);
+            _ResultList.AddRange(StudSemsScoreCodeChkInfoList);
+            _ResultList.AddRange(StudSCAttendCodeInfoList);
             #endregion
 
             bgWorkerReport.ReportProgress(60);
 
             #region 計算修課人數
             // 新增字典儲存修課人數
-            Dictionary<string, int> courseStudentCountDic = new Dictionary<string, int>();
-
-            foreach (rptStudSemsScoreCodeChkInfo data in ResultList)
+            foreach (rptStudSemsScoreCodeChkInfo data in _ResultList)
             {
                 if (data.CourseCode != null)
                 {
-                    if (!courseStudentCountDic.ContainsKey(data.CourseCode))
-                        courseStudentCountDic[data.CourseCode] = 1;
+                    if (!_CourseStudentCountDic.ContainsKey(data.CourseCode))
+                        _CourseStudentCountDic[data.CourseCode] = 1;
                     else
-                        courseStudentCountDic[data.CourseCode]++;
+                        _CourseStudentCountDic[data.CourseCode]++;
                 }
             }
             #endregion
@@ -283,7 +291,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 //學期學業成績總平均
 
                 int index = 1;
-                foreach (rptStudSemsScoreCodeChkInfo data in ResultList)
+                foreach (rptStudSemsScoreCodeChkInfo data in _ResultList)
                 {
                     if (data.StudentID == si.StudentID)
                     {
@@ -293,7 +301,7 @@ namespace SHCourseGroupCodeAdmin.Report
                         if (string.IsNullOrEmpty(data.CourseCode))
                             continue;
 
-                        if (StudSCAttendCodeInfoList.Count == 0 && string.IsNullOrEmpty(data.SemsScoreCourseCode))
+                        if (_StudSCAttendRemainderCount == 0 && string.IsNullOrEmpty(data.SemsScoreCourseCode))
                         {
                             continue;
                         }
@@ -351,8 +359,8 @@ namespace SHCourseGroupCodeAdmin.Report
                                 row["單科成績排名百分比" + index] = data.Rank + "%";
 
                             // 動態查詢修課人數
-                            if (data.CourseCode != null && courseStudentCountDic.ContainsKey(data.CourseCode))
-                                row["修課人數" + index] = courseStudentCountDic[data.CourseCode];
+                            if (data.CourseCode != null && _CourseStudentCountDic.ContainsKey(data.CourseCode))
+                                row["修課人數" + index] = _CourseStudentCountDic[data.CourseCode];
                             
                             index++;
                         }
@@ -455,6 +463,7 @@ namespace SHCourseGroupCodeAdmin.Report
             #endregion
 
             #region 單檔列印
+            List<string> gradeMetaErrorList = new List<string>();
             foreach (string sid in StudentDocDict.Keys)
             {
 
@@ -549,6 +558,7 @@ namespace SHCourseGroupCodeAdmin.Report
                     try
                     {
                         document.Save(pathPDF, SaveFormat.Pdf);
+                        TryWriteGradeDataToPdf(pathPDF, sid, gradeMetaErrorList);
                     }
                     catch (Exception ex)
                     {
@@ -561,7 +571,7 @@ namespace SHCourseGroupCodeAdmin.Report
                             try
                             {
                                 document.Save(sd.FileName, Aspose.Words.SaveFormat.Pdf);
-
+                                TryWriteGradeDataToPdf(sd.FileName, sid, gradeMetaErrorList);
                             }
                             catch
                             {
@@ -578,6 +588,11 @@ namespace SHCourseGroupCodeAdmin.Report
                     FISCA.Presentation.Controls.MsgBox.Show("產生過程發生錯誤," + ex.Message);
                 }
                 #endregion
+            }
+
+            if (gradeMetaErrorList.Count > 0)
+            {
+                MsgBox.Show(string.Join(Environment.NewLine, gradeMetaErrorList), "第六學期成績單 Metadata 寫入失敗", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             try
@@ -810,6 +825,201 @@ namespace SHCourseGroupCodeAdmin.Report
             this.Close();
         }
 
+        private class GradeMetaItem
+        {
+            public string 科目名稱 { get; set; }
+            public int 單科學分數 { get; set; }
+            public int 單科成績 { get; set; }
+            public int 修課人數 { get; set; }
+            public decimal 單科成績排名百分比 { get; set; }
+            public string 課程類別代碼 { get; set; }
+            public string 領域名稱代碼 { get; set; }
+        }
+
+        private void ValidateGradeMetaItem(GradeMetaItem item)
+        {
+            if (string.IsNullOrWhiteSpace(item.科目名稱) || item.科目名稱.Length < 1 || item.科目名稱.Length > 200)
+                throw new Exception("科目名稱必須為 1～200 字且不可空白。");
+            if (item.單科學分數 < 1 || item.單科學分數 > 9)
+                throw new Exception("單科學分數必須為 1～9 的整數。");
+            if (item.單科成績 < 0 || item.單科成績 > 100)
+                throw new Exception("單科成績必須為 0～100 的整數。");
+            if (item.修課人數 < 1 || item.修課人數 > 9999)
+                throw new Exception("修課人數必須為 1～9999 的整數。");
+            decimal rp = item.單科成績排名百分比;
+            if (rp < 0 || rp > 100)
+                throw new Exception("單科成績排名百分比必須在 0～100 之間。");
+            if (Math.Round(rp, 2, MidpointRounding.AwayFromZero) != rp)
+                throw new Exception("單科成績排名百分比最多小數第 2 位。");
+            if (string.IsNullOrEmpty(item.課程類別代碼) || !Regex.IsMatch(item.課程類別代碼, @"^[1-9A-F]$"))
+                throw new Exception("課程類別代碼必須為 1～9 或大寫 A～F 之一。");
+            if (string.IsNullOrWhiteSpace(item.領域名稱代碼) || item.領域名稱代碼.Length != 2)
+                throw new Exception("領域名稱代碼必須為固定 2 碼且不可空白。");
+        }
+
+        private int GetCourseStudentCount(string courseCode)
+        {
+            if (string.IsNullOrWhiteSpace(courseCode))
+                return 0;
+            int v;
+            if (_CourseStudentCountDic.TryGetValue(courseCode, out v))
+                return v;
+            return 0;
+        }
+
+        /// <summary>
+        /// 依教育部課程代碼（23 碼以上）第 17 碼為課程類別；取法需依現有課程代碼規則確認。
+        /// </summary>
+        private string GetCourseCategoryCode(rptStudSemsScoreCodeChkInfo data)
+        {
+            // TODO: 依正式課程代碼規則取得課程類別代碼
+            string code = data.CourseCode;
+            if (string.IsNullOrEmpty(code) || code.Length <= 22)
+                throw new Exception("無法自課程代碼取得課程類別代碼（課程代碼長度不足或非 23 碼格式）。");
+            return code.Substring(16, 1).ToUpperInvariant();
+        }
+
+        /// <summary>
+        /// 依教育部課程代碼第 20～21 碼為領域名稱代碼；取法需依現有課程代碼規則確認。
+        /// </summary>
+        private string GetDomainCode(rptStudSemsScoreCodeChkInfo data)
+        {
+            // TODO: 依正式課程代碼規則取得領域名稱代碼
+            string code = data.CourseCode;
+            if (string.IsNullOrEmpty(code) || code.Length <= 22)
+                throw new Exception("無法自課程代碼取得領域名稱代碼（課程代碼長度不足或非 23 碼格式）。");
+            return code.Substring(19, 2);
+        }
+
+        private static bool GetSkipLoopForSixthSemesterRow(rptStudSemsScoreCodeChkInfo data, bool chkNCredit, bool chkNScore)
+        {
+            bool skipLoop = false;
+            if (data.NCredit == "是" && data.NScore == "是")
+            {
+                if (chkNCredit && chkNScore) skipLoop = false;
+                if (chkNCredit && !chkNScore) skipLoop = true;
+                if (!chkNCredit && chkNScore) skipLoop = true;
+                if (!chkNCredit && !chkNScore) skipLoop = true;
+            }
+            else if (data.NCredit == "是" && data.NScore != "是")
+            {
+                if (chkNCredit && chkNScore) skipLoop = true;
+                if (chkNCredit && !chkNScore) skipLoop = false;
+                if (!chkNCredit && chkNScore) skipLoop = true;
+                if (!chkNCredit && !chkNScore) skipLoop = true;
+            }
+            else if (data.NCredit != "是" && data.NScore == "是")
+            {
+                if (chkNCredit && chkNScore) skipLoop = true;
+                if (chkNCredit && !chkNScore) skipLoop = true;
+                if (!chkNCredit && chkNScore) skipLoop = false;
+                if (!chkNCredit && !chkNScore) skipLoop = true;
+            }
+            else
+                skipLoop = false;
+            return skipLoop;
+        }
+
+        private string BuildGradeDataJson(string studentID)
+        {
+            bool chkNc = chkNCredit.Checked;
+            bool chkNs = chkNScore.Checked;
+            var items = new List<GradeMetaItem>();
+            int index = 1;
+            foreach (rptStudSemsScoreCodeChkInfo data in _ResultList)
+            {
+                if (data.StudentID != studentID)
+                    continue;
+                if (string.IsNullOrEmpty(data.CourseCode))
+                    continue;
+                if (_StudSCAttendRemainderCount == 0 && string.IsNullOrEmpty(data.SemsScoreCourseCode))
+                    continue;
+                if (GetSkipLoopForSixthSemesterRow(data, chkNc, chkNs))
+                    continue;
+                if (data.IsStudying)
+                    continue;
+                if (!data.Score.HasValue)
+                    continue;
+                if (!data.Rank.HasValue)
+                    throw new Exception("單科成績排名百分比缺少排名資料（科目：" + data.SubjectName + "）。");
+                if (index > 60)
+                    break;
+
+                int creditInt;
+                if (!int.TryParse((data.Credit ?? "").Trim(), out creditInt))
+                    throw new Exception("單科學分數無法轉為整數（科目：" + data.SubjectName + "）。");
+                int scoreInt = (int)Math.Round(data.Score.Value, MidpointRounding.AwayFromZero);
+                decimal rankPct = data.Rank.Value;
+
+                var item = new GradeMetaItem
+                {
+                    科目名稱 = data.SubjectName ?? "",
+                    單科學分數 = creditInt,
+                    單科成績 = scoreInt,
+                    修課人數 = GetCourseStudentCount(data.CourseCode),
+                    單科成績排名百分比 = rankPct,
+                    課程類別代碼 = GetCourseCategoryCode(data),
+                    領域名稱代碼 = GetDomainCode(data)
+                };
+                ValidateGradeMetaItem(item);
+                items.Add(item);
+                index++;
+            }
+            if (items.Count == 0)
+                throw new Exception("GradeData 至少需要 1 筆有效科目資料。");
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize(items);
+        }
+
+        private void WriteGradeDataToPdf(string pdfPath, string studentID)
+        {
+            string json = BuildGradeDataJson(studentID);
+
+            PdfFileInfo fileInfo = new PdfFileInfo();
+            try
+            {
+                fileInfo.BindPdf(pdfPath);
+
+                // 寫入自訂 Metadata 欄位
+                fileInfo.SetMetaInfo("GradeData", json);
+
+                // 修正 Unknown prefix 問題：
+                // 不使用 SaveNewInfoWithXmp，避免 XMP namespace/prefix 造成錯誤
+                fileInfo.SaveNewInfo(pdfPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("第六學期成績單 Metadata 寫入失敗：" + ex.Message, ex);
+            }
+            finally
+            {
+                fileInfo.Close();
+            }
+
+            // 同步輸出同名 JSON 備份檔
+            File.WriteAllText(
+                Path.ChangeExtension(pdfPath, ".json"),
+                json,
+                new UTF8Encoding(false)
+            );
+        }
+
+        private void TryWriteGradeDataToPdf(string pdfPath, string studentID, List<string> gradeMetaErrorList)
+        {
+            try
+            {
+                WriteGradeDataToPdf(pdfPath, studentID);
+            }
+            catch (Exception ex)
+            {
+                string idNumber = StudentDocNameDict.ContainsKey(studentID) ? StudentDocNameDict[studentID] : "";
+                gradeMetaErrorList.Add(string.Format(
+                    "第六學期成績單 Metadata 寫入失敗（學生系統編號 {0}，身分證號 {1}）：{2}",
+                    studentID,
+                    idNumber,
+                    ex.Message));
+            }
+        }
 
     }
 }
