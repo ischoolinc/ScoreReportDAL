@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -3312,13 +3312,29 @@ namespace SHGraduationWarning.UIForm
                 // 處理畫面上所選學生
                 // 沒選就當作所有
                 SelectedReportStudentList.Clear();
+
+                // 無選取 → 全部依畫面順序
                 if (dgDataGW.SelectedRows.Count == 0)
-                    SelectedReportStudentList = ReportStudentList;
-                else
                 {
-                    foreach (DataGridViewRow row in dgDataGW.SelectedRows)
+                    foreach (DataGridViewRow row in dgDataGW.Rows)
                     {
                         if (row.IsNewRow)
+                            continue;
+
+                        ReportStudentInfo rs = row.Tag as ReportStudentInfo;
+                        if (rs != null)
+                            SelectedReportStudentList.Add(rs);
+                    }
+                }
+                else
+                {
+                    // 有選取 → 依畫面順序 + 判斷 Selected
+                    foreach (DataGridViewRow row in dgDataGW.Rows)
+                    {
+                        if (row.IsNewRow)
+                            continue;
+
+                        if (!row.Selected)
                             continue;
 
                         ReportStudentInfo rs = row.Tag as ReportStudentInfo;
@@ -3330,22 +3346,6 @@ namespace SHGraduationWarning.UIForm
                 // 有資料在執行
                 if (SelectedReportStudentList.Count > 0)
                 {
-                    // 將所選的學生依照學生班級座號排序
-
-                    try
-                    {
-                        SelectedReportStudentList = SelectedReportStudentList.OrderBy(x => x.ClassName).ThenBy(x =>
-                        {
-                            int seatNo;
-                            return int.TryParse(x.SeatNo, out seatNo) ? seatNo : 0;
-                        }).ToList();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-
-
                     bgwGrandCheckReport.RunWorkerAsync();
                 }
                 else
