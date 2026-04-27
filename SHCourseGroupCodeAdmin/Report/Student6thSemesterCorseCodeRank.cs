@@ -250,7 +250,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 // 因為每位學生單檔列印，所以複製一份
                 Document docTemplate = _Configure.Template.Clone();
                 if (docTemplate == null)
-                    docTemplate = new Document(new MemoryStream(Properties.Resources.DefaultTemplate));
+                    docTemplate = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
 
                 #region 產生合併欄位
                 DataTable dtTable = new DataTable();
@@ -558,7 +558,8 @@ namespace SHCourseGroupCodeAdmin.Report
                     try
                     {
                         document.Save(pathPDF, SaveFormat.Pdf);
-                        TryWriteGradeDataToPdf(pathPDF, sid, gradeMetaErrorList);
+
+                        //TryWriteGradeDataToPdf(pathPDF, sid, gradeMetaErrorList);
                     }
                     catch (Exception ex)
                     {
@@ -571,7 +572,9 @@ namespace SHCourseGroupCodeAdmin.Report
                             try
                             {
                                 document.Save(sd.FileName, Aspose.Words.SaveFormat.Pdf);
-                                TryWriteGradeDataToPdf(sd.FileName, sid, gradeMetaErrorList);
+
+                                // 實作新規格 json 寫入 pdf，目前先註解，等確認後再執行
+                          //      TryWriteGradeDataToPdf(sd.FileName, sid, gradeMetaErrorList);
                             }
                             catch
                             {
@@ -644,7 +647,7 @@ namespace SHCourseGroupCodeAdmin.Report
             try
             {
                 if (_Configure.Template == null)
-                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate));
+                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
 
                 _Configure.Template.Save(path, Aspose.Words.SaveFormat.Docx);
                 System.Diagnostics.Process.Start(path);
@@ -745,7 +748,7 @@ namespace SHCourseGroupCodeAdmin.Report
             Document DefDoc = null;
             try
             {
-                DefDoc = new Document(new MemoryStream(Properties.Resources.DefaultTemplate));
+                DefDoc = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
 
                 DefDoc.Save(path, SaveFormat.Docx);
                 System.Diagnostics.Process.Start(path);
@@ -787,7 +790,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 {
                     _Configure = new Configure();
                     _Configure.Name = "學生第6學期修課";
-                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate));
+                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
 
                     _Configure.Encode();
 

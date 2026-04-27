@@ -380,6 +380,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Template\DefaultTemplate.docx" />
+    <None Include="Template\DefaultTemplate0427.docx" />
     <None Include="Template\Template.docx" />
     <None Include="Template\修課檢核課程代碼樣板.xlsx" />
     <None Include="Template\學期成績檢核課程代碼樣板.xlsx" />
