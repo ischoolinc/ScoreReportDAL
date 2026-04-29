@@ -178,7 +178,7 @@
   <data name="Report" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Report.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DefaultTemplate0427" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Template\DefaultTemplate0427.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DefaultTemplate0429" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Template\DefaultTemplate0429.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

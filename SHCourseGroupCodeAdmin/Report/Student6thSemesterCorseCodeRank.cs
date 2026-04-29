@@ -250,7 +250,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 // 因為每位學生單檔列印，所以複製一份
                 Document docTemplate = _Configure.Template.Clone();
                 if (docTemplate == null)
-                    docTemplate = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
+                    docTemplate = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0429));
 
                 #region 產生合併欄位
                 DataTable dtTable = new DataTable();
@@ -647,7 +647,7 @@ namespace SHCourseGroupCodeAdmin.Report
             try
             {
                 if (_Configure.Template == null)
-                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
+                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0429));
 
                 _Configure.Template.Save(path, Aspose.Words.SaveFormat.Docx);
                 System.Diagnostics.Process.Start(path);
@@ -748,7 +748,7 @@ namespace SHCourseGroupCodeAdmin.Report
             Document DefDoc = null;
             try
             {
-                DefDoc = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
+                DefDoc = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0429));
 
                 DefDoc.Save(path, SaveFormat.Docx);
                 System.Diagnostics.Process.Start(path);
@@ -790,7 +790,7 @@ namespace SHCourseGroupCodeAdmin.Report
                 {
                     _Configure = new Configure();
                     _Configure.Name = "學生第6學期修課";
-                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0427));
+                    _Configure.Template = new Document(new MemoryStream(Properties.Resources.DefaultTemplate0429));
 
                     _Configure.Encode();
 

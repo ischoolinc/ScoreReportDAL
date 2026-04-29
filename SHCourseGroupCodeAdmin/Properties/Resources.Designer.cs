@@ -73,9 +73,9 @@ namespace SHCourseGroupCodeAdmin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] DefaultTemplate0427 {
+        internal static byte[] DefaultTemplate0429 {
             get {
-                object obj = ResourceManager.GetObject("DefaultTemplate0427", resourceCulture);
+                object obj = ResourceManager.GetObject("DefaultTemplate0429", resourceCulture);
                 return ((byte[])(obj));
             }
         }
