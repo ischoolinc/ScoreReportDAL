@@ -1380,11 +1380,14 @@ namespace SHGraduationWarning.UIForm
                                 bool isCanMakeup = status == "尚未補修";
                                 bool isCanRetake = status == "可重修";
 
-                                // 新增：不採計
-                                bool isNotIncluded = xmlRuleS.GetAttribute("成績科目級別重複") == "不重複採計";
+                                bool isScoreNotIncluded =
+                                    xmlRuleS.GetAttribute("成績科目級別重複") == "不重複採計";
 
-                                // 三種科目屬性都不是，就不輸出到科目狀態欄位
-                                if (!isCanMakeup && !isCanRetake && !isNotIncluded)
+                                bool isPlanNotIncluded =
+                                    xmlRuleS.GetAttribute("課規科目級別重複") == "不重複採計";
+
+                                // 四種科目屬性都不是，就不輸出到科目狀態欄位
+                                if (!isCanMakeup && !isCanRetake && !isScoreNotIncluded && !isPlanNotIncluded)
                                     continue;
 
                                 string sKey = xmlRuleS.GetAttribute("科目名稱") + "_" + xmlRuleS.GetAttribute("科目級別");
@@ -1400,8 +1403,11 @@ namespace SHGraduationWarning.UIForm
                                 if (isCanMakeup)
                                     statusList.Add("可補修");
 
-                                if (isNotIncluded)
-                                    statusList.Add("不採計");
+                                if (isScoreNotIncluded)
+                                    statusList.Add("成績不採計");
+
+                                if (isPlanNotIncluded)
+                                    statusList.Add("課規不採計");
 
                                 // 輸出到報表的 科目N_狀態
                                 subjectElement.SetAttribute("狀態", string.Join("、", statusList.ToArray()));
@@ -1420,7 +1426,14 @@ namespace SHGraduationWarning.UIForm
                                     AddSubjectStatusIfNotExists(mergedStatusList, existElement.GetAttribute("狀態"));
                                     AddSubjectStatusIfNotExists(mergedStatusList, subjectElement.GetAttribute("狀態"));
 
-                                    existElement.SetAttribute("狀態", string.Join("、", mergedStatusList.ToArray()));
+                                    List<string> orderedStatusList = new List<string>();
+                                    foreach (string item in new string[] { "可重修", "可補修", "成績不採計", "課規不採計" })
+                                    {
+                                        if (mergedStatusList.Contains(item))
+                                            orderedStatusList.Add(item);
+                                    }
+
+                                    existElement.SetAttribute("狀態", string.Join("、", orderedStatusList.ToArray()));
                                 }
 
                                 // 整理符合規則的科目與級別
@@ -3814,6 +3827,9 @@ namespace SHGraduationWarning.UIForm
 
                 if (s == "尚未補修")
                     s = "可補修";
+
+                if (s == "不採計")
+                    s = "成績不採計";
 
                 if (!statusList.Contains(s))
                     statusList.Add(s);
