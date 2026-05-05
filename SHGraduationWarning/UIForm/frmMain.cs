@@ -1367,25 +1367,68 @@ namespace SHGraduationWarning.UIForm
                                 }
                             }
 
-                            // 處理科目可補修、可重修
+                            // 處理科目屬性：可補修、可重修、不採計
                             foreach (XmlElement xmlRuleS in xmlRule.SelectNodes("科目"))
                             {
-                                if (xmlRuleS.GetAttribute("狀態") == "尚未補修" || xmlRuleS.GetAttribute("狀態") == "可重修")
+                                // 原本邏輯：學分數 = 0 不列入報表科目清單
+                                if (xmlRuleS.GetAttribute("學分數") == "0")
+                                    continue;
+
+                                string status = xmlRuleS.GetAttribute("狀態");
+
+                                // 判斷邏輯維持原本：尚未補修代表可補修
+                                bool isCanMakeup = status == "尚未補修";
+                                bool isCanRetake = status == "可重修";
+
+                                // 新增：不採計
+                                bool isNotIncluded = xmlRuleS.GetAttribute("成績科目級別重複") == "不重複採計";
+
+                                // 三種科目屬性都不是，就不輸出到科目狀態欄位
+                                if (!isCanMakeup && !isCanRetake && !isNotIncluded)
+                                    continue;
+
+                                string sKey = xmlRuleS.GetAttribute("科目名稱") + "_" + xmlRuleS.GetAttribute("科目級別");
+
+                                // 複製一份，避免修改原始 GrandCheckReport XML
+                                XmlElement subjectElement = xmlRuleS.CloneNode(true) as XmlElement;
+
+                                List<string> statusList = new List<string>();
+
+                                if (isCanRetake)
+                                    statusList.Add("可重修");
+
+                                if (isCanMakeup)
+                                    statusList.Add("可補修");
+
+                                if (isNotIncluded)
+                                    statusList.Add("不採計");
+
+                                // 輸出到報表的 科目N_狀態
+                                subjectElement.SetAttribute("狀態", string.Join("、", statusList.ToArray()));
+
+                                if (!rs.dicRetake.ContainsKey(sKey))
                                 {
-                                    // 當不計學分跳過，判斷：學分數=0
-                                    if (xmlRuleS.GetAttribute("學分數") == "0")
-                                        continue;
-
-                                    // key = 科目名稱+級別
-                                    string sKey = xmlRuleS.GetAttribute("科目名稱") + "_" + xmlRuleS.GetAttribute("科目級別");
-                                    if (!rs.dicRetake.ContainsKey(sKey))
-                                        rs.dicRetake.Add(sKey, xmlRuleS);
-
-                                    // 整理符合規則的科目與級別
-                                    if (!rs.dicRetaleRelate.ContainsKey(Rule))
-                                        rs.dicRetaleRelate.Add(Rule, new List<string>());
-                                    rs.dicRetaleRelate[Rule].Add(sKey);
+                                    rs.dicRetake.Add(sKey, subjectElement);
                                 }
+                                else
+                                {
+                                    // 同一科目名稱 + 科目級別 已經存在時，只合併狀態，不覆蓋其他資料
+                                    XmlElement existElement = rs.dicRetake[sKey];
+
+                                    List<string> mergedStatusList = new List<string>();
+
+                                    AddSubjectStatusIfNotExists(mergedStatusList, existElement.GetAttribute("狀態"));
+                                    AddSubjectStatusIfNotExists(mergedStatusList, subjectElement.GetAttribute("狀態"));
+
+                                    existElement.SetAttribute("狀態", string.Join("、", mergedStatusList.ToArray()));
+                                }
+
+                                // 整理符合規則的科目與級別
+                                if (!rs.dicRetaleRelate.ContainsKey(Rule))
+                                    rs.dicRetaleRelate.Add(Rule, new List<string>());
+
+                                if (!rs.dicRetaleRelate[Rule].Contains(sKey))
+                                    rs.dicRetaleRelate[Rule].Add(sKey);
                             }
                         }
                     }
@@ -3750,6 +3793,31 @@ namespace SHGraduationWarning.UIForm
             }
             lblMsg.Text = "共" + rowCount + "筆";
 
+        }
+
+        /// <summary>
+        /// 將科目狀態加入清單，避免重複。
+        /// 注意：判斷邏輯仍使用「尚未補修」，但輸出報表時顯示為「可補修」。
+        /// </summary>
+        private static void AddSubjectStatusIfNotExists(List<string> statusList, string statusText)
+        {
+            if (string.IsNullOrWhiteSpace(statusText))
+                return;
+
+            string[] items = statusText.Split(
+                new string[] { "、", "," },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string item in items)
+            {
+                string s = item.Trim();
+
+                if (s == "尚未補修")
+                    s = "可補修";
+
+                if (!statusList.Contains(s))
+                    statusList.Add(s);
+            }
         }
 
     }
