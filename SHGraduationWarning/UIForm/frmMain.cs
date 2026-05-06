@@ -1370,10 +1370,6 @@ namespace SHGraduationWarning.UIForm
                             // 處理科目屬性：可補修、可重修、不採計
                             foreach (XmlElement xmlRuleS in xmlRule.SelectNodes("科目"))
                             {
-                                // 原本邏輯：學分數 = 0 不列入報表科目清單
-                                if (xmlRuleS.GetAttribute("學分數") == "0")
-                                    continue;
-
                                 string status = xmlRuleS.GetAttribute("狀態");
 
                                 // 判斷邏輯維持原本：尚未補修代表可補修
@@ -1383,12 +1379,21 @@ namespace SHGraduationWarning.UIForm
                                 bool isScoreNotIncluded =
                                     xmlRuleS.GetAttribute("成績科目級別重複") == "不重複採計";
 
+                                bool isNonGraduationPlanSubject =
+                                    status == "已取得" &&
+                                    xmlRuleS.GetAttribute("非課程規劃表課程") == "非課程規劃表課程";
+
+                                // 原本邏輯：學分數 = 0 不列入報表科目清單
+                                // 2026-05-06 調整：非課規科目即使學分數 = 0 仍需保留輸出
+                                if (xmlRuleS.GetAttribute("學分數") == "0" && !isNonGraduationPlanSubject)
+                                    continue;
+
                                 // 2026-05-06 調整：課規不採計暫停使用
                                 // bool isPlanNotIncluded =
                                 //     xmlRuleS.GetAttribute("課規科目級別重複") == "不重複採計";
 
                                 // 只有 可重修、可補修、不採計 才輸出到科目狀態欄位
-                                if (!isCanMakeup && !isCanRetake && !isScoreNotIncluded)
+                                if (!isCanMakeup && !isCanRetake && !isScoreNotIncluded && !isNonGraduationPlanSubject)
                                     continue;
 
                                 string sKey = xmlRuleS.GetAttribute("科目名稱") + "_" + xmlRuleS.GetAttribute("科目級別");
@@ -1406,6 +1411,9 @@ namespace SHGraduationWarning.UIForm
 
                                 if (isScoreNotIncluded)
                                     statusList.Add("不採計");
+
+                                if (isNonGraduationPlanSubject)
+                                    statusList.Add("非課規科目");
 
                                 // 2026-05-06 調整：課規不採計暫停輸出
                                 // if (isPlanNotIncluded)
@@ -1429,7 +1437,7 @@ namespace SHGraduationWarning.UIForm
                                     AddSubjectStatusIfNotExists(mergedStatusList, subjectElement.GetAttribute("狀態"));
 
                                     List<string> orderedStatusList = new List<string>();
-                                    foreach (string item in new string[] { "可重修", "可補修", "不採計" })
+                                    foreach (string item in new string[] { "可重修", "可補修", "不採計", "非課規科目" })
                                     {
                                         if (mergedStatusList.Contains(item))
                                             orderedStatusList.Add(item);
