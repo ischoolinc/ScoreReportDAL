@@ -1387,9 +1387,9 @@ namespace SHGraduationWarning.UIForm
                                     status == "已取得" &&
                                     xmlRuleS.GetAttribute("非課程規劃表課程") == "非課程規劃表課程";
 
-                                // 原本邏輯：學分數 = 0 不列入報表科目清單
-                                // 2026-05-06 調整：非課規科目即使學分數 = 0 仍需保留輸出
-                                if (xmlRuleS.GetAttribute("學分數") == "0" && !isNonGraduationPlanSubject)
+                                // 學分數 = 0 不列入報表科目清單
+                                // 2026-05-25 調整：非課規科目即使學分數 = 0 也不輸出
+                                if (xmlRuleS.GetAttribute("學分數") == "0")
                                     continue;
 
                                 // 2026-05-06 調整：課規不採計暫停使用
