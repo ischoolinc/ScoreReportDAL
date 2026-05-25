@@ -1370,6 +1370,9 @@ namespace SHGraduationWarning.UIForm
                             // 處理科目屬性：可補修、可重修、不採計
                             foreach (XmlElement xmlRuleS in xmlRule.SelectNodes("科目"))
                             {
+                                bool isUseCoursePlanSubjectAttribute =
+                                    rs.GraGrandCheckXml.GetAttribute("學期科目成績屬性採計方式") == "以課程規劃表內容為準";
+
                                 string status = xmlRuleS.GetAttribute("狀態");
 
                                 // 判斷邏輯維持原本：尚未補修代表可補修
@@ -1380,6 +1383,7 @@ namespace SHGraduationWarning.UIForm
                                     xmlRuleS.GetAttribute("成績科目級別重複") == "不重複採計";
 
                                 bool isNonGraduationPlanSubject =
+                                    isUseCoursePlanSubjectAttribute &&
                                     status == "已取得" &&
                                     xmlRuleS.GetAttribute("非課程規劃表課程") == "非課程規劃表課程";
 
