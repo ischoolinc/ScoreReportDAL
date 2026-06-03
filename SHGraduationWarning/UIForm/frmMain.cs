@@ -1169,7 +1169,7 @@ namespace SHGraduationWarning.UIForm
             colN1List.Add("科目名稱");
             colN1List.Add("科目級別");
             colN1List.Add("學分數");
-            int maxSubj = 50;
+            int maxSubj = 130;
             for (int s = 1; s <= maxSubj; s++)
             {
                 foreach (string cname in colN1List)
@@ -1200,7 +1200,7 @@ namespace SHGraduationWarning.UIForm
             }
             for (int i = 1; i <= 5; i++)
             {
-                for (int j = 1; j <= 30; j++)
+                for (int j = 1; j <= maxSubj; j++)
                 {
                     StudDT.Columns.Add("科目" + j + "_取得學分數統計_核心科目表序號" + i + "_規則_可補修重修_打勾");
                 }
