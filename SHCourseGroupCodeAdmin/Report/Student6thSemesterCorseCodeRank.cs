@@ -44,6 +44,11 @@ namespace SHCourseGroupCodeAdmin.Report
         bool IsAccordingToClass = false;
         Dictionary<string, string> StudentClassFolderDict = new Dictionary<string, string>();
 
+        /// <summary>
+        /// 是否輸出同名獨立 JSON 備份檔（於列印開始前自 chkExportJSON 擷取，供 BackgroundWorker 使用）
+        /// </summary>
+        private bool _ExportJSON = true;
+
         private List<rptStudSemsScoreCodeChkInfo> _ResultList = new List<rptStudSemsScoreCodeChkInfo>();
         private Dictionary<string, int> _CourseStudentCountDic = new Dictionary<string, int>();
         /// <summary>修課紀錄移除與學期成績重複後剩餘筆數（對應 MailMerge 條件）。</summary>
@@ -60,10 +65,13 @@ namespace SHCourseGroupCodeAdmin.Report
 
         private void Student6thSemesterCorseCodeRank_Load(object sender, EventArgs e)
         {
+            this.MinimumSize = this.MaximumSize = this.Size;
+
             string defaultSchoolYear = K12.Data.School.DefaultSchoolYear;
             int schoolYear = 0;
             if (int.TryParse(defaultSchoolYear, out schoolYear))
                 iptSchoolYear.Value = schoolYear;
+
             LoadTemplate();
         }
         public void SetStudentIDs(List<string> studIDs)
@@ -463,7 +471,7 @@ namespace SHCourseGroupCodeAdmin.Report
             #endregion
 
             #region 單檔列印
-            List<string> gradeMetaErrorList = new List<string>();
+            List<string> gradeDataErrorList = new List<string>();
             foreach (string sid in StudentDocDict.Keys)
             {
 
@@ -559,7 +567,7 @@ namespace SHCourseGroupCodeAdmin.Report
                     {
                         document.Save(pathPDF, SaveFormat.Pdf);
 
-                        //TryWriteGradeDataToPdf(pathPDF, sid, gradeMetaErrorList);
+                        TryWriteGradeDataToPdf(pathPDF, sid, gradeDataErrorList);
                     }
                     catch (Exception ex)
                     {
@@ -573,8 +581,8 @@ namespace SHCourseGroupCodeAdmin.Report
                             {
                                 document.Save(sd.FileName, Aspose.Words.SaveFormat.Pdf);
 
-                                // 實作新規格 json 寫入 pdf，目前先註解，等確認後再執行
-                          //      TryWriteGradeDataToPdf(sd.FileName, sid, gradeMetaErrorList);
+                               
+                                TryWriteGradeDataToPdf(sd.FileName, sid, gradeDataErrorList);
                             }
                             catch
                             {
@@ -593,9 +601,9 @@ namespace SHCourseGroupCodeAdmin.Report
                 #endregion
             }
 
-            if (gradeMetaErrorList.Count > 0)
+            if (gradeDataErrorList.Count > 0)
             {
-                MsgBox.Show(string.Join(Environment.NewLine, gradeMetaErrorList), "第六學期成績單 Metadata 寫入失敗", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Show(string.Join(Environment.NewLine, gradeDataErrorList), "第六學期成績資料處理失敗", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             try
@@ -820,6 +828,7 @@ namespace SHCourseGroupCodeAdmin.Report
             SchoolYear = iptSchoolYear.Value;
             Semester = iptSemester.Value;
             IsAccordingToClass = chkAccordingToClass.Checked;
+            _ExportJSON = chkExportJSON.Checked;
             bgWorkerReport.RunWorkerAsync();
         }
 
@@ -974,40 +983,73 @@ namespace SHCourseGroupCodeAdmin.Report
             return serializer.Serialize(items);
         }
 
-        private void WriteGradeDataToPdf(string pdfPath, string studentID)
+        private string TryBuildGradeDataJson(string studentID)
         {
-            string json = BuildGradeDataJson(studentID);
+            try
+            {
+                return BuildGradeDataJson(studentID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GradeData 資料建立失敗：" + ex.Message, ex);
+            }
+        }
 
+        private void WriteGradeDataMetadataToPdf(string pdfPath, string json)
+        {
             PdfFileInfo fileInfo = new PdfFileInfo();
+
             try
             {
                 fileInfo.BindPdf(pdfPath);
-
                 // 寫入自訂 Metadata 欄位
                 fileInfo.SetMetaInfo("GradeData", json);
-
                 // 修正 Unknown prefix 問題：
                 // 不使用 SaveNewInfoWithXmp，避免 XMP namespace/prefix 造成錯誤
                 fileInfo.SaveNewInfo(pdfPath);
             }
             catch (Exception ex)
             {
-                throw new Exception("第六學期成績單 Metadata 寫入失敗：" + ex.Message, ex);
+                throw new Exception("PDF Metadata 寫入失敗：" + ex.Message, ex);
             }
             finally
             {
                 fileInfo.Close();
             }
-
-            // 同步輸出同名 JSON 備份檔
-            File.WriteAllText(
-                Path.ChangeExtension(pdfPath, ".json"),
-                json,
-                new UTF8Encoding(false)
-            );
         }
 
-        private void TryWriteGradeDataToPdf(string pdfPath, string studentID, List<string> gradeMetaErrorList)
+        private void WriteGradeDataJsonFile(string pdfPath, string json)
+        {
+            try
+            {
+                File.WriteAllText(
+                    Path.ChangeExtension(pdfPath, ".json"),
+                    json,
+                    new UTF8Encoding(false));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("JSON 檔案輸出失敗：" + ex.Message, ex);
+            }
+        }
+
+        private void WriteGradeDataToPdf(string pdfPath, string studentID)
+        {
+            string json = TryBuildGradeDataJson(studentID);
+
+            WriteGradeDataMetadataToPdf(pdfPath, json);
+
+            // 僅在勾選「產生JSON檔」時輸出同名獨立 JSON 備份檔（不影響 PDF Metadata）
+            if (_ExportJSON)
+            {
+                WriteGradeDataJsonFile(pdfPath, json);
+            }
+        }
+
+        private void TryWriteGradeDataToPdf(
+            string pdfPath,
+            string studentID,
+            List<string> gradeDataErrorList)
         {
             try
             {
@@ -1015,9 +1057,13 @@ namespace SHCourseGroupCodeAdmin.Report
             }
             catch (Exception ex)
             {
-                string idNumber = StudentDocNameDict.ContainsKey(studentID) ? StudentDocNameDict[studentID] : "";
-                gradeMetaErrorList.Add(string.Format(
-                    "第六學期成績單 Metadata 寫入失敗（學生系統編號 {0}，身分證號 {1}）：{2}",
+                string idNumber =
+                    StudentDocNameDict.ContainsKey(studentID)
+                    ? StudentDocNameDict[studentID]
+                    : "";
+
+                gradeDataErrorList.Add(string.Format(
+                    "第六學期成績資料處理失敗（學生系統編號 {0}，身分證號 {1}）：{2}",
                     studentID,
                     idNumber,
                     ex.Message));

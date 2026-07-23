@@ -45,6 +45,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.chkNScore = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
+            this.chkExportJSON = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             this.SuspendLayout();
@@ -58,7 +59,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.labelX9.BackgroundStyle.Class = "";
             this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX9.Location = new System.Drawing.Point(142, 8);
+            this.labelX9.Location = new System.Drawing.Point(142, 9);
             this.labelX9.Name = "labelX9";
             this.labelX9.Size = new System.Drawing.Size(47, 21);
             this.labelX9.TabIndex = 8;
@@ -73,7 +74,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(14, 8);
+            this.labelX7.Location = new System.Drawing.Point(14, 9);
             this.labelX7.Name = "labelX7";
             this.labelX7.Size = new System.Drawing.Size(60, 21);
             this.labelX7.TabIndex = 9;
@@ -84,7 +85,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkDefault.AutoSize = true;
             this.lnkDefault.BackColor = System.Drawing.Color.Transparent;
-            this.lnkDefault.Location = new System.Drawing.Point(306, 189);
+            this.lnkDefault.Location = new System.Drawing.Point(306, 224);
             this.lnkDefault.Name = "lnkDefault";
             this.lnkDefault.Size = new System.Drawing.Size(86, 17);
             this.lnkDefault.TabIndex = 21;
@@ -97,7 +98,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkViewMapColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkViewMapColumns.AutoSize = true;
             this.lnkViewMapColumns.BackColor = System.Drawing.Color.Transparent;
-            this.lnkViewMapColumns.Location = new System.Drawing.Point(188, 189);
+            this.lnkViewMapColumns.Location = new System.Drawing.Point(188, 224);
             this.lnkViewMapColumns.Name = "lnkViewMapColumns";
             this.lnkViewMapColumns.Size = new System.Drawing.Size(112, 17);
             this.lnkViewMapColumns.TabIndex = 20;
@@ -110,7 +111,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkViewTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkViewTemplate.AutoSize = true;
             this.lnkViewTemplate.BackColor = System.Drawing.Color.Transparent;
-            this.lnkViewTemplate.Location = new System.Drawing.Point(9, 189);
+            this.lnkViewTemplate.Location = new System.Drawing.Point(9, 224);
             this.lnkViewTemplate.Name = "lnkViewTemplate";
             this.lnkViewTemplate.Size = new System.Drawing.Size(86, 17);
             this.lnkViewTemplate.TabIndex = 18;
@@ -123,7 +124,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.lnkChangeTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkChangeTemplate.AutoSize = true;
             this.lnkChangeTemplate.BackColor = System.Drawing.Color.Transparent;
-            this.lnkChangeTemplate.Location = new System.Drawing.Point(98, 189);
+            this.lnkChangeTemplate.Location = new System.Drawing.Point(98, 224);
             this.lnkChangeTemplate.Name = "lnkChangeTemplate";
             this.lnkChangeTemplate.Size = new System.Drawing.Size(86, 17);
             this.lnkChangeTemplate.TabIndex = 19;
@@ -139,7 +140,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(455, 186);
+            this.btnPrint.Location = new System.Drawing.Point(455, 221);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(67, 23);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -154,7 +155,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(528, 186);
+            this.btnCancel.Location = new System.Drawing.Point(528, 221);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(67, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -175,7 +176,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(14, 35);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(579, 120);
+            this.labelX1.Size = new System.Drawing.Size(579, 125);
             this.labelX1.TabIndex = 26;
             this.labelX1.Text = "1. 列印將同時產生PDF和Word。\r\n2. 學校上傳：請使用PDF檔案。\r\n3. 學生上傳：請使用「學生：其它→電子報表上傳」，選擇「系統編號」選項及Word" +
     "檔案，\r\n　分析後勾選「上傳時Word檔轉為PDF」。\r\n4. 產出條件： 3年級學生且須有第六學期成績或修課紀錄。\r\n5. 預設課程類型:計算學分且需要計分之" +
@@ -191,7 +192,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.chkAccordingToClass.BackgroundStyle.Class = "";
             this.chkAccordingToClass.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkAccordingToClass.Location = new System.Drawing.Point(10, 160);
+            this.chkAccordingToClass.Location = new System.Drawing.Point(10, 187);
             this.chkAccordingToClass.Name = "chkAccordingToClass";
             this.chkAccordingToClass.Size = new System.Drawing.Size(174, 21);
             this.chkAccordingToClass.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -208,7 +209,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.iptSemester.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSemester.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSemester.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSemester.Location = new System.Drawing.Point(181, 7);
+            this.iptSemester.Location = new System.Drawing.Point(181, 8);
             this.iptSemester.MaxValue = 2;
             this.iptSemester.MinValue = 2;
             this.iptSemester.Name = "iptSemester";
@@ -227,7 +228,7 @@ namespace SHCourseGroupCodeAdmin.Report
             this.iptSchoolYear.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSchoolYear.Location = new System.Drawing.Point(67, 7);
+            this.iptSchoolYear.Location = new System.Drawing.Point(67, 8);
             this.iptSchoolYear.MaxValue = 200;
             this.iptSchoolYear.MinValue = 108;
             this.iptSchoolYear.Name = "iptSchoolYear";
@@ -246,7 +247,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.chkNCredit.BackgroundStyle.Class = "";
             this.chkNCredit.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkNCredit.Location = new System.Drawing.Point(310, 160);
+            this.chkNCredit.Location = new System.Drawing.Point(310, 187);
             this.chkNCredit.Name = "chkNCredit";
             this.chkNCredit.Size = new System.Drawing.Size(80, 21);
             this.chkNCredit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -263,7 +264,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.chkNScore.BackgroundStyle.Class = "";
             this.chkNScore.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkNScore.Location = new System.Drawing.Point(404, 160);
+            this.chkNScore.Location = new System.Drawing.Point(404, 187);
             this.chkNScore.Name = "chkNScore";
             this.chkNScore.Size = new System.Drawing.Size(80, 21);
             this.chkNScore.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -272,6 +273,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             // labelX2
             // 
+            this.labelX2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelX2.AutoSize = true;
             this.labelX2.BackColor = System.Drawing.Color.Transparent;
             // 
@@ -279,7 +281,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(195, 160);
+            this.labelX2.Location = new System.Drawing.Point(195, 187);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(117, 21);
             this.labelX2.TabIndex = 32;
@@ -287,6 +289,7 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             // labelX3
             // 
+            this.labelX3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelX3.AutoSize = true;
             this.labelX3.BackColor = System.Drawing.Color.Transparent;
             // 
@@ -294,17 +297,37 @@ namespace SHCourseGroupCodeAdmin.Report
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(383, 160);
+            this.labelX3.Location = new System.Drawing.Point(383, 187);
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(20, 21);
             this.labelX3.TabIndex = 33;
             this.labelX3.Text = "及";
             // 
+            // chkExportJSON
+            // 
+            this.chkExportJSON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkExportJSON.AutoSize = true;
+            this.chkExportJSON.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkExportJSON.BackgroundStyle.Class = "";
+            this.chkExportJSON.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkExportJSON.Checked = true;
+            this.chkExportJSON.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkExportJSON.Location = new System.Drawing.Point(10, 161);
+            this.chkExportJSON.Name = "chkExportJSON";
+            this.chkExportJSON.Size = new System.Drawing.Size(101, 21);
+            this.chkExportJSON.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkExportJSON.TabIndex = 34;
+            this.chkExportJSON.Text = "產生JSON檔";
+            // 
             // Student6thSemesterCorseCodeRank
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(605, 217);
+            this.ClientSize = new System.Drawing.Size(605, 252);
+            this.Controls.Add(this.chkExportJSON);
             this.Controls.Add(this.labelX3);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.chkNScore);
@@ -351,5 +374,6 @@ namespace SHCourseGroupCodeAdmin.Report
         private DevComponents.DotNetBar.Controls.CheckBoxX chkNScore;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX labelX3;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkExportJSON;
     }
 }
