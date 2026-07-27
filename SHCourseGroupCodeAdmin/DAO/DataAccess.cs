@@ -1845,7 +1845,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.NotIncludedInCredit = dr["not_included_in_credit"] + "";
 
                     // 排除科目名稱空白、不需評分、不計學分
-                    if (string.IsNullOrWhiteSpace(data.SubjectName)) continue;                 
+                    if (string.IsNullOrWhiteSpace(data.SubjectName)) continue;
 
                     // 使用科目名稱_科目級別 比對資料
                     string key = data.SubjectName + "_" + data.SubjectLevel;
@@ -4023,7 +4023,8 @@ WHERE
                 {
                     if (!GPlanIDList.Contains(data.graduation_plan_id))
                     {
-                        GPlanIDList.Add(data.graduation_plan_id);
+                        if (!string.IsNullOrWhiteSpace(data.graduation_plan_id))
+                            GPlanIDList.Add(data.graduation_plan_id);
                     }
                 }
 
