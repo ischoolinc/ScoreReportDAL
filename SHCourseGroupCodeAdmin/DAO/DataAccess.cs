@@ -2207,43 +2207,44 @@ namespace SHCourseGroupCodeAdmin.DAO
             try
             {
                 QueryHelper qh = new QueryHelper();
-                string query = "" +
-                    " SELECT  " +
-" student.id AS student_id " +
-" , student.name AS student_name " +
-" , student_number " +
-" , student.seat_no " +
-" , student.id_number " +
-" , student.birthdate " +
-" , class_name " +
-" , class.grade_year AS grade_year " +
-" , course.id AS course_id " +
-" , course_name " +
-" , subject " +
-" , subj_level " +
-" , course.ref_class_id AS c_ref_class_id " +
-" , course.credit " +
-" , course.period " +
-" , course.score_type " +
-" , course.school_year " +
-" , course.semester " +
-" , (CASE not_included_in_credit WHEN '1' THEN '是' WHEN '0' THEN '否' ELSE '' END) AS not_included_in_credit" +
-" ,  (CASE not_included_in_calc WHEN '1' THEN '是' WHEN '0' THEN '否' ELSE '' END) AS not_included_in_calc" +
-" , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by " +
-" , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required " +
-" , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code " +
-" , sc_attend.subject_code  " +
-" FROM course " +
-"  INNER JOIN sc_attend " +
-"  ON course.id = sc_attend.ref_course_id  " +
-"  INNER JOIN student  " +
-"  ON sc_attend.ref_student_id = student.id " +
-"  INNER JOIN class " +
-"  ON student.ref_class_id = class.id " +
-" WHERE  " +
-"  student.status IN(1) AND class.grade_year IN(" + strGrYear + ") " +
-" AND course.school_year = " + SchoolYear + " AND course.semester = " + Semester + " " +
-" ORDER BY class.grade_year DESC,class.display_order,class_name,seat_no,school_year,semester,course_name ";
+                string query = string.Format(@"
+ SELECT  
+ student.id AS student_id 
+ , student.name AS student_name 
+ , student_number 
+ , student.seat_no 
+ , student.id_number 
+ , student.birthdate 
+ , class_name 
+ , class.grade_year AS grade_year 
+ , course.id AS course_id 
+ , course_name 
+ , subject 
+ , subj_level 
+ , course.ref_class_id AS c_ref_class_id 
+ , course.credit 
+ , course.period 
+ , course.score_type 
+ , course.school_year 
+ , course.semester 
+ , (CASE not_included_in_credit WHEN '1' THEN '是' WHEN '0' THEN '否' ELSE '' END) AS not_included_in_credit
+ ,  (CASE not_included_in_calc WHEN '1' THEN '是' WHEN '0' THEN '否' ELSE '' END) AS not_included_in_calc
+ , (CASE COALESCE(sc_attend.required_by,c_required_by) WHEN '1' THEN '部定' WHEN '2' THEN '校訂' ELSE '' END) AS required_by 
+ , (CASE COALESCE(sc_attend.is_required,c_is_required) WHEN '1' THEN '必修' WHEN '0' THEN '選修' ELSE '' END) AS required 
+ , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code 
+ , sc_attend.subject_code  
+ FROM course 
+  INNER JOIN sc_attend 
+  ON course.id = sc_attend.ref_course_id  
+  INNER JOIN student  
+  ON sc_attend.ref_student_id = student.id 
+  INNER JOIN class 
+  ON student.ref_class_id = class.id 
+ WHERE  
+  student.status IN(1) AND class.grade_year IN({0}) 
+ AND course.school_year = {1} AND course.semester = {2} 
+ ORDER BY class.grade_year DESC,class.display_order,class_name,seat_no,school_year,semester,course_name 
+", strGrYear, SchoolYear, Semester);
 
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
@@ -2365,55 +2366,58 @@ namespace SHCourseGroupCodeAdmin.DAO
                 Dictionary<string, string> mappingTable = Utility.GetCreditMappingTable();
 
                 QueryHelper qh = new QueryHelper();
-                string query = "" +
-                    " WITH student_data AS (  " +
-"  	SELECT  " +
-"  	student.id AS student_id  " +
-"  	,student_number  " +
-"  	,class_name  " +
-"  	,student.seat_no  " +
-"  	,student.name AS student_name  " +
-"  	, COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code  " +
-"  FROM student   " +
-"  INNER JOIN class ON student.ref_class_id = class.id   " +
-"  	WHERE student.status IN(1,2) AND class.grade_year  IN( " + GradeYear + " ) " +
-"  ),sems_score_data AS(  " +
-"  SELECT  " +
-"  	sems_subj_score_ext.ref_student_id  " +
-"  	, sems_subj_score_ext.grade_year  " +
-"  	, sems_subj_score_ext.semester  " +
-"  	, sems_subj_score_ext.school_year	  " +
-"  	, array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目  " +
-"  	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別  " +
-"  	, array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數	  " +
-"  	, array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修  " +
-"  	, array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂	  " +
-"  FROM (  " +
-"  		SELECT   " +
-"  			sems_subj_score.*  " +
-"  			, 	unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele  " +
-"  		FROM   " +
-"  			sems_subj_score   " +
-"  			INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id  " +
-"  	) as sems_subj_score_ext   " +
-"  )  " +
-"  SELECT   " +
-"  student_id  " +
-"  ,student_number  " +
-"  ,class_name  " +
-"  ,seat_no  " +
-"  ,student_name  " +
-"  ,gdc_code  " +
-"  ,school_year  " +
-"  ,semester  " +
-"  ,grade_year  " +
-"  ,科目 AS subject " +
-"  ,科目級別 AS subj_level " +
-"  ,學分數 AS credit " +
-"  ,必選修 AS required " +
-"  ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by  " +
-"   FROM student_data INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id " +
-"    ORDER BY class_name,seat_no,school_year,semester ";
+                string query = string.Format(@"
+                WITH student_data AS (
+                    SELECT
+                        student.id AS student_id
+                        ,student_number
+                        ,class_name
+                        ,student.seat_no
+                        ,student.name AS student_name
+                        , COALESCE(student.gdc_code,class.gdc_code)  AS gdc_code
+                    FROM student
+                    INNER JOIN class ON student.ref_class_id = class.id
+                    WHERE student.status IN(1,2) AND class.grade_year IN({0})
+                ),sems_score_data AS(
+                    SELECT
+                        sems_subj_score_ext.ref_student_id
+                        , sems_subj_score_ext.grade_year
+                        , sems_subj_score_ext.semester
+                        , sems_subj_score_ext.school_year
+                        , array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目
+                        , array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別
+                        , array_to_string(xpath('//Subject/@開課學分數', subj_score_ele), '')::text AS 學分數
+                        , array_to_string(xpath('//Subject/@修課必選修', subj_score_ele), '')::text AS 必選修
+                        , array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '')::text AS 課程代碼
+                        , array_to_string(xpath('//Subject/@修課校部訂', subj_score_ele), '')::text AS 校部訂
+                    FROM (
+                        SELECT
+                            sems_subj_score.*
+                            , unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele
+                        FROM
+                            sems_subj_score
+                            INNER JOIN student_data ON sems_subj_score.ref_student_id = student_data.student_id
+                    ) as sems_subj_score_ext
+                )
+                SELECT
+                    student_id
+                    ,student_number
+                    ,class_name
+                    ,seat_no
+                    ,student_name
+                    ,gdc_code
+                    ,school_year
+                    ,semester
+                    ,grade_year
+                    ,科目 AS subject
+                    ,科目級別 AS subj_level
+                    ,學分數 AS credit
+                    ,必選修 AS required
+                    ,(CASE 校部訂 WHEN '部訂' THEN '部定' ELSE 校部訂 END) AS required_by
+                    ,課程代碼
+                FROM student_data INNER JOIN sems_score_data ON student_data.student_id = sems_score_data.ref_student_id
+                ORDER BY class_name,seat_no,school_year,semester
+                ", GradeYear);
 
 
                 DataTable dt = qh.Select(query);
@@ -2439,6 +2443,7 @@ namespace SHCourseGroupCodeAdmin.DAO
                     data.IsRequired = dr["required"] + "";
                     data.GradeYear = dr["grade_year"] + "";
                     data.Credit = dr["credit"] + "";
+                    data.CourseCode = dr["課程代碼"] + "";
                     if (dr["gdc_code"] != null)
                     {
                         data.gdc_code = dr["gdc_code"] + "";
@@ -3998,7 +4003,8 @@ WHERE
                     data.ScoreType = dr["scoreType"] + "";
                     data.NCredit = dr["NCredit"] + "";
                     data.NScore = dr["NScore"] + "";
-                    data.SemsScoreCourseCode = dr["課程代碼"] + "";
+                    data.CourseCode = data.SemsScoreCourseCode = dr["課程代碼"] + "";
+
                     decimal score;
                     if (dr["score"].ToString() != "")
                         if (decimal.TryParse(dr["score"].ToString(), out score))
@@ -4067,7 +4073,7 @@ WHERE
                             chkGPSubjectInfo subj = GPlanDict[data.graduation_plan_id].SubjectDict[key];
 
                             data.credit_period = subj.credit_period;
-                            data.CourseCode = subj.CourseCode;
+                           // data.CourseCode = subj.CourseCode;
                             data.OfficialSubjectName = subj.OfficialSubjectName;
                         }
 
