@@ -964,9 +964,17 @@ namespace SHCourseGroupCodeAdmin.DAO
                             // 2024/7/5，會議針對9D,9C 處理
                             subj = ParseCourseCode9D9C(subj);
 
-                            subj.ProcessStatus = "刪除";
-                            subj.DiffStatusList.Add("多");
                             subj.GPlanXml = GPlanDict[mCo];
+
+                            if (HasSourceGPlan(subj.GPlanXml))
+                            {
+                                subj.ProcessStatus = "略過";
+                            }
+                            else
+                            {
+                                subj.ProcessStatus = "刪除";
+                                subj.DiffStatusList.Add("多");
+                            }
                             subj.GDCCode = mCo;
                             chkSubjectInfoList.Add(subj);
                         }
@@ -1267,20 +1275,47 @@ namespace SHCourseGroupCodeAdmin.DAO
                             }
 
 
-                            if (subj.DiffStatusList.Count > 0)
-                                subj.ProcessStatus = "更新";
-                            else
-                                subj.ProcessStatus = "略過";
-
-
                             subj.GPlanXml = GPlanDict[mCo];
                             subj.MOEXml = MOEDict[mCo];
+
+                            if (HasSourceGPlan(subj.GPlanXml))
+                            {
+                                subj.ProcessStatus = "略過";
+                            }
+                            else
+                            {
+                                if (subj.DiffStatusList.Count > 0)
+                                    subj.ProcessStatus = "更新";
+                                else
+                                    subj.ProcessStatus = "略過";
+                            }
+
                             chkSubjectInfoList.Add(subj);
                         }
                     }
                 }
             }
         }
+        /// <summary>
+        /// Check whether any Subject in the existing curriculum plan
+        /// was merged from another curriculum plan.
+        /// </summary>
+        private bool HasSourceGPlan(List<XElement> elements)
+        {
+            if (elements == null)
+                return false;
+
+            foreach (XElement elm in elements)
+            {
+                XAttribute attr = elm.Attribute("來源課規");
+
+                if (attr != null && !string.IsNullOrWhiteSpace(attr.Value))
+                    return true;
+            }
+
+            return false;
+        }
+
         private string GetAttribute(XElement elm, string attrName)
         {
             string value = "";

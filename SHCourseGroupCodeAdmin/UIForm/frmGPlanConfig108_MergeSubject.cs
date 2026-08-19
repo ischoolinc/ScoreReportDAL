@@ -122,6 +122,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     if (GPlanDict.ContainsKey(name))
                     {
                         GPlanInfo108 sourceGPlanInfo = GPlanDict[name];
+                        HashSet<string> acceptedCourseCodesThisSource = new HashSet<string>();
 
                         // 檢查這目前課程代碼是否已經有，沒有就加入
                         foreach (XElement elm in sourceGPlanInfo.RefGPContentXml.Elements("Subject"))
@@ -141,6 +142,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                 //{
                                     // 設定新的 rowIdx
                                     XElement NewElm = new XElement(elm);
+                                    NewElm.SetAttributeValue("來源課規", name);
                                     if (strRowIdx == "")
                                     {
                                         strRowIdx = NewElm.Element("Grouping").Attribute("RowIndex").Value;
@@ -157,8 +159,18 @@ namespace SHCourseGroupCodeAdmin.UIForm
                                     AddSubjectList.Add(NewElm);
                                     // 記錄此 RowIndex（同一 RowIndex 只會存在一次）
                                     newRowIndexSet.Add(LastRowIdx);
+                                    acceptedCourseCodesThisSource.Add(CourseCode);
                                 //}
                             }
+                        }
+
+                        // 同一課程代碼在單一課規內可能有多個學期 Subject。
+                        // 等此來源全部加入後，才把課程代碼登錄到追蹤清單，
+                        // 避免後續來源課規再加入同一課程代碼。
+                        foreach (string code in acceptedCourseCodesThisSource)
+                        {
+                            if (!TargetCourseCodeList.Contains(code))
+                                TargetCourseCodeList.Add(code);
                         }
                     }
                 }
