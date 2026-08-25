@@ -68,6 +68,12 @@ namespace SHCourseGroupCodeAdmin.DAO
         public bool needUpdateEntryYear = false;
 
         /// <summary>
+        /// Subject XML 的「來源課規」屬性有新增、修正或移除時為 true。
+        /// 僅標記記憶體變更，不直接寫入資料庫。
+        /// </summary>
+        public bool needUpdateSourceGPlan = false;
+
+        /// <summary>
         /// 課程代碼代表原始資料
         /// </summary>
         public List<MOECourseCodeInfo> MOECourseCodeInfoList = new List<MOECourseCodeInfo>();
@@ -103,6 +109,16 @@ namespace SHCourseGroupCodeAdmin.DAO
                     {
                         Status = "更新";
                     }
+                }
+
+                if (needUpdateSourceGPlan && Status == "無變動")
+                {
+                    Status = "更新";
+                }
+
+                if (needUpdateEntryYear && Status == "無變動")
+                {
+                    Status = "更新";
                 }
             }
 
@@ -592,6 +608,80 @@ namespace SHCourseGroupCodeAdmin.DAO
                     RefGPContentXml = XElement.Parse(RefGPContent);
                 }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 依 Subject 課程代碼前 16 碼與目前 GDCCode 比對，維護「來源課規」屬性。
+        /// 只修改記憶體 XML，不寫入資料庫。
+        /// </summary>
+        public void ParseSourceGPlan(Dictionary<string, string> moeGroupCodeNameDict)
+        {
+            needUpdateSourceGPlan = false;
+
+            try
+            {
+                if (RefGPContentXml == null)
+                    return;
+
+                if (string.IsNullOrEmpty(GDCCode))
+                    return;
+
+                if (moeGroupCodeNameDict == null)
+                    return;
+
+                foreach (XElement elm in RefGPContentXml.Elements("Subject"))
+                {
+                    try
+                    {
+                        if (elm == null)
+                            continue;
+
+                        XAttribute courseCodeAttr = elm.Attribute("課程代碼");
+                        if (courseCodeAttr == null)
+                            continue;
+
+                        string courseCode = courseCodeAttr.Value;
+                        if (string.IsNullOrWhiteSpace(courseCode))
+                            continue;
+
+                        if (courseCode.Length < 16)
+                            continue;
+
+                        string subjectGroupCode = courseCode.Substring(0, 16);
+
+                        if (subjectGroupCode == GDCCode)
+                        {
+                            XAttribute sourceAttr = elm.Attribute("來源課規");
+                            if (sourceAttr != null)
+                            {
+                                sourceAttr.Remove();
+                                needUpdateSourceGPlan = true;
+                            }
+                        }
+                        else
+                        {
+                            if (moeGroupCodeNameDict.ContainsKey(subjectGroupCode))
+                            {
+                                string sourceName = moeGroupCodeNameDict[subjectGroupCode];
+                                string currentName = GetAttribute(elm, "來源課規");
+                                if (currentName != sourceName)
+                                {
+                                    elm.SetAttributeValue("來源課規", sourceName);
+                                    needUpdateSourceGPlan = true;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception exSubj)
+                    {
+                        Console.WriteLine(exSubj.Message);
+                    }
+                }
             }
             catch (Exception ex)
             {

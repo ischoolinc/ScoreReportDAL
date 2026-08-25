@@ -166,6 +166,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                         dgData.Rows[rowIdx].Cells["領域"].Value = subj.Domain;
                         dgData.Rows[rowIdx].Cells["分項類別"].Value = subj.Entry;
                         dgData.Rows[rowIdx].Cells["科目名稱"].Value = subj.SubjectName;
+                        dgData.Rows[rowIdx].Cells["來源課規"].Value = GetSourceGPlan(subj);
                         dgData.Rows[rowIdx].Cells["校訂部定"].Value = subj.RequiredBy;
                         dgData.Rows[rowIdx].Cells["必選修"].Value = subj.isRequired;
 
@@ -230,6 +231,42 @@ namespace SHCourseGroupCodeAdmin.UIForm
         }
 
 
+        private string GetSourceGPlan(chkSubjectInfo subj)
+        {
+            try
+            {
+                if (subj == null || subj.GPlanXml == null)
+                    return "";
+
+                List<string> sourceNames = new List<string>();
+
+                foreach (XElement elm in subj.GPlanXml)
+                {
+                    if (elm == null)
+                        continue;
+
+                    XAttribute attr = elm.Attribute("來源課規");
+
+                    if (attr == null)
+                        continue;
+
+                    string value = attr.Value.Trim();
+
+                    if (string.IsNullOrEmpty(value))
+                        continue;
+
+                    if (!sourceNames.Contains(value))
+                        sourceNames.Add(value);
+                }
+
+                return string.Join(",", sourceNames.ToArray());
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
         private void LoadDataGridViewColumns()
         {
             try
@@ -293,6 +330,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 tbSubjectName.Width = 150;
                 tbSubjectName.HeaderText = "科目名稱";
                 tbSubjectName.ReadOnly = true;
+
+                DataGridViewTextBoxColumn tbSourceGPlan = new DataGridViewTextBoxColumn();
+                tbSourceGPlan.Name = "來源課規";
+                tbSourceGPlan.HeaderText = "來源課規";
+                tbSourceGPlan.Width = 180;
+                tbSourceGPlan.ReadOnly = true;
 
                 DataGridViewTextBoxColumn tbRequiredBy = new DataGridViewTextBoxColumn();
                 tbRequiredBy.Name = "校訂部定";
@@ -375,6 +418,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 dgData.Columns.Add(tbDomain);
                 dgData.Columns.Add(tbScoreType);
                 dgData.Columns.Add(tbSubjectName);
+                dgData.Columns.Add(tbSourceGPlan);
                 dgData.Columns.Add(tbRequiredBy);
                 dgData.Columns.Add(tbIsRequired);
                 dgData.Columns.Add(tbGS11);

@@ -2730,6 +2730,42 @@ namespace SHCourseGroupCodeAdmin.DAO
         }
 
         /// <summary>
+        /// 一次讀取 graduation_plan 的 moe_group_code 與 name，建立記憶體索引。
+        /// 若 moe_group_code 重複，依 id DESC 保留最新一筆。
+        /// </summary>
+        public Dictionary<string, string> GetMoeGroupCodeNameDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+
+            try
+            {
+                string query = "SELECT id, moe_group_code, name FROM graduation_plan WHERE moe_group_code IS NOT NULL AND TRIM(moe_group_code) <> '' ORDER BY id DESC;";
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                if (dt != null)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string moeGroupCode = (dr["moe_group_code"] + "").Trim();
+                        string name = (dr["name"] + "").Trim();
+
+                        if (string.IsNullOrEmpty(moeGroupCode))
+                            continue;
+
+                        if (!value.ContainsKey(moeGroupCode))
+                            value.Add(moeGroupCode, name);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// 取得目前班級年級
         /// </summary>
         /// <returns></returns>

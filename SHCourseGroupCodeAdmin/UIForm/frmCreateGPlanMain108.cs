@@ -128,6 +128,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
         {
             _bgWorker.ReportProgress(1);
             _GPlanInfo108List = _da.GPlanInfo108List();
+            Dictionary<string, string> moeGroupCodeNameDict = _da.GetMoeGroupCodeNameDict();
             _bgWorker.ReportProgress(30);
 
             List<string> newGPNameList = new List<string>();
@@ -143,6 +144,7 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 }
                 data.ParseMOEXml();
                 data.ParseRefGPContentXml();
+                data.ParseSourceGPlan(moeGroupCodeNameDict);
 
                 if (data.GDCCode.IndexOf("M111960") > -1)
                 {
@@ -188,6 +190,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
                 if (data.needUpdateEntryYear)
                     data.Status = "更新";
 
+                if (data.needUpdateSourceGPlan)
+                    data.Status = "更新";
+
                 data.ParseOrderByInt();
             }
 
@@ -206,7 +211,8 @@ namespace SHCourseGroupCodeAdmin.UIForm
             _CheckSubjectLevel = chkStartLevel.Checked = false;
 
             ControlEnable(false);
-            _bgWorker.RunWorkerAsync();
+            if (!_bgWorker.IsBusy)
+                _bgWorker.RunWorkerAsync();
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
@@ -471,7 +477,10 @@ namespace SHCourseGroupCodeAdmin.UIForm
                     }
 
                     ControlEnable(false);
-                    _bgWorker.RunWorkerAsync();
+                    if (!_bgWorker.IsBusy)
+                        _bgWorker.RunWorkerAsync();
+
+                    return;
                 }
 
             }
@@ -485,7 +494,12 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void ControlEnable(bool value)
         {
-            dgData.Enabled = btnCreate.Enabled = btnQueryAndSet.Enabled = chkStartLevel.Enabled = btnReload.Enabled = value;
+            dgData.Enabled =
+                btnCreate.Enabled =
+                btnQueryAndSet.Enabled =
+                chkStartLevel.Enabled =
+                btnReload.Enabled =
+                btnCancel.Enabled = value;
         }
 
         private void btnQueryAndSet_Click(object sender, EventArgs e)
@@ -576,6 +590,9 @@ namespace SHCourseGroupCodeAdmin.UIForm
 
         private void btnReload_Click(object sender, EventArgs e)
         {
+            if (_bgWorker.IsBusy)
+                return;
+
             _CheckSubjectLevel = chkStartLevel.Checked;
             ControlEnable(false);
             _bgWorker.RunWorkerAsync();
