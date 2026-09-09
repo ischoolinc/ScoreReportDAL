@@ -18,8 +18,11 @@ namespace SHCourseGroupCodeAdmin.UIForm
     public partial class frmCreateGPlanItemSetup108 : BaseForm
     {
         GPlanInfo108 _GPlanInfo;
-        List<string> _ProcessList = new List<string>() { 
-             "略過"};
+        List<string> _ProcessList = new List<string>()
+        {
+            "略過",
+            "刪除"
+        };
         public frmCreateGPlanItemSetup108()
         {
             InitializeComponent();
